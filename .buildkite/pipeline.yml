@@ -1,0 +1,18 @@
+steps:
+
+  - name: 'Build iOS test fixture - UE 4.23'
+    skip: Not currently build on 4.23
+    agents:
+      queue: opensource-mac-unreal-4.23
+    env:
+      UE_VERSION: "4.23"
+    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    timeout_in_minutes: 40
+
+  - name: 'Build iOS test fixture - UE 4.26'
+    agents:
+      queue: opensource-mac-unreal-4.26
+    env:
+      UE_VERSION: "4.26"
+    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    timeout_in_minutes: 40
