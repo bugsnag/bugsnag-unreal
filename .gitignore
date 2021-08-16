@@ -74,3 +74,7 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 .DS_Store
+
+# Bugsnag specific
+Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include
+bugsnag-cocoa
