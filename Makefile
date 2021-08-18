@@ -16,7 +16,7 @@ all: package
 clean:
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
 	git clean -dfx Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
-	rm -rf Build bugsnag-cocoa
+	rm -rf Build deps
 
 Binaries/Mac/UE4Editor-Project.dylib: BugsnagCocoa
 	"$(UE_BUILD)" Project Mac Development -TargetType=Editor "$(UPROJECT)"
@@ -61,20 +61,20 @@ package: BugsnagCocoa
 
 BugsnagCocoa: Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a
 
-bugsnag-cocoa:
-	git clone --depth 1 --quiet --branch $(BUGSNAG_COCOA_VERSION) https://github.com/bugsnag/bugsnag-cocoa
+deps/bugsnag-cocoa:
+	git clone --depth 1 --quiet --branch $(BUGSNAG_COCOA_VERSION) https://github.com/bugsnag/bugsnag-cocoa $@
 
-Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include: bugsnag-cocoa
+Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include: deps/bugsnag-cocoa
 	cp -R $</Bugsnag/include $@
 	mkdir $@/BugsnagPrivate
-	cd $< && find Bugsnag \( -name '*.h' ! -path 'Bugsnag/include/*' \) -exec cp {} ../$@/BugsnagPrivate \;
+	cd $< && find Bugsnag \( -name '*.h' ! -path 'Bugsnag/include/*' \) -exec cp {} $(PWD)/$@/BugsnagPrivate \;
 
-Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a: bugsnag-cocoa
+Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a: deps/bugsnag-cocoa
 	cd $< && xcodebuild -scheme BugsnagStatic -derivedDataPath DerivedData -configuration Release -quiet build SDKROOT=iphoneos IOS_DEPLOYMENT_TARGET=11.0
 	mkdir -p $(@D)
 	cp $</DerivedData/Build/Products/Release-iphoneos/libBugsnagStatic.a $@
 
-Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a: bugsnag-cocoa
+Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a: deps/bugsnag-cocoa
 	cd $< && xcodebuild -scheme BugsnagStatic -derivedDataPath DerivedData -configuration Release -quiet build SDKROOT=macosx MACOSX_DEPLOYMENT_TARGET=10.11
 	mkdir -p $(@D)
 	cp $</DerivedData/Build/Products/Release/libBugsnagStatic.a $@
