@@ -24,3 +24,19 @@ steps:
           - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     timeout_in_minutes: 40
+
+  - name: 'Build Plugin - UE 4.23'
+    agents:
+      queue: opensource-mac-unreal-4.23
+    env:
+      UE_VERSION: "4.23"
+    command: make package
+    timeout_in_minutes: 20
+
+  - name: 'Build Plugin - UE 4.26'
+    agents:
+      queue: opensource-mac-unreal-4.26
+    env:
+      UE_VERSION: "4.26"
+    command: make package
+    timeout_in_minutes: 20
