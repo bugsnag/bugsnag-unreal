@@ -6,10 +6,10 @@ UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
 UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
 
-UPROJECT=$(PWD)/Project.uproject
+UPROJECT=$(PWD)/BugsnagExample.uproject
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 
-.PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local editor format package run test
+.PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local format package test
 
 all: package
 
@@ -18,8 +18,12 @@ clean:
 	git clean -dfx Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
 	rm -rf Build deps
 
-Binaries/Mac/UE4Editor-Project.dylib: BugsnagCocoa
-	"$(UE_BUILD)" Project Mac Development -TargetType=Editor "$(UPROJECT)"
+# TODO: Prevent this from touching files that need no changes, to avoid unnecessary recompiling
+format:
+	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/mobile/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
+
+Binaries/Mac/UE4Editor-BugsnagExample.dylib: BugsnagCocoa
+	"$(UE_BUILD)" BugsnagExample Mac Development -TargetType=Editor "$(UPROJECT)"
 
 e2e_android: features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
 	bundle exec maze-runner --app=$< --farm=bs --device=ANDROID_10_0
@@ -43,16 +47,7 @@ features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa: features/fix
 features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib: BugsnagCocoa
 	"$(UE_BUILD)" TestFixture Mac Development -TargetType=Editor "$(TESTPROJ)"
 
-format:
-	find Plugins/Bugsnag/Source/Bugsnag features/fixtures/mobile/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
-
-editor: Binaries/Mac/UE4Editor-Project.dylib
-	"$(UE_EDITOR)" "$(UPROJECT)"
-
-run: Binaries/Mac/UE4Editor-Project.dylib
-	"$(UE_EDITOR)" "$(UPROJECT)" -game -windowed -resx=1280 -resy=720
-
-test: Binaries/Mac/UE4Editor-Project.dylib
+test: Binaries/Mac/UE4Editor-BugsnagExample.dylib
 	"$(UE_EDITOR)" "$(UPROJECT)" -ExecCmds="Automation RunTests Bugsnag; Quit" -NoSplash -NullRHI -ReportOutputPath="$(PWD)/Saved/Automation/Reports"
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
@@ -66,7 +61,7 @@ deps/bugsnag-cocoa:
 
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include: deps/bugsnag-cocoa
 	cp -R $</Bugsnag/include $@
-	mkdir $@/BugsnagPrivate
+	mkdir -p $@/BugsnagPrivate
 	cd $< && find Bugsnag \( -name '*.h' ! -path 'Bugsnag/include/*' \) -exec cp {} $(PWD)/$@/BugsnagPrivate \;
 
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a: deps/bugsnag-cocoa
