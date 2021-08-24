@@ -1,18 +1,5 @@
 steps:
 
-  - name: 'Build iOS test fixture - UE 4.23'
-    skip: Not currently build on 4.23
-    agents:
-      queue: opensource-mac-unreal-4.23
-    env:
-      UE_VERSION: "4.23"
-    plugins:
-      artifacts#v1.2.0:
-        upload:
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    timeout_in_minutes: 40
-
   - name: 'Build iOS test fixture - UE 4.26'
     agents:
       queue: opensource-mac-unreal-4.26
@@ -31,12 +18,20 @@ steps:
     env:
       UE_VERSION: "4.23"
     command: make package
-    timeout_in_minutes: 20
+    timeout_in_minutes: 30
 
-  - name: 'Build Plugin - UE 4.26'
+  - name: 'Build Plugin - UE 4.27'
     agents:
-      queue: opensource-mac-unreal-4.26
+      queue: opensource-mac-unreal-4.27
     env:
-      UE_VERSION: "4.26"
+      UE_VERSION: "4.27"
     command: make package
-    timeout_in_minutes: 20
+    timeout_in_minutes: 30
+
+  - name: 'Build Plugin - UE 5 EA'
+    agents:
+      queue: opensource-mac-unreal-5
+    env:
+      UE_VERSION: "5.0EA"
+    command: make package
+    timeout_in_minutes: 30
