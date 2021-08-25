@@ -1,10 +1,10 @@
 steps:
 
-  - name: 'Build iOS test fixture - UE 4.26'
+  - name: 'Build iOS test fixture - UE 4.27'
     agents:
-      queue: opensource-mac-unreal-4.26
+      queue: opensource-mac-unreal-4.27
     env:
-      UE_VERSION: "4.26"
+      UE_VERSION: "4.27"
     plugins:
       artifacts#v1.2.0:
         upload:
