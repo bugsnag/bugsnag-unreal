@@ -1,5 +1,17 @@
 steps:
 
+  - name: 'Build Android test fixture - UE 4.27'
+    agents:
+      queue: opensource-mac-unreal-4.27
+    env:
+      UE_VERSION: "4.27"
+    plugins:
+      artifacts#v1.2.0:
+        upload:
+          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+    command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+    timeout_in_minutes: 40
+
   - name: 'Build iOS test fixture - UE 4.27'
     agents:
       queue: opensource-mac-unreal-4.27
