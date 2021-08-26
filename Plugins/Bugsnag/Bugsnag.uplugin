@@ -23,6 +23,11 @@
 				"IOS",
 				"Mac"
 			]
+		},
+		{
+			"Name" : "BugsnagEditor",
+			"Type" : "Editor",
+			"LoadingPhase" : "PostEngineInit"
 		}
 	]
 }
