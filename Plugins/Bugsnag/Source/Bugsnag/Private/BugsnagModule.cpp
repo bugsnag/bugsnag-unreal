@@ -1,4 +1,5 @@
 #include "BugsnagModule.h"
+#include "BugsnagSettings.h"
 #include "Modules/ModuleManager.h"
 
 // TODO: Remove this PLATFORM_APPLE section
@@ -11,7 +12,11 @@ void FBugsnagModule::StartupModule()
 {
 // TODO: Remove this PLATFORM_APPLE section
 #if PLATFORM_APPLE
-	[Bugsnag startWithApiKey:@"NotAnApiKey"];
+	const UBugsnagSettings* Settings = GetDefault<UBugsnagSettings>();
+	if (Settings->ApiKey.Len())
+	{
+		[Bugsnag startWithApiKey:@(TCHAR_TO_UTF8(*Settings->ApiKey))];
+	}
 #endif
 }
 

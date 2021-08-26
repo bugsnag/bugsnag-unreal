@@ -9,7 +9,7 @@ UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
 UPROJECT=$(PWD)/BugsnagExample.uproject
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 
-.PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local format package test
+.PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local editor format package test
 
 all: package
 
@@ -18,10 +18,14 @@ clean:
 	git clean -dfx Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
 	rm -rf Build deps
 
-# TODO: Prevent this from touching files that need no changes, to avoid unnecessary recompiling
+# Convenience target that ensures editor modules are up to date and opens the example project in Unreal Editor.
+editor: Binaries/Mac/UE4Editor-BugsnagExample.dylib
+	"$(UE_EDITOR)" "$(UPROJECT)"
+
 format:
 	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/mobile/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
 
+# If this target isn't built beforehand, the Editor will show the "Missing BugsnagExample Modules" prompt
 Binaries/Mac/UE4Editor-BugsnagExample.dylib: BugsnagCocoa
 	"$(UE_BUILD)" BugsnagExample Mac Development -TargetType=Editor "$(UPROJECT)"
 
