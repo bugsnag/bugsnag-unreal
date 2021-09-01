@@ -74,3 +74,6 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 .DS_Store
+
+# Bugsnag specific
+Plugins/Bugsnag/*
