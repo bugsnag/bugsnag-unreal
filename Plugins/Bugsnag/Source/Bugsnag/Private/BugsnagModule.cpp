@@ -1,5 +1,5 @@
 #include "BugsnagModule.h"
-#include "BugsnagSettings.h"
+#include "BugsnagConfiguration.h"
 #include "Modules/ModuleManager.h"
 
 // TODO: Remove this PLATFORM_APPLE section
@@ -12,10 +12,10 @@ void FBugsnagModule::StartupModule()
 {
 // TODO: Remove this PLATFORM_APPLE section
 #if PLATFORM_APPLE
-	const UBugsnagSettings* Settings = GetDefault<UBugsnagSettings>();
-	if (Settings->ApiKey.Len())
+	FBugsnagConfiguration* Configuration = FBugsnagConfiguration::Load();
+	if (Configuration && !Configuration->GetApiKey().IsEmpty())
 	{
-		[Bugsnag startWithApiKey:@(TCHAR_TO_UTF8(*Settings->ApiKey))];
+		[Bugsnag startWithApiKey:@(TCHAR_TO_UTF8(*Configuration->GetApiKey()))];
 	}
 #endif
 }

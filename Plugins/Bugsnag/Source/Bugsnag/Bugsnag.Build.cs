@@ -13,7 +13,8 @@ public class Bugsnag : ModuleRules
 			{
 				"Core",
 				"CoreUObject",
-				"Engine"
+				"Engine",
+				"Json"
 			}
 			);
 
