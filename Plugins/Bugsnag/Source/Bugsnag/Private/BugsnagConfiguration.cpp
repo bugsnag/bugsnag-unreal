@@ -36,7 +36,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	SetMaxBreadcrumbs(Settings.MaxBreadcrumbs);
 }
 
-FBugsnagConfiguration* FBugsnagConfiguration::Load()
+TSharedPtr<FBugsnagConfiguration> FBugsnagConfiguration::Load()
 {
 	const UBugsnagSettings* Settings;
 	verify((Settings = GetDefault<UBugsnagSettings>()));
@@ -44,7 +44,7 @@ FBugsnagConfiguration* FBugsnagConfiguration::Load()
 	{
 		return nullptr;
 	}
-	return new FBugsnagConfiguration(*Settings);
+	return TSharedPtr<FBugsnagConfiguration>(new FBugsnagConfiguration(*Settings));
 }
 
 static bool IsValidApiKey(const FString& ApiKey)

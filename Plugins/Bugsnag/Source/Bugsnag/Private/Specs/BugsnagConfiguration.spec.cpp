@@ -33,7 +33,7 @@ void FBugsnagConfigurationSpec::Define()
 		{
 			It("Should be loaded from DefaultEngine.ini", [this]()
 				{
-					FBugsnagConfiguration* Configuration = FBugsnagConfiguration::Load();
+					TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
 					TEST_EQUAL(Configuration->GetApiKey(), TEXT("YOUR-API-KEY"));
 				});
 

@@ -16,7 +16,7 @@ class BUGSNAG_API FBugsnagConfiguration
 public:
 	FBugsnagConfiguration(const FString& ApiKey);
 
-	static FBugsnagConfiguration* Load();
+	static TSharedPtr<FBugsnagConfiguration> Load();
 
 	// API Key
 
