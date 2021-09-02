@@ -14,8 +14,16 @@
 #define TEST_EQUAL(expression, expected) \
 	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, expected)
 
-#define EPIC_TEST_BOOLEAN_(text, expression, expected) \
-	TestEqual(text, expression, expected);
+#define EPIC_TEST_BOOLEAN_(text, expression, expected)                                                              \
+	if (!TestEqual(text, expression, expected))                                                                     \
+	{                                                                                                               \
+		const FStringFormatNamedArguments Args = {                                                                  \
+			{TEXT("Expression"), expression},                                                                       \
+			{TEXT("Expected"), TEXT(#expected)},                                                                    \
+		};                                                                                                          \
+		fprintf(stderr, "FAILED: %s\n", TCHAR_TO_ANSI(*FString::Format(TEXT("{Expression} != {Expected}"), Args))); \
+		fprintf(stderr, "    %s:%d\n", __FILE__, __LINE__);                                                         \
+	}
 
 //
 // This is an example of an Automation Spec, a newer type of test that follows BDD methodology.
