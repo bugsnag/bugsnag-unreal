@@ -64,13 +64,13 @@ public:
 
 	const TArray<FString>& GetEnabledReleaseStages() const { return EnabledReleaseStages; }
 
-	void SetEnabledReleaseStages(TArray<FString>& Value) { EnabledReleaseStages = Value; }
+	void SetEnabledReleaseStages(const TArray<FString>& Value) { EnabledReleaseStages = Value; }
 
 	// Redacted Keys
 
 	const TArray<FString>& GetRedactedKeys() const { return RedactedKeys; }
 
-	void SetRedactedKeys(TArray<FString>& Value) { RedactedKeys = Value; }
+	void SetRedactedKeys(const TArray<FString>& Value) { RedactedKeys = Value; }
 
 	// App Hang Threshold
 
