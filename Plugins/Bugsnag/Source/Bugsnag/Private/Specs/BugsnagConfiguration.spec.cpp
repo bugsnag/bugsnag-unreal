@@ -131,14 +131,14 @@ void FBugsnagConfigurationSpec::Define()
 		{
 			It("Should be 50 by default", [this]()
 				{
-					TEST_EQUAL(FBugsnagConfiguration(ValidApiKey).GetMaxBreadcrumbs(), 50);
+					TEST_EQUAL((int32)FBugsnagConfiguration(ValidApiKey).GetMaxBreadcrumbs(), 50);
 				});
 
 			It("Should accept a value of 100", [this]()
 				{
 					FBugsnagConfiguration Configuration(ValidApiKey);
 					Configuration.SetMaxBreadcrumbs(100);
-					TEST_EQUAL(Configuration.GetMaxBreadcrumbs(), 100);
+					TEST_EQUAL((int32)Configuration.GetMaxBreadcrumbs(), 100);
 				});
 
 			It("Should reject a value of 101", [this]()
@@ -147,7 +147,7 @@ void FBugsnagConfigurationSpec::Define()
 						EAutomationExpectedErrorFlags::Exact, 1);
 					FBugsnagConfiguration Configuration(ValidApiKey);
 					Configuration.SetMaxBreadcrumbs(101);
-					TEST_EQUAL(Configuration.GetMaxBreadcrumbs(), 50);
+					TEST_EQUAL((int32)Configuration.GetMaxBreadcrumbs(), 50);
 				});
 		});
 

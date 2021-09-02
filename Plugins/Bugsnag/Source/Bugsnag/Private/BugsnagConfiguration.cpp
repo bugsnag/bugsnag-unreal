@@ -38,8 +38,8 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 
 FBugsnagConfiguration* FBugsnagConfiguration::Load()
 {
-	const UBugsnagSettings* Settings;
-	verify((Settings = GetDefault<UBugsnagSettings>()));
+	const UBugsnagSettings* Settings = GetDefault<UBugsnagSettings>();
+	check(Settings != nullptr);
 	if (!Settings)
 	{
 		return nullptr;
