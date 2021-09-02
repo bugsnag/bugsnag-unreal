@@ -12,6 +12,10 @@
 	],
 	"Plugins": [
 		{
+			"Name": "Bugsnag",
+			"Enabled": true
+		},
+		{
 			"Name": "OculusVR",
 			"Enabled": false,
 			"SupportedTargetPlatforms": [

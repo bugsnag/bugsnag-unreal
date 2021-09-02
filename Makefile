@@ -16,7 +16,7 @@ all: package
 clean:
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
 	git clean -dfx Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
-	rm -rf Build deps
+	rm -rf Build deps features/fixtures/mobile/Plugins/Bugsnag
 
 # Convenience target that ensures editor modules are up to date and opens the example project in Unreal Editor.
 editor: Binaries/Mac/UE4Editor-BugsnagExample.dylib
@@ -53,6 +53,7 @@ features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa: features/fix
 
 # UE4Editor-TestFixture.dylib is required for BuildCookRun to succeed
 features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib: BugsnagCocoa
+	rsync --exclude 'Binaries' --exclude 'Intermediate' --delete --recursive --times Plugins/Bugsnag features/fixtures/mobile/Plugins
 	"$(UE_BUILD)" TestFixture Mac Development -TargetType=Editor "$(TESTPROJ)"
 
 test: Binaries/Mac/UE4Editor-BugsnagExample.dylib
