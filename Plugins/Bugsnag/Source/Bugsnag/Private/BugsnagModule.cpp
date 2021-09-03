@@ -12,8 +12,8 @@ void FBugsnagModule::StartupModule()
 {
 // TODO: Remove this PLATFORM_APPLE section
 #if PLATFORM_APPLE
-	FBugsnagConfiguration* Configuration = FBugsnagConfiguration::Load();
-	if (Configuration && !Configuration->GetApiKey().IsEmpty())
+	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
+	if (Configuration.IsValid() && !Configuration->GetApiKey().IsEmpty())
 	{
 		[Bugsnag startWithApiKey:@(TCHAR_TO_UTF8(*Configuration->GetApiKey()))];
 	}
