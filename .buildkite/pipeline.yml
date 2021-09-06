@@ -47,3 +47,11 @@ steps:
       UE_VERSION: "5.0EA"
     command: make package
     timeout_in_minutes: 30
+
+  - name: ':windows: Build Example - UE 4.27'
+    agents:
+      queue: opensource-windows-unreal-4.27
+    env:
+      UE_VERSION: "4.27"
+    command: build.bat
+    timeout_in_minutes: 30
