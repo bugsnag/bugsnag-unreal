@@ -1,4 +1,4 @@
-#import "BugsnagFunctionLibrary.h"
+#include "BugsnagFunctionLibrary.h"
 
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
