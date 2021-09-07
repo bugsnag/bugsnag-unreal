@@ -78,7 +78,7 @@ public:
 	static void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata,
 		EBugsnagBreadcrumbType Type = EBugsnagBreadcrumbType::Manual);
 
-	static TArray<const TSharedPtr<const class IBugsnagBreadcrumb>> GetBreadcrumbs();
+	static TArray<TSharedPtr<const class IBugsnagBreadcrumb>> GetBreadcrumbs();
 
 	// Crashes On Launch
 
