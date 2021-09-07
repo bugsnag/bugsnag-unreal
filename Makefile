@@ -8,6 +8,7 @@ UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
+TESTSCOPE?=Bugsnag
 
 .PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local editor format package test
 
@@ -57,7 +58,7 @@ features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib: BugsnagCocoa
 	"$(UE_BUILD)" TestFixture Mac Development -TargetType=Editor "$(TESTPROJ)"
 
 test: Binaries/Mac/UE4Editor-BugsnagExample.dylib
-	"$(UE_EDITOR)" "$(UPROJECT)" -ExecCmds="Automation RunTests Bugsnag; Quit" -NoSplash -NullRHI -ReportOutputPath="$(PWD)/Saved/Automation/Reports"
+	"$(UE_EDITOR)" "$(UPROJECT)" -ExecCmds="Automation RunTests $(TESTSCOPE); Quit" -NoSplash -NullRHI -ReportOutputPath="$(PWD)/Saved/Automation/Reports"
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 package: BugsnagCocoa
