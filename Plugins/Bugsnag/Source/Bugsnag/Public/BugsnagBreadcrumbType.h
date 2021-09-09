@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CoreUObject.h"
+#include "UObject/ObjectMacros.h"
 
 UENUM()
 enum class EBugsnagBreadcrumbType : uint8

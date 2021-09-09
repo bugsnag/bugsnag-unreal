@@ -63,13 +63,13 @@ void FBugsnagConfigurationSpec::Define()
 							return false;
 						});
 
-					Configuration.AddOnError([](class IBugsnagError* Error)
+					Configuration.AddOnError([](class IBugsnagEvent* Error)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return true;
 						});
 
-					Configuration.AddOnError([](class IBugsnagError* Error)
+					Configuration.AddOnError([](class IBugsnagEvent* Error)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return false;

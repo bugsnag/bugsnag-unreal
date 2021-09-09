@@ -8,6 +8,9 @@ public class BugsnagExampleTarget : TargetRules
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
+		bEnforceIWYU = true;
+		bUseUnityBuild = false;
+
 		ExtraModuleNames.AddRange( new string[] { "BugsnagExample" } );
 	}
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Json.h"
+#include "Dom/JsonObject.h"
 
 #include "BugsnagBreadcrumbType.h"
 #include "BugsnagConfiguration.h"

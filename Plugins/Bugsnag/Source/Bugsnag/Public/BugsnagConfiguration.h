@@ -5,10 +5,10 @@
 #include "BugsnagUser.h"
 #include "LogBugsnag.h"
 
-#include "Json.h"
+#include "Dom/JsonObject.h"
 
 typedef TFunction<bool(class IBugsnagBreadcrumb*)> FBugsnagOnBreadcrumbCallback;
-typedef TFunction<bool(class IBugsnagError*)> FBugsnagOnErrorCallback;
+typedef TFunction<bool(class IBugsnagEvent*)> FBugsnagOnErrorCallback;
 typedef TFunction<bool(class IBugsnagSession*)> FBugsnagOnSessionCallback;
 
 class BUGSNAG_API FBugsnagConfiguration
@@ -40,13 +40,13 @@ public:
 
 	const FString& GetContext() const { return Context; }
 
-	void SetContext(const FString& Context);
+	void SetContext(const FString& Value) { Context = Value; }
 
 	// DiscardClasses
 
 	const TArray<FString>& GetDiscardClasses() const { return DiscardClasses; }
 
-	void SetDiscardClasses(TArray<FString>& Value) { DiscardClasses = Value; }
+	void SetDiscardClasses(const TArray<FString>& Value) { DiscardClasses = Value; }
 
 	// Enabled Breadcrumb Types
 
@@ -203,12 +203,28 @@ public:
 
 	void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback) { OnBreadcrumbCallbacks.Add(Callback); }
 
+	// Android only, and only for handled errors.
 	void AddOnError(const FBugsnagOnErrorCallback& Callback) { OnErrorCallbacks.Add(Callback); }
+
+	// iOS only, may be called long after the crash occurred.
+	void AddOnSendError(const FBugsnagOnErrorCallback& Callback) { OnSendErrorCallbacks.Add(Callback); }
 
 	void AddOnSession(const FBugsnagOnSessionCallback& Callback) { OnSessionCallbacks.Add(Callback); }
 
 private:
 	FBugsnagConfiguration(const UBugsnagSettings& Settings);
+
+	const TArray<FBugsnagOnBreadcrumbCallback>& GetOnBreadcrumbCallbacks() const { return OnBreadcrumbCallbacks; }
+
+	const TArray<FBugsnagOnErrorCallback>& GetOnErrorCallbacks() const { return OnErrorCallbacks; }
+
+	const TArray<FBugsnagOnErrorCallback>& GetOnSendErrorCallbacks() const { return OnSendErrorCallbacks; }
+
+	const TArray<FBugsnagOnSessionCallback>& GetOnSessionCallbacks() const { return OnSessionCallbacks; }
+
+	const TMap<FString, TSharedPtr<FJsonObject>>& GetMetadataValues() const { return MetadataValues; }
+
+	friend class FApplePlatformConfiguration;
 
 	FString ApiKey;
 	bool bAutoDetectErrors = true;
@@ -237,5 +253,6 @@ private:
 	TMap<FString, TSharedPtr<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnErrorCallbacks;
+	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
 	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
 };

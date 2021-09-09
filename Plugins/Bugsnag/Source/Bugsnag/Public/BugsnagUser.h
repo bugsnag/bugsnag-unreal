@@ -25,6 +25,11 @@ public:
 	const FString& GetEmail() const { return Email; }
 	const FString& GetName() const { return Name; }
 
+	bool IsEmpty() const
+	{
+		return Id.IsEmpty() && Email.IsEmpty() && Name.IsEmpty();
+	}
+
 private:
 	FString Id;
 	FString Email;
