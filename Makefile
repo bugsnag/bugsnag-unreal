@@ -5,10 +5,14 @@ UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
 UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
+UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
+				  -clientconfig=Shipping -clean -compressed -pak -prereqs \
+				  -nodebuginfo -build -utf8output -cookonthefly
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 TESTSCOPE?=Bugsnag
+PLATFORM?=Android
 
 .PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local editor format package test
 
@@ -47,10 +51,10 @@ e2e_ios_local: features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ip
 	bundle exec maze-runner --app=$< --farm=local --os=ios --os-version=14 --apple-team-id=372ZUL2ZB7 --udid="$(shell idevice_id -l)"
 
 features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk: features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib
-	"$(UE_RUNUAT)" BuildCookRun -nocompileeditor -nop4 -project="$(TESTPROJ)" -cook -stage -package -clientconfig=Shipping -clean -compressed -pak -prereqs -nodebuginfo -targetplatform=Android -build -utf8output
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=Android
 
 features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa: features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib
-	"$(UE_RUNUAT)" BuildCookRun -nocompileeditor -nop4 -project="$(TESTPROJ)" -cook -stage -package -clientconfig=Shipping -clean -compressed -pak -prereqs -nodebuginfo -targetplatform=IOS -build -utf8output
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=IOS
 
 # UE4Editor-TestFixture.dylib is required for BuildCookRun to succeed
 features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib: BugsnagCocoa
@@ -83,3 +87,16 @@ Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a: d
 	cd $< && xcodebuild -scheme BugsnagStatic -derivedDataPath DerivedData -configuration Release -quiet build SDKROOT=macosx MACOSX_DEPLOYMENT_TARGET=10.11
 	mkdir -p $(@D)
 	cp $</DerivedData/Build/Products/Release/libBugsnagStatic.a $@
+
+.PHONY: build_example_android
+build_example_android:
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Android
+
+.PHONY: install_example_android
+install_example_android: build_example_android
+	adb install Binaries/Android/BugsnagExample-Android-Shipping-arm64.apk
+
+.PHONY: build
+ifeq ($(PLATFORM),Android)
+build: build_example_android
+endif
