@@ -1,11 +1,40 @@
 #include "TestFixtureBlueprintFunctionLibrary.h"
 
-static void Evaluate(const FString& String)
+#include "Scenarios/Scenario.h"
+
+static void ClearPersistentData()
 {
-	if (String == "Crash")
+	UE_LOG(LogTemp, Display, TEXT("Clearing peristent data"));
+#if PLATFORM_ANDROID
+	// TODO
+#elif PLATFORM_APPLE
+	[NSUserDefaults.standardUserDefaults removePersistentDomainForName:NSBundle.mainBundle.bundleIdentifier];
+	NSString* AppSupportDir = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;
+	NSString* RootDir = [AppSupportDir stringByAppendingPathComponent:@"com.bugsnag.Bugsnag"];
+	NSError* Error = nil;
+	if (![NSFileManager.defaultManager removeItemAtPath:RootDir error:&Error])
 	{
-		volatile int* ptr = nullptr;
-		*ptr = 42;
+		if (![Error.domain isEqual:NSCocoaErrorDomain] && Error.code != NSFileNoSuchFileError)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%@"), UTF8_TO_TCHAR(Error.description.UTF8String));
+		}
+	}
+#endif
+}
+
+static void Evaluate(const FString& Command)
+{
+	UE_LOG(LogTemp, Display, TEXT("Evaluating \"%s\""), *Command);
+
+	if (Command.StartsWith(TEXT("Run ")))
+	{
+		ClearPersistentData();
+		Scenario::Run(Command.RightChop(4));
+	}
+
+	if (Command.StartsWith(TEXT("Start ")))
+	{
+		Scenario::Start(Command.RightChop(6));
 	}
 }
 
@@ -16,15 +45,10 @@ void UTestFixtureBlueprintFunctionLibrary::OnTextChanged(const FText& Text)
 {
 	FString String = Text.ToString();
 
-	UE_LOG(LogTemp, Display,
-		TEXT("UTestFixtureBlueprintFunctionLibrary::OnTextChanged() %s"),
-		*String);
+	UE_LOG(LogTemp, Display, TEXT("UTestFixtureBlueprintFunctionLibrary::OnTextChanged() %s"), *String);
 
-	const FString EndOfInput(TEXT("$"));
-
-	if (String.EndsWith(EndOfInput))
+	if (String.EndsWith(TEXT("$")))
 	{
-		String.RemoveFromEnd(EndOfInput);
-		Evaluate(String);
+		Evaluate(String.LeftChop(1));
 	}
 }
