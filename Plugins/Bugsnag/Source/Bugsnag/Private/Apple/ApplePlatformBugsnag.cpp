@@ -1,4 +1,5 @@
 #include "ApplePlatformBugsnag.h"
+#include "ApplePlatformConfiguration.h"
 
 #import <Bugsnag/Bugsnag.h>
 
@@ -6,6 +7,7 @@ DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
 void FApplePlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Configuration)
 {
+	[Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 }
 
 void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message)

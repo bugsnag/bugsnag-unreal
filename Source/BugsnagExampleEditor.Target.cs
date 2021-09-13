@@ -8,6 +8,9 @@ public class BugsnagExampleEditorTarget : TargetRules
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
+		bEnforceIWYU = true;
+		bUseUnityBuild = false;
+
 		ExtraModuleNames.AddRange( new string[] { "BugsnagExample" } );
 	}
 }
