@@ -12,6 +12,18 @@
 
     <androidManifestUpdates>
         <addPermission android:name="android.permission.INTERNET" />
+        <addElements tag="application">
+            <meta-data android:name="com.bugsnag.android.API_KEY"/>
+        </addElements>
+        <loopElements tag="meta-data">
+            <setStringFromAttribute result="metadataName" tag="$" name="android:name"/>
+            <setBoolIsEqual result="bMatchingTag" arg1="$S(metadataName)" arg2="com.bugsnag.android.API_KEY"/>
+            <if condition="bMatchingTag">
+                <true>
+                    <addAttribute tag="$" name="android:value" value="$S(sAPIKey)"/>
+                </true>
+            </if>
+        </loopElements>
     </androidManifestUpdates>
 
     <!--  optional base build.gradle buildscript additions -->
