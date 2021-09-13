@@ -2,10 +2,24 @@
 
 #include <jni.h>
 
+#include "Android/AndroidJavaEnv.h"
+#include "AndroidPlatformConfiguration.h"
+#include "JNIUtilities.h"
+
 DEFINE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag);
 
-void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Configuration)
+static JNIReferenceCache JNICache;
+
+void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Config)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if ((JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache)))
+	{
+		jobject jActivity = AndroidJavaEnv::GetGameActivityThis();
+		jobject jConfig = FAndroidPlatformConfiguration::Parse(Env, &JNICache, Config);
+		jobject jClient = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jActivity, jConfig);
+		JNICache.initialized = !FAndroidPlatformJNI::CheckAndClearException(Env) && jClient != NULL;
+	}
 }
 
 void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message)
