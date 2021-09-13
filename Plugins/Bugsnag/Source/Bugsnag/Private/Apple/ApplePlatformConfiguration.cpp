@@ -1,5 +1,7 @@
 #include "ApplePlatformConfiguration.h"
 
+#include "Version.h"
+
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
 #include "Serialization/LargeMemoryWriter.h"
@@ -9,6 +11,8 @@
 #import <Bugsnag/BugsnagErrorTypes.h>
 
 #import <BugsnagPrivate/BSGJSONSerialization.h>
+#import <BugsnagPrivate/BugsnagConfiguration+Private.h>
+#import <BugsnagPrivate/BugsnagNotifier.h>
 
 static NSString* _Nullable NSStringFromFString(const FString& String, bool ReturnNilForEmpty = true)
 {
@@ -189,6 +193,12 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 			return Callback((class IBugsnagSession*)nullptr);
 		}];
 	}
+
+	CocoaConfig.notifier =
+		[[BugsnagNotifier alloc] initWithName:@BUGSNAG_UNREAL_NAME
+									  version:@BUGSNAG_UNREAL_VERSION_STRING
+										  url:@BUGSNAG_UNREAL_VERSION_STRING
+								 dependencies:@[[[BugsnagNotifier alloc] init]]];
 
 	return CocoaConfig;
 }

@@ -1,4 +1,4 @@
-BUGSNAG_COCOA_VERSION?=v6.12.0
+BUGSNAG_COCOA_VERSION?=de535fc6cb7b357db1fc1fcfcbb4d5cf134e207e
 
 UE_VERSION?=4.26
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
@@ -10,9 +10,20 @@ UPROJECT=$(PWD)/BugsnagExample.uproject
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 TESTSCOPE?=Bugsnag
 
-.PHONY: BugsnagCocoa clean e2e_android e2e_android_local e2e_ios e2e_ios_local editor format package test
+.PHONY: BugsnagCocoa bump clean e2e_android e2e_android_local e2e_ios e2e_ios_local editor format package test
 
-all: package
+all: Binaries/Mac/UE4Editor-BugsnagExample.dylib
+
+# Bump the version numbers to $VERSION
+bump:
+ifeq ($(VERSION),)
+	$(error VERSION is not defined. Run with `make bump VERSION=number`)
+endif
+	echo Bumping the version number to $(VERSION)
+	echo $(VERSION) > VERSION
+	sed -i '' "s/\"VersionName\": .*,/\"VersionName\": \"$(VERSION)\",/" Plugins/Bugsnag/Bugsnag.uplugin
+	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Public/Version.h
+	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
 
 clean:
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
@@ -68,7 +79,7 @@ package: BugsnagCocoa
 BugsnagCocoa: Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a
 
 deps/bugsnag-cocoa:
-	git clone --depth 1 --quiet --branch $(BUGSNAG_COCOA_VERSION) https://github.com/bugsnag/bugsnag-cocoa $@
+	git init --quiet $@ && cd $@ && git remote add origin https://github.com/bugsnag/bugsnag-cocoa && git fetch --no-tags --depth=1 origin $(BUGSNAG_COCOA_VERSION) && git checkout --quiet -f $(BUGSNAG_COCOA_VERSION)
 
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include: deps/bugsnag-cocoa
 	cp -R $</Bugsnag/include $@
