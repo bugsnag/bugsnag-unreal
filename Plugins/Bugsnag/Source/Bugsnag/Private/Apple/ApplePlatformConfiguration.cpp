@@ -41,9 +41,13 @@ static id _Nullable NSObjectFromFJsonObject(const TSharedPtr<FJsonObject> JsonOb
 {
 	FLargeMemoryWriter Archive;
 	TSharedRef<TJsonWriter<char>> JsonWriter = TJsonWriterFactory<char>::Create(&Archive);
-	FJsonSerializer::Serialize(JsonObject.ToSharedRef(), JsonWriter);
-	NSData* Data = [NSData dataWithBytesNoCopy:Archive.GetData() length:Archive.TotalSize() freeWhenDone:NO];
-	return [BSGJSONSerialization JSONObjectWithData:Data options:0 error:Error];
+	if (FJsonSerializer::Serialize(JsonObject.ToSharedRef(), JsonWriter))
+	{
+		JsonWriter->Close();
+		NSData* Data = [NSData dataWithBytesNoCopy:Archive.GetData() length:Archive.TotalSize() freeWhenDone:NO];
+		return [BSGJSONSerialization JSONObjectWithData:Data options:0 error:Error];
+	}
+	return nil;
 }
 
 static BSGThreadSendPolicy GetThreadSendPolicy(EBugsnagSendThreadsPolicy Policy)
