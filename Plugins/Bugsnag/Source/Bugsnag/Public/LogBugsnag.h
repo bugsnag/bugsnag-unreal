@@ -2,4 +2,4 @@
 
 #include "Logging/LogMacros.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogBugsnag, All, All);
+BUGSNAG_API DECLARE_LOG_CATEGORY_EXTERN(LogBugsnag, All, All);

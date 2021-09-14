@@ -8,6 +8,9 @@ public class TestFixtureEditorTarget : TargetRules
 
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 
+		bEnforceIWYU = true;
+		bUseUnityBuild = false;
+
 		ExtraModuleNames.AddRange( new string[] { "TestFixture" } );
 	}
 }
