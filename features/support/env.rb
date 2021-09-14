@@ -1,3 +1,5 @@
+$api_key = "12312312312312312312312312312312"
+
 Before do |_scenario|
   case Maze.driver.capabilities['platformName']
   when 'Android'
