@@ -75,7 +75,7 @@ void FApplePlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TShare
 {
 }
 
-TArray<TSharedPtr<const class IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrumbs()
+TArray<TSharedPtr<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrumbs()
 {
 	return {};
 }

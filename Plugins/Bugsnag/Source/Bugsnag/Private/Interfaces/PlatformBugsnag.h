@@ -3,7 +3,6 @@
 #include "CoreMinimal.h"
 #include "Dom/JsonObject.h"
 
-#include "BugsnagBreadcrumbType.h"
 #include "BugsnagConfiguration.h"
 #include "BugsnagLastRunInfo.h"
 #include "BugsnagUser.h"
@@ -44,7 +43,7 @@ public:
 
 	virtual void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type) = 0;
 
-	virtual TArray<TSharedPtr<const class IBugsnagBreadcrumb>> GetBreadcrumbs() = 0;
+	virtual TArray<TSharedPtr<const IBugsnagBreadcrumb>> GetBreadcrumbs() = 0;
 
 	virtual void MarkLaunchCompleted() = 0;
 

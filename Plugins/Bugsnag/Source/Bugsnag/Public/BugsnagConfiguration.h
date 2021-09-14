@@ -1,15 +1,17 @@
 #pragma once
 
+#include "BugsnagBreadcrumb.h"
 #include "BugsnagEndpointConfiguration.h"
+#include "BugsnagSession.h"
 #include "BugsnagSettings.h"
 #include "BugsnagUser.h"
 #include "LogBugsnag.h"
 
 #include "Dom/JsonObject.h"
 
-typedef TFunction<bool(class IBugsnagBreadcrumb*)> FBugsnagOnBreadcrumbCallback;
+typedef TFunction<bool(IBugsnagBreadcrumb*)> FBugsnagOnBreadcrumbCallback;
 typedef TFunction<bool(class IBugsnagEvent*)> FBugsnagOnErrorCallback;
-typedef TFunction<bool(class IBugsnagSession*)> FBugsnagOnSessionCallback;
+typedef TFunction<bool(IBugsnagSession*)> FBugsnagOnSessionCallback;
 
 class BUGSNAG_API FBugsnagConfiguration
 {
