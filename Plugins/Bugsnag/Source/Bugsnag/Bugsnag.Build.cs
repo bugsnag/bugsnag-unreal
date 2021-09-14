@@ -23,5 +23,10 @@ public class Bugsnag : ModuleRules
 			// Statically link to BugsnagCocoa
 			PrivateDependencyModuleNames.Add("BugsnagCocoa");
 		}
+		else if (Target.Platform == UnrealTargetPlatform.Android)
+		{
+			string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
+			AdditionalPropertiesForReceipt.Add("AndroidPlugin", System.IO.Path.Combine(PluginPath, "Bugsnag_UPL.xml"));
+		}
 	}
 }

@@ -9,7 +9,13 @@
         "UENUM",
         "UFUNCTION",
         "UPROPERTY",
-        "USTRUCT"
+        "USTRUCT",
+        "jclass",
+        "jfield",
+        "jmethod",
+        "jobject",
+        "Lcom",
+        "Ljava"
     ],
     "ignorePaths": [
         "**/Intermediate/**",
