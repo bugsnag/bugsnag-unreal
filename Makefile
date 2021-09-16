@@ -7,7 +7,7 @@ UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
 UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
 UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 				  -clientconfig=Shipping -clean -compressed -pak -prereqs \
-				  -nodebuginfo -build -utf8output -cookonthefly
+				  -nodebuginfo -build -utf8output -cook
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
