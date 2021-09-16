@@ -1,5 +1,8 @@
 #include "ApplePlatformBugsnag.h"
+
+#include "AppleBugsnagUtils.h"
 #include "ApplePlatformConfiguration.h"
+#include "WrappedBreadcrumb.h"
 
 #import <Bugsnag/Bugsnag.h>
 
@@ -73,11 +76,19 @@ void FApplePlatformBugsnag::ClearMetadata(const FString& Section, const FString&
 
 void FApplePlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type)
 {
+	[Bugsnag leaveBreadcrumbWithMessage:NSStringFromFString(Message)
+							   metadata:NSDictionaryFromFJsonObject(Metadata)
+								andType:FWrappedBreadcrumb::ConvertType(Type)];
 }
 
 TArray<TSharedPtr<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrumbs()
 {
-	return {};
+	TArray<TSharedPtr<const IBugsnagBreadcrumb>> Result;
+	for (BugsnagBreadcrumb* Breadcrumb in Bugsnag.breadcrumbs)
+	{
+		Result.Add(FWrappedBreadcrumb::From(Breadcrumb));
+	}
+	return Result;
 }
 
 void FApplePlatformBugsnag::MarkLaunchCompleted()

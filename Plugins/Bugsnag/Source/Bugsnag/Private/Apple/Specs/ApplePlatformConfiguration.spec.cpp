@@ -286,6 +286,7 @@ void FApplePlatformConfigurationSpec::Define()
 					bool OnBreadcrumbCalled = false;
 					Configuration->AddOnBreadcrumb([&OnBreadcrumbCalled](IBugsnagBreadcrumb* Breadcrumb) mutable
 						{
+							Breadcrumb->SetMessage(TEXT("I'm going to ignore you"));
 							OnBreadcrumbCalled = true;
 							return false;
 						});

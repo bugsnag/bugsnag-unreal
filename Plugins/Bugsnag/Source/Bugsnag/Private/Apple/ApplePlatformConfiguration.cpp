@@ -2,6 +2,7 @@
 
 #include "AppleBugsnagUtils.h"
 #include "Version.h"
+#include "WrappedBreadcrumb.h"
 
 #import <Bugsnag/BugsnagConfiguration.h>
 #import <Bugsnag/BugsnagEndpointConfiguration.h>
@@ -154,8 +155,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	for (auto& Callback : Configuration->GetOnBreadcrumbCallbacks())
 	{
 		[CocoaConfig addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
-			// TODO: Convert BugsnagBreadcrumb to IBugsnagBreadcrumb
-			return Callback((IBugsnagBreadcrumb*)nullptr);
+			return Callback(FWrappedBreadcrumb::From(Breadcrumb).Get());
 		}];
 	}
 
