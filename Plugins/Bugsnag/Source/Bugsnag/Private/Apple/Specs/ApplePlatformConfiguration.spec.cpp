@@ -41,6 +41,27 @@ void FApplePlatformConfigurationSpec::Define()
 
 	Describe("Properties", [this]()
 		{
+			It("Defaults", [this]()
+				{
+					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+					BugsnagConfiguration* DefaultConfig = [[BugsnagConfiguration alloc] initWithApiKey:@(TCHAR_TO_UTF8(*ApiKey))];
+					TEST_TRUE(CocoaConfig.appHangThresholdMillis == DefaultConfig.appHangThresholdMillis);
+					TEST_TRUE(CocoaConfig.enabledBreadcrumbTypes == DefaultConfig.enabledBreadcrumbTypes);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.appHangs);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.cppExceptions);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.machExceptions);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.ooms);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.signals);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.thermalKills);
+					TEST_TRUE(CocoaConfig.enabledErrorTypes.unhandledExceptions);
+					TEST_TRUE([CocoaConfig.apiKey isEqual:DefaultConfig.apiKey]);
+					TEST_TRUE([CocoaConfig.appType isEqual:DefaultConfig.appType]);
+					TEST_TRUE([CocoaConfig.bundleVersion isEqual:DefaultConfig.bundleVersion]);
+					TEST_TRUE([CocoaConfig.redactedKeys isEqual:DefaultConfig.redactedKeys])
+					TEST_TRUE([CocoaConfig.releaseStage isEqual:DefaultConfig.releaseStage]);
+				});
+
 			It("ApiKey", [this]()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
