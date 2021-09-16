@@ -14,21 +14,13 @@
 #import <BugsnagPrivate/BugsnagConfiguration+Private.h>
 #import <BugsnagPrivate/BugsnagNotifier.h>
 
-static NSString* _Nullable NSStringFromFString(const FString& String, bool ReturnNilForEmpty = true)
+static NSString* _Nullable NSStringFromFString(const FString& String)
 {
-	if (ReturnNilForEmpty && String.IsEmpty())
-	{
-		return nil;
-	}
 	return @(TCHAR_TO_UTF8(*String));
 }
 
-static NSSet* _Nullable NSSetFromFStrings(const TArray<FString>& Array, bool ReturnNilForEmpty = true)
+static NSSet* _Nullable NSSetFromFStrings(const TArray<FString>& Array)
 {
-	if (ReturnNilForEmpty && Array.Num() < 1)
-	{
-		return nil;
-	}
 	NSMutableSet* Set = [NSMutableSet set];
 	for (const FString& Value : Array)
 	{
@@ -101,17 +93,29 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	CocoaConfig.autoTrackSessions = Configuration->GetAutoTrackSessions();
 
-	CocoaConfig.context = NSStringFromFString(Configuration->GetContext());
+	if (!Configuration->GetContext().IsEmpty())
+	{
+		CocoaConfig.context = NSStringFromFString(Configuration->GetContext());
+	}
 
-	CocoaConfig.discardClasses = NSSetFromFStrings(Configuration->GetDiscardClasses());
+	if (Configuration->GetDiscardClasses().Num())
+	{
+		CocoaConfig.discardClasses = NSSetFromFStrings(Configuration->GetDiscardClasses());
+	}
 
 	CocoaConfig.enabledBreadcrumbTypes = GetEnabledBreadcrumbTypes(Configuration->GetEnabledBreadcrumbTypes());
 
 	CocoaConfig.enabledErrorTypes = GetEnabledErrorTypes(Configuration->GetEnabledErrorTypes());
 
-	CocoaConfig.enabledReleaseStages = NSSetFromFStrings(Configuration->GetEnabledReleaseStages());
+	if (Configuration->GetEnabledReleaseStages().Num())
+	{
+		CocoaConfig.enabledReleaseStages = NSSetFromFStrings(Configuration->GetEnabledReleaseStages());
+	}
 
-	CocoaConfig.redactedKeys = NSSetFromFStrings(Configuration->GetRedactedKeys());
+	if (Configuration->GetRedactedKeys().Num())
+	{
+		CocoaConfig.redactedKeys = NSSetFromFStrings(Configuration->GetRedactedKeys());
+	}
 
 	if (Configuration->GetAppHangThresholdMillis() == FBugsnagConfiguration::AppHangThresholdFatalOnly)
 	{
@@ -136,13 +140,25 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	CocoaConfig.persistUser = Configuration->GetPersistUser();
 
-	CocoaConfig.releaseStage = NSStringFromFString(Configuration->GetReleaseStage());
+	if (!Configuration->GetReleaseStage().IsEmpty())
+	{
+		CocoaConfig.releaseStage = NSStringFromFString(Configuration->GetReleaseStage());
+	}
 
-	CocoaConfig.appType = NSStringFromFString(Configuration->GetAppType());
+	if (!Configuration->GetAppType().IsEmpty())
+	{
+		CocoaConfig.appType = NSStringFromFString(Configuration->GetAppType());
+	}
 
-	CocoaConfig.appVersion = NSStringFromFString(Configuration->GetAppVersion());
+	if (!Configuration->GetAppVersion().IsEmpty())
+	{
+		CocoaConfig.appVersion = NSStringFromFString(Configuration->GetAppVersion());
+	}
 
-	CocoaConfig.bundleVersion = NSStringFromFString(Configuration->GetBundleVersion());
+	if (!Configuration->GetBundleVersion().IsEmpty())
+	{
+		CocoaConfig.bundleVersion = NSStringFromFString(Configuration->GetBundleVersion());
+	}
 
 	CocoaConfig.endpoints = [[BugsnagEndpointConfiguration alloc]
 		initWithNotify:NSStringFromFString(Configuration->GetEndpoints().GetNotify())
