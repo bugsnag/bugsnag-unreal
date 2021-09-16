@@ -4,7 +4,6 @@
 #include "Dom/JsonObject.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
 
-#include "BugsnagBreadcrumbType.h"
 #include "BugsnagConfiguration.h"
 #include "BugsnagLastRunInfo.h"
 #include "BugsnagUser.h"
@@ -78,7 +77,7 @@ public:
 	static void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata,
 		EBugsnagBreadcrumbType Type = EBugsnagBreadcrumbType::Manual);
 
-	static TArray<TSharedPtr<const class IBugsnagBreadcrumb>> GetBreadcrumbs();
+	static TArray<TSharedPtr<const IBugsnagBreadcrumb>> GetBreadcrumbs();
 
 	// Crashes On Launch
 

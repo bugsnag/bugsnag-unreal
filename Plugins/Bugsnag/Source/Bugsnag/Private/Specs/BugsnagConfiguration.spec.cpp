@@ -51,13 +51,13 @@ void FBugsnagConfigurationSpec::Define()
 				{
 					FBugsnagConfiguration Configuration(ValidApiKey);
 
-					Configuration.AddOnBreadcrumb([](class IBugsnagBreadcrumb* Breadcrumb)
+					Configuration.AddOnBreadcrumb([](IBugsnagBreadcrumb* Breadcrumb)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return true;
 						});
 
-					Configuration.AddOnBreadcrumb([](class IBugsnagBreadcrumb* Breadcrumb)
+					Configuration.AddOnBreadcrumb([](IBugsnagBreadcrumb* Breadcrumb)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return false;
@@ -75,13 +75,13 @@ void FBugsnagConfigurationSpec::Define()
 							return false;
 						});
 
-					Configuration.AddOnSession([](class IBugsnagSession* Session)
+					Configuration.AddOnSession([](IBugsnagSession* Session)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return true;
 						});
 
-					Configuration.AddOnSession([](class IBugsnagSession* Session)
+					Configuration.AddOnSession([](IBugsnagSession* Session)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return false;

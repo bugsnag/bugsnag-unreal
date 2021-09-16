@@ -190,7 +190,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	{
 		[CocoaConfig addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
 			// TODO: Convert BugsnagBreadcrumb to IBugsnagBreadcrumb
-			return Callback((class IBugsnagBreadcrumb*)nullptr);
+			return Callback((IBugsnagBreadcrumb*)nullptr);
 		}];
 	}
 
@@ -206,7 +206,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	{
 		[CocoaConfig addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
 			// TODO: Convert BugsnagSession to IBugsnagSession
-			return Callback((class IBugsnagSession*)nullptr);
+			return Callback((IBugsnagSession*)nullptr);
 		}];
 	}
 

@@ -284,7 +284,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
 
 					bool OnBreadcrumbCalled = false;
-					Configuration->AddOnBreadcrumb([&OnBreadcrumbCalled](class IBugsnagBreadcrumb* Breadcrumb) mutable
+					Configuration->AddOnBreadcrumb([&OnBreadcrumbCalled](IBugsnagBreadcrumb* Breadcrumb) mutable
 						{
 							OnBreadcrumbCalled = true;
 							return false;
@@ -298,7 +298,7 @@ void FApplePlatformConfigurationSpec::Define()
 						});
 
 					bool OnSessionCalled = false;
-					Configuration->AddOnSession([&OnSessionCalled](class IBugsnagSession* Session) mutable
+					Configuration->AddOnSession([&OnSessionCalled](IBugsnagSession* Session) mutable
 						{
 							OnSessionCalled = true;
 							return false;
