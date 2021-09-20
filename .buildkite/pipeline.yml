@@ -1,5 +1,11 @@
 steps:
 
+  ##############################################################################
+  #
+  # Buid E2E Fixtures
+  #
+  ##############################################################################
+
   - name: 'Build Android test fixture - UE 4.27'
     agents:
       queue: opensource-mac-unreal-4.27
@@ -11,6 +17,7 @@ steps:
           - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
     command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
     timeout_in_minutes: 40
+    key: android_fixture
 
   - name: 'Build iOS test fixture - UE 4.27'
     agents:
@@ -23,6 +30,13 @@ steps:
           - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     timeout_in_minutes: 40
+    key: ios_fixture
+
+  ##############################################################################
+  #
+  # Build Plugin
+  #
+  ##############################################################################
 
   - name: 'Build Plugin - UE 4.23'
     agents:
@@ -55,3 +69,60 @@ steps:
       UE_VERSION: "4.27"
     command: build.bat
     timeout_in_minutes: 30
+
+  ##############################################################################
+  #
+  # Run E2E tests
+  #
+  ##############################################################################
+
+  - label: 'E2E Tests - Android 10'
+    skip: 'Android E2E testing is currently broken'
+    depends_on:
+      - android_fixture
+    timeout_in_minutes: 30
+    agents:
+      queue: opensource
+    plugins:
+      artifacts#v1.3.0:
+        download: ["features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"]
+        upload: ["maze_output/failed/**/*"]
+      docker-compose#v3.3.0:
+        run: android-maze-runner
+        command:
+          - "--app=/app/build/TestFixture-Android-Shipping-arm64.apk"
+          - "--device=ANDROID_10_0"
+          - "--fail-fast"
+          - "--farm=bs"
+          - "--order=random"
+    concurrency: 9
+    concurrency_group: browserstack-app
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
+
+  - label: 'E2E Tests - iOS 12'
+    depends_on:
+      - ios_fixture
+    timeout_in_minutes: 30
+    agents:
+      queue: opensource
+    plugins:
+      artifacts#v1.3.0:
+        download: ["features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa"]
+        upload: ["maze_output/failed/**/*"]
+      docker-compose#v3.3.0:
+        run: cocoa-maze-runner
+        command:
+          - "--app=/app/build/TestFixture-IOS-Shipping.ipa"
+          - "--device=IOS_12"
+          - "--fail-fast"
+          - "--farm=bs"
+          - "--order=random"
+    concurrency: 9
+    concurrency_group: browserstack-app
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
