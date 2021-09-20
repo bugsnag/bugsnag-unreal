@@ -8,15 +8,29 @@
 
 #import <BugsnagPrivate/BSGJSONSerialization.h>
 
+// String conversion
+
 static inline FString FStringFromNSString(NSString* _Nullable String)
 {
 	return String ? FString(UTF8_TO_TCHAR(String.UTF8String)) : TEXT("");
 }
 
-static inline NSString* NSStringFromFString(const FString& String)
+static inline NSString* _Nonnull NSStringFromFString(const FString& String)
 {
 	return @(TCHAR_TO_UTF8(*String));
 }
+
+static inline TSharedPtr<FString> FStringPtrFromNSString(NSString* _Nullable String)
+{
+	return String ? MakeShareable(new FString(UTF8_TO_TCHAR(String.UTF8String))) : nullptr;
+}
+
+static inline NSString* _Nullable NSStringFromFStringPtr(const TSharedPtr<FString>& String)
+{
+	return String.IsValid() ? @(TCHAR_TO_UTF8(**String)) : nil;
+}
+
+// Date conversion
 
 static inline FDateTime FDateTimeFromNSDate(NSDate* Date)
 {
@@ -27,6 +41,8 @@ static inline NSDate* NSDateFromFDateTime(const FDateTime& DateTime)
 {
 	return [NSDate dateWithTimeIntervalSince1970:(DateTime.GetTicks() - FDateTime(1970, 1, 1).GetTicks()) / ETimespan::TicksPerSecond];
 }
+
+// JSON object conversion
 
 static inline TSharedPtr<FJsonObject> FJsonObjectFromNSDictionary(NSDictionary* Dictionary, NSError** Error = nil)
 {
@@ -59,6 +75,8 @@ static inline NSDictionary* _Nullable NSDictionaryFromFJsonObject(const TSharedP
 	}
 	return nil;
 }
+
+// Misc
 
 static inline NSSet* NSSetFromFStrings(const TArray<FString>& Array)
 {
