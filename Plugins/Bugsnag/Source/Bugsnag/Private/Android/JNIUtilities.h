@@ -2,23 +2,66 @@
 
 #include <jni.h>
 
+#include "BugsnagSettings.h"
+
 typedef struct
 {
 	bool loaded;
 	bool initialized;
 	jclass InterfaceClass;
+	jclass BreadcrumbTypeClass;
 	jclass BugsnagClass;
-	jclass TraceClass;
 	jclass ConfigClass;
+	jclass EndpointConfigurationClass;
+	jclass ErrorTypesClass;
+	jclass ThreadSendPolicyClass;
 	jclass SeverityClass;
+	jclass TraceClass;
+	jclass HashSetClass;
 
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
+	jmethodID ConfigAddMetadata;
 	jmethodID ConfigConstructor;
-	jmethodID ConfigSetApiKey;
+	jmethodID ConfigSetAppType;
+	jmethodID ConfigSetAppVersion;
+	jmethodID ConfigSetAutoDetectErrors;
+	jmethodID ConfigSetAutoTrackSessions;
+	jmethodID ConfigSetContext;
+	jmethodID ConfigSetDiscardClasses;
+	jmethodID ConfigSetEnabledBreadcrumbTypes;
+	jmethodID ConfigSetEnabledErrorTypes;
+	jmethodID ConfigSetEnabledReleaseStages;
+	jmethodID ConfigSetEndpoints;
+	jmethodID ConfigSetLaunchDurationMillis;
+	jmethodID ConfigSetMaxBreadcrumbs;
+	jmethodID ConfigSetMaxPersistedEvents;
+	jmethodID ConfigSetPersistUser;
+	jmethodID ConfigSetRedactedKeys;
+	jmethodID ConfigSetReleaseStage;
+	jmethodID ConfigSetSendLaunchCrashesSynchronously;
+	jmethodID ConfigSetSendThreads;
+	jmethodID ConfigSetUser;
+	jmethodID EndpointConfigurationConstructor;
+	jmethodID ErrorTypesConstructor;
+	jmethodID HashSetConstructor;
+	jmethodID HashSetAdd;
 	jmethodID TraceConstructor;
 
-	jfieldID SeverityField;
+	jfieldID SeverityFieldInfo;
+	jfieldID SeverityFieldWarning;
+	jfieldID SeverityFieldError;
+	jfieldID BreadcrumbTypeError;
+	jfieldID BreadcrumbTypeLog;
+	jfieldID BreadcrumbTypeManual;
+	jfieldID BreadcrumbTypeNavigation;
+	jfieldID BreadcrumbTypeProcess;
+	jfieldID BreadcrumbTypeRequest;
+	jfieldID BreadcrumbTypeState;
+	jfieldID BreadcrumbTypeUser;
+	jfieldID ThreadSendPolicyAlways;
+	jfieldID ThreadSendPolicyUnhandledOnly;
+	jfieldID ThreadSendPolicyNever;
 } JNIReferenceCache;
 
 class FAndroidPlatformJNI
@@ -44,6 +87,48 @@ public:
    * @return a Java String reference or NULL upon failure
    */
 	static jstring ParseFString(JNIEnv* Env, const FString& Text);
+
+	/**
+   * Convert a bool value into a Java boolean
+   *
+   * @param value The boolean value
+   *
+   * @return JNI true or false value
+   */
+	static jboolean ParseBoolean(bool value);
+
+	/**
+   * Convert an array of strings into a Java Set
+   *
+   * @param Env    A JNI environment for the current thread
+   * @param Cache  A reference to a cache object to populate. Must not be null.
+   * @param Values The array to convert
+   *
+   * @return A Java object reference or null on failure
+   */
+	static jobject ParseStringSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values);
+
+	/**
+   * Convert enabled breadcrumb types into Set<BreadcrumbType>
+   *
+   * @param Env   A JNI environment for the current thread
+   * @param Cache A reference to a cache object to populate. Must not be null.
+   * @param Value The enabled types to convert
+   *
+   * @return A Java object reference or null on failure
+   */
+	static jobject ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const FBugsnagEnabledBreadcrumbTypes Value);
+
+	/**
+   * Convert a value into a Java ThreadSendPolicy
+   *
+   * @param Env    A JNI environment for the current thread
+   * @param Cache  A reference to a cache object to populate. Must not be null.
+   * @param Policy The policy to convert
+   *
+   * @return A Java object reference or null on failure
+   */
+	static jobject ParseThreadSendPolicy(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSendThreadsPolicy Policy);
 
 	/**
    * Check if a Java runtime exception was thrown and if so, clear it.
