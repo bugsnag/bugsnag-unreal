@@ -3,6 +3,7 @@
 #include "AppleBugsnagUtils.h"
 #include "ApplePlatformConfiguration.h"
 #include "WrappedBreadcrumb.h"
+#include "WrappedSession.h"
 
 #import <Bugsnag/Bugsnag.h>
 
@@ -102,15 +103,17 @@ TSharedPtr<FBugsnagLastRunInfo> FApplePlatformBugsnag::GetLastRunInfo()
 
 void FApplePlatformBugsnag::StartSession()
 {
+	[Bugsnag startSession];
 }
 
 void FApplePlatformBugsnag::PauseSession()
 {
+	[Bugsnag pauseSession];
 }
 
 bool FApplePlatformBugsnag::ResumeSession()
 {
-	return false;
+	return [Bugsnag resumeSession];
 }
 
 void FApplePlatformBugsnag::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback)
@@ -123,4 +126,7 @@ void FApplePlatformBugsnag::AddOnError(const FBugsnagOnErrorCallback& Callback)
 
 void FApplePlatformBugsnag::AddOnSession(const FBugsnagOnSessionCallback& Callback)
 {
+	[Bugsnag addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
+		return Callback(FWrappedSession::From(Session).Get());
+	}];
 }

@@ -3,6 +3,7 @@
 #include "AppleBugsnagUtils.h"
 #include "Version.h"
 #include "WrappedBreadcrumb.h"
+#include "WrappedSession.h"
 
 #import <Bugsnag/BugsnagConfiguration.h>
 #import <Bugsnag/BugsnagEndpointConfiguration.h>
@@ -170,8 +171,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	for (auto& Callback : Configuration->GetOnSessionCallbacks())
 	{
 		[CocoaConfig addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
-			// TODO: Convert BugsnagSession to IBugsnagSession
-			return Callback((IBugsnagSession*)nullptr);
+			return Callback(FWrappedSession::From(Session).Get());
 		}];
 	}
 

@@ -1,32 +1,6 @@
-#include "Misc/AutomationTest.h"
+#include "AutomationTest.h"
 
 #include "Apple/AppleBugsnagUtils.h"
-
-//
-// Macros copied from Engine/Source/Developer/AutomationDriver/Private/Specs/AutomationDriver.spec.cpp
-//
-#define TEST_TRUE(expression) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, true)
-
-#define TEST_FALSE(expression) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, false)
-
-#define TEST_EQUAL(expression, expected) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, expected)
-
-#define EPIC_TEST_BOOLEAN_(text, expression, expected) \
-	TestEqual(text, expression, expected);
-
-#define TEST_EQUAL_OBJC(value, expected)                                    \
-	if (![value isEqual:expected])                                          \
-	{                                                                       \
-		AddError(                                                           \
-			FString::Printf(                                                \
-				TEXT("Expected " #value " to be %s, but it was %s"),        \
-				UTF8_TO_TCHAR(expected.description.UTF8String ?: "(null)"), \
-				UTF8_TO_TCHAR(value.description.UTF8String ?: "(null)")),   \
-			1);                                                             \
-	}
 
 BEGIN_DEFINE_SPEC(FAppleBugsnagUtilsSpec, "Bugsnag.FAppleBugsnagUtilsSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
@@ -50,6 +24,33 @@ void FAppleBugsnagUtilsSpec::Define()
 					TEST_EQUAL_OBJC(NSStringFromFString(TEXT("")), @"");
 					TEST_EQUAL_OBJC(NSStringFromFString(TEXT("Hello, Unreal Engine!")), @"Hello, Unreal Engine!");
 					TEST_EQUAL_OBJC(NSStringFromFString(FString()), @"");
+				});
+		});
+
+	Describe("FStringPtrFromNSString", [this]()
+		{
+			It("Converts from NSString to TSharedPtr<FString>", [this]()
+				{
+					TEST_EQUAL(*FStringPtrFromNSString(@""), TEXT(""));
+					TEST_EQUAL(*FStringPtrFromNSString(@"Hello, Unreal Engine!"), TEXT("Hello, Unreal Engine!"));
+				});
+			It("Returns nullptr for nil", [this]()
+				{
+					TEST_FALSE(FStringPtrFromNSString(nil).IsValid());
+				});
+		});
+
+	Describe("NSStringFromFStringPtr", [this]()
+		{
+			It("Converts from TSharedPtr<FString> to NSString", [this]()
+				{
+					TEST_EQUAL_OBJC(NSStringFromFStringPtr(MakeShareable(new FString(TEXT("")))), @"");
+					TEST_EQUAL_OBJC(NSStringFromFStringPtr(MakeShareable(new FString(TEXT("Hello, Unreal Engine!")))), @"Hello, Unreal Engine!");
+					TEST_EQUAL_OBJC(NSStringFromFStringPtr(MakeShareable(new FString(FString()))), @"");
+				});
+			It("Returns nil for nullptr", [this]()
+				{
+					TEST_TRUE(NSStringFromFStringPtr(nullptr) == nil);
 				});
 		});
 

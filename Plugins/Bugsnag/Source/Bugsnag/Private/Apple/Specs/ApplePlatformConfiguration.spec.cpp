@@ -1,4 +1,4 @@
-#include "Misc/AutomationTest.h"
+#include "AutomationTest.h"
 
 #include "Apple/ApplePlatformConfiguration.h"
 #include "BugsnagConfiguration.h"
@@ -11,21 +11,6 @@
 #import <Bugsnag/BugsnagUser.h>
 
 #import <BugsnagPrivate/BugsnagConfiguration+Private.h>
-
-//
-// Macros copied from Engine/Source/Developer/AutomationDriver/Private/Specs/AutomationDriver.spec.cpp
-//
-#define TEST_TRUE(expression) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, true)
-
-#define TEST_FALSE(expression) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, false)
-
-#define TEST_EQUAL(expression, expected) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, expected)
-
-#define EPIC_TEST_BOOLEAN_(text, expression, expected) \
-	TestEqual(text, expression, expected);
 
 //
 // This is an example of an Automation Spec, a newer type of test that follows BDD methodology.
@@ -301,6 +286,9 @@ void FApplePlatformConfigurationSpec::Define()
 					bool OnSessionCalled = false;
 					Configuration->AddOnSession([&OnSessionCalled](IBugsnagSession* Session) mutable
 						{
+							Session->SetUser(TEXT("user123"));
+							Session->GetApp()->SetReleaseStage(MakeShareable(new FString(TEXT("testing"))));
+							Session->GetDevice()->SetLocale(nullptr);
 							OnSessionCalled = true;
 							return false;
 						});
