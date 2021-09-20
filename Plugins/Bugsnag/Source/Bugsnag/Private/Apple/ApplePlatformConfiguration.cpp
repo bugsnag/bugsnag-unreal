@@ -1,10 +1,8 @@
 #include "ApplePlatformConfiguration.h"
 
+#include "AppleBugsnagUtils.h"
 #include "Version.h"
-
-#include "Serialization/JsonSerializer.h"
-#include "Serialization/JsonWriter.h"
-#include "Serialization/LargeMemoryWriter.h"
+#include "WrappedBreadcrumb.h"
 
 #import <Bugsnag/BugsnagConfiguration.h>
 #import <Bugsnag/BugsnagEndpointConfiguration.h>
@@ -13,38 +11,6 @@
 #import <BugsnagPrivate/BSGJSONSerialization.h>
 #import <BugsnagPrivate/BugsnagConfiguration+Private.h>
 #import <BugsnagPrivate/BugsnagNotifier.h>
-
-static NSString* _Nullable NSStringFromFString(const FString& String)
-{
-	return @(TCHAR_TO_UTF8(*String));
-}
-
-static NSSet* _Nullable NSSetFromFStrings(const TArray<FString>& Array)
-{
-	NSMutableSet* Set = [NSMutableSet set];
-	for (const FString& Value : Array)
-	{
-		NSString* Object = NSStringFromFString(Value);
-		if (Object)
-		{
-			[Set addObject:Object];
-		}
-	}
-	return Set;
-}
-
-static id _Nullable NSObjectFromFJsonObject(const TSharedPtr<FJsonObject> JsonObject, NSError** Error)
-{
-	FLargeMemoryWriter Archive;
-	TSharedRef<TJsonWriter<char>> JsonWriter = TJsonWriterFactory<char>::Create(&Archive);
-	if (FJsonSerializer::Serialize(JsonObject.ToSharedRef(), JsonWriter))
-	{
-		JsonWriter->Close();
-		NSData* Data = [NSData dataWithBytesNoCopy:Archive.GetData() length:Archive.TotalSize() freeWhenDone:NO];
-		return [BSGJSONSerialization JSONObjectWithData:Data options:0 error:Error];
-	}
-	return nil;
-}
 
 static BSGThreadSendPolicy GetThreadSendPolicy(EBugsnagSendThreadsPolicy Policy)
 {
@@ -174,7 +140,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	for (auto& Item : Configuration->GetMetadataValues())
 	{
 		NSError* Error = nil;
-		id Object = NSObjectFromFJsonObject(Item.Value, &Error);
+		id Object = NSDictionaryFromFJsonObject(Item.Value, &Error);
 		if (Object)
 		{
 			[CocoaConfig addMetadata:Object toSection:NSStringFromFString(Item.Key)];
@@ -189,8 +155,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	for (auto& Callback : Configuration->GetOnBreadcrumbCallbacks())
 	{
 		[CocoaConfig addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
-			// TODO: Convert BugsnagBreadcrumb to IBugsnagBreadcrumb
-			return Callback((IBugsnagBreadcrumb*)nullptr);
+			return Callback(FWrappedBreadcrumb::From(Breadcrumb).Get());
 		}];
 	}
 
