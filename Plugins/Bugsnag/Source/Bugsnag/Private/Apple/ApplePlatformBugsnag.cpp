@@ -5,7 +5,18 @@
 #include "WrappedBreadcrumb.h"
 #include "WrappedSession.h"
 
+#include "HAL/PlatformStackWalk.h"
+
 #import <Bugsnag/Bugsnag.h>
+#import <BugsnagPrivate/BSG_KSSystemInfo.h>
+#import <BugsnagPrivate/Bugsnag+Private.h>
+#import <BugsnagPrivate/BugsnagBreadcrumbs.h>
+#import <BugsnagPrivate/BugsnagClient+Private.h>
+#import <BugsnagPrivate/BugsnagError+Private.h>
+#import <BugsnagPrivate/BugsnagEvent+Private.h>
+#import <BugsnagPrivate/BugsnagHandledState.h>
+#import <BugsnagPrivate/BugsnagStackframe+Private.h>
+#import <BugsnagPrivate/BugsnagThread+Private.h>
 
 DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
@@ -14,21 +25,87 @@ void FApplePlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Confi
 	[Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 }
 
+FORCENOINLINE static TArray<uint64> CaptureStackTrace()
+{
+	static const int MAX_DEPTH = 100;
+	uint64 Buffer[MAX_DEPTH];
+	FMemory::Memzero(Buffer);
+
+	const uint32 Depth = FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
+
+	const uint32 IgnoreCount = 2; // CaptureStackTrace() + FApplePlatformBugsnag::Notify()
+
+	return TArray<uint64>(Buffer + IgnoreCount, Depth - IgnoreCount);
+}
+
+static void NotifyInternal(
+	const FString& ErrorClass,
+	const FString& Message,
+	const TArray<uint64>& StackTrace,
+	const FBugsnagOnErrorCallback& Callback = [](class IBugsnagEvent*)
+	{
+		return true;
+	})
+{
+	BugsnagClient* Client = Bugsnag.client;
+
+	NSDictionary* SystemInfo = [BSG_KSSystemInfo systemInfo];
+
+	NSMutableArray<NSNumber*>* Addresses = [NSMutableArray arrayWithCapacity:StackTrace.Num()];
+	for (uint64 Address : StackTrace)
+	{
+		[Addresses addObject:@(Address)];
+	}
+
+	BOOL RecordAllThreads = Client.configuration.sendThreads == BSGThreadSendPolicyAlways;
+	NSArray* Threads = RecordAllThreads ? [BugsnagThread allThreads:YES callStackReturnAddresses:Addresses] : @[];
+
+	BugsnagError* Error = [[BugsnagError alloc] initWithErrorClass:NSStringFromFString(ErrorClass)
+													  errorMessage:NSStringFromFString(Message)
+														 errorType:BSGErrorTypeCocoa
+														stacktrace:[BugsnagStackframe stackframesWithCallStackReturnAddresses:Addresses]];
+
+	BugsnagHandledState* HandledState = [BugsnagHandledState handledStateWithSeverityReason:HandledError
+																				   severity:BSGSeverityWarning
+																				  attrValue:nil];
+
+	BugsnagEvent* Event = [[BugsnagEvent alloc] initWithApp:[Client generateAppWithState:SystemInfo]
+													 device:[Client generateDeviceWithState:SystemInfo]
+											   handledState:HandledState
+													   user:Client.user
+												   metadata:[Client.metadata deepCopy]
+												breadcrumbs:Client.breadcrumbs.breadcrumbs ?: @[]
+													 errors:@[Error]
+													threads:Threads
+													session:nil /* set by -[BugsnagClient notifyInternal:block:] */];
+	Event.apiKey = Client.configuration.apiKey;
+	Event.context = Client.context;
+
+	[Client notifyInternal:Event block:^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
+		// TODO: Convert BugsnagEvent to IBugsnagEvent
+		return Callback((class IBugsnagEvent*)nullptr);
+	}];
+}
+
 void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message)
 {
+	NotifyInternal(ErrorClass, Message, CaptureStackTrace());
 }
 
 void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback)
 {
+	NotifyInternal(ErrorClass, Message, CaptureStackTrace(), Callback);
 }
 
 void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace)
 {
+	NotifyInternal(ErrorClass, Message, StackTrace);
 }
 
 void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
 {
+	NotifyInternal(ErrorClass, Message, StackTrace, Callback);
 }
 
 const FString FApplePlatformBugsnag::GetContext()
