@@ -1,16 +1,134 @@
 #include "AndroidPlatformConfiguration.h"
 #include "JNIUtilities.h"
 
+// Quick exit when a call which should have returned something does not
+#define ReturnNullOnFail(prop) \
+	if (!prop)                 \
+	{                          \
+		return nullptr;        \
+	}
+
+// Quick exit when a JNI call fails
+#define ReturnNullOnException(env)                        \
+	if (FAndroidPlatformJNI::CheckAndClearException(env)) \
+	{                                                     \
+		return nullptr;                                   \
+	}
+
+// Call a void JNI method, sending the arguments exactly as specified. Clears
+// any exceptions if thrown, then returning null.
+#define jniCallWithObjects(env, obj, method, ...)    \
+	(*env).CallVoidMethod(obj, method, __VA_ARGS__); \
+	ReturnNullOnException(env);
+
+// Call a void JNI method, parsing value as a jboolean
+#define jniCallWithBool(env, obj, method, value) \
+	jniCallWithObjects(env, obj, method, FAndroidPlatformJNI::ParseBoolean(value));
+
+// Call a void JNI method, parsing value as a (nullable) jstring
+#define jniCallWithString(env, obj, method, value)                      \
+	if (value.IsEmpty())                                                \
+	{                                                                   \
+		jniCallWithObjects(env, obj, method, nullptr);                  \
+	}                                                                   \
+	else                                                                \
+	{                                                                   \
+		jstring jValue = FAndroidPlatformJNI::ParseFString(env, value); \
+		ReturnNullOnFail(jValue);                                       \
+		jniCallWithObjects(env, obj, method, jValue);                   \
+	}
+
+// Call a void JNI method, parsing value as a Java HashSet<String>
+#define jniCallWithSet(env, cache, obj, method, value)                         \
+	{                                                                          \
+		jobject jSet = FAndroidPlatformJNI::ParseStringSet(env, cache, value); \
+		ReturnNullOnFail(jSet);                                                \
+		jniCallWithObjects(env, obj, method, jSet);                            \
+	}
+
 jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	const JNIReferenceCache* Cache,
 	const TSharedPtr<FBugsnagConfiguration>& Config)
 {
 	jstring jApiKey = FAndroidPlatformJNI::ParseFString(Env, Config->GetApiKey());
-	if (jApiKey)
+	ReturnNullOnFail(jApiKey);
+
+	jobject jConfig = (*Env).NewObject(Cache->ConfigClass, Cache->ConfigConstructor, jApiKey);
+	ReturnNullOnException(Env);
+
+	if (!Config->GetAppType().IsEmpty())
 	{
-		jobject jConfig = (*Env).NewObject(Cache->ConfigClass,
-			Cache->ConfigConstructor, jApiKey);
-		return jConfig;
+		jniCallWithString(Env, jConfig, Cache->ConfigSetAppType, Config->GetAppType());
 	}
-	return NULL;
+	if (!Config->GetAppVersion().IsEmpty())
+	{
+		jniCallWithString(Env, jConfig, Cache->ConfigSetAppVersion, Config->GetAppVersion());
+	}
+	jniCallWithBool(Env, jConfig, Cache->ConfigSetAutoDetectErrors, Config->GetAutoDetectErrors());
+	jniCallWithBool(Env, jConfig, Cache->ConfigSetAutoTrackSessions, Config->GetAutoTrackSessions());
+	if (!Config->GetContext().IsEmpty())
+	{
+		jniCallWithString(Env, jConfig, Cache->ConfigSetContext, Config->GetContext());
+	}
+	if (Config->GetDiscardClasses().Num())
+	{
+		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetDiscardClasses, Config->GetDiscardClasses());
+	}
+	jobject jEnabledTypes = FAndroidPlatformJNI::ParseBreadcrumbTypeSet(Env, Cache, Config->GetEnabledBreadcrumbTypes());
+	ReturnNullOnFail(jEnabledTypes);
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetEnabledBreadcrumbTypes, jEnabledTypes);
+
+	FBugsnagErrorTypes ErrorTypes = Config->GetEnabledErrorTypes();
+	jobject jErrorTypes = (*Env).NewObject(Cache->ErrorTypesClass, Cache->ErrorTypesConstructor,
+		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bANRs),
+		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bNativeCrashes),
+		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bUnhandledExceptions),
+		JNI_FALSE);
+	ReturnNullOnFail(jErrorTypes);
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetEnabledErrorTypes, jErrorTypes);
+
+	if (Config->GetEnabledReleaseStages().Num())
+	{
+		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetEnabledReleaseStages, Config->GetEnabledReleaseStages());
+	}
+
+	FBugsnagEndpointConfiguration Endpoints = Config->GetEndpoints();
+	jobject jNotifyUrl = FAndroidPlatformJNI::ParseFString(Env, Endpoints.GetNotify());
+	ReturnNullOnFail(jNotifyUrl);
+	jobject jSessionsUrl = FAndroidPlatformJNI::ParseFString(Env, Endpoints.GetSessions());
+	ReturnNullOnFail(jSessionsUrl);
+	jobject jEndpoints = (*Env).NewObject(Cache->EndpointConfigurationClass, Cache->EndpointConfigurationConstructor, jNotifyUrl, jSessionsUrl);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jEndpoints)
+	{
+		return nullptr;
+	}
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetEndpoints, jEndpoints);
+
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetLaunchDurationMillis, Config->GetLaunchDurationMillis());
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxBreadcrumbs, Config->GetMaxBreadcrumbs());
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxPersistedEvents, Config->GetMaxPersistedEvents());
+	jniCallWithBool(Env, jConfig, Cache->ConfigSetPersistUser, Config->GetPersistUser());
+	if (Config->GetRedactedKeys().Num())
+	{
+		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
+	}
+	if (!Config->GetReleaseStage().IsEmpty())
+	{
+		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage());
+	}
+	jniCallWithBool(Env, jConfig, Cache->ConfigSetSendLaunchCrashesSynchronously, Config->GetSendLaunchCrashesSynchronously());
+	jobject jThreadPolicy = FAndroidPlatformJNI::ParseThreadSendPolicy(Env, Cache, Config->GetSendThreads());
+	ReturnNullOnFail(jThreadPolicy);
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetSendThreads, jThreadPolicy);
+
+	if (!Config->GetUser().IsEmpty())
+	{
+		jstring jId = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetId());
+		jstring jEmail = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetEmail());
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetName());
+		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
+	}
+	// TODO: metadata
+	// TODO: callbacks
+	return jConfig;
 }

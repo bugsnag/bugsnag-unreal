@@ -14,6 +14,7 @@
         "jfield",
         "jmethod",
         "jobject",
+        "jboolean",
         "Lcom",
         "Ljava"
     ],
