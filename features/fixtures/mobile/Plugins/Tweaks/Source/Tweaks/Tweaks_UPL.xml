@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- API: https://docs.unrealengine.com/4.26/en-US/SharingAndReleasing/Mobile/UnrealPluginLanguage/ -->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidManifestUpdates>
+        <addAttribute tag="application" name="android:usesCleartextTraffic" value="true"/>
+    </androidManifestUpdates>
+</root>

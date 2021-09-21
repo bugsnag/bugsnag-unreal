@@ -1,0 +1,25 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "Tweaks",
+	"Description": "Runtime settings changes for testing",
+	"Category": "Other",
+	"CreatedBy": "Bugsnag, Inc.",
+	"CreatedByURL": "https://www.bugsnag.com",
+	"DocsURL": "https://docs.bugsnag.com",
+	"MarketplaceURL": "",
+	"SupportURL": "https://docs.bugsnag.com",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "Tweaks",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+	]
+}
+
