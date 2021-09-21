@@ -1,6 +1,8 @@
 #include "BugsnagFunctionLibrary.h"
 #include "PlatformBugsnag.h"
 
+#include COMPILED_PLATFORM_HEADER(PlatformStackWalk.h)
+
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
 	TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));

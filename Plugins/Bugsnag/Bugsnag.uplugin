@@ -21,7 +21,8 @@
 			"LoadingPhase": "PreDefault",
 			"WhitelistPlatforms" : [
 				"IOS",
-				"Mac"
+				"Mac",
+				"Android"
 			]
 		},
 		{
