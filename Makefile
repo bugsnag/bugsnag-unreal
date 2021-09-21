@@ -109,6 +109,15 @@ build_example_android:
 install_example_android: build_example_android
 	adb install Binaries/Android/BugsnagExample-Android-Shipping-arm64.apk
 
+.PHONY: build_example_ios
+build_example_ios:
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=IOS
+
+# Note: ideviceinstaller does not make the app visible on the home screen :-/
+.PHONY: install_example_ios
+install_example_ios: build_example_ios
+	ideviceinstaller --install Binaries/IOS/BugsnagExample-IOS-Shipping.ipa --udid="$(shell idevice_id -l)"
+
 .PHONY: build
 ifeq ($(PLATFORM),Android)
 build: build_example_android

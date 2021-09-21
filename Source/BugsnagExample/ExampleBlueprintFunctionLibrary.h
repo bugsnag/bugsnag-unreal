@@ -17,4 +17,7 @@ class UExampleBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
 	static void StackOverflow();
+
+	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
+	static void Notify();
 };
