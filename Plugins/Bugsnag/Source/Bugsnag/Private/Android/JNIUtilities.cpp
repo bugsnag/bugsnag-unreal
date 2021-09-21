@@ -82,6 +82,12 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	cache->BugsnagLeaveBreadcrumb = (*env).GetStaticMethodID(cache->BugsnagClass, "leaveBreadcrumb",
 		"(Ljava/lang/String;Ljava/util/Map;Lcom/bugsnag/android/BreadcrumbType;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagLeaveBreadcrumb);
+	cache->BugsnagStartSession = (*env).GetStaticMethodID(cache->BugsnagClass, "startSession", "()V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagStartSession);
+	cache->BugsnagResumeSession = (*env).GetStaticMethodID(cache->BugsnagClass, "resumeSession", "()Z");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagResumeSession);
+	cache->BugsnagPauseSession = (*env).GetStaticMethodID(cache->BugsnagClass, "pauseSession", "()V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagPauseSession);
 
 	cache->MetadataParserParse = (*env).GetStaticMethodID(cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
 	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserParse);
