@@ -74,7 +74,13 @@ public:
 
 	static bool Instantiate(const std::string& Name)
 	{
-		CurrentScenario = GetFactories()[Name]();
+		Factory Factory = GetFactories()[Name];
+		if (!Factory)
+		{
+			// avoid crash if invoking on null
+			return false;
+		}
+		CurrentScenario = Factory();
 		return CurrentScenario != nullptr;
 	}
 
