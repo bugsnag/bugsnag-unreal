@@ -61,6 +61,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	// Core classes are available through standard JNI functions only
 	cache->HashSetClass = LoadJavaClass(env, "java/util/HashSet", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashSetClass);
+	cache->IntegerClass = LoadJavaClass(env, "java/lang/Integer", false);
+	ReturnFalseIfNullAndClearExceptions(env, cache->IntegerClass);
 	cache->TraceClass = LoadJavaClass(env, "java/lang/StackTraceElement", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->TraceClass);
 
@@ -114,12 +116,17 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetSendThreads);
 	cache->ConfigSetUser = (*env).GetMethodID(cache->ConfigClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetUser);
+	cache->ConfigSetVersionCode = (*env).GetMethodID(cache->ConfigClass, "setVersionCode", "(Ljava/lang/Integer;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetVersionCode);
 
 	cache->EndpointConfigurationConstructor = (*env).GetMethodID(cache->EndpointConfigurationClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->EndpointConfigurationConstructor);
 
 	cache->ErrorTypesConstructor = (*env).GetMethodID(cache->ErrorTypesClass, "<init>", "(ZZZZ)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ErrorTypesConstructor);
+
+	cache->IntegerConstructor = (*env).GetMethodID(cache->IntegerClass, "<init>", "(I)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->IntegerConstructor);
 
 	cache->HashSetConstructor = (*env).GetMethodID(cache->HashSetClass, "<init>", "()V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashSetConstructor);
@@ -286,4 +293,14 @@ jobject FAndroidPlatformJNI::ParseThreadSendPolicy(JNIEnv* Env, const JNIReferen
 		return nullptr;
 	}
 	return jPolicy;
+}
+
+jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value)
+{
+	jobject jValue = (*Env).NewObject(Cache->IntegerClass, Cache->IntegerConstructor, Value);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return nullptr;
+	}
+	return jValue;
 }

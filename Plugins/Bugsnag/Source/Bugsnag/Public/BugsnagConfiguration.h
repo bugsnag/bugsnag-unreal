@@ -172,9 +172,9 @@ public:
 
 	// Version Code
 
-	const FString& GetVersionCode() const { return VersionCode; }
+	const int GetVersionCode() const { return VersionCode; }
 
-	void SetVersionCode(const FString& Value) { VersionCode = Value; }
+	void SetVersionCode(int Value) { VersionCode = Value; }
 
 	// Endpoints
 
@@ -251,7 +251,7 @@ private:
 	FString AppType;
 	FString AppVersion;
 	FString BundleVersion;
-	FString VersionCode;
+	int VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedPtr<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;

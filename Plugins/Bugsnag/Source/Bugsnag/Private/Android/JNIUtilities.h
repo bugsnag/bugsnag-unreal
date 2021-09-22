@@ -18,6 +18,7 @@ typedef struct
 	jclass SeverityClass;
 	jclass TraceClass;
 	jclass HashSetClass;
+	jclass IntegerClass;
 
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
@@ -42,10 +43,12 @@ typedef struct
 	jmethodID ConfigSetSendLaunchCrashesSynchronously;
 	jmethodID ConfigSetSendThreads;
 	jmethodID ConfigSetUser;
+	jmethodID ConfigSetVersionCode;
 	jmethodID EndpointConfigurationConstructor;
 	jmethodID ErrorTypesConstructor;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
+	jmethodID IntegerConstructor;
 	jmethodID TraceConstructor;
 
 	jfieldID SeverityFieldInfo;
@@ -129,6 +132,15 @@ public:
    * @return A Java object reference or null on failure
    */
 	static jobject ParseThreadSendPolicy(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSendThreadsPolicy Policy);
+
+	/**
+   * Convert an int into a Java Integer
+   *
+   * @param Env   A JNI environment for the current thread
+   * @param Cache A reference to a cache object to populate. Must not be null.
+   * @param Value The value to convert
+   */
+	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value);
 
 	/**
    * Check if a Java runtime exception was thrown and if so, clear it.
