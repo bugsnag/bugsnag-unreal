@@ -1,5 +1,7 @@
 #include "ExampleBlueprintFunctionLibrary.h"
 
+#include "BugsnagFunctionLibrary.h"
+
 void UExampleBlueprintFunctionLibrary::InvalidMemoryAccess()
 {
 	volatile int* ptr = NULL;
@@ -15,6 +17,11 @@ void UExampleBlueprintFunctionLibrary::StackOverflow()
 		UExampleBlueprintFunctionLibrary::StackOverflow();
 	};
 	foo();
+}
+
+void UExampleBlueprintFunctionLibrary::Notify()
+{
+	UBugsnagFunctionLibrary::Notify(TEXT("Non-fatal"), TEXT("Notify() called from C++"));
 }
 
 //

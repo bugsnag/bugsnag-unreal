@@ -1,4 +1,4 @@
-BUGSNAG_COCOA_VERSION?=de535fc6cb7b357db1fc1fcfcbb4d5cf134e207e
+BUGSNAG_COCOA_VERSION?=e049f6192ff3193afe889c0e2b26e12964c57567
 
 UE_VERSION?=4.26
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
@@ -49,18 +49,19 @@ lint:
 Binaries/Mac/UE4Editor-BugsnagExample.dylib: BugsnagCocoa
 	"$(UE_BUILD)" BugsnagExample Mac Development -TargetType=Editor "$(UPROJECT)"
 
+# To run a subset of tests, do make e2e_android TESTS=features/my_test.feature
 e2e_android: features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-	bundle exec maze-runner --app=$< --farm=bs --device=ANDROID_10_0
+	bundle exec maze-runner --app=$< --farm=bs --device=ANDROID_10_0 $(TESTS)
 
 e2e_android_local: features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-	bundle exec maze-runner --app=$< --farm=local --os=android --os-version=10
+	bundle exec maze-runner --app=$< --farm=local --os=android --os-version=10 $(TESTS)
 
 e2e_ios: features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-	bundle exec maze-runner --app=$< --farm=bs --device=IOS_12
+	bundle exec maze-runner --app=$< --farm=bs --device=IOS_12 $(TESTS)
 
 e2e_ios_local: features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
 	ideviceinstaller --uninstall com.bugsnag.TestFixture
-	bundle exec maze-runner --app=$< --farm=local --os=ios --os-version=14 --apple-team-id=372ZUL2ZB7 --udid="$(shell idevice_id -l)"
+	bundle exec maze-runner --app=$< --farm=local --os=ios --os-version=14 --apple-team-id=372ZUL2ZB7 --udid="$(shell idevice_id -l)" $(TESTS)
 
 features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk: features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib
 	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=Android
@@ -107,6 +108,15 @@ build_example_android:
 .PHONY: install_example_android
 install_example_android: build_example_android
 	adb install Binaries/Android/BugsnagExample-Android-Shipping-arm64.apk
+
+.PHONY: build_example_ios
+build_example_ios:
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=IOS
+
+# Note: ideviceinstaller does not make the app visible on the home screen :-/
+.PHONY: install_example_ios
+install_example_ios: build_example_ios
+	ideviceinstaller --install Binaries/IOS/BugsnagExample-IOS-Shipping.ipa --udid="$(shell idevice_id -l)"
 
 .PHONY: build
 ifeq ($(PLATFORM),Android)
