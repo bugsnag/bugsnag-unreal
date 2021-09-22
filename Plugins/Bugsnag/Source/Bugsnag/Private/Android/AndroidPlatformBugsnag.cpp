@@ -12,6 +12,10 @@ static JNIReferenceCache JNICache;
 
 void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Config)
 {
+	if (JNICache.loaded) // only attempt initialization once
+	{
+		return;
+	}
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	if ((JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache)))
 	{
