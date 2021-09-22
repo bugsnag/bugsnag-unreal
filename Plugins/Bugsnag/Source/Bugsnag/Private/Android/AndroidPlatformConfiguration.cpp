@@ -100,6 +100,12 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	ReturnNullOnFail(jThreadPolicy);
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetSendThreads, jThreadPolicy);
 
+	if (Config->GetVersionCode().IsValid())
+	{
+		jobject jVersionCode = FAndroidPlatformJNI::ParseInteger(Env, Cache, *Config->GetVersionCode());
+		ReturnNullOnFail(jVersionCode);
+		jniCallWithObjects(Env, jConfig, Cache->ConfigSetVersionCode, jVersionCode);
+	}
 	if (!Config->GetUser().IsEmpty())
 	{
 		jstring jId = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetId());
