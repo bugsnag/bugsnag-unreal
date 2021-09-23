@@ -10,9 +10,9 @@
 
 #include "Dom/JsonObject.h"
 
-typedef TFunction<bool(IBugsnagBreadcrumb*)> FBugsnagOnBreadcrumbCallback;
-typedef TFunction<bool(IBugsnagEvent*)> FBugsnagOnErrorCallback;
-typedef TFunction<bool(IBugsnagSession*)> FBugsnagOnSessionCallback;
+typedef TFunction<bool(TSharedRef<IBugsnagBreadcrumb>)> FBugsnagOnBreadcrumbCallback;
+typedef TFunction<bool(TSharedRef<IBugsnagEvent>)> FBugsnagOnErrorCallback;
+typedef TFunction<bool(TSharedRef<IBugsnagSession>)> FBugsnagOnSessionCallback;
 
 class BUGSNAG_API FBugsnagConfiguration
 {

@@ -8,9 +8,14 @@
 class FWrappedApp : public IBugsnagApp
 {
 public:
-	static TSharedPtr<FWrappedApp> From(BugsnagApp* CocoaApp)
+	static TSharedRef<FWrappedApp> From(BugsnagApp* CocoaApp)
 	{
-		return MakeShareable(new FWrappedApp(CocoaApp));
+		return MakeShared<FWrappedApp>(CocoaApp);
+	}
+
+	FWrappedApp(BugsnagApp* CocoaApp)
+		: CocoaApp(CocoaApp)
+	{
 	}
 
 	// binaryArch?: string;
@@ -124,10 +129,5 @@ public:
 	}
 
 private:
-	FWrappedApp(BugsnagApp* CocoaApp)
-		: CocoaApp(CocoaApp)
-	{
-	}
-
 	BugsnagApp* CocoaApp;
 };

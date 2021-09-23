@@ -152,7 +152,7 @@ void UBugsnagFunctionLibrary::LeaveBreadcrumb(const FString& Message, const TSha
 #endif
 }
 
-TArray<TSharedPtr<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcrumbs()
+TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcrumbs()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetBreadcrumbs();

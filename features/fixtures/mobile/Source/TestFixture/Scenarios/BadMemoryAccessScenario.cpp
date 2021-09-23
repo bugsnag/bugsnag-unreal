@@ -6,7 +6,7 @@ public:
 	void Run() override
 	{
 		// This doesn't really belong in this scenario, just checking that UBugsnagFunctionLibrary::GetBreadcrumbs() works
-		TArray<TSharedPtr<const IBugsnagBreadcrumb>> Breadcrumbs = UBugsnagFunctionLibrary::GetBreadcrumbs();
+		TArray<TSharedRef<const IBugsnagBreadcrumb>> Breadcrumbs = UBugsnagFunctionLibrary::GetBreadcrumbs();
 		assert(Breadcrumbs.Num() > 0);
 		assert(!Breadcrumbs[0].GetMessage().IsEmpty());
 

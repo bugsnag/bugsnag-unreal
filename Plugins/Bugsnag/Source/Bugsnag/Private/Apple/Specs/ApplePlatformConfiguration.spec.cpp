@@ -269,7 +269,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
 
 					bool OnBreadcrumbCalled = false;
-					Configuration->AddOnBreadcrumb([&OnBreadcrumbCalled](IBugsnagBreadcrumb* Breadcrumb) mutable
+					Configuration->AddOnBreadcrumb([&OnBreadcrumbCalled](TSharedRef<IBugsnagBreadcrumb> Breadcrumb) mutable
 						{
 							Breadcrumb->SetMessage(TEXT("I'm going to ignore you"));
 							OnBreadcrumbCalled = true;
@@ -277,14 +277,14 @@ void FApplePlatformConfigurationSpec::Define()
 						});
 
 					bool OnSendErrorCalled = false;
-					Configuration->AddOnSendError([&OnSendErrorCalled](IBugsnagEvent* Error) mutable
+					Configuration->AddOnSendError([&OnSendErrorCalled](TSharedRef<IBugsnagEvent> Error) mutable
 						{
 							OnSendErrorCalled = true;
 							return false;
 						});
 
 					bool OnSessionCalled = false;
-					Configuration->AddOnSession([&OnSessionCalled](IBugsnagSession* Session) mutable
+					Configuration->AddOnSession([&OnSessionCalled](TSharedRef<IBugsnagSession> Session) mutable
 						{
 							Session->SetUser(TEXT("user123"));
 							Session->GetApp()->SetReleaseStage(MakeShareable(new FString(TEXT("testing"))));

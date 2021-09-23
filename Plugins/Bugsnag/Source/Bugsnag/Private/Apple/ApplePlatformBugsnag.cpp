@@ -42,7 +42,7 @@ static void NotifyInternal(
 	const FString& ErrorClass,
 	const FString& Message,
 	const TArray<uint64>& StackTrace,
-	const FBugsnagOnErrorCallback& Callback = [](IBugsnagEvent*)
+	const FBugsnagOnErrorCallback& Callback = [](TSharedRef<IBugsnagEvent>)
 	{
 		return true;
 	})
@@ -82,8 +82,7 @@ static void NotifyInternal(
 	Event.context = Client.context;
 
 	[Client notifyInternal:Event block:^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
-		// TODO: Convert BugsnagEvent to IBugsnagEvent
-		return Callback((IBugsnagEvent*)nullptr);
+		return true; // TODO: Callback(FWrappedEvent::From(CocoaEvent));
 	}];
 }
 
@@ -159,9 +158,9 @@ void FApplePlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TShare
 								andType:FWrappedBreadcrumb::ConvertType(Type)];
 }
 
-TArray<TSharedPtr<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrumbs()
+TArray<TSharedRef<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrumbs()
 {
-	TArray<TSharedPtr<const IBugsnagBreadcrumb>> Result;
+	TArray<TSharedRef<const IBugsnagBreadcrumb>> Result;
 	for (BugsnagBreadcrumb* Breadcrumb in Bugsnag.breadcrumbs)
 	{
 		Result.Add(FWrappedBreadcrumb::From(Breadcrumb));
@@ -204,6 +203,6 @@ void FApplePlatformBugsnag::AddOnError(const FBugsnagOnErrorCallback& Callback)
 void FApplePlatformBugsnag::AddOnSession(const FBugsnagOnSessionCallback& Callback)
 {
 	[Bugsnag addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
-		return Callback(FWrappedSession::From(Session).Get());
+		return Callback(FWrappedSession::From(Session));
 	}];
 }
