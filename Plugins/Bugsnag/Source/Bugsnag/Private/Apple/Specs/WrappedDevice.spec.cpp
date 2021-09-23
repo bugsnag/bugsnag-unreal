@@ -26,7 +26,7 @@ void FWrappedDeviceSpec::Define()
 					};
 					CocoaDevice.totalMemory = @(100 * 1024 * 1024);
 
-					TSharedPtr<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
+					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
 					TEST_EQUAL(*Device->GetJailbroken(), true);
 					TEST_EQUAL(*Device->GetId(), TEXT("uniqueId"));
 					TEST_EQUAL(*Device->GetLocale(), TEXT("en_EN"));
@@ -46,7 +46,7 @@ void FWrappedDeviceSpec::Define()
 				{
 					BugsnagDevice* CocoaDevice = [[BugsnagDevice alloc] init];
 
-					TSharedPtr<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
+					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
 					Device->SetJailbroken(MakeShareable(new bool(true)));
 					Device->SetId(MakeShareable(new FString(TEXT("uniqueId"))));
 					Device->SetLocale(MakeShareable(new FString(TEXT("en_EN"))));

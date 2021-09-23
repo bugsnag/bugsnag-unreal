@@ -8,9 +8,14 @@
 class FWrappedBreadcrumb : public IBugsnagBreadcrumb
 {
 public:
-	static TSharedPtr<FWrappedBreadcrumb> From(BugsnagBreadcrumb* CocoaBreadcrumb)
+	static TSharedRef<FWrappedBreadcrumb> From(BugsnagBreadcrumb* CocoaBreadcrumb)
 	{
-		return MakeShareable(new FWrappedBreadcrumb(CocoaBreadcrumb));
+		return MakeShared<FWrappedBreadcrumb>(CocoaBreadcrumb);
+	}
+
+	FWrappedBreadcrumb(BugsnagBreadcrumb* CocoaBreadcrumb)
+		: CocoaBreadcrumb(CocoaBreadcrumb)
+	{
 	}
 
 	const FDateTime GetTimestamp() const override
@@ -90,10 +95,5 @@ public:
 	}
 
 private:
-	FWrappedBreadcrumb(BugsnagBreadcrumb* CocoaBreadcrumb)
-		: CocoaBreadcrumb(CocoaBreadcrumb)
-	{
-	}
-
 	BugsnagBreadcrumb* CocoaBreadcrumb;
 };

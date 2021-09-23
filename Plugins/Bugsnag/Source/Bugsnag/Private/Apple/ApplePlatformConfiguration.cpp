@@ -156,22 +156,21 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	for (auto& Callback : Configuration->GetOnBreadcrumbCallbacks())
 	{
 		[CocoaConfig addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
-			return Callback(FWrappedBreadcrumb::From(Breadcrumb).Get());
+			return Callback(FWrappedBreadcrumb::From(Breadcrumb));
 		}];
 	}
 
 	for (auto& Callback : Configuration->GetOnSendErrorCallbacks())
 	{
 		[CocoaConfig addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
-			// TODO: Convert BugsnagEvent to IBugsnagEvent
-			return Callback((IBugsnagEvent*)nullptr);
+			return true; // TODO: Callback(FWrappedEvent::From(Event));
 		}];
 	}
 
 	for (auto& Callback : Configuration->GetOnSessionCallbacks())
 	{
 		[CocoaConfig addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
-			return Callback(FWrappedSession::From(Session).Get());
+			return Callback(FWrappedSession::From(Session));
 		}];
 	}
 

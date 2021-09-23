@@ -51,37 +51,37 @@ void FBugsnagConfigurationSpec::Define()
 				{
 					FBugsnagConfiguration Configuration(ValidApiKey);
 
-					Configuration.AddOnBreadcrumb([](IBugsnagBreadcrumb* Breadcrumb)
+					Configuration.AddOnBreadcrumb([](TSharedRef<IBugsnagBreadcrumb> Breadcrumb)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return true;
 						});
 
-					Configuration.AddOnBreadcrumb([](IBugsnagBreadcrumb* Breadcrumb)
+					Configuration.AddOnBreadcrumb([](TSharedRef<IBugsnagBreadcrumb> Breadcrumb)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return false;
 						});
 
-					Configuration.AddOnError([](IBugsnagEvent* Error)
+					Configuration.AddOnError([](TSharedRef<IBugsnagEvent> Error)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return true;
 						});
 
-					Configuration.AddOnError([](IBugsnagEvent* Error)
+					Configuration.AddOnError([](TSharedRef<IBugsnagEvent> Error)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return false;
 						});
 
-					Configuration.AddOnSession([](IBugsnagSession* Session)
+					Configuration.AddOnSession([](TSharedRef<IBugsnagSession> Session)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return true;
 						});
 
-					Configuration.AddOnSession([](IBugsnagSession* Session)
+					Configuration.AddOnSession([](TSharedRef<IBugsnagSession> Session)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
 							return false;

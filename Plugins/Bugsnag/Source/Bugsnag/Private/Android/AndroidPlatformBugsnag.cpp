@@ -87,7 +87,7 @@ void FAndroidPlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TSha
 {
 }
 
-TArray<TSharedPtr<const class IBugsnagBreadcrumb>> FAndroidPlatformBugsnag::GetBreadcrumbs()
+TArray<TSharedRef<const class IBugsnagBreadcrumb>> FAndroidPlatformBugsnag::GetBreadcrumbs()
 {
 	return {};
 }

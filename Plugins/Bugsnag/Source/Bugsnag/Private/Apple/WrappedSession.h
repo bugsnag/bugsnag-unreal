@@ -10,9 +10,14 @@
 class FWrappedSession : public IBugsnagSession
 {
 public:
-	static TSharedPtr<FWrappedSession> From(BugsnagSession* CocoaSession)
+	static TSharedRef<FWrappedSession> From(BugsnagSession* CocoaSession)
 	{
-		return MakeShareable(new FWrappedSession(CocoaSession));
+		return MakeShared<FWrappedSession>(CocoaSession);
+	}
+
+	FWrappedSession(BugsnagSession* CocoaSession)
+		: CocoaSession(CocoaSession)
+	{
 	}
 
 	const FString GetId() const
@@ -35,12 +40,12 @@ public:
 		CocoaSession.startedAt = NSDateFromFDateTime(StartedAt);
 	}
 
-	TSharedPtr<IBugsnagApp> GetApp()
+	TSharedRef<IBugsnagApp> GetApp()
 	{
 		return FWrappedApp::From(CocoaSession.app);
 	}
 
-	TSharedPtr<IBugsnagDevice> GetDevice()
+	TSharedRef<IBugsnagDevice> GetDevice()
 	{
 		return FWrappedDevice::From(CocoaSession.device);
 	}
@@ -61,10 +66,5 @@ public:
 	}
 
 private:
-	FWrappedSession(BugsnagSession* CocoaSession)
-		: CocoaSession(CocoaSession)
-	{
-	}
-
 	BugsnagSession* CocoaSession;
 };

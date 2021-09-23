@@ -8,9 +8,14 @@
 class FWrappedDevice : public IBugsnagDevice
 {
 public:
-	static TSharedPtr<FWrappedDevice> From(BugsnagDevice* CocoaDevice)
+	static TSharedRef<FWrappedDevice> From(BugsnagDevice* CocoaDevice)
 	{
-		return MakeShareable(new FWrappedDevice(CocoaDevice));
+		return MakeShared<FWrappedDevice>(CocoaDevice);
+	}
+
+	FWrappedDevice(BugsnagDevice* CocoaDevice)
+		: CocoaDevice(CocoaDevice)
+	{
 	}
 
 	// cpuAbi?: string[];
@@ -170,10 +175,5 @@ public:
 	}
 
 private:
-	FWrappedDevice(BugsnagDevice* CocoaDevice)
-		: CocoaDevice(CocoaDevice)
-	{
-	}
-
 	BugsnagDevice* CocoaDevice;
 };

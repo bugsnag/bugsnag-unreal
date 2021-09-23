@@ -43,7 +43,7 @@ public:
 
 	virtual void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type) = 0;
 
-	virtual TArray<TSharedPtr<const IBugsnagBreadcrumb>> GetBreadcrumbs() = 0;
+	virtual TArray<TSharedRef<const IBugsnagBreadcrumb>> GetBreadcrumbs() = 0;
 
 	virtual void MarkLaunchCompleted() = 0;
 

@@ -38,7 +38,7 @@ public:
 
 	void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type) override;
 
-	TArray<TSharedPtr<const IBugsnagBreadcrumb>> GetBreadcrumbs() override;
+	TArray<TSharedRef<const IBugsnagBreadcrumb>> GetBreadcrumbs() override;
 
 	void MarkLaunchCompleted() override;
 

@@ -18,9 +18,9 @@ public:
 
 	virtual void SetStartedAt(const FDateTime&) = 0;
 
-	virtual TSharedPtr<IBugsnagApp> GetApp() = 0;
+	virtual TSharedRef<IBugsnagApp> GetApp() = 0;
 
-	virtual TSharedPtr<IBugsnagDevice> GetDevice() = 0;
+	virtual TSharedRef<IBugsnagDevice> GetDevice() = 0;
 
 	virtual const FBugsnagUser GetUser() const = 0;
 
