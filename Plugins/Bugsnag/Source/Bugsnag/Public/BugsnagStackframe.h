@@ -7,18 +7,6 @@
 class BUGSNAG_API IBugsnagStackframe
 {
 public:
-	// code?: { [key: string]: string }
-
-	virtual TSharedPtr<TMap<FString, FString>> GetCode() const = 0;
-
-	virtual void SetCode(const TSharedPtr<TMap<FString, FString>>&) = 0;
-
-	// columnNumber?: number,
-
-	virtual TSharedPtr<uint32> GetColumnNumber() const = 0;
-
-	virtual void SetColumnNumber(const TSharedPtr<uint32>&) = 0;
-
 	// file?: string,
 
 	virtual FString GetFile() const = 0;
