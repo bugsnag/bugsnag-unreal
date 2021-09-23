@@ -12,7 +12,7 @@ steps:
 
   ##############################################################################
   #
-  # Buid E2E Fixtures
+  # Build E2E Fixtures
   #
   ##############################################################################
 
@@ -88,7 +88,6 @@ steps:
   ##############################################################################
 
   - label: 'E2E Tests - Android 10'
-    skip: 'Android E2E testing is currently broken'
     depends_on:
       - android_fixture
     timeout_in_minutes: 30
@@ -102,7 +101,7 @@ steps:
         run: android-maze-runner
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-arm64.apk"
-          - "--device=ANDROID_10_0"
+          - "--device=ANDROID_11_0"
           - "--fail-fast"
           - "--farm=bs"
           - "--order=random"
