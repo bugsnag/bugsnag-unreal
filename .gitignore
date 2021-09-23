@@ -50,7 +50,7 @@ Binaries/*
 Plugins/*/Binaries/*
 
 # Builds
-Build/*
+[Bb]uild/*
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
@@ -72,7 +72,7 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
-
+.gradle
 .DS_Store
 
 # Bugsnag specific

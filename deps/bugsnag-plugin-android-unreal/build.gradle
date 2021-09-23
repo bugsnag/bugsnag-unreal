@@ -1,0 +1,47 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:4.2.1"
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+apply plugin: "com.android.library"
+apply plugin: "maven"
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+}
+
+dependencies {
+    api "com.bugsnag:bugsnag-android-core:5.12.0"
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
+}
+
+task generatePom {
+  doLast {
+    pom {
+      project {
+        groupId 'com.bugsnag'
+        version '0.1.0'
+        packaging 'aar'
+      }
+    }.writeTo("$buildDir/outputs/aar/bugsnag-plugin-android-unreal-release.pom")
+  }
+}
