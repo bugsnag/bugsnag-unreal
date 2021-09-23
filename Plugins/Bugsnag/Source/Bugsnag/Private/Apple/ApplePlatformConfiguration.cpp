@@ -164,7 +164,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	{
 		[CocoaConfig addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
 			// TODO: Convert BugsnagEvent to IBugsnagEvent
-			return Callback((class IBugsnagEvent*)nullptr);
+			return Callback((IBugsnagEvent*)nullptr);
 		}];
 	}
 

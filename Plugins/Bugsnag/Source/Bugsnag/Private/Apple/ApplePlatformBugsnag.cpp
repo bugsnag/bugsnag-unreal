@@ -42,7 +42,7 @@ static void NotifyInternal(
 	const FString& ErrorClass,
 	const FString& Message,
 	const TArray<uint64>& StackTrace,
-	const FBugsnagOnErrorCallback& Callback = [](class IBugsnagEvent*)
+	const FBugsnagOnErrorCallback& Callback = [](IBugsnagEvent*)
 	{
 		return true;
 	})
@@ -83,7 +83,7 @@ static void NotifyInternal(
 
 	[Client notifyInternal:Event block:^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
 		// TODO: Convert BugsnagEvent to IBugsnagEvent
-		return Callback((class IBugsnagEvent*)nullptr);
+		return Callback((IBugsnagEvent*)nullptr);
 	}];
 }
 

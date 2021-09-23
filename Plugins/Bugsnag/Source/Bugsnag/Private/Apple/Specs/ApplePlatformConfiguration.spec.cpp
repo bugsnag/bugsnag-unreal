@@ -277,7 +277,7 @@ void FApplePlatformConfigurationSpec::Define()
 						});
 
 					bool OnSendErrorCalled = false;
-					Configuration->AddOnSendError([&OnSendErrorCalled](class IBugsnagEvent* Error) mutable
+					Configuration->AddOnSendError([&OnSendErrorCalled](IBugsnagEvent* Error) mutable
 						{
 							OnSendErrorCalled = true;
 							return false;
