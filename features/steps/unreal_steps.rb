@@ -4,6 +4,7 @@ end
 
 When('I relaunch the app') do
   Maze.driver.launch_app
+  sleep(3) if Maze.driver.capabilities['platformName'].eql? 'Android'
 end
 
 When('I run {string}') do |scenario_name|

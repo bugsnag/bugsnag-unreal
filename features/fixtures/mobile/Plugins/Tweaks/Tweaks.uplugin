@@ -1,9 +1,9 @@
 {
 	"FileVersion": 3,
-	"Version": 0,
-	"VersionName": "0.1.0",
-	"FriendlyName": "Bugsnag",
-	"Description": "Bugsnag: Error Monitoring & App Stability Management",
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "Tweaks",
+	"Description": "Runtime settings changes for testing",
 	"Category": "Other",
 	"CreatedBy": "Bugsnag, Inc.",
 	"CreatedByURL": "https://www.bugsnag.com",
@@ -16,19 +16,10 @@
 	"Installed": true,
 	"Modules": [
 		{
-			"Name": "Bugsnag",
+			"Name": "Tweaks",
 			"Type": "Runtime",
-			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms" : [
-				"IOS",
-				"Mac",
-				"Android"
-			]
-		},
-		{
-			"Name" : "BugsnagEditor",
-			"Type" : "Editor",
-			"LoadingPhase" : "PostEngineInit"
+			"LoadingPhase": "PreDefault"
 		}
 	]
 }
+
