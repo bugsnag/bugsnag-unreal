@@ -4,7 +4,7 @@
 
 static void ClearPersistentData()
 {
-	UE_LOG(LogTemp, Display, TEXT("Clearing peristent data"));
+	UE_LOG(LogTemp, Display, TEXT("Clearing persistent data"));
 #if PLATFORM_ANDROID
 	// TODO
 #elif PLATFORM_APPLE
@@ -42,5 +42,5 @@ void UTestFixtureBlueprintFunctionLibrary::OnButtonClicked(const FString& String
 {
 	UE_LOG(LogTemp, Display, TEXT("UTestFixtureBlueprintFunctionLibrary::OnButtonClicked() %s"), *String);
 
-    Evaluate(String);
+	Evaluate(String);
 }
