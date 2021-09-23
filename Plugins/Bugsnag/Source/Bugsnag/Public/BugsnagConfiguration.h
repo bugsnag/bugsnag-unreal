@@ -2,6 +2,7 @@
 
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagEndpointConfiguration.h"
+#include "BugsnagEvent.h"
 #include "BugsnagSession.h"
 #include "BugsnagSettings.h"
 #include "BugsnagUser.h"
@@ -10,7 +11,7 @@
 #include "Dom/JsonObject.h"
 
 typedef TFunction<bool(IBugsnagBreadcrumb*)> FBugsnagOnBreadcrumbCallback;
-typedef TFunction<bool(class IBugsnagEvent*)> FBugsnagOnErrorCallback;
+typedef TFunction<bool(IBugsnagEvent*)> FBugsnagOnErrorCallback;
 typedef TFunction<bool(IBugsnagSession*)> FBugsnagOnSessionCallback;
 
 class BUGSNAG_API FBugsnagConfiguration
