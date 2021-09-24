@@ -28,6 +28,7 @@ endif
 	sed -i '' "s/\"VersionName\": .*,/\"VersionName\": \"$(VERSION)\",/" Plugins/Bugsnag/Bugsnag.uplugin
 	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Public/Version.h
 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
+	$(MAKE) -f make/Android.make bump
 
 clean:
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
@@ -72,6 +73,7 @@ features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa: features/fix
 
 # UE4Editor-TestFixture.dylib is required for BuildCookRun to succeed
 features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib: BugsnagCocoa
+	$(MAKE) -f make/Android.make package
 	rsync --exclude 'Binaries' --exclude 'Intermediate' --delete --recursive --times Plugins/Bugsnag features/fixtures/mobile/Plugins
 	"$(UE_BUILD)" TestFixture Mac Development -TargetType=Editor "$(TESTPROJ)"
 

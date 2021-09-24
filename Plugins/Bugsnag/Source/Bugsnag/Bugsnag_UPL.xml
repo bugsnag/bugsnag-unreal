@@ -26,6 +26,16 @@
         </loopElements>
     </androidManifestUpdates>
 
+    <AARImports>
+        <insertValue value="repository $S(PluginDir)/../ThirdParty/Android/lib"/>
+        <insertNewline/>
+        <insert>
+            com.bugsnag,bugsnag-plugin-android-unreal,0.1.0
+            com.bugsnag,bugsnag-android,5.+
+        </insert>
+        <insertNewline/>
+    </AARImports>
+
     <!--  optional base build.gradle buildscript additions -->
     <buildscriptGradleAdditions>
         <insert>
@@ -38,10 +48,6 @@
     <buildGradleAdditions>
         <insert>
             apply plugin: "com.bugsnag.android.gradle"
-
-            dependencies {
-                implementation "com.bugsnag:bugsnag-android:5.+"
-            }
         </insert>
     </buildGradleAdditions>
 
