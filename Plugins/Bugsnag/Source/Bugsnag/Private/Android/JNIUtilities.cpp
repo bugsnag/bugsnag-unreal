@@ -5,6 +5,11 @@
 #include "Android/AndroidJavaEnv.h"
 #include "CoreMinimal.h"
 
+#include "Serialization/JsonSerializer.h"
+#include "Serialization/JsonWriter.h"
+#include "Serialization/LargeMemoryReader.h"
+#include "Serialization/LargeMemoryWriter.h"
+
 /**
  * Load a Java class as a global reference
  *
@@ -33,6 +38,13 @@ static jclass LoadJavaClass(JNIEnv* env, const char* qualified_name, bool use_he
 		return false;                                 \
 	}
 
+#define ReturnNullOnException(env) \
+	if (env->ExceptionCheck())     \
+	{                              \
+		env->ExceptionClear();     \
+		return nullptr;            \
+	}
+
 bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cache)
 {
 	if (!env)
@@ -57,6 +69,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ErrorTypesClass);
 	cache->ThreadSendPolicyClass = LoadJavaClass(env, "com.bugsnag.android.ThreadSendPolicy", true);
 	ReturnFalseIfNullAndClearExceptions(env, cache->ThreadSendPolicyClass);
+	cache->MetadataParserClass = LoadJavaClass(env, "com.bugsnag.android.unreal.MetadataParser", true);
+	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserClass);
 
 	// Core classes are available through standard JNI functions only
 	cache->HashSetClass = LoadJavaClass(env, "java/util/HashSet", false);
@@ -71,10 +85,13 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 		"([B[BLcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagNotifyMethod);
 
+	cache->MetadataParserParse = (*env).GetStaticMethodID(cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserParse);
+
 	cache->ConfigConstructor = (*env).GetMethodID(cache->ConfigClass, "<init>",
 		"(Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigConstructor);
-	cache->ConfigAddMetadata = (*env).GetMethodID(cache->ConfigClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
+	cache->ConfigAddMetadata = (*env).GetMethodID(cache->ConfigClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigAddMetadata);
 	cache->ConfigSetAppType = (*env).GetMethodID(cache->ConfigClass, "setAppType", "(Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetAppType);
@@ -212,6 +229,29 @@ jobject FAndroidPlatformJNI::ParseStringSet(JNIEnv* Env, const JNIReferenceCache
 		}
 	}
 	return jSet;
+}
+
+jobject FAndroidPlatformJNI::ParseJsonObject(JNIEnv* Env, const JNIReferenceCache* Cache, const TSharedPtr<FJsonObject>& Object)
+{
+	if (!Object.IsValid())
+	{
+		return nullptr;
+	}
+	FLargeMemoryWriter Archive;
+	TSharedRef<TJsonWriter<char>> JsonWriter = TJsonWriterFactory<char>::Create(&Archive);
+	if (!FJsonSerializer::Serialize(Object.ToSharedRef(), JsonWriter))
+	{
+		return nullptr;
+	}
+	JsonWriter->Close();
+	jbyteArray jBytes = (*Env).NewByteArray(Archive.TotalSize());
+	ReturnNullOnException(Env);
+	(*Env).SetByteArrayRegion(jBytes, 0, Archive.TotalSize(), (const jbyte*)Archive.GetData());
+	ReturnNullOnException(Env);
+	jobject jObject = (*Env).CallStaticObjectMethod(Cache->MetadataParserClass, Cache->MetadataParserParse, jBytes);
+	ReturnNullOnException(Env);
+	(*Env).DeleteLocalRef(jBytes);
+	return jObject;
 }
 
 /**

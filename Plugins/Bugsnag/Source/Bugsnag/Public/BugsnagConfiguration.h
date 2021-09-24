@@ -228,6 +228,7 @@ private:
 	const TMap<FString, TSharedPtr<FJsonObject>>& GetMetadataValues() const { return MetadataValues; }
 
 	friend class FApplePlatformConfiguration;
+	friend class FAndroidPlatformConfiguration;
 
 	FString ApiKey;
 	bool bAutoDetectErrors = true;

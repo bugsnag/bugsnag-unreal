@@ -128,7 +128,22 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetName());
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
 	}
-	// TODO: metadata
+
+	for (auto& Item : Config->GetMetadataValues())
+	{
+		jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Item.Key);
+		if (!jSection)
+		{
+			continue;
+		}
+		jobject jValues = FAndroidPlatformJNI::ParseJsonObject(Env, Cache, Item.Value);
+		if (!jValues)
+		{
+			continue;
+		}
+		(*Env).CallVoidMethod(jConfig, Cache->ConfigAddMetadata, jSection, jValues);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 	// TODO: callbacks
 	return jConfig;
 }

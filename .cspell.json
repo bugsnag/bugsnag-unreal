@@ -18,7 +18,9 @@
         "jfield",
         "jmethod",
         "jobject",
+        "jbyte",
         "ooms",
+        "cronut",
     ],
     "ignorePaths": [
         "**/Intermediate/**",
