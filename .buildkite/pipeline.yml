@@ -1,5 +1,11 @@
 steps:
 
+  - name: 'Lint'
+    agents:
+      queue: opensource-mac-cocoa-11
+    command: make lint
+    timeout_in_minutes: 10
+
   ##############################################################################
   #
   # Buid E2E Fixtures
