@@ -54,6 +54,7 @@ e2e_android: features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipp
 	bundle exec maze-runner --app=$< --farm=bs --device=ANDROID_10_0 $(TESTS)
 
 e2e_android_local: features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+	./features/fixtures/mobile/Binaries/Android/Install_TestFixture-Android-Shipping-arm64.command
 	bundle exec maze-runner --app=$< --farm=local --os=android --os-version=10 $(TESTS)
 
 e2e_ios: features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
@@ -107,7 +108,7 @@ build_example_android:
 
 .PHONY: install_example_android
 install_example_android: build_example_android
-	adb install Binaries/Android/BugsnagExample-Android-Shipping-arm64.apk
+	./Binaries/Android/Install_TestFixture-Android-Shipping-arm64.command
 
 .PHONY: build_example_ios
 build_example_ios:
