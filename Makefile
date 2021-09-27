@@ -88,19 +88,19 @@ deps/bugsnag-cocoa:
 	git init --quiet $@ && cd $@ && git remote add origin https://github.com/bugsnag/bugsnag-cocoa && git fetch --no-tags --depth=1 origin $(BUGSNAG_COCOA_VERSION) && git checkout --quiet -f $(BUGSNAG_COCOA_VERSION)
 
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include: deps/bugsnag-cocoa
-	cp -R $</Bugsnag/include $@
+	cp -pR $</Bugsnag/include $@
 	mkdir -p $@/BugsnagPrivate
-	cd $< && find Bugsnag \( -name '*.h' ! -path 'Bugsnag/include/*' \) -exec cp {} $(PWD)/$@/BugsnagPrivate \;
+	cd $< && find Bugsnag \( -name '*.h' ! -path 'Bugsnag/include/*' \) -exec cp -pR {} $(PWD)/$@/BugsnagPrivate \;
 
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a: deps/bugsnag-cocoa
 	cd $< && xcodebuild -scheme BugsnagStatic -derivedDataPath DerivedData -configuration Release -quiet build SDKROOT=iphoneos IOS_DEPLOYMENT_TARGET=11.0
 	mkdir -p $(@D)
-	cp $</DerivedData/Build/Products/Release-iphoneos/libBugsnagStatic.a $@
+	cp -pR $</DerivedData/Build/Products/Release-iphoneos/libBugsnagStatic.a $@
 
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a: deps/bugsnag-cocoa
 	cd $< && xcodebuild -scheme BugsnagStatic -derivedDataPath DerivedData -configuration Release -quiet build SDKROOT=macosx MACOSX_DEPLOYMENT_TARGET=10.11
 	mkdir -p $(@D)
-	cp $</DerivedData/Build/Products/Release/libBugsnagStatic.a $@
+	cp -pR $</DerivedData/Build/Products/Release/libBugsnagStatic.a $@
 
 .PHONY: build_example_android
 build_example_android:
