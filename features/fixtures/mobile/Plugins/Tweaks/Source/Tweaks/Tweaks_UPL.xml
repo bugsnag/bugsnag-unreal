@@ -4,4 +4,16 @@
     <androidManifestUpdates>
         <addAttribute tag="application" name="android:usesCleartextTraffic" value="true"/>
     </androidManifestUpdates>
+
+    <gameActivityImportAdditions>
+        <insert>
+            import android.content.Intent;
+        </insert>
+    </gameActivityImportAdditions>
+
+    <gameActivityOnCreateAdditions>
+        <insert>
+            sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        </insert>
+    </gameActivityOnCreateAdditions>
 </root>
