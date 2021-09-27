@@ -4,6 +4,7 @@
 
 #include "Android/AndroidJavaEnv.h"
 #include "CoreMinimal.h"
+#include "Shorthand.h"
 
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
@@ -27,23 +28,6 @@ static jclass LoadJavaClass(JNIEnv* env, const char* qualified_name, bool use_he
 	}
 	return (jclass)(*env).NewGlobalRef((*env).FindClass(qualified_name));
 }
-
-#define ReturnFalseIfNullAndClearExceptions(env, var) \
-	if (var == NULL)                                  \
-	{                                                 \
-		if (env->ExceptionCheck())                    \
-		{                                             \
-			env->ExceptionClear();                    \
-		}                                             \
-		return false;                                 \
-	}
-
-#define ReturnNullOnException(env) \
-	if (env->ExceptionCheck())     \
-	{                              \
-		env->ExceptionClear();     \
-		return nullptr;            \
-	}
 
 bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cache)
 {

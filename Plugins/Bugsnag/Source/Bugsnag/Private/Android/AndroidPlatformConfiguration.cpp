@@ -1,19 +1,6 @@
 #include "AndroidPlatformConfiguration.h"
 #include "JNIUtilities.h"
-
-// Quick exit when a call which should have returned something does not
-#define ReturnNullOnFail(prop) \
-	if (!prop)                 \
-	{                          \
-		return nullptr;        \
-	}
-
-// Quick exit when a JNI call fails
-#define ReturnNullOnException(env)                        \
-	if (FAndroidPlatformJNI::CheckAndClearException(env)) \
-	{                                                     \
-		return nullptr;                                   \
-	}
+#include "Shorthand.h"
 
 // Call a void JNI method, sending the arguments exactly as specified. Clears
 // any exceptions if thrown, then returning null.
