@@ -23,6 +23,7 @@
     "ignorePaths": [
         "**/Intermediate/**",
         "**/ThirdParty/**",
+        "**/Build/**",
         "deps/**"
     ]
 }
