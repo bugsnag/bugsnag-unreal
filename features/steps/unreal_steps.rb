@@ -4,7 +4,7 @@ end
 
 When('I relaunch the app') do
   Maze.driver.launch_app
-  sleep(3) if Maze.driver.capabilities['platformName'].eql? 'Android'
+  sleep(3) if is_platform? 'Android'
 end
 
 When('I run {string}') do |scenario_name|
@@ -15,6 +15,10 @@ Then('the app is not running') do
   wait_for_true do
     Maze.driver.app_state('com.bugsnag.TestFixture') == :not_running
   end
+end
+
+Then(/^on (Android|iOS), (.+)/) do |platform, step_text|
+  steps(step_text) if is_platform? platform
 end
 
 def enter_text(text)

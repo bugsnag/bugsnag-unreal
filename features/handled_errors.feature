@@ -1,5 +1,6 @@
 Feature: Reporting handled errors
 
+  @not_android
   Scenario: NotifyScenario
     When I run "NotifyScenario"
     And I wait to receive an error
