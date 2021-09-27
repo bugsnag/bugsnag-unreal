@@ -23,3 +23,11 @@
 		env->ExceptionClear();     \
 		return nullptr;            \
 	}
+
+// Quick exit when a JNI call fails
+#define ReturnFalseOnException(env) \
+	if (env->ExceptionCheck())      \
+	{                               \
+		env->ExceptionClear();      \
+		return false;               \
+	}
