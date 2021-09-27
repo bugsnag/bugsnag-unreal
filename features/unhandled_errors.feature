@@ -11,5 +11,6 @@ Feature: Unhandled errors
     And the error payload field "notifier.dependencies.0.name" is not null
     And the error payload field "notifier.dependencies.0.url" is not null
     And the error payload field "notifier.dependencies.0.version" is not null
+    And on Android, the event "context" equals "overhead view"
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the event has a "manual" breadcrumb named "About to read from a bad memory address"

@@ -67,6 +67,9 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	cache->BugsnagStartMethod = (*env).GetStaticMethodID(cache->BugsnagClass, "start",
 		"(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagStartMethod);
+	cache->BugsnagSetContext = (*env).GetStaticMethodID(cache->BugsnagClass, "setContext",
+		"(Ljava/lang/String;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagSetContext);
 	cache->BugsnagNotifyMethod = (*env).GetStaticMethodID(cache->InterfaceClass, "notify",
 		"([B[BLcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagNotifyMethod);

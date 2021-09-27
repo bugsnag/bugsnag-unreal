@@ -9,6 +9,7 @@ Feature: Reporting handled errors
     And the error payload field "notifier.dependencies.0.name" is not null
     And the error payload field "notifier.dependencies.0.url" is not null
     And the error payload field "notifier.dependencies.0.version" is not null
+    And on Android, the event "context" equals "pause menu"
     And the event "app.duration" is not null
     And the event "app.durationInForeground" is not null
     And the event "app.id" equals "com.bugsnag.TestFixture"
