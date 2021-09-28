@@ -28,11 +28,12 @@ endif
 	sed -i '' "s/\"VersionName\": .*,/\"VersionName\": \"$(VERSION)\",/" Plugins/Bugsnag/Bugsnag.uplugin
 	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Public/Version.h
 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
+	$(MAKE) -f make/Android.make bump
 
 clean:
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
 	git clean -dfx Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
-	rm -rf Build deps features/fixtures/mobile/Plugins/Bugsnag
+	rm -rf Build deps/bugsnag-cocoa features/fixtures/mobile/Plugins/Bugsnag
 
 # Convenience target that ensures editor modules are up to date and opens the example project in Unreal Editor.
 editor: Binaries/Mac/UE4Editor-BugsnagExample.dylib
@@ -72,6 +73,7 @@ features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa: features/fix
 
 # UE4Editor-TestFixture.dylib is required for BuildCookRun to succeed
 features/fixtures/mobile/Binaries/Mac/UE4Editor-TestFixture.dylib: BugsnagCocoa
+	$(MAKE) -f make/Android.make package
 	rsync --exclude 'Binaries' --exclude 'Intermediate' --delete --recursive --times Plugins/Bugsnag features/fixtures/mobile/Plugins
 	"$(UE_BUILD)" TestFixture Mac Development -TargetType=Editor "$(TESTPROJ)"
 
@@ -80,6 +82,7 @@ test: Binaries/Mac/UE4Editor-BugsnagExample.dylib
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 package: BugsnagCocoa
+	$(MAKE) -f make/Android.make package
 	"$(UE_RUNUAT)" BuildPlugin -Plugin="$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin" -Package="$(PWD)/Build/Package"
 
 BugsnagCocoa: Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a

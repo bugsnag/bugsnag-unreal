@@ -14,3 +14,7 @@ Feature: Unhandled errors
     And on Android, the event "context" equals "overhead view"
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the event has a "manual" breadcrumb named "About to read from a bad memory address"
+    And the event "metaData.pastries.cronut" is false
+    And the event "metaData.pastries.macaron" equals 3
+    And the event "metaData.counters.forty" equals "40"
+    And the event "metaData.counters.thirty-five" equals "35"

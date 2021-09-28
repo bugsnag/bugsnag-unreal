@@ -14,6 +14,7 @@ typedef struct
 	jclass ConfigClass;
 	jclass EndpointConfigurationClass;
 	jclass ErrorTypesClass;
+	jclass MetadataParserClass;
 	jclass ThreadSendPolicyClass;
 	jclass SeverityClass;
 	jclass TraceClass;
@@ -47,6 +48,7 @@ typedef struct
 	jmethodID ErrorTypesConstructor;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
+	jmethodID MetadataParserParse;
 	jmethodID TraceConstructor;
 
 	jfieldID SeverityFieldInfo;
@@ -97,6 +99,17 @@ public:
    * @return JNI true or false value
    */
 	static jboolean ParseBoolean(bool value);
+
+	/**
+   * Convert a JSON structure into a Java Map object
+   *
+   * @param Env    A JNI environment for the current thread
+   * @param Cache  A populated reference cache
+   * @param Object The object to convert
+   *
+   * @return A Java object reference or null on failure
+   */
+	static jobject ParseJsonObject(JNIEnv* Env, const JNIReferenceCache* Cache, const TSharedPtr<FJsonObject>& Object);
 
 	/**
    * Convert an array of strings into a Java Set

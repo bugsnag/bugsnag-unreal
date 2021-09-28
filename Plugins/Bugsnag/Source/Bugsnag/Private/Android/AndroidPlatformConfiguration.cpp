@@ -1,19 +1,6 @@
 #include "AndroidPlatformConfiguration.h"
 #include "JNIUtilities.h"
-
-// Quick exit when a call which should have returned something does not
-#define ReturnNullOnFail(prop) \
-	if (!prop)                 \
-	{                          \
-		return nullptr;        \
-	}
-
-// Quick exit when a JNI call fails
-#define ReturnNullOnException(env)                        \
-	if (FAndroidPlatformJNI::CheckAndClearException(env)) \
-	{                                                     \
-		return nullptr;                                   \
-	}
+#include "Shorthand.h"
 
 // Call a void JNI method, sending the arguments exactly as specified. Clears
 // any exceptions if thrown, then returning null.
@@ -128,7 +115,22 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetName());
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
 	}
-	// TODO: metadata
+
+	for (auto& Item : Config->GetMetadataValues())
+	{
+		jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Item.Key);
+		if (!jSection)
+		{
+			continue;
+		}
+		jobject jValues = FAndroidPlatformJNI::ParseJsonObject(Env, Cache, Item.Value);
+		if (!jValues)
+		{
+			continue;
+		}
+		(*Env).CallVoidMethod(jConfig, Cache->ConfigAddMetadata, jSection, jValues);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 	// TODO: callbacks
 	return jConfig;
 }
