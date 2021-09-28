@@ -33,7 +33,7 @@ endif
 clean:
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
 	git clean -dfx Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
-	rm -rf Build deps features/fixtures/mobile/Plugins/Bugsnag
+	rm -rf Build deps/bugsnag-cocoa features/fixtures/mobile/Plugins/Bugsnag
 
 # Convenience target that ensures editor modules are up to date and opens the example project in Unreal Editor.
 editor: Binaries/Mac/UE4Editor-BugsnagExample.dylib
