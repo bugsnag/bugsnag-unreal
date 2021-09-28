@@ -21,6 +21,7 @@ typedef struct
 
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
+	jmethodID BugsnagSetContext;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigConstructor;
 	jmethodID ConfigSetAppType;

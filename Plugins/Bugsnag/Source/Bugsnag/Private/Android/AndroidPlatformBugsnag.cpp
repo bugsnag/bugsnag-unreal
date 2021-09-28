@@ -50,6 +50,16 @@ const FString FAndroidPlatformBugsnag::GetContext()
 
 void FAndroidPlatformBugsnag::SetContext(const FString& Context)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (!Env || !JNICache.initialized)
+	{
+		return;
+	}
+	jstring jContext = FAndroidPlatformJNI::ParseFString(Env, Context);
+	if (jContext)
+	{
+		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetContext, jContext);
+	}
 }
 
 const TSharedPtr<FBugsnagUser> FAndroidPlatformBugsnag::GetUser()

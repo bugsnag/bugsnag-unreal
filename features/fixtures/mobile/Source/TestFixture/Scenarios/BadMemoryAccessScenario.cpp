@@ -5,6 +5,8 @@ class BadMemoryAccessScenario : public Scenario
 public:
 	void Run() override
 	{
+		UBugsnagFunctionLibrary::SetContext("overhead view");
+
 		// This doesn't really belong in this scenario, just checking that UBugsnagFunctionLibrary::GetBreadcrumbs() works
 		TArray<TSharedRef<const IBugsnagBreadcrumb>> Breadcrumbs = UBugsnagFunctionLibrary::GetBreadcrumbs();
 		assert(Breadcrumbs.Num() > 0);
