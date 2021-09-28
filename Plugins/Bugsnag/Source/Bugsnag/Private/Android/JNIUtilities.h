@@ -3,6 +3,7 @@
 #include <jni.h>
 
 #include "BugsnagBreadcrumb.h"
+#include "BugsnagEvent.h"
 #include "BugsnagSettings.h"
 
 typedef struct
@@ -167,6 +168,17 @@ public:
    * @return A Java object reference or null on failure
    */
 	static jobject ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const FBugsnagEnabledBreadcrumbTypes Value);
+
+	/**
+   * Convert a value into a Java Severity
+   *
+   * @param Env   A JNI environment for the current thread
+   * @param Cache A populated reference cache
+   * @param Value The severity value to convert
+   *
+   * @return A Java object reference or null on failure
+   */
+	static jobject ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSeverity Value);
 
 	/**
    * Convert a value into a Java ThreadSendPolicy

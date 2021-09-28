@@ -79,7 +79,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 		"(Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagSetContext);
 	cache->BugsnagNotifyMethod = (*env).GetStaticMethodID(cache->InterfaceClass, "notify",
-		"([B[BLcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
+		"(Ljava/lang/String;Ljava/lang/String;Lcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagNotifyMethod);
 	cache->BugsnagLeaveBreadcrumb = (*env).GetStaticMethodID(cache->BugsnagClass, "leaveBreadcrumb",
 		"(Ljava/lang/String;Ljava/util/Map;Lcom/bugsnag/android/BreadcrumbType;)V");
@@ -383,6 +383,31 @@ jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* 
 		return nullptr;
 	}
 	return jValue;
+}
+
+jobject FAndroidPlatformJNI::ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSeverity Value)
+{
+	jfieldID FieldName;
+	switch (Value)
+	{
+	case EBugsnagSeverity::Info:
+		FieldName = Cache->SeverityFieldInfo;
+		break;
+	case EBugsnagSeverity::Warning:
+		FieldName = Cache->SeverityFieldWarning;
+		break;
+	case EBugsnagSeverity::Error:
+		FieldName = Cache->SeverityFieldError;
+		break;
+	default:
+		return nullptr;
+	}
+	jobject jSeverity = (*Env).GetStaticObjectField(Cache->SeverityClass, FieldName);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return nullptr;
+	}
+	return jSeverity;
 }
 
 jobject FAndroidPlatformJNI::ParseThreadSendPolicy(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSendThreadsPolicy Policy)

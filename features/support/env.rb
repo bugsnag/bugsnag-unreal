@@ -9,15 +9,6 @@ Before do |_scenario|
   sleep 5 if is_platform? 'Android'
 end
 
-# TODO: Remove one of not/skip tags once the dust settles on changes
-Before('@not_android') do |_scenario|
-  skip_this_scenario("Not compatible with Android") if is_platform? 'Android'
-end
-
-Before('@not_ios') do |_scenario|
-  skip_this_scenario("Not compatible with iOS") if is_platform? 'iOS'
-end
-
 Before('@skip_android') do |_scenario|
   skip_this_scenario("Not compatible with Android") if is_platform? 'Android'
 end
