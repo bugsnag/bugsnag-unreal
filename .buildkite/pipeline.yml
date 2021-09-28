@@ -37,6 +37,7 @@ steps:
     plugins:
       artifacts#v1.2.0:
         upload:
+          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
           - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     timeout_in_minutes: 40
@@ -120,7 +121,7 @@ steps:
       queue: opensource
     plugins:
       artifacts#v1.3.0:
-        download: ["features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa"]
+        download: ["features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa","features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM"]
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: cocoa-maze-runner

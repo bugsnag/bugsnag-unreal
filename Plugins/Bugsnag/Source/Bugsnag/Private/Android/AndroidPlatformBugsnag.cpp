@@ -26,18 +26,6 @@ void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 	}
 }
 
-void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message)
-{
-}
-
-void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback)
-{
-}
-
-void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace)
-{
-}
-
 void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
 {

@@ -25,27 +25,8 @@ void FApplePlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Confi
 	[Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 }
 
-FORCENOINLINE static TArray<uint64> CaptureStackTrace()
-{
-	static const int MAX_DEPTH = 100;
-	uint64 Buffer[MAX_DEPTH];
-	FMemory::Memzero(Buffer);
-
-	const uint32 Depth = FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
-
-	const uint32 IgnoreCount = 2; // CaptureStackTrace() + FApplePlatformBugsnag::Notify()
-
-	return TArray<uint64>(Buffer + IgnoreCount, Depth - IgnoreCount);
-}
-
-static void NotifyInternal(
-	const FString& ErrorClass,
-	const FString& Message,
-	const TArray<uint64>& StackTrace,
-	const FBugsnagOnErrorCallback& Callback = [](TSharedRef<IBugsnagEvent>)
-	{
-		return true;
-	})
+void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
+	const FBugsnagOnErrorCallback& Callback)
 {
 	BugsnagClient* Client = Bugsnag.client;
 
@@ -82,29 +63,8 @@ static void NotifyInternal(
 	Event.context = Client.context;
 
 	[Client notifyInternal:Event block:^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
-		return true; // TODO: Callback(FWrappedEvent::From(CocoaEvent));
+		return true; // TODO: if (Callback) return Callback(FWrappedEvent::From(CocoaEvent));
 	}];
-}
-
-void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message)
-{
-	NotifyInternal(ErrorClass, Message, CaptureStackTrace());
-}
-
-void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback)
-{
-	NotifyInternal(ErrorClass, Message, CaptureStackTrace(), Callback);
-}
-
-void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace)
-{
-	NotifyInternal(ErrorClass, Message, StackTrace);
-}
-
-void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
-	const FBugsnagOnErrorCallback& Callback)
-{
-	NotifyInternal(ErrorClass, Message, StackTrace, Callback);
 }
 
 const FString FApplePlatformBugsnag::GetContext()
