@@ -82,6 +82,7 @@ test: Binaries/Mac/UE4Editor-BugsnagExample.dylib
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 package: BugsnagCocoa
+	$(MAKE) -f make/Android.make package
 	"$(UE_RUNUAT)" BuildPlugin -Plugin="$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin" -Package="$(PWD)/Build/Package"
 
 BugsnagCocoa: Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/IOS/Release/libBugsnagStatic.a Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/Mac/Release/libBugsnagStatic.a
