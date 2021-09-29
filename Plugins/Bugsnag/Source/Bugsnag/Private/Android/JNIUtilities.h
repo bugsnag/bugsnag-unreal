@@ -2,6 +2,7 @@
 
 #include <jni.h>
 
+#include "BugsnagBreadcrumb.h"
 #include "BugsnagSettings.h"
 
 typedef struct
@@ -18,11 +19,13 @@ typedef struct
 	jclass ThreadSendPolicyClass;
 	jclass SeverityClass;
 	jclass TraceClass;
+	jclass HashMapClass;
 	jclass HashSetClass;
 
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
 	jmethodID BugsnagSetContext;
+	jmethodID BugsnagLeaveBreadcrumb;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigConstructor;
 	jmethodID ConfigSetAppType;
@@ -46,6 +49,7 @@ typedef struct
 	jmethodID ConfigSetUser;
 	jmethodID EndpointConfigurationConstructor;
 	jmethodID ErrorTypesConstructor;
+	jmethodID HashMapConstructor;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID MetadataParserParse;
@@ -111,6 +115,16 @@ public:
    */
 	static jobject ParseJsonObject(JNIEnv* Env, const JNIReferenceCache* Cache, const TSharedPtr<FJsonObject>& Object);
 
+	/**
+   * Convert a BreadcrumbType enum value into a Java object
+   *
+   * @param Env   A JNI environment for the current thread
+   * @param Cache A populated reference cache
+   * @param Type  The type to convert
+   *
+   * @return A Java object reference or null on failure
+   */
+	static jobject ParseBreadcrumbType(JNIEnv* Env, const JNIReferenceCache* Cache, EBugsnagBreadcrumbType Type);
 	/**
    * Convert an array of strings into a Java Set
    *

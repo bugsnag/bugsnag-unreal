@@ -99,6 +99,27 @@ void FAndroidPlatformBugsnag::ClearMetadata(const FString& Section, const FStrin
 
 void FAndroidPlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (Env && JNICache.initialized)
+	{
+		jstring jMessage = FAndroidPlatformJNI::ParseFString(Env, Message);
+		jobject jType = FAndroidPlatformJNI::ParseBreadcrumbType(Env, &JNICache, Type);
+
+		if (!jMessage || !jType)
+		{
+			return;
+		}
+
+		jobject jMetadata = Metadata
+								? FAndroidPlatformJNI::ParseJsonObject(Env, &JNICache, Metadata)
+								: (*Env).NewObject(JNICache.HashMapClass, JNICache.HashMapConstructor);
+		if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jMetadata)
+		{
+			return;
+		}
+		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagLeaveBreadcrumb, jMessage, jMetadata, jType);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 }
 
 TArray<TSharedRef<const class IBugsnagBreadcrumb>> FAndroidPlatformBugsnag::GetBreadcrumbs()

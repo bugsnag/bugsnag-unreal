@@ -57,6 +57,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserClass);
 
 	// Core classes are available through standard JNI functions only
+	cache->HashMapClass = LoadJavaClass(env, "java/util/HashMap", false);
+	ReturnFalseIfNullAndClearExceptions(env, cache->HashMapClass);
 	cache->HashSetClass = LoadJavaClass(env, "java/util/HashSet", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashSetClass);
 	cache->TraceClass = LoadJavaClass(env, "java/lang/StackTraceElement", false);
@@ -71,6 +73,9 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	cache->BugsnagNotifyMethod = (*env).GetStaticMethodID(cache->InterfaceClass, "notify",
 		"([B[BLcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagNotifyMethod);
+	cache->BugsnagLeaveBreadcrumb = (*env).GetStaticMethodID(cache->BugsnagClass, "leaveBreadcrumb",
+		"(Ljava/lang/String;Ljava/util/Map;Lcom/bugsnag/android/BreadcrumbType;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagLeaveBreadcrumb);
 
 	cache->MetadataParserParse = (*env).GetStaticMethodID(cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
 	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserParse);
@@ -124,6 +129,9 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	cache->ErrorTypesConstructor = (*env).GetMethodID(cache->ErrorTypesClass, "<init>", "(ZZZZ)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ErrorTypesConstructor);
+
+	cache->HashMapConstructor = (*env).GetMethodID(cache->HashMapClass, "<init>", "()V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->HashMapConstructor);
 
 	cache->HashSetConstructor = (*env).GetMethodID(cache->HashSetClass, "<init>", "()V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashSetConstructor);
@@ -267,6 +275,37 @@ static bool addTypeToSet(JNIEnv* Env, jobject jSet, bool ShouldAdd, const JNIRef
 		}
 	}
 	return true;
+}
+
+static jfieldID breadcrumbFieldForType(const JNIReferenceCache* Cache, EBugsnagBreadcrumbType Type)
+{
+	switch (Type)
+	{
+	case EBugsnagBreadcrumbType::Manual:
+		return Cache->BreadcrumbTypeManual;
+	case EBugsnagBreadcrumbType::Error:
+		return Cache->BreadcrumbTypeError;
+	case EBugsnagBreadcrumbType::Log:
+		return Cache->BreadcrumbTypeLog;
+	case EBugsnagBreadcrumbType::Navigation:
+		return Cache->BreadcrumbTypeNavigation;
+	case EBugsnagBreadcrumbType::Process:
+		return Cache->BreadcrumbTypeProcess;
+	case EBugsnagBreadcrumbType::Request:
+		return Cache->BreadcrumbTypeRequest;
+	case EBugsnagBreadcrumbType::State:
+		return Cache->BreadcrumbTypeState;
+	case EBugsnagBreadcrumbType::User:
+		return Cache->BreadcrumbTypeUser;
+	}
+}
+
+jobject FAndroidPlatformJNI::ParseBreadcrumbType(JNIEnv* Env, const JNIReferenceCache* Cache, EBugsnagBreadcrumbType Type)
+{
+	jfieldID jType = breadcrumbFieldForType(Cache, Type);
+	jobject result = (*Env).GetStaticObjectField(Cache->BreadcrumbTypeClass, jType);
+	ReturnNullOnException(Env);
+	return result;
 }
 
 jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const FBugsnagEnabledBreadcrumbTypes Value)
