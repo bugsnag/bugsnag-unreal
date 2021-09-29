@@ -29,7 +29,6 @@ Feature: Unhandled errors
     # TODO: pending PLAT-7305
     And on iOS, the event "app.context" equals "Main Menu"
     And on Android, the event "app.versionCode" equals 22
-    # TODO: pending PLAT-7374
-    And on Android, the event "user.id" equals "1255"
-    And on Android, the event "user.name" equals "jimmy"
-    And on Android, the event "user.email" equals "j@example.com"
+    And the event "user.id" equals "1255"
+    And the event "user.name" equals "jimmy"
+    And the event "user.email" equals "j@example.com"
