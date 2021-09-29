@@ -3,11 +3,19 @@
 #include "ScenarioNames.h"
 #include "Scenarios/Scenario.h"
 
+#if PLATFORM_ANDROID
+#include "Android/AndroidJavaEnv.h"
+#endif
+
 static void ClearPersistentData()
 {
 	UE_LOG(LogTemp, Display, TEXT("Clearing persistent data"));
 #if PLATFORM_ANDROID
-	// TODO
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	jclass ActivityClass = AndroidJavaEnv::FindJavaClass("com/epicgames/ue4/GameActivity");
+	jmethodID ClearBugsnagCache = (*Env).GetMethodID(ActivityClass, "clearBugsnagCache", "()V");
+	jobject Activity = AndroidJavaEnv::GetGameActivityThis();
+	(*Env).CallVoidMethod(Activity, ClearBugsnagCache);
 #elif PLATFORM_APPLE
 	[NSUserDefaults.standardUserDefaults removePersistentDomainForName:NSBundle.mainBundle.bundleIdentifier];
 	NSString* AppSupportDir = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;

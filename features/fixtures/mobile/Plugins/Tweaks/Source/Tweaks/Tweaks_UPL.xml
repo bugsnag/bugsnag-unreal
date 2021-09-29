@@ -8,6 +8,8 @@
     <gameActivityImportAdditions>
         <insert>
             import android.content.Intent;
+            import java.nio.file.Path;
+            import java.lang.String;
         </insert>
     </gameActivityImportAdditions>
 
@@ -16,4 +18,31 @@
             sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         </insert>
     </gameActivityOnCreateAdditions>
+
+    <gameActivityClassAdditions>
+        <insert>
+            private void clearBugsnagCache() {
+                File cache = getCacheDir();
+                deleteRecursive(cache, "bugsnag-native");
+                deleteRecursive(cache, "bugsnag-errors");
+                deleteRecursive(cache, "bugsnag-sessions");
+            }
+
+            private void deleteRecursive(File file) {
+                if (file.isDirectory()) {
+                    for (File child : file.listFiles()) {
+                        deleteRecursive(child);
+                    }
+                }
+                file.delete();
+            }
+
+            private void deleteRecursive(File basedir, String subdir) {
+                try {
+                    deleteRecursive(new File(basedir, subdir));
+                } catch (Exception ex) {
+                }
+            }
+        </insert>
+    </gameActivityClassAdditions>
 </root>
