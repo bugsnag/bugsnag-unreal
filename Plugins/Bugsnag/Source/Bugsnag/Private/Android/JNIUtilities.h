@@ -16,16 +16,21 @@ typedef struct
 	jclass EndpointConfigurationClass;
 	jclass ErrorTypesClass;
 	jclass MetadataParserClass;
+	jclass NotifierClass;
 	jclass ThreadSendPolicyClass;
 	jclass SeverityClass;
 	jclass TraceClass;
 	jclass HashMapClass;
 	jclass HashSetClass;
+	jclass ArrayListClass;
 
+	jmethodID ArrayListConstructor;
+	jmethodID ArrayListAdd;
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
 	jmethodID BugsnagSetContext;
 	jmethodID BugsnagLeaveBreadcrumb;
+	jmethodID ConfigGetNotifier;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigConstructor;
 	jmethodID ConfigSetAppType;
@@ -50,6 +55,14 @@ typedef struct
 	jmethodID EndpointConfigurationConstructor;
 	jmethodID ErrorTypesConstructor;
 	jmethodID HashMapConstructor;
+	jmethodID NotifierConstructor;
+	jmethodID NotifierGetName;
+	jmethodID NotifierGetUrl;
+	jmethodID NotifierGetVersion;
+	jmethodID NotifierSetName;
+	jmethodID NotifierSetUrl;
+	jmethodID NotifierSetVersion;
+	jmethodID NotifierSetDependencies;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID MetadataParserParse;
@@ -166,4 +179,14 @@ public:
    * @return true if an exception was detected
    */
 	static bool CheckAndClearException(JNIEnv* Env);
+
+	/**
+   * Set bugsnag unreal notifier info on the client, converting the existing notifier
+   * info into a dependency
+   *
+   * @param Env     A JNI environment for the current thread
+   * @param Cache   A reference to a cache object to populate. Must not be null.
+   * @param jClient The client containing the notifier
+   */
+	static bool SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jClient);
 };

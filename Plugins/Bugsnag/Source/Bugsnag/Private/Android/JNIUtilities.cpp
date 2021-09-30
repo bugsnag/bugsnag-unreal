@@ -1,5 +1,7 @@
 #include "JNIUtilities.h"
 
+#include "Version.h"
+
 #include <string>
 
 #include "Android/AndroidJavaEnv.h"
@@ -43,6 +45,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigClass);
 	cache->InterfaceClass = LoadJavaClass(env, "com.bugsnag.android.NativeInterface", true);
 	ReturnFalseIfNullAndClearExceptions(env, cache->InterfaceClass);
+	cache->NotifierClass = LoadJavaClass(env, "com.bugsnag.android.Notifier", true);
+	ReturnFalseIfNullAndClearExceptions(env, cache->NotifierClass);
 	cache->BreadcrumbTypeClass = LoadJavaClass(env, "com.bugsnag.android.BreadcrumbType", true);
 	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbTypeClass);
 	cache->SeverityClass = LoadJavaClass(env, "com.bugsnag.android.Severity", true);
@@ -59,6 +63,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	// Core classes are available through standard JNI functions only
 	cache->HashMapClass = LoadJavaClass(env, "java/util/HashMap", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashMapClass);
+	cache->ArrayListClass = LoadJavaClass(env, "java/util/ArrayList", false);
+	ReturnFalseIfNullAndClearExceptions(env, cache->ArrayListClass);
 	cache->HashSetClass = LoadJavaClass(env, "java/util/HashSet", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashSetClass);
 	cache->TraceClass = LoadJavaClass(env, "java/lang/StackTraceElement", false);
@@ -85,6 +91,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigConstructor);
 	cache->ConfigAddMetadata = (*env).GetMethodID(cache->ConfigClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigAddMetadata);
+	cache->ConfigGetNotifier = (*env).GetMethodID(cache->ConfigClass, "getNotifier", "()Lcom/bugsnag/android/Notifier;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigGetNotifier);
 	cache->ConfigSetAppType = (*env).GetMethodID(cache->ConfigClass, "setAppType", "(Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetAppType);
 	cache->ConfigSetAppVersion = (*env).GetMethodID(cache->ConfigClass, "setAppVersion", "(Ljava/lang/String;)V");
@@ -133,6 +141,21 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	cache->HashMapConstructor = (*env).GetMethodID(cache->HashMapClass, "<init>", "()V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashMapConstructor);
 
+	cache->NotifierConstructor = (*env).GetMethodID(cache->NotifierClass, "<init>", "()V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->NotifierConstructor);
+	cache->NotifierSetDependencies = (*env).GetMethodID(cache->NotifierClass, "setDependencies", "(Ljava/util/List;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->NotifierSetDependencies);
+	cache->NotifierSetName = (*env).GetMethodID(cache->NotifierClass, "setName", "(Ljava/lang/String;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->NotifierSetName);
+	cache->NotifierSetUrl = (*env).GetMethodID(cache->NotifierClass, "setUrl", "(Ljava/lang/String;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->NotifierSetUrl);
+	cache->NotifierSetVersion = (*env).GetMethodID(cache->NotifierClass, "setVersion", "(Ljava/lang/String;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->NotifierSetVersion);
+
+	cache->ArrayListConstructor = (*env).GetMethodID(cache->ArrayListClass, "<init>", "()V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->ArrayListConstructor);
+	cache->ArrayListAdd = (*env).GetMethodID(cache->ArrayListClass, "add", "(Ljava/lang/Object;)Z");
+	ReturnFalseIfNullAndClearExceptions(env, cache->ArrayListAdd);
 	cache->HashSetConstructor = (*env).GetMethodID(cache->HashSetClass, "<init>", "()V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashSetConstructor);
 	cache->HashSetAdd = (*env).GetMethodID(cache->HashSetClass, "add", "(Ljava/lang/Object;)Z");
@@ -352,4 +375,33 @@ jobject FAndroidPlatformJNI::ParseThreadSendPolicy(JNIEnv* Env, const JNIReferen
 		return nullptr;
 	}
 	return jPolicy;
+}
+
+bool FAndroidPlatformJNI::SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jConfig)
+{
+	jobject jNotifier = (*Env).CallObjectMethod(jConfig, Cache->ConfigGetNotifier);
+	ReturnFalseOnException(Env);
+	// default notifier object has the name, url, and version of the underlying library
+	jobject jDependency = (*Env).NewObject(Cache->NotifierClass, Cache->NotifierConstructor);
+	ReturnFalseIfNullAndClearExceptions(Env, jDependency);
+	jobject jDependencies = (*Env).NewObject(Cache->ArrayListClass, Cache->ArrayListConstructor);
+	ReturnFalseIfNullAndClearExceptions(Env, jDependencies);
+	(*Env).CallBooleanMethod(jDependencies, Cache->ArrayListAdd, jDependency);
+	ReturnFalseOnException(Env);
+	jstring jName = (*Env).NewStringUTF(BUGSNAG_UNREAL_NAME);
+	ReturnFalseIfNullAndClearExceptions(Env, jName);
+	jstring jVersion = (*Env).NewStringUTF(BUGSNAG_UNREAL_VERSION_STRING);
+	ReturnFalseIfNullAndClearExceptions(Env, jVersion);
+	jstring jUrl = (*Env).NewStringUTF(BUGSNAG_UNREAL_URL);
+	ReturnFalseIfNullAndClearExceptions(Env, jUrl);
+	(*Env).CallVoidMethod(jNotifier, Cache->NotifierSetName, jName);
+	ReturnFalseOnException(Env);
+	(*Env).CallVoidMethod(jNotifier, Cache->NotifierSetVersion, jVersion);
+	ReturnFalseOnException(Env);
+	(*Env).CallVoidMethod(jNotifier, Cache->NotifierSetUrl, jUrl);
+	ReturnFalseOnException(Env);
+	(*Env).CallVoidMethod(jNotifier, Cache->NotifierSetDependencies, jDependencies);
+	ReturnFalseOnException(Env);
+
+	return true;
 }

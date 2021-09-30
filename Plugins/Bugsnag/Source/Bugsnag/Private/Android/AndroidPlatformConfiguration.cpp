@@ -43,6 +43,7 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	jobject jConfig = (*Env).NewObject(Cache->ConfigClass, Cache->ConfigConstructor, jApiKey);
 	ReturnNullOnException(Env);
 
+	FAndroidPlatformJNI::SetNotifierInfo(Env, Cache, jConfig);
 	if (!Config->GetAppType().IsEmpty())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetAppType, Config->GetAppType());
