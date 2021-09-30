@@ -12,12 +12,6 @@ class IPlatformBugsnag
 public:
 	virtual void Start(const TSharedPtr<FBugsnagConfiguration>& Configuration) = 0;
 
-	virtual void Notify(const FString& ErrorClass, const FString& Message) = 0;
-
-	virtual void Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback) = 0;
-
-	virtual void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace) = 0;
-
 	virtual void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 		const FBugsnagOnErrorCallback& Callback) = 0;
 

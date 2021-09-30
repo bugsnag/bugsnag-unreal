@@ -1,3 +1,7 @@
+require 'rbconfig'
+
+HOST_OS = RbConfig::CONFIG['host_os']
+
 When('I configure Bugsnag for {string}') do |scenario_name|
   enter_text "Start #{scenario_name}"
 end
@@ -19,6 +23,35 @@ end
 
 Then(/^on (Android|iOS), (.+)/) do |platform, step_text|
   steps(step_text) if is_platform? platform
+end
+
+Then('the method of stack frame {int} is equivalent to {string}') do |frame_index, method|
+  # Revisit post-CI merge, needs c++filt and llvm-objdump installed on linux
+  if Maze.config.farm == :local
+    assert_equal(method, parse_method(frame_index))
+  else
+    puts "Skipping step due to missing tooling ..."
+  end
+end
+
+def parse_method frame_index
+  if is_platform? 'iOS'
+    # Assumes this is resolving a symbol from the app binary (instead of
+    # system frameworks, other bundled executables, etc)
+    stackframe = Maze::Helper.read_key_path(
+      Maze::Server.errors.current[:body],
+      "events.0.exceptions.0.stacktrace.#{frame_index}")
+    dsym_path = File.join(artifact_path, 'TestFixture-IOS-Shipping.dSYM')
+    stop_addr = Integer(stackframe["frameAddress"]) - Integer(stackframe["machoLoadAddress"]) + Integer(stackframe["machoVMAddress"])
+    start_addr = stop_addr - 4096
+    cmd = HOST_OS == 'darwin' ? 'xcrun objdump' : 'llvm-objdump'
+    `#{cmd} --arch arm64 --syms --stop-address 0x#{stop_addr.to_s(16)} --start-address 0x#{start_addr.to_s(16)} #{dsym_path} | tail -n 1 | awk '{print $5;}' | c++filt -_`.chomp
+  else
+    stackframe_method = Maze::Helper.read_key_path(
+      Maze::Server.errors.current[:body],
+      "events.0.exceptions.0.stacktrace.#{frame_index}.method")
+    `c++filt '_#{stackframe_method}'`.chomp
+  end
 end
 
 def enter_text(text)

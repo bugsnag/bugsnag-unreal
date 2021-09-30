@@ -18,3 +18,4 @@ Feature: Unhandled errors
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
+    And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"

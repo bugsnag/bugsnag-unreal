@@ -35,3 +35,20 @@ def is_platform? name
   # > is_platform? 'ios'
   current_platform.casecmp(name.to_s) == 0
 end
+
+def platform_artifact_dir
+  if is_platform? 'iOS'
+    'IOS' # why did they do this to us lol
+  else
+    current_platform.capitalize
+  end
+end
+
+def artifact_path
+  if Maze.config.farm == :local
+    File.join(File.dirname(__FILE__), '..', 'fixtures', 'mobile', 'Binaries', platform_artifact_dir)
+  else
+    '/app/build'
+  end
+end
+

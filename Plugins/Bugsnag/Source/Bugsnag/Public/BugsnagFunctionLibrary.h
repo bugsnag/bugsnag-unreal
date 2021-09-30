@@ -27,18 +27,28 @@ public:
 	// Notify
 
 	// Report an error to Bugsnag.
+	FORCEINLINE
 	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
-	static void Notify(const FString& ErrorClass, const FString& Message);
+	static void Notify(const FString& ErrorClass, const FString& Message)
+	{
+		Notify(ErrorClass, Message, CaptureStackTrace(), nullptr);
+	};
 
-	static void Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback);
+	FORCEINLINE static void Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback)
+	{
+		Notify(ErrorClass, Message, CaptureStackTrace(), Callback);
+	};
 
-	static void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace);
+	static void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace)
+	{
+		Notify(ErrorClass, Message, StackTrace, nullptr);
+	};
 
 	static void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 		const FBugsnagOnErrorCallback& Callback);
 
 	// Returns the stack trace of the calling thread.
-	static TArray<uint64> CaptureStackTrace();
+	FORCENOINLINE static TArray<uint64> CaptureStackTrace();
 
 	// Context
 

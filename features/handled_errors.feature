@@ -41,3 +41,4 @@ Feature: Reporting handled errors
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the exception "errorClass" equals "Internal Error"
     And the exception "message" equals "Does not compute"
+    And the method of stack frame 0 is equivalent to "NotifyScenario::Run()"

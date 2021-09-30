@@ -18,27 +18,6 @@ void UBugsnagFunctionLibrary::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 #endif
 }
 
-void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& Message)
-{
-#if PLATFORM_IMPLEMENTS_BUGSNAG
-	GPlatformBugsnag.Notify(ErrorClass, Message);
-#endif
-}
-
-void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& Message, const FBugsnagOnErrorCallback& Callback)
-{
-#if PLATFORM_IMPLEMENTS_BUGSNAG
-	GPlatformBugsnag.Notify(ErrorClass, Message, Callback);
-#endif
-}
-
-void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace)
-{
-#if PLATFORM_IMPLEMENTS_BUGSNAG
-	GPlatformBugsnag.Notify(ErrorClass, Message, StackTrace);
-#endif
-}
-
 void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
 {
@@ -47,7 +26,7 @@ void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& M
 #endif
 }
 
-TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
+FORCENOINLINE TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 {
 	static const int MAX_DEPTH = 100;
 	uint64 Buffer[MAX_DEPTH];
@@ -55,7 +34,15 @@ TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 
 	const uint32 Depth = FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
 
-	const uint32 IgnoreCount = 2; // Ignore this function and `FPlatformStackWalk::CaptureStackBackTrace`
+// Skip the correct number of frames to ensure Shipping builds group correctly
+#if PLATFORM_IOS
+	const uint32 IgnoreCount = 1;
+#elif PLATFORM_ANDROID
+	const uint32 IgnoreCount = 2;
+#else
+	// Calibrate this function when adding a new platform
+	const uint32 IgnoreCount = 0;
+#endif
 
 	return TArray<uint64>(Buffer + IgnoreCount, Depth - IgnoreCount);
 }
