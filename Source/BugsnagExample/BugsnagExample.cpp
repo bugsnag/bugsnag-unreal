@@ -50,7 +50,7 @@ void StartWithConfiguration()
 	// The appVersion will let you see what release an error is present in.
 	// This will be picked up automatically from your app at run-time, but can be manually overriden here if necessary.
 	//
-	Configuration->SetAppVersion(TEXT("1.5.0"));
+	Configuration->SetAppVersion(MakeShareable(new FString(TEXT("1.5.0"))));
 
 	//
 	// Enabled error types allow you to customize exactly which errors are automatically captured and delivered to your Bugsnag dashboard.

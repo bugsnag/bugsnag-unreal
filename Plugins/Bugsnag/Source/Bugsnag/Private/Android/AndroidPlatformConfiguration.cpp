@@ -13,17 +13,8 @@
 	jniCallWithObjects(env, obj, method, FAndroidPlatformJNI::ParseBoolean(value));
 
 // Call a void JNI method, parsing value as a (nullable) jstring
-#define jniCallWithString(env, obj, method, value)                      \
-	if (value.IsEmpty())                                                \
-	{                                                                   \
-		jniCallWithObjects(env, obj, method, nullptr);                  \
-	}                                                                   \
-	else                                                                \
-	{                                                                   \
-		jstring jValue = FAndroidPlatformJNI::ParseFString(env, value); \
-		ReturnNullOnFail(jValue);                                       \
-		jniCallWithObjects(env, obj, method, jValue);                   \
-	}
+#define jniCallWithString(env, obj, method, value) \
+	jniCallWithObjects(env, obj, method, FAndroidPlatformJNI::ParseFStringPtr(env, value));
 
 // Call a void JNI method, parsing value as a Java HashSet<String>
 #define jniCallWithSet(env, cache, obj, method, value)                         \
@@ -44,17 +35,17 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	ReturnNullOnException(Env);
 
 	FAndroidPlatformJNI::SetNotifierInfo(Env, Cache, jConfig);
-	if (!Config->GetAppType().IsEmpty())
+	if (Config->GetAppType().IsValid())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetAppType, Config->GetAppType());
 	}
-	if (!Config->GetAppVersion().IsEmpty())
+	if (Config->GetAppVersion().IsValid())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetAppVersion, Config->GetAppVersion());
 	}
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetAutoDetectErrors, Config->GetAutoDetectErrors());
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetAutoTrackSessions, Config->GetAutoTrackSessions());
-	if (!Config->GetContext().IsEmpty())
+	if (Config->GetContext().IsValid())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetContext, Config->GetContext());
 	}
@@ -100,7 +91,7 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	{
 		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
 	}
-	if (!Config->GetReleaseStage().IsEmpty())
+	if (Config->GetReleaseStage().IsValid())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage());
 	}

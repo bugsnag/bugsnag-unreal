@@ -41,9 +41,9 @@ public:
 
 	// Context
 
-	const FString& GetContext() const { return Context; }
+	const TSharedPtr<FString>& GetContext() const { return Context; }
 
-	void SetContext(const FString& Value) { Context = Value; }
+	void SetContext(const TSharedPtr<FString>& Value) { Context = Value; }
 
 	// DiscardClasses
 
@@ -148,33 +148,33 @@ public:
 
 	// Release Stage
 
-	const FString& GetReleaseStage() const { return ReleaseStage; }
+	const TSharedPtr<FString>& GetReleaseStage() const { return ReleaseStage; }
 
-	void SetReleaseStage(const FString& Value) { ReleaseStage = Value; }
+	void SetReleaseStage(const TSharedPtr<FString>& Value) { ReleaseStage = Value; }
 
 	// App Type
 
-	const FString& GetAppType() const { return AppType; }
+	const TSharedPtr<FString>& GetAppType() const { return AppType; }
 
-	void SetAppType(const FString& Value) { AppType = Value; }
+	void SetAppType(const TSharedPtr<FString>& Value) { AppType = Value; }
 
 	// App Version
 
-	const FString& GetAppVersion() const { return AppVersion; }
+	const TSharedPtr<FString>& GetAppVersion() const { return AppVersion; }
 
-	void SetAppVersion(const FString& Value) { AppVersion = Value; }
+	void SetAppVersion(const TSharedPtr<FString>& Value) { AppVersion = Value; }
 
 	// Bundle Version
 
-	const FString& GetBundleVersion() const { return BundleVersion; }
+	const TSharedPtr<FString>& GetBundleVersion() const { return BundleVersion; }
 
-	void SetBundleVersion(const FString& Value) { BundleVersion = Value; }
+	void SetBundleVersion(const TSharedPtr<FString>& Value) { BundleVersion = Value; }
 
 	// Version Code
 
-	const FString& GetVersionCode() const { return VersionCode; }
+	const TSharedPtr<int>& GetVersionCode() const { return VersionCode; }
 
-	void SetVersionCode(const FString& Value) { VersionCode = Value; }
+	void SetVersionCode(const TSharedPtr<int>& Value) { VersionCode = Value; }
 
 	// Endpoints
 
@@ -233,7 +233,7 @@ private:
 	FString ApiKey;
 	bool bAutoDetectErrors = true;
 	bool bAutoTrackSessions = true;
-	FString Context;
+	TSharedPtr<FString> Context;
 	TArray<FString> DiscardClasses;
 	FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes;
 	FBugsnagErrorTypes EnabledErrorTypes;
@@ -248,11 +248,11 @@ private:
 	uint64 MaxPersistedSessions = 128;
 	bool bPersistUser = true;
 	FBugsnagUser User;
-	FString ReleaseStage;
-	FString AppType;
-	FString AppVersion;
-	FString BundleVersion;
-	FString VersionCode;
+	TSharedPtr<FString> ReleaseStage;
+	TSharedPtr<FString> AppType;
+	TSharedPtr<FString> AppVersion;
+	TSharedPtr<FString> BundleVersion;
+	TSharedPtr<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedPtr<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;

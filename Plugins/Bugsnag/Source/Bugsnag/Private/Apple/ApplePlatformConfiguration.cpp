@@ -60,9 +60,9 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	CocoaConfig.autoTrackSessions = Configuration->GetAutoTrackSessions();
 
-	if (!Configuration->GetContext().IsEmpty())
+	if (Configuration->GetContext().IsValid())
 	{
-		CocoaConfig.context = NSStringFromFString(Configuration->GetContext());
+		CocoaConfig.context = NSStringFromFStringPtr(Configuration->GetContext());
 	}
 
 	if (Configuration->GetDiscardClasses().Num())
@@ -107,24 +107,24 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	CocoaConfig.persistUser = Configuration->GetPersistUser();
 
-	if (!Configuration->GetReleaseStage().IsEmpty())
+	if (Configuration->GetReleaseStage().IsValid())
 	{
-		CocoaConfig.releaseStage = NSStringFromFString(Configuration->GetReleaseStage());
+		CocoaConfig.releaseStage = NSStringFromFStringPtr(Configuration->GetReleaseStage());
 	}
 
-	if (!Configuration->GetAppType().IsEmpty())
+	if (Configuration->GetAppType().IsValid())
 	{
-		CocoaConfig.appType = NSStringFromFString(Configuration->GetAppType());
+		CocoaConfig.appType = NSStringFromFStringPtr(Configuration->GetAppType());
 	}
 
-	if (!Configuration->GetAppVersion().IsEmpty())
+	if (Configuration->GetAppVersion().IsValid())
 	{
-		CocoaConfig.appVersion = NSStringFromFString(Configuration->GetAppVersion());
+		CocoaConfig.appVersion = NSStringFromFStringPtr(Configuration->GetAppVersion());
 	}
 
-	if (!Configuration->GetBundleVersion().IsEmpty())
+	if (Configuration->GetBundleVersion().IsValid())
 	{
-		CocoaConfig.bundleVersion = NSStringFromFString(Configuration->GetBundleVersion());
+		CocoaConfig.bundleVersion = NSStringFromFStringPtr(Configuration->GetBundleVersion());
 	}
 
 	CocoaConfig.endpoints = [[BugsnagEndpointConfiguration alloc]
