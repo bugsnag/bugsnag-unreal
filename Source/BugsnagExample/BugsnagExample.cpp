@@ -36,7 +36,10 @@ void StartWithConfiguration()
 	//
 	// This sets some user information that will be attached to each error.
 	//
-	Configuration->SetUser(TEXT("DefaultUser"), TEXT("user@example.com"), TEXT("Default User"));
+	Configuration->SetUser(
+		MakeShareable(new FString(TEXT("DefaultUser"))),
+		MakeShareable(new FString(TEXT("user@example.com"))),
+		MakeShareable(new FString(TEXT("Default User"))));
 
 	//
 	// When persisting a user you won't need to set the user information every time the app opens, it will be persisted between app sessions.

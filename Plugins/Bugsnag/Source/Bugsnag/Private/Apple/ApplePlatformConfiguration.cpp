@@ -133,9 +133,9 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	if (!Configuration->GetUser().IsEmpty())
 	{
-		[CocoaConfig setUser:NSStringFromFString(Configuration->GetUser().GetId())
-				   withEmail:NSStringFromFString(Configuration->GetUser().GetEmail())
-					 andName:NSStringFromFString(Configuration->GetUser().GetName())];
+		[CocoaConfig setUser:NSStringFromFStringPtr(Configuration->GetUser().GetId())
+				   withEmail:NSStringFromFStringPtr(Configuration->GetUser().GetEmail())
+					 andName:NSStringFromFStringPtr(Configuration->GetUser().GetName())];
 	}
 
 	for (auto& Item : Configuration->GetMetadataValues())

@@ -186,7 +186,7 @@ public:
 
 	const FBugsnagUser GetUser() const { return User; }
 
-	void SetUser(const FString& Id = TEXT(""), const FString& Email = TEXT(""), const FString& Name = TEXT(""));
+	void SetUser(const TSharedPtr<FString>& Id = nullptr, const TSharedPtr<FString>& Email = nullptr, const TSharedPtr<FString>& Name = nullptr);
 
 	// Metadata
 

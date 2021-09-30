@@ -212,6 +212,15 @@ jstring FAndroidPlatformJNI::ParseFString(JNIEnv* Env, const FString& Text)
 	return NULL;
 }
 
+jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<FString>& Text)
+{
+	if (Text.IsValid())
+	{
+		return ParseFString(Env, *Text);
+	}
+	return NULL;
+}
+
 bool FAndroidPlatformJNI::CheckAndClearException(JNIEnv* Env)
 {
 	if ((*Env).ExceptionCheck())

@@ -81,7 +81,7 @@ void FBugsnagConfiguration::SetApiKey(const FString& Value)
 	ApiKey = Value;
 }
 
-void FBugsnagConfiguration::SetUser(const FString& Id, const FString& Email, const FString& Name)
+void FBugsnagConfiguration::SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name)
 {
 	User = FBugsnagUser(Id, Email, Name);
 }

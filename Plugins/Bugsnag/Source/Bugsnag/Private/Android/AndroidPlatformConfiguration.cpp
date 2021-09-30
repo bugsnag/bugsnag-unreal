@@ -111,9 +111,9 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 
 	if (!Config->GetUser().IsEmpty())
 	{
-		jstring jId = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetId());
-		jstring jEmail = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetEmail());
-		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Config->GetUser().GetName());
+		jstring jId = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetId());
+		jstring jEmail = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetEmail());
+		jstring jName = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetName());
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
 	}
 

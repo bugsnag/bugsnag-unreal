@@ -230,7 +230,10 @@ void FApplePlatformConfigurationSpec::Define()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
 					Configuration->SetPersistUser(false);
-					Configuration->SetUser(TEXT("123"), TEXT("foobar@example.com"), TEXT("Foo Bar"));
+					Configuration->SetUser(
+						MakeShareable(new FString(TEXT("123"))),
+						MakeShareable(new FString(TEXT("foobar@example.com"))),
+						MakeShareable(new FString(TEXT("Foo Bar"))));
 
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.user.id.UTF8String), TEXT("123"));
@@ -286,7 +289,7 @@ void FApplePlatformConfigurationSpec::Define()
 					bool OnSessionCalled = false;
 					Configuration->AddOnSession([&OnSessionCalled](TSharedRef<IBugsnagSession> Session) mutable
 						{
-							Session->SetUser(TEXT("user123"));
+							Session->SetUser(MakeShareable(new FString(TEXT("user123"))));
 							Session->GetApp()->SetReleaseStage(MakeShareable(new FString(TEXT("testing"))));
 							Session->GetDevice()->SetLocale(nullptr);
 							OnSessionCalled = true;
