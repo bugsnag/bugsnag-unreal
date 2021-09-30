@@ -5,6 +5,8 @@
 #include <cstdio>
 
 #include "Android/AndroidJavaEnv.h"
+
+#include "AndroidBreadcrumb.h"
 #include "AndroidPlatformConfiguration.h"
 #include "JNIUtilities.h"
 #include "Shorthand.h"
@@ -22,6 +24,7 @@ void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	if ((JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache)))
 	{
+		OnBreadcrumbCallbacks += Config->GetOnBreadcrumbCallbacks();
 		jobject jActivity = AndroidJavaEnv::GetGameActivityThis();
 		jobject jConfig = FAndroidPlatformConfiguration::Parse(Env, &JNICache, Config);
 		jobject jClient = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jActivity, jConfig);
@@ -221,10 +224,6 @@ bool FAndroidPlatformBugsnag::ResumeSession()
 	return false;
 }
 
-void FAndroidPlatformBugsnag::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback)
-{
-}
-
 void FAndroidPlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
 {
 }
@@ -232,3 +231,35 @@ void FAndroidPlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
 void FAndroidPlatformBugsnag::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 }
+
+bool FAndroidPlatformBugsnag::RunOnBreadcrumbCallbacks(TSharedRef<IBugsnagBreadcrumb> Crumb)
+{
+	for (auto& Callback : OnBreadcrumbCallbacks)
+	{
+		if (!Callback(Crumb))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+	JNIEXPORT jboolean JNICALL Java_com_bugsnag_android_unreal_UnrealPlugin_runBreadcrumbCallbacks(
+		JNIEnv* Env, jobject _this, jobject jCrumb)
+	{
+		if (JNICache.loaded)
+		{
+			auto Crumb = FAndroidBreadcrumb::From(Env, &JNICache, jCrumb);
+			return GPlatformBugsnag.RunOnBreadcrumbCallbacks(Crumb) ? JNI_TRUE : JNI_FALSE;
+		}
+		return JNI_TRUE;
+	}
+
+#ifdef __cplusplus
+}
+#endif

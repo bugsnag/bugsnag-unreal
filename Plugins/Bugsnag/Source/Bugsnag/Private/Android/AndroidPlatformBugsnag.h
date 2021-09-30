@@ -44,11 +44,19 @@ public:
 
 	bool ResumeSession() override;
 
-	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) override;
+	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) override
+	{
+		OnBreadcrumbCallbacks.Add(Callback);
+	};
 
 	void AddOnSendError(FBugsnagOnErrorCallback Callback) override;
 
 	void AddOnSession(FBugsnagOnSessionCallback Callback) override;
+
+	bool RunOnBreadcrumbCallbacks(TSharedRef<IBugsnagBreadcrumb> Crumb);
+
+private:
+	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
 };
 
 DECLARE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag)
