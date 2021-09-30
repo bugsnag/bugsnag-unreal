@@ -33,9 +33,9 @@ public:
 
 	// type?: ErrorType,
 
-	virtual EBugsnagErrorType GetErrorType() const = 0;
+	virtual TSharedPtr<EBugsnagErrorType> GetErrorType() const = 0;
 
-	virtual void SetErrorType(EBugsnagErrorType) = 0;
+	virtual void SetErrorType(TSharedPtr<EBugsnagErrorType>) = 0;
 
 #if PLATFORM_APPLE
 
@@ -77,15 +77,15 @@ public:
 
 	// isPC?: boolean
 
-	virtual TSharedPtr<uint32> GetIsPC() const = 0;
+	virtual TSharedPtr<bool> GetIsPC() const = 0;
 
-	virtual void SetIsPC(const TSharedPtr<uint32>&) = 0;
+	virtual void SetIsPC(const TSharedPtr<bool>&) = 0;
 
 	// isLR?: boolean
 
-	virtual TSharedPtr<uint32> GetIsLR() const = 0;
+	virtual TSharedPtr<bool> GetIsLR() const = 0;
 
-	virtual void SetIsLR(const TSharedPtr<uint32>&) = 0;
+	virtual void SetIsLR(const TSharedPtr<bool>&) = 0;
 
 #endif
 };

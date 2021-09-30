@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 
 #include "BugsnagErrorType.h"
+#include "BugsnagStackframe.h"
 
 class BUGSNAG_API IBugsnagError
 {
@@ -24,4 +25,10 @@ public:
 	virtual EBugsnagErrorType GetErrorType() const = 0;
 
 	virtual void SetErrorType(EBugsnagErrorType) = 0;
+
+	// stacktrace: Stacktrace;
+
+	virtual TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const = 0;
+
+	virtual void SetStacktrace(const TArray<TSharedRef<IBugsnagStackframe>>&) = 0;
 };

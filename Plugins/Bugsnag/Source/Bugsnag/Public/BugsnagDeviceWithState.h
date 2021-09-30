@@ -25,7 +25,7 @@ public:
 
 	// time?: Date;
 
-	virtual TSharedPtr<FDateTime> GetDate() const = 0;
+	virtual TSharedPtr<FDateTime> GetTime() const = 0;
 
-	virtual void SetDate(TSharedPtr<FDateTime>) = 0;
+	virtual void SetTime(TSharedPtr<FDateTime>) = 0;
 };
