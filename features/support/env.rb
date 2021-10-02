@@ -4,8 +4,8 @@ Before do |_scenario|
   # Wait long enough for Unreal Engine to finish loading the UI.
   # Appium appears to wait for the activity to be ready, but Unreal
   # does its own loading on a background thread.
-  # TODO: We may be able to use Appium image comparison to dynamically wait for the app to
-  #   finish loading https://appium.io/docs/en/writing-running-appium/image-comparison
+  # TODO: We could have the test fixture send a /log request on load,
+  #   with a Background step to wait for the receipt of that.
   sleep 5 if is_platform? 'Android'
 end
 
