@@ -194,10 +194,10 @@ void UBugsnagFunctionLibrary::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback
 #endif
 }
 
-void UBugsnagFunctionLibrary::AddOnError(const FBugsnagOnErrorCallback& Callback)
+void UBugsnagFunctionLibrary::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
-	GPlatformBugsnag.AddOnError(Callback);
+	GPlatformBugsnag.AddOnSendError(Callback);
 #endif
 }
 

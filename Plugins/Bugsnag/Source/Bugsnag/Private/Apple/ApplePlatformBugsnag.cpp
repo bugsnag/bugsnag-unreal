@@ -156,7 +156,7 @@ void FApplePlatformBugsnag::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& 
 {
 }
 
-void FApplePlatformBugsnag::AddOnError(const FBugsnagOnErrorCallback& Callback)
+void FApplePlatformBugsnag::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
 {
 }
 
