@@ -1,6 +1,7 @@
 #include "Scenario.h"
 
 #include "Dom/JsonObject.h"
+#include "HAL/PlatformProcess.h"
 
 class BadMemoryAccessScenario : public Scenario
 {
@@ -22,14 +23,10 @@ public:
 
 	void Run() override
 	{
-		UBugsnagFunctionLibrary::SetContext("overhead view");
-
-		// This doesn't really belong in this scenario, just checking that UBugsnagFunctionLibrary::GetBreadcrumbs() works
-		TArray<TSharedRef<const IBugsnagBreadcrumb>> Breadcrumbs = UBugsnagFunctionLibrary::GetBreadcrumbs();
-		assert(Breadcrumbs.Num() > 0);
-		assert(!Breadcrumbs[0].GetMessage().IsEmpty());
-
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
+		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb I/O
+
+		UBugsnagFunctionLibrary::SetContext("overhead view");
 
 		volatile int* Pointer = nullptr;
 		*Pointer = 42;
