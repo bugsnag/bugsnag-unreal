@@ -4,7 +4,7 @@
 
 static void ClearPersistentData()
 {
-	UE_LOG(LogTemp, Display, TEXT("Clearing peristent data"));
+	UE_LOG(LogTemp, Display, TEXT("Clearing persistent data"));
 #if PLATFORM_ANDROID
 	// TODO
 #elif PLATFORM_APPLE
@@ -38,17 +38,9 @@ static void Evaluate(const FString& Command)
 	}
 }
 
-// We rely on OnTextChanged because OnTextCommitted is not reliably emitted on
-// all platforms.
-
-void UTestFixtureBlueprintFunctionLibrary::OnTextChanged(const FText& Text)
+void UTestFixtureBlueprintFunctionLibrary::OnButtonClicked(const FString& String)
 {
-	FString String = Text.ToString();
+	UE_LOG(LogTemp, Display, TEXT("UTestFixtureBlueprintFunctionLibrary::OnButtonClicked() %s"), *String);
 
-	UE_LOG(LogTemp, Display, TEXT("UTestFixtureBlueprintFunctionLibrary::OnTextChanged() %s"), *String);
-
-	if (String.EndsWith(TEXT("$")))
-	{
-		Evaluate(String.LeftChop(1));
-	}
+	Evaluate(String);
 }

@@ -2,17 +2,53 @@ require 'rbconfig'
 
 HOST_OS = RbConfig::CONFIG['host_os']
 
-When('I configure Bugsnag for {string}') do |scenario_name|
-  enter_text "Start #{scenario_name}"
-end
-
 When('I relaunch the app') do
   Maze.driver.launch_app
   sleep(3) if is_platform? 'Android'
 end
 
 When('I run {string}') do |scenario_name|
-  enter_text "Run #{scenario_name}"
+  case scenario_name
+  when 'BadMemoryAccessScenario'
+    press_button 0
+  when 'NotifyScenario'
+    press_button 2
+  else
+    raise "Scenario #{scenario_name} not yet implemented"
+  end
+end
+
+When('I configure Bugsnag for {string}') do |scenario_name|
+  case scenario_name
+  when 'BadMemoryAccessScenario'
+    press_button 1
+  else
+    raise "Scenario #{scenario_name} not yet implemented"
+  end
+end
+
+def press_button(button_number)
+  design_height = 1200
+  design_button_height = 100
+  window_height = Maze.driver.window_size['height']
+
+  x = scaled_x = 50
+  y = (design_button_height * button_number) + design_button_height
+  scaled_y = y * window_height / design_height
+
+  $logger.debug "Press at: #{scaled_x},#{scaled_y} (scaled from #{x},#{y})"
+
+  touch_action = Appium::TouchAction.new
+  touch_action.tap({:x => scaled_x, :y => scaled_y})
+  touch_action.perform
+  sleep 1
+end
+
+Then('the app is running') do
+  wait_for_true do
+    $logger.info Maze.driver.app_state('com.bugsnag.TestFixture')
+    Maze.driver.app_state('com.bugsnag.TestFixture') == :running_in_foreground
+  end
 end
 
 Then('the app is not running') do

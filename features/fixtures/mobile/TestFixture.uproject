@@ -23,6 +23,10 @@
 				"Win64",
 				"Android"
 			]
+		},
+		{
+			"Name": "Tweaks",
+			"Enabled": true
 		}
 	]
 }

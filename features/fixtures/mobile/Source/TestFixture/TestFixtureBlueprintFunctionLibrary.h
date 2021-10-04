@@ -11,6 +11,6 @@ class TESTFIXTURE_API UTestFixtureBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "Text Fixture")
-	static void OnTextChanged(const FText& Text);
+	UFUNCTION(BlueprintCallable, Category = "Maze Runner Fixture")
+	static void OnButtonClicked(const FString& Text);
 };
