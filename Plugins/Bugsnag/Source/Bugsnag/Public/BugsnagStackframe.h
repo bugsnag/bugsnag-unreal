@@ -33,9 +33,9 @@ public:
 
 	// type?: ErrorType,
 
-	virtual TSharedPtr<EBugsnagErrorType> GetErrorType() const = 0;
+	virtual TSharedPtr<EBugsnagErrorType> GetType() const = 0;
 
-	virtual void SetErrorType(TSharedPtr<EBugsnagErrorType>) = 0;
+	virtual void SetType(TSharedPtr<EBugsnagErrorType>) = 0;
 
 #if PLATFORM_APPLE
 
