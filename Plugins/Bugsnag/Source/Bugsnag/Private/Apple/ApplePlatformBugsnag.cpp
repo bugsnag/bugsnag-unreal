@@ -3,6 +3,7 @@
 #include "AppleBugsnagUtils.h"
 #include "ApplePlatformConfiguration.h"
 #include "WrappedBreadcrumb.h"
+#include "WrappedEvent.h"
 #include "WrappedSession.h"
 
 #include "HAL/PlatformStackWalk.h"
@@ -25,7 +26,10 @@ void FApplePlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Confi
 	[Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 }
 
-void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
+void FApplePlatformBugsnag::Notify(
+	const FString& ErrorClass,
+	const FString& Message,
+	const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
 {
 	BugsnagClient* Client = Bugsnag.client;
@@ -62,9 +66,16 @@ void FApplePlatformBugsnag::Notify(const FString& ErrorClass, const FString& Mes
 	Event.apiKey = Client.configuration.apiKey;
 	Event.context = Client.context;
 
-	[Client notifyInternal:Event block:^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
-		return true; // TODO: if (Callback) return Callback(FWrappedEvent::From(CocoaEvent));
-	}];
+	BugsnagOnErrorBlock Block = nil;
+	if (Callback)
+	{
+		Block = ^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
+			return Callback(FWrappedEvent::From(CocoaEvent));
+		};
+	}
+
+	[Client notifyInternal:Event
+					 block:Block];
 }
 
 const FString FApplePlatformBugsnag::GetContext()
@@ -154,10 +165,16 @@ bool FApplePlatformBugsnag::ResumeSession()
 
 void FApplePlatformBugsnag::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback)
 {
+	[Bugsnag removeOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
+		return Callback(FWrappedBreadcrumb::From(Breadcrumb));
+	}];
 }
 
 void FApplePlatformBugsnag::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
 {
+	[Bugsnag.configuration addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
+		return Callback(FWrappedEvent::From(Event));
+	}];
 }
 
 void FApplePlatformBugsnag::AddOnSession(const FBugsnagOnSessionCallback& Callback)

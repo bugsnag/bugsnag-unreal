@@ -42,6 +42,13 @@ static inline NSDate* NSDateFromFDateTime(const FDateTime& DateTime)
 	return [NSDate dateWithTimeIntervalSince1970:(DateTime.GetTicks() - FDateTime(1970, 1, 1).GetTicks()) / ETimespan::TicksPerSecond];
 }
 
+// Number conversion
+
+static inline TSharedPtr<uint64> UInt64PtrFromNSNumber(NSNumber* _Nullable Number)
+{
+	return Number ? MakeShareable(new uint64(Number.unsignedLongValue)) : nullptr;
+}
+
 // JSON object conversion
 
 static inline TSharedPtr<FJsonObject> FJsonObjectFromNSDictionary(NSDictionary* Dictionary, NSError** Error = nil)
