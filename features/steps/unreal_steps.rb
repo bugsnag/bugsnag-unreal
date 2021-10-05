@@ -80,7 +80,7 @@ def parse_method frame_index
     dsym_path = File.join(artifact_path, 'TestFixture-IOS-Shipping.dSYM')
     stop_addr = Integer(stackframe["frameAddress"]) - Integer(stackframe["machoLoadAddress"]) + Integer(stackframe["machoVMAddress"])
     start_addr = stop_addr - 4096
-    cmd = HOST_OS == 'darwin' ? 'xcrun objdump' : 'llvm-objdump'
+    cmd = HOST_OS.start_with?('darwin') ? 'xcrun objdump' : 'llvm-objdump'
     `#{cmd} --arch arm64 --syms --stop-address 0x#{stop_addr.to_s(16)} --start-address 0x#{start_addr.to_s(16)} #{dsym_path} | tail -n 1 | awk '{print $5;}' | c++filt -_`.chomp
   else
     stackframe_method = Maze::Helper.read_key_path(

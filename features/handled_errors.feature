@@ -27,7 +27,7 @@ Feature: Reporting handled errors
     And the event "device.manufacturer" is not null
     And the event "device.model" is not null
     And the event "device.modelNumber" is not null
-    And the event "device.orientation" equals "portrait"
+    And the event "device.orientation" matches "(face(down|up)|landscape(left|right)|portrait(upsidedown)?)"
     And the event "device.osName" matches "(android|iOS)"
     And the event "device.osVersion" is not null
     And the event "device.runtimeVersions" is not null
