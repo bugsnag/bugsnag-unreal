@@ -12,5 +12,14 @@ class TESTFIXTURE_API UTestFixtureBlueprintFunctionLibrary
 
 public:
 	UFUNCTION(BlueprintCallable, Category = "Maze Runner Fixture")
-	static void OnButtonClicked(const FString& Text);
+	static void AppendText(const FString& Text);
+
+	UFUNCTION(BlueprintCallable, Category = "Maze Runner Fixture")
+	static FString GetDisplayText();
+
+	UFUNCTION(BlueprintCallable, Category = "Maze Runner Fixture")
+	static void Run();
+
+	UFUNCTION(BlueprintCallable, Category = "Maze Runner Fixture")
+	static void Start();
 };
