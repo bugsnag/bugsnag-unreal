@@ -1,5 +1,6 @@
 #include "TestFixtureBlueprintFunctionLibrary.h"
 
+#include "ScenarioNames.h"
 #include "Scenarios/Scenario.h"
 
 static void ClearPersistentData()
@@ -22,25 +23,37 @@ static void ClearPersistentData()
 #endif
 }
 
-static void Evaluate(const FString& Command)
+static FString DisplayText;
+
+static FString GetScenarioName()
 {
-	UE_LOG(LogTemp, Display, TEXT("Evaluating \"%s\""), *Command);
-
-	if (Command.StartsWith(TEXT("Run ")))
-	{
-		ClearPersistentData();
-		Scenario::Run(Command.RightChop(4));
-	}
-
-	if (Command.StartsWith(TEXT("Start ")))
-	{
-		Scenario::Start(Command.RightChop(6));
-	}
+	int32 ScenarioIndex = -1;
+	LexFromString(ScenarioIndex, *DisplayText);
+	UE_LOG(LogTemp, Display, TEXT("ScenarioIndex = %d"), ScenarioIndex);
+	return ScenarioNames[ScenarioIndex];
 }
 
-void UTestFixtureBlueprintFunctionLibrary::OnButtonClicked(const FString& String)
+void UTestFixtureBlueprintFunctionLibrary::AppendText(const FString& Text)
 {
-	UE_LOG(LogTemp, Display, TEXT("UTestFixtureBlueprintFunctionLibrary::OnButtonClicked() %s"), *String);
+	DisplayText += Text;
+}
 
-	Evaluate(String);
+FString UTestFixtureBlueprintFunctionLibrary::GetDisplayText()
+{
+	return DisplayText;
+}
+
+void UTestFixtureBlueprintFunctionLibrary::Run()
+{
+	FString ScenarioName = GetScenarioName();
+	ClearPersistentData();
+	Scenario::Run(ScenarioName);
+	DisplayText.Reset();
+}
+
+void UTestFixtureBlueprintFunctionLibrary::Start()
+{
+	FString ScenarioName = GetScenarioName();
+	Scenario::Start(ScenarioName);
+	DisplayText.Reset();
 }

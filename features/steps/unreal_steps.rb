@@ -8,40 +8,37 @@ When('I relaunch the app') do
 end
 
 When('I run {string}') do |scenario_name|
-  case scenario_name
-  when 'BadMemoryAccessScenario'
-    press_button 0
-  when 'NotifyScenario'
-    press_button 2
-  else
-    raise "Scenario #{scenario_name} not yet implemented"
-  end
+  dial_number_for scenario_name
+  tap_button 10
 end
 
 When('I configure Bugsnag for {string}') do |scenario_name|
-  case scenario_name
-  when 'BadMemoryAccessScenario'
-    press_button 1
-  else
-    raise "Scenario #{scenario_name} not yet implemented"
+  dial_number_for scenario_name
+  tap_button 11
+end
+
+def dial_number_for(scenario_name)
+  number = $scenario_names.index scenario_name
+  raise "Scenario name #{scenario_name} is not in the list; try running update-scenario-names.sh" if number.nil?
+  "#{number}".each_char do |button_number|
+    tap_button button_number.to_i
   end
 end
 
-def press_button(button_number)
-  design_height = 1200
-  design_button_height = 100
-  window_height = Maze.driver.window_size['height']
+def tap_button(button_number)
+  row_count = 13 # 0-9, run, start, text box
+  button_height = window_height / row_count
+  y = (button_height * button_number) + (button_height / 2)
+  Appium::TouchAction.new.tap({:x => 50, :y => y}).perform
+  sleep 0.5
+end
 
-  x = scaled_x = 50
-  y = (design_button_height * button_number) + design_button_height
-  scaled_y = y * window_height / design_height
-
-  $logger.debug "Press at: #{scaled_x},#{scaled_y} (scaled from #{x},#{y})"
-
-  touch_action = Appium::TouchAction.new
-  touch_action.tap({:x => scaled_x, :y => scaled_y})
-  touch_action.perform
-  sleep 1
+def window_height
+  if is_platform? 'Android'
+    Maze.driver.window_size['height'] + Maze.driver.get_system_bars['navigationBar']['height']
+  else
+    Maze.driver.window_size['height']
+  end
 end
 
 Then('the app is running') do
@@ -87,29 +84,6 @@ def parse_method frame_index
       Maze::Server.errors.current[:body],
       "events.0.exceptions.0.stacktrace.#{frame_index}.method")
     `c++filt '_#{stackframe_method}'`.chomp
-  end
-end
-
-def enter_text(text)
-  # Unreal Engine doesn't support screen readers on Android, so the test fixture
-  # consists of a full-screen text field (on all platforms.)
-  Appium::TouchAction.new.tap({:x => 100, :y => 100}).perform
-
-  # Wait for keyboard to appear
-  sleep 1
-
-  # '$' allows our OnTextChanged function to detect the end of text input.
-  Maze.driver.driver.action.send_keys("#{text}$").perform
-
-  if Maze.driver.capabilities['platformName'] == 'iOS'
-    # On iOS, tapping an EditableText causes an alert with text field to be
-    # presented, and the EditableText is only updated when the OK button is
-    # tapped. For an unknown reason, when running on a locally connected iOS
-    # device, the send_keys action dismisses the alert automatically (and
-    # unfortunately prefers the Cancel button.)
-    if Maze.config.farm == :bs
-      Maze.driver.click_element("OK")
-    end
   end
 end
 
