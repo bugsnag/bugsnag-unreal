@@ -126,14 +126,33 @@ TSharedPtr<FBugsnagLastRunInfo> FAndroidPlatformBugsnag::GetLastRunInfo()
 
 void FAndroidPlatformBugsnag::StartSession()
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (Env && JNICache.initialized)
+	{
+		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagStartSession);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 }
 
 void FAndroidPlatformBugsnag::PauseSession()
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (Env && JNICache.initialized)
+	{
+		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagPauseSession);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 }
 
 bool FAndroidPlatformBugsnag::ResumeSession()
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (Env && JNICache.initialized)
+	{
+		jboolean result = (*Env).CallStaticBooleanMethod(JNICache.BugsnagClass, JNICache.BugsnagResumeSession);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+		return result == JNI_TRUE;
+	}
 	return false;
 }
 

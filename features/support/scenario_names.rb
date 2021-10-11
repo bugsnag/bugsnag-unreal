@@ -2,4 +2,6 @@
 $scenario_names = [
   'BadMemoryAccessScenario',
   'NotifyScenario',
+  'PauseSessionScenario',
+  'ResumeSessionScenario',
 ]

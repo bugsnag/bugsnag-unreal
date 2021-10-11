@@ -30,9 +30,12 @@ typedef struct
 	jmethodID BugsnagNotifyMethod;
 	jmethodID BugsnagSetContext;
 	jmethodID BugsnagLeaveBreadcrumb;
-	jmethodID ConfigGetNotifier;
+	jmethodID BugsnagStartSession;
+	jmethodID BugsnagPauseSession;
+	jmethodID BugsnagResumeSession;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigConstructor;
+	jmethodID ConfigGetNotifier;
 	jmethodID ConfigSetAppType;
 	jmethodID ConfigSetAppVersion;
 	jmethodID ConfigSetAutoDetectErrors;

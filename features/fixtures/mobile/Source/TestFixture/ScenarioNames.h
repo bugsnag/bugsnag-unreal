@@ -2,4 +2,6 @@
 static TArray<FString> ScenarioNames = {
 	TEXT("BadMemoryAccessScenario"),
 	TEXT("NotifyScenario"),
+	TEXT("PauseSessionScenario"),
+	TEXT("ResumeSessionScenario"),
 };
