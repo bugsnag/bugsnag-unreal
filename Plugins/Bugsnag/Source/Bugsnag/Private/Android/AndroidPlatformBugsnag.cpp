@@ -137,14 +137,14 @@ bool FAndroidPlatformBugsnag::ResumeSession()
 	return false;
 }
 
-void FAndroidPlatformBugsnag::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback)
+void FAndroidPlatformBugsnag::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback)
 {
 }
 
-void FAndroidPlatformBugsnag::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
+void FAndroidPlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
 {
 }
 
-void FAndroidPlatformBugsnag::AddOnSession(const FBugsnagOnSessionCallback& Callback)
+void FAndroidPlatformBugsnag::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 }

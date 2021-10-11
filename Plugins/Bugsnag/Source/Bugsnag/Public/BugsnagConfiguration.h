@@ -204,15 +204,15 @@ public:
 
 	// Callbacks
 
-	void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback) { OnBreadcrumbCallbacks.Add(Callback); }
+	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) { OnBreadcrumbCallbacks.Add(Callback); }
 
 	// Android only, and only for handled errors.
-	void AddOnError(const FBugsnagOnErrorCallback& Callback) { OnErrorCallbacks.Add(Callback); }
+	void AddOnError(FBugsnagOnErrorCallback Callback) { OnErrorCallbacks.Add(Callback); }
 
 	// iOS only, may be called long after the crash occurred.
-	void AddOnSendError(const FBugsnagOnErrorCallback& Callback) { OnSendErrorCallbacks.Add(Callback); }
+	void AddOnSendError(FBugsnagOnErrorCallback Callback) { OnSendErrorCallbacks.Add(Callback); }
 
-	void AddOnSession(const FBugsnagOnSessionCallback& Callback) { OnSessionCallbacks.Add(Callback); }
+	void AddOnSession(FBugsnagOnSessionCallback Callback) { OnSessionCallbacks.Add(Callback); }
 
 private:
 	FBugsnagConfiguration(const UBugsnagSettings& Settings);

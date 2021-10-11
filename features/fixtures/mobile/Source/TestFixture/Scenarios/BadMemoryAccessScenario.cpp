@@ -19,10 +19,40 @@ public:
 		Configuration->AddMetadata("pastries", Section1);
 		Configuration->AddMetadata("counters", Section2);
 		Configuration->AddMetadata("counters", "thirty-five", MakeShareable(Value));
+
+		Configuration->AddOnBreadcrumb([](TSharedRef<IBugsnagBreadcrumb> Breadcrumb)
+			{
+				return true;
+			});
+
+		Configuration->AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
+			{
+				return true;
+			});
+
+		Configuration->AddOnSession([](TSharedRef<IBugsnagSession> Session)
+			{
+				return true;
+			});
 	}
 
 	void Run() override
 	{
+		UBugsnagFunctionLibrary::AddOnBreadcrumb([](TSharedRef<IBugsnagBreadcrumb> Breadcrumb)
+			{
+				return true;
+			});
+
+		UBugsnagFunctionLibrary::AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
+			{
+				return true;
+			});
+
+		UBugsnagFunctionLibrary::AddOnSession([](TSharedRef<IBugsnagSession> Session)
+			{
+				return true;
+			});
+
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
 		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb I/O
 

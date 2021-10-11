@@ -187,21 +187,21 @@ bool UBugsnagFunctionLibrary::ResumeSession()
 #endif
 }
 
-void UBugsnagFunctionLibrary::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback)
+void UBugsnagFunctionLibrary::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnBreadcrumb(Callback);
 #endif
 }
 
-void UBugsnagFunctionLibrary::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
+void UBugsnagFunctionLibrary::AddOnSendError(FBugsnagOnErrorCallback Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnSendError(Callback);
 #endif
 }
 
-void UBugsnagFunctionLibrary::AddOnSession(const FBugsnagOnSessionCallback& Callback)
+void UBugsnagFunctionLibrary::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnSession(Callback);

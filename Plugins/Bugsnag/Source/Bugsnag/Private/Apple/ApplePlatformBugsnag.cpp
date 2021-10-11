@@ -163,21 +163,21 @@ bool FApplePlatformBugsnag::ResumeSession()
 	return [Bugsnag resumeSession];
 }
 
-void FApplePlatformBugsnag::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback)
+void FApplePlatformBugsnag::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback)
 {
-	[Bugsnag removeOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
+	[Bugsnag addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
 		return Callback(FWrappedBreadcrumb::From(Breadcrumb));
 	}];
 }
 
-void FApplePlatformBugsnag::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
+void FApplePlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
 {
 	[Bugsnag.configuration addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
 		return Callback(FWrappedEvent::From(Event));
 	}];
 }
 
-void FApplePlatformBugsnag::AddOnSession(const FBugsnagOnSessionCallback& Callback)
+void FApplePlatformBugsnag::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 	[Bugsnag addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
 		return Callback(FWrappedSession::From(Session));
