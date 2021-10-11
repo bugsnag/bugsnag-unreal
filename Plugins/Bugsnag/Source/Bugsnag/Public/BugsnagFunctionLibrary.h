@@ -114,9 +114,9 @@ public:
 
 	// Filtering
 
-	void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback);
+	static void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback);
 
-	void AddOnSendError(const FBugsnagOnErrorCallback& Callback);
+	static void AddOnSendError(FBugsnagOnErrorCallback Callback);
 
-	void AddOnSession(const FBugsnagOnSessionCallback& Callback);
+	static void AddOnSession(FBugsnagOnSessionCallback Callback);
 };

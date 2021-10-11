@@ -44,11 +44,11 @@ public:
 
 	bool ResumeSession() override;
 
-	void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback) override;
+	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) override;
 
-	void AddOnSendError(const FBugsnagOnErrorCallback& Callback) override;
+	void AddOnSendError(FBugsnagOnErrorCallback Callback) override;
 
-	void AddOnSession(const FBugsnagOnSessionCallback& Callback) override;
+	void AddOnSession(FBugsnagOnSessionCallback Callback) override;
 };
 
 DECLARE_PLATFORM_BUGSNAG(FApplePlatformBugsnag)

@@ -49,11 +49,11 @@ public:
 
 	virtual bool ResumeSession() = 0;
 
-	virtual void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback) = 0;
+	virtual void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) = 0;
 
-	virtual void AddOnSendError(const FBugsnagOnErrorCallback& Callback) = 0;
+	virtual void AddOnSendError(FBugsnagOnErrorCallback Callback) = 0;
 
-	virtual void AddOnSession(const FBugsnagOnSessionCallback& Callback) = 0;
+	virtual void AddOnSession(FBugsnagOnSessionCallback Callback) = 0;
 };
 
 #define DECLARE_PLATFORM_BUGSNAG(CLASS) \
