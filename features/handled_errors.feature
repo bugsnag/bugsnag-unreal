@@ -35,6 +35,13 @@ Feature: Reporting handled errors
     And the event "device.totalMemory" is not null
     And the event "metaData.device.batteryLevel" is not null
     And the event "metaData.device.charging" is not null
+    And the event "metaData.pastries.cronut" is false
+    And the event "metaData.pastries.macaron" equals 3
+    And the event "metaData.counters.forty" equals "40"
+    And the event "metaData.counters.thirty-five" equals "35"
+    And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
+    And on iOS, the event "metaData.custom.someValue" equals "foobar"
+    And on iOS, the event "metaData.custom.notify" equals "testing"
     And the event "severity" equals "warning"
     And the event "severityReason.type" equals "handledError"
     And the event "unhandled" is false

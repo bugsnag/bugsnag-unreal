@@ -55,7 +55,7 @@ Then('the app is not running') do
 end
 
 Then(/^on (Android|iOS), (.+)/) do |platform, step_text|
-  steps(step_text) if is_platform? platform
+  step(step_text) if is_platform? platform
 end
 
 Then('the method of stack frame {int} is equivalent to {string}') do |frame_index, method|
