@@ -103,6 +103,84 @@ void FAppleBugsnagUtilsSpec::Define()
 				});
 		});
 
+	Describe("FJsonValueFromNSObject", [this]()
+		{
+			It("Converts from NSString to FJsonValueString", [this]()
+				{
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject(@"Testing"), FJsonValueString(TEXT("Testing"))));
+				});
+
+			It("Converts from NSValue to double", [this]()
+				{
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject(@3.141), FJsonValueNumber(3.141)));
+				});
+
+			It("Converts from NSValue to FJsonValueBoolean", [this]()
+				{
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject(@YES), FJsonValueBoolean(true)));
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject(@NO), FJsonValueBoolean(false)));
+				});
+
+			It("Converts from NSArray to FJsonValueArray", [this]()
+				{
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject(@[]), FJsonValueArray({})));
+				});
+
+			It("Converts from NSDictionary to FJsonValueObject", [this]()
+				{
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject(@{}), FJsonValueObject(MakeShareable(new FJsonObject))));
+				});
+
+			It("Converts from NSNull to FJsonValueNull", [this]()
+				{
+					TEST_TRUE(FJsonValue::CompareEqual(*FJsonValueFromNSObject([NSNull null]), FJsonValueNull()));
+				});
+
+			It("Returns nullptr when passed nil", [this]()
+				{
+					TEST_TRUE(FJsonValueFromNSObject(nil) == nullptr);
+				});
+		});
+
+	Describe("NSObjectFromFJsonValue", [this]()
+		{
+			It("Converts from FJsonValueString to NSString", [this]()
+				{
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueString(TEXT("Testing")))), @"Testing");
+				});
+
+			It("Converts from FJsonValueNumber to NSValue", [this]()
+				{
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueNumber(3.141))), @3.141);
+				});
+
+			It("Converts from FJsonValueBoolean to NSValue", [this]()
+				{
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueBoolean(true))), @YES);
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueBoolean(false))), @NO);
+				});
+
+			It("Converts from FJsonValueArray to NSArray", [this]()
+				{
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueArray({}))), @[]);
+				});
+
+			It("Converts from FJsonValueObject to NSDictionary", [this]()
+				{
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueObject(MakeShareable(new FJsonObject)))), @{});
+				});
+
+			It("Converts from FJsonValueNull to NSNull", [this]()
+				{
+					TEST_EQUAL_OBJC(NSObjectFromFJsonValue(MakeShareable(new FJsonValueNull())), [NSNull null]);
+				});
+
+			It("Returns nil when passed nullptr", [this]()
+				{
+					TEST_TRUE(NSObjectFromFJsonValue(nullptr) == nil);
+				});
+		});
+
 	Describe("NSSetFromFStrings", [this]()
 		{
 			It("Converts from TArray<FString> to NSArray<NSString*>", [this]()

@@ -15,13 +15,13 @@
 #define EPIC_TEST_BOOLEAN_(text, expression, expected) \
 	TestEqual(text, expression, expected);
 
-#define TEST_EQUAL_OBJC(value, expected)                                    \
-	if (![value isEqual:expected])                                          \
-	{                                                                       \
-		AddError(                                                           \
-			FString::Printf(                                                \
-				TEXT("Expected " #value " to be %s, but it was %s"),        \
-				UTF8_TO_TCHAR(expected.description.UTF8String ?: "(null)"), \
-				UTF8_TO_TCHAR(value.description.UTF8String ?: "(null)")),   \
-			1);                                                             \
+#define TEST_EQUAL_OBJC(value, expected)                                      \
+	if (![value isEqual:expected])                                            \
+	{                                                                         \
+		AddError(                                                             \
+			FString::Printf(                                                  \
+				TEXT("Expected " #value " to be %s, but it was %s"),          \
+				UTF8_TO_TCHAR([expected description].UTF8String ?: "(null)"), \
+				UTF8_TO_TCHAR([value description].UTF8String ?: "(null)")),   \
+			1);                                                               \
 	}
