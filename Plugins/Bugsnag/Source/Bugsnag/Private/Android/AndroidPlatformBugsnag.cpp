@@ -141,7 +141,7 @@ void FAndroidPlatformBugsnag::AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback
 {
 }
 
-void FAndroidPlatformBugsnag::AddOnError(const FBugsnagOnErrorCallback& Callback)
+void FAndroidPlatformBugsnag::AddOnSendError(const FBugsnagOnErrorCallback& Callback)
 {
 }
 

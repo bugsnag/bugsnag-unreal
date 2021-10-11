@@ -2,7 +2,7 @@
 
 #include "BugsnagDevice.h"
 
-class BUGSNAG_API IBugsnagDeviceWithState : public IBugsnagDevice
+class BUGSNAG_API IBugsnagDeviceWithState : virtual public IBugsnagDevice
 {
 public:
 	// freeDisk?: number;

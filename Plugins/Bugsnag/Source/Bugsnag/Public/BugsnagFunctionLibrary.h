@@ -116,7 +116,7 @@ public:
 
 	void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback);
 
-	void AddOnError(const FBugsnagOnErrorCallback& Callback);
+	void AddOnSendError(const FBugsnagOnErrorCallback& Callback);
 
 	void AddOnSession(const FBugsnagOnSessionCallback& Callback);
 };

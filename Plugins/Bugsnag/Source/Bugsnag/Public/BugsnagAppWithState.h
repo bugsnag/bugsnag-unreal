@@ -2,7 +2,7 @@
 
 #include "BugsnagApp.h"
 
-class BUGSNAG_API IBugsnagAppWithState : public IBugsnagApp
+class BUGSNAG_API IBugsnagAppWithState : virtual public IBugsnagApp
 {
 public:
 	// duration?: number;

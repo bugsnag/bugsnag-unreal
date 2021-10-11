@@ -51,7 +51,7 @@ public:
 
 	virtual void AddOnBreadcrumb(const FBugsnagOnBreadcrumbCallback& Callback) = 0;
 
-	virtual void AddOnError(const FBugsnagOnErrorCallback& Callback) = 0;
+	virtual void AddOnSendError(const FBugsnagOnErrorCallback& Callback) = 0;
 
 	virtual void AddOnSession(const FBugsnagOnSessionCallback& Callback) = 0;
 };

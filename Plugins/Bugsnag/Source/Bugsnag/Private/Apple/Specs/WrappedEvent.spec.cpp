@@ -1,0 +1,105 @@
+#include "AutomationTest.h"
+
+#include "Apple/WrappedEvent.h"
+
+#import <Bugsnag/Bugsnag.h>
+#import <BugsnagPrivate/BugsnagEvent+Private.h>
+#import <BugsnagPrivate/BugsnagHandledState.h>
+
+BEGIN_DEFINE_SPEC(FWrappedEventSpec, "Bugsnag.FWrappedEventSpec",
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
+END_DEFINE_SPEC(FWrappedEventSpec)
+void FWrappedEventSpec::Define()
+{
+	Describe("FWrappedEvent", [this]()
+		{
+			It("Gets values from the Cocoa object", [this]()
+				{
+					BugsnagHandledState* HandledState = [BugsnagHandledState
+						handledStateWithSeverityReason:HandledError
+											  severity:BSGSeverityWarning
+											 attrValue:nil];
+
+					BugsnagEvent* CocoaEvent = [[BugsnagEvent alloc]
+						 initWithApp:[[BugsnagAppWithState alloc] init]
+							  device:[[BugsnagDeviceWithState alloc] init]
+						handledState:HandledState
+								user:[[BugsnagUser alloc] init]
+							metadata:[[BugsnagMetadata alloc] init]
+						 breadcrumbs:@[]
+							  errors:@[]
+							 threads:@[]
+							 session:nil];
+
+					TSharedPtr<IBugsnagEvent> Event = FWrappedEvent::From(CocoaEvent);
+					TEST_TRUE(Event->GetApiKey() == nullptr);
+					TEST_TRUE(Event->GetContext() == nullptr);
+					TEST_TRUE(Event->GetGroupingHash() == nullptr);
+					TEST_EQUAL(Event->GetBreadcrumbs().Num(), 0);
+					TEST_EQUAL(Event->GetErrors().Num(), 0);
+					TEST_EQUAL(Event->GetThreads().Num(), 0);
+					TEST_EQUAL(Event->GetSeverity(), EBugsnagSeverity::Warning);
+					TEST_EQUAL(Event->GetUnhandled(), false);
+
+					CocoaEvent.apiKey = @"0192837465afbecd0192837465afbecd";
+					TEST_EQUAL(*Event->GetApiKey(), TEXT("0192837465afbecd0192837465afbecd"));
+
+					CocoaEvent.context = @"Level three";
+					TEST_EQUAL(*Event->GetContext(), TEXT("Level three"));
+
+					CocoaEvent.groupingHash = @"UnrealEngine.cpp:32";
+					TEST_EQUAL(*Event->GetGroupingHash(), TEXT("UnrealEngine.cpp:32"));
+
+					CocoaEvent.breadcrumbs = @[[[BugsnagBreadcrumb alloc] init]];
+					TEST_EQUAL(Event->GetBreadcrumbs().Num(), 1);
+
+					CocoaEvent.errors = @[[[BugsnagError alloc] init]];
+					TEST_EQUAL(Event->GetErrors().Num(), 1);
+
+					CocoaEvent.threads = @[[[BugsnagThread alloc] init]];
+					TEST_EQUAL(Event->GetThreads().Num(), 1);
+
+					CocoaEvent.severity = BSGSeverityInfo;
+					TEST_EQUAL(Event->GetSeverity(), EBugsnagSeverity::Info);
+
+					CocoaEvent.unhandled = true;
+					TEST_EQUAL(Event->GetUnhandled(), true);
+				});
+
+			It("Sets values on the Cocoa object", [this]()
+				{
+					BugsnagHandledState* HandledState = [BugsnagHandledState
+						handledStateWithSeverityReason:HandledError
+											  severity:BSGSeverityWarning
+											 attrValue:nil];
+
+					BugsnagEvent* CocoaEvent = [[BugsnagEvent alloc]
+						 initWithApp:[[BugsnagAppWithState alloc] init]
+							  device:[[BugsnagDeviceWithState alloc] init]
+						handledState:HandledState
+								user:[[BugsnagUser alloc] init]
+							metadata:[[BugsnagMetadata alloc] init]
+						 breadcrumbs:@[]
+							  errors:@[]
+							 threads:@[]
+							 session:nil];
+
+					TSharedPtr<IBugsnagEvent> Event = FWrappedEvent::From(CocoaEvent);
+
+					Event->SetApiKey(MakeShareable(new FString(TEXT("0192837465afbecd0192837465afbecd"))));
+					TEST_EQUAL_OBJC(CocoaEvent.apiKey, @"0192837465afbecd0192837465afbecd");
+
+					Event->SetContext(MakeShareable(new FString(TEXT("Some Context"))));
+					TEST_EQUAL_OBJC(CocoaEvent.context, @"Some Context");
+
+					Event->SetGroupingHash(MakeShareable(new FString(TEXT("Group On This"))));
+					TEST_EQUAL_OBJC(CocoaEvent.groupingHash, @"Group On This");
+
+					Event->SetSeverity(EBugsnagSeverity::Error);
+					TEST_EQUAL(CocoaEvent.severity, BSGSeverityError);
+
+					Event->SetUnhandled(true);
+					TEST_EQUAL(CocoaEvent.unhandled, true);
+				});
+		});
+}

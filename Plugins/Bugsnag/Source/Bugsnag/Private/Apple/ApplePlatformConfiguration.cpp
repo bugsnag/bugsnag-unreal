@@ -3,6 +3,7 @@
 #include "AppleBugsnagUtils.h"
 #include "Version.h"
 #include "WrappedBreadcrumb.h"
+#include "WrappedEvent.h"
 #include "WrappedSession.h"
 
 #import <Bugsnag/BugsnagConfiguration.h>
@@ -163,7 +164,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 	for (auto& Callback : Configuration->GetOnSendErrorCallbacks())
 	{
 		[CocoaConfig addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
-			return true; // TODO: Callback(FWrappedEvent::From(Event));
+			return Callback(FWrappedEvent::From(Event));
 		}];
 	}
 

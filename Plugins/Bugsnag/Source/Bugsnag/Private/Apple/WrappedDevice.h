@@ -5,7 +5,7 @@
 
 #import <Bugsnag/BugsnagDevice.h>
 
-class FWrappedDevice : public IBugsnagDevice
+class FWrappedDevice : virtual public IBugsnagDevice
 {
 public:
 	static TSharedRef<FWrappedDevice> From(BugsnagDevice* CocoaDevice)
@@ -166,7 +166,7 @@ public:
 
 	const TSharedPtr<uint64> GetTotalMemory() const
 	{
-		return CocoaDevice.totalMemory ? MakeShareable(new uint64(CocoaDevice.totalMemory.unsignedLongValue)) : nullptr;
+		return UInt64PtrFromNSNumber(CocoaDevice.totalMemory);
 	}
 
 	void SetTotalMemory(const TSharedPtr<uint64>& Value)

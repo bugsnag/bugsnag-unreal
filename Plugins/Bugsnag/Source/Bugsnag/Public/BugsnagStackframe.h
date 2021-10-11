@@ -35,8 +35,6 @@ public:
 
 	virtual TSharedPtr<EBugsnagErrorType> GetType() const = 0;
 
-	virtual void SetType(TSharedPtr<EBugsnagErrorType>) = 0;
-
 #if PLATFORM_APPLE
 
 	// machoVMAddress?: number

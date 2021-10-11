@@ -5,7 +5,7 @@
 
 #import <Bugsnag/BugsnagApp.h>
 
-class FWrappedApp : public IBugsnagApp
+class FWrappedApp : virtual public IBugsnagApp
 {
 public:
 	static TSharedRef<FWrappedApp> From(BugsnagApp* CocoaApp)
