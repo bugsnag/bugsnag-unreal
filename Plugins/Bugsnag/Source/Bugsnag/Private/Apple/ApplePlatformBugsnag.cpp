@@ -23,7 +23,7 @@ DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
 void FApplePlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Configuration)
 {
-	[Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
+	FWrappedMetadataStore::CocoaStore = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 }
 
 void FApplePlatformBugsnag::Notify(
@@ -93,32 +93,6 @@ const TSharedPtr<FBugsnagUser> FApplePlatformBugsnag::GetUser()
 }
 
 void FApplePlatformBugsnag::SetUser(const FString& Id, const FString& Email, const FString& Name)
-{
-}
-
-void FApplePlatformBugsnag::AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata)
-{
-}
-
-void FApplePlatformBugsnag::AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value)
-{
-}
-
-TSharedPtr<FJsonObject> FApplePlatformBugsnag::GetMetadata(const FString& Section)
-{
-	return nullptr;
-}
-
-TSharedPtr<FJsonValue> FApplePlatformBugsnag::GetMetadata(const FString& Section, const FString& Key)
-{
-	return nullptr;
-}
-
-void FApplePlatformBugsnag::ClearMetadata(const FString& Section)
-{
-}
-
-void FApplePlatformBugsnag::ClearMetadata(const FString& Section, const FString& Key)
 {
 }
 
