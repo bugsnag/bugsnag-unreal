@@ -6,13 +6,10 @@ Feature: Unhandled errors
     And I relaunch the app
     And I configure Bugsnag for "BadMemoryAccessScenario"
     And I wait to receive an error
-
-    # TODO Checks for Android are pending PLAT-7315
-    Then on iOS, the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
-    And on iOS, the error payload field "notifier.dependencies.0.name" is not null
-    And on iOS, the error payload field "notifier.dependencies.0.url" is not null
-    And on iOS, the error payload field "notifier.dependencies.0.version" is not null
-
+    Then the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
+    And the error payload field "notifier.dependencies.0.name" is not null
+    And the error payload field "notifier.dependencies.0.url" is not null
+    And the error payload field "notifier.dependencies.0.version" is not null
     And the event "unhandled" is true
     And on Android, the event "context" equals "overhead view"
     And the event has a "state" breadcrumb named "Bugsnag loaded"
