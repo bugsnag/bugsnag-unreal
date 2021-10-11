@@ -9,9 +9,9 @@ class BUGSNAG_API IBugsnagStackframe
 public:
 	// file?: string,
 
-	virtual FString GetFile() const = 0;
+	virtual TSharedPtr<FString> GetFile() const = 0;
 
-	virtual void SetFile(const FString&) = 0;
+	virtual void SetFile(const TSharedPtr<FString>&) = 0;
 
 	// inProject: boolean,
 
@@ -27,15 +27,15 @@ public:
 
 	// method?: string,
 
-	virtual FString GetMethod() const = 0;
+	virtual TSharedPtr<FString> GetMethod() const = 0;
 
-	virtual void SetMethod(const FString&) = 0;
+	virtual void SetMethod(const TSharedPtr<FString>&) = 0;
 
 	// type?: ErrorType,
 
-	virtual TSharedPtr<EBugsnagErrorType> GetErrorType() const = 0;
+	virtual TSharedPtr<EBugsnagErrorType> GetType() const = 0;
 
-	virtual void SetErrorType(TSharedPtr<EBugsnagErrorType>) = 0;
+	virtual void SetType(TSharedPtr<EBugsnagErrorType>) = 0;
 
 #if PLATFORM_APPLE
 
@@ -47,9 +47,9 @@ public:
 
 	// machoFile?: string
 
-	virtual FString GetMachoFile() const = 0;
+	virtual TSharedPtr<FString> GetMachoFile() const = 0;
 
-	virtual void SetMachoFile(const FString&) = 0;
+	virtual void SetMachoFile(const TSharedPtr<FString>&) = 0;
 
 	// symbolAddress?: number
 
@@ -65,9 +65,9 @@ public:
 
 	// machoUUID?: string
 
-	virtual FString GetMachoUuid() const = 0;
+	virtual TSharedPtr<FString> GetMachoUuid() const = 0;
 
-	virtual void SetMachoUuid(const FString&) = 0;
+	virtual void SetMachoUuid(const TSharedPtr<FString>&) = 0;
 
 	// frameAddress?: number
 

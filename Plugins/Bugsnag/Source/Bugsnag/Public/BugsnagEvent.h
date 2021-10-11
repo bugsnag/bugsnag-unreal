@@ -5,8 +5,17 @@
 #include "BugsnagAppWithState.h"
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagDeviceWithState.h"
+#include "BugsnagError.h"
 #include "BugsnagThread.h"
 #include "BugsnagUser.h"
+
+UENUM()
+enum class EBugsnagSeverity : uint8
+{
+	Info,
+	Warning,
+	Error,
+};
 
 class BUGSNAG_API IBugsnagEvent
 {
@@ -41,9 +50,19 @@ public:
 
 	virtual const TArray<TSharedRef<IBugsnagBreadcrumb>> GetBreadcrumbs() const = 0;
 
+	// readonly errors: Error[];
+
+	virtual const TArray<TSharedRef<IBugsnagError>> GetErrors() const = 0;
+
 	// readonly threads: Thread[];
 
 	virtual const TArray<TSharedRef<IBugsnagThread>> GetThreads() const = 0;
+
+	// severity: Severity;
+
+	virtual const EBugsnagSeverity GetSeverity() const = 0;
+
+	virtual void SetSeverity(EBugsnagSeverity) = 0;
 
 	// unhandled: boolean;
 
@@ -58,7 +77,7 @@ public:
 	// setUser(id: String?, email: String?, name: String?): void;
 
 	virtual void SetUser(
-		const FString& Id = TEXT(""),
-		const FString& Email = TEXT(""),
-		const FString& Name = TEXT("")) = 0;
+		const TSharedPtr<FString>& Id = nullptr,
+		const TSharedPtr<FString>& Email = nullptr,
+		const TSharedPtr<FString>& Name = nullptr) = 0;
 };

@@ -108,6 +108,8 @@ public:
    */
 	static jstring ParseFString(JNIEnv* Env, const FString& Text);
 
+	static jstring ParseFStringPtr(JNIEnv* Env, const TSharedPtr<FString>& Text);
+
 	/**
    * Convert a bool value into a Java boolean
    *

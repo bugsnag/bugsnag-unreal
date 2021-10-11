@@ -14,24 +14,26 @@ public:
 	{
 	}
 
-	FBugsnagUser(const FString& Id, const FString& Email, const FString& Name)
+	FBugsnagUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name)
 		: Id(Id)
 		, Email(Email)
 		, Name(Name)
 	{
 	}
 
-	const FString& GetId() const { return Id; }
-	const FString& GetEmail() const { return Email; }
-	const FString& GetName() const { return Name; }
+	const TSharedPtr<FString>& GetId() const { return Id; }
+	const TSharedPtr<FString>& GetEmail() const { return Email; }
+	const TSharedPtr<FString>& GetName() const { return Name; }
 
 	bool IsEmpty() const
 	{
-		return Id.IsEmpty() && Email.IsEmpty() && Name.IsEmpty();
+		return (!Id.IsValid() || Id->IsEmpty()) &&
+			   (!Email.IsValid() || Email->IsEmpty()) &&
+			   (!Name.IsValid() || Name->IsEmpty());
 	}
 
 private:
-	FString Id;
-	FString Email;
-	FString Name;
+	TSharedPtr<FString> Id;
+	TSharedPtr<FString> Email;
+	TSharedPtr<FString> Name;
 };
