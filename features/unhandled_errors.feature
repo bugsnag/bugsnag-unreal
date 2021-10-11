@@ -28,3 +28,23 @@ Feature: Unhandled errors
     And the error payload field "events.0.exceptions.0.type" equals the platform-dependent string:
       | android | c |
       | ios | cocoa |
+
+  Scenario: Crash after setting optional configuration options
+    When I run "MaxConfigCrashScenario"
+    Then the app is not running
+    When I relaunch the app
+    And I configure Bugsnag for "MaxConfigCrashScenario"
+    And I wait to receive an error
+    Then the error payload field "apiKey" equals "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    And the event "unhandled" is true
+    And the event "app.version" equals "2.61.0"
+    And the event "app.type" equals "mailer"
+    And the event "app.releaseStage" equals "beta04"
+    And the event "user.id" equals "1255"
+    And the event "user.name" equals "jimmy"
+    And the event "user.email" equals "j@example.com"
+    And on iOS, the event "app.bundleVersion" equals "2.61.0.1"
+    And on Android, the event "app.versionCode" equals 22
+    # TODO: pending on Android (PLAT-7305)
+    And on iOS, the event "app.context" equals "Main Menu"
+    And the method of stack frame 0 is equivalent to "MaxConfigCrashScenario::Run()"
