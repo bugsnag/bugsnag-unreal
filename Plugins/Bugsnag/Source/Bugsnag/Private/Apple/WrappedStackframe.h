@@ -93,26 +93,6 @@ public:
 		}
 	}
 
-	void SetType(TSharedPtr<EBugsnagErrorType> Value) override
-	{
-		if (Value.IsValid())
-		{
-			switch (*Value)
-			{
-			case EBugsnagErrorType::C:
-				CocoaStackframe.type = @"c";
-				break;
-			case EBugsnagErrorType::Cocoa:
-				CocoaStackframe.type = BugsnagStackframeTypeCocoa;
-				break;
-			}
-		}
-		else
-		{
-			CocoaStackframe.type = nil;
-		}
-	}
-
 	// machoVMAddress?: number
 
 	TSharedPtr<uint64> GetMachoVmAddress() const override

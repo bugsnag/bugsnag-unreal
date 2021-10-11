@@ -48,9 +48,6 @@ void FWrappedStackframeSpec::Define()
 					Stackframe->SetMethod(MakeShareable(new FString(TEXT("Test::Test()"))));
 					TEST_EQUAL_OBJC(CocoaStackframe.method, @"Test::Test()");
 
-					Stackframe->SetType(MakeShareable(new EBugsnagErrorType(EBugsnagErrorType::C)));
-					TEST_EQUAL_OBJC(CocoaStackframe.type, @"c");
-
 					Stackframe->SetFrameAddress(MakeShareable(new uint64(0x101a)));
 					TEST_EQUAL((uint64)CocoaStackframe.frameAddress.unsignedLongValue, 0x101a);
 
