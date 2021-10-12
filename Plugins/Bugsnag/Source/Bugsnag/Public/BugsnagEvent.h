@@ -6,6 +6,7 @@
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagDeviceWithState.h"
 #include "BugsnagError.h"
+#include "BugsnagMetadataStore.h"
 #include "BugsnagThread.h"
 #include "BugsnagUser.h"
 
@@ -17,7 +18,7 @@ enum class EBugsnagSeverity : uint8
 	Error,
 };
 
-class BUGSNAG_API IBugsnagEvent
+class BUGSNAG_API IBugsnagEvent : public virtual IBugsnagMetadataStore
 {
 public:
 	// apiKey?: string;

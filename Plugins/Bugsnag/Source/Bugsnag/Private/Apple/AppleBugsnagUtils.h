@@ -83,6 +83,29 @@ static inline NSDictionary* _Nullable NSDictionaryFromFJsonObject(const TSharedP
 	return nil;
 }
 
+// JSON value conversion
+
+static inline TSharedPtr<FJsonValue> FJsonValueFromNSObject(id Value, NSError** Error = nil)
+{
+	if (!Value)
+	{
+		return nullptr;
+	}
+	TSharedPtr<FJsonObject> JsonObject = FJsonObjectFromNSDictionary(@{@"Value": Value}, Error);
+	return JsonObject.IsValid() ? JsonObject->TryGetField(TEXT("Value")) : nullptr;
+}
+
+static inline id _Nullable NSObjectFromFJsonValue(const TSharedPtr<FJsonValue>& JsonValue, NSError** Error = nil)
+{
+	if (!JsonValue.IsValid())
+	{
+		return nil;
+	}
+	TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+	JsonObject->SetField(TEXT("Value"), JsonValue);
+	return NSDictionaryFromFJsonObject(JsonObject, Error)[@"Value"];
+}
+
 // Misc
 
 static inline NSSet* NSSetFromFStrings(const TArray<FString>& Array)

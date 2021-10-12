@@ -5,9 +5,10 @@
 
 #include "BugsnagConfiguration.h"
 #include "BugsnagLastRunInfo.h"
+#include "BugsnagMetadataStore.h"
 #include "BugsnagUser.h"
 
-class IPlatformBugsnag
+class IPlatformBugsnag : public virtual IBugsnagMetadataStore
 {
 public:
 	virtual void Start(const TSharedPtr<FBugsnagConfiguration>& Configuration) = 0;
@@ -22,18 +23,6 @@ public:
 	virtual const TSharedPtr<FBugsnagUser> GetUser() = 0;
 
 	virtual void SetUser(const FString& Id, const FString& Email, const FString& Name) = 0;
-
-	virtual void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata) = 0;
-
-	virtual void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) = 0;
-
-	virtual TSharedPtr<FJsonObject> GetMetadata(const FString& Section) = 0;
-
-	virtual TSharedPtr<FJsonValue> GetMetadata(const FString& Section, const FString& Key) = 0;
-
-	virtual void ClearMetadata(const FString& Section) = 0;
-
-	virtual void ClearMetadata(const FString& Section, const FString& Key) = 0;
 
 	virtual void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type) = 0;
 

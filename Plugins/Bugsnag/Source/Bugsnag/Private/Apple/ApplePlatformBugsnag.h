@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Interfaces/PlatformBugsnag.h"
+#include "WrappedMetadataStore.h"
 
-class FApplePlatformBugsnag : public IPlatformBugsnag
+class FApplePlatformBugsnag : public IPlatformBugsnag, public FWrappedMetadataStore
 {
 public:
 	void Start(const TSharedPtr<FBugsnagConfiguration>& Configuration) override;
@@ -17,18 +18,6 @@ public:
 	const TSharedPtr<FBugsnagUser> GetUser() override;
 
 	void SetUser(const FString& Id, const FString& Email, const FString& Name) override;
-
-	void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata) override;
-
-	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) override;
-
-	TSharedPtr<FJsonObject> GetMetadata(const FString& Section) override;
-
-	TSharedPtr<FJsonValue> GetMetadata(const FString& Section, const FString& Key) override;
-
-	void ClearMetadata(const FString& Section) override;
-
-	void ClearMetadata(const FString& Section, const FString& Key) override;
 
 	void LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type) override;
 

@@ -1,6 +1,5 @@
 #include "Scenario.h"
 
-#include "Dom/JsonObject.h"
 #include "HAL/PlatformProcess.h"
 
 class BadMemoryAccessScenario : public Scenario
@@ -27,6 +26,7 @@ public:
 
 		Configuration->AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
 			{
+				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), MakeShareable(new FJsonValueString(TEXT("hello"))));
 				return true;
 			});
 
@@ -54,7 +54,10 @@ public:
 			});
 
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
-		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb I/O
+
+		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), MakeShareable(new FJsonValueString(TEXT("foobar"))));
+
+		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb / metadata I/O
 
 		UBugsnagFunctionLibrary::SetContext("overhead view");
 

@@ -11,6 +11,7 @@ Feature: Unhandled errors
     And the error payload field "notifier.dependencies.0.url" is not null
     And the error payload field "notifier.dependencies.0.version" is not null
     And the event "unhandled" is true
+    # TODO: pending on iOS (PLAT-7313)
     And on Android, the event "context" equals "overhead view"
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the event has a "manual" breadcrumb named "About to read from a bad memory address"
@@ -18,6 +19,8 @@ Feature: Unhandled errors
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
+    And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
+    And on iOS, the event "metaData.custom.someValue" equals "foobar"
     And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
     And the error payload field "events.0.exceptions.0.errorClass" equals the platform-dependent string:
       | android | SIGSEGV |

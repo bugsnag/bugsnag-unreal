@@ -1,5 +1,7 @@
 #include "BugsnagFunctionLibrary.h"
 
+#include "Dom/JsonObject.h"
+
 #include <map>
 #include <string>
 
