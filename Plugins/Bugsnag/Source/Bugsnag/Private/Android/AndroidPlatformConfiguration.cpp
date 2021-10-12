@@ -129,6 +129,10 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		(*Env).CallVoidMethod(jConfig, Cache->ConfigAddMetadata, jSection, jValues);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
-	// TODO: callbacks
+
+	jobject jPlugin = (*Env).NewObject(Cache->BugsnagUnrealPluginClass, Cache->BugsnagUnrealPluginConstructor);
+	ReturnNullOnException(Env);
+	jniCallWithObjects(Env, jConfig, Cache->ConfigAddPlugin, jPlugin);
+
 	return jConfig;
 }

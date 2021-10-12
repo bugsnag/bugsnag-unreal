@@ -8,6 +8,7 @@
 #include "CoreMinimal.h"
 #include "Shorthand.h"
 
+#include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
 #include "Serialization/LargeMemoryReader.h"
@@ -39,8 +40,12 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	}
 
 	// Third-party classes are loaded via a class loader accessible to the Unreal JNI helpers
+	cache->BreadcrumbClass = LoadJavaClass(env, "com.bugsnag.android.Breadcrumb", true);
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbClass);
 	cache->BugsnagClass = LoadJavaClass(env, "com.bugsnag.android.Bugsnag", true);
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagClass);
+	cache->BugsnagUnrealPluginClass = LoadJavaClass(env, "com.bugsnag.android.unreal.UnrealPlugin", true);
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagUnrealPluginClass);
 	cache->ConfigClass = LoadJavaClass(env, "com.bugsnag.android.Configuration", true);
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigClass);
 	cache->InterfaceClass = LoadJavaClass(env, "com.bugsnag.android.NativeInterface", true);
@@ -59,8 +64,14 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ThreadSendPolicyClass);
 	cache->MetadataParserClass = LoadJavaClass(env, "com.bugsnag.android.unreal.MetadataParser", true);
 	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserClass);
+	cache->MetadataSerializerClass = LoadJavaClass(env, "com.bugsnag.android.unreal.MetadataSerializer", true);
+	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataSerializerClass);
 
 	// Core classes are available through standard JNI functions only
+	cache->DateClass = LoadJavaClass(env, "java/util/Date", false);
+	ReturnFalseIfNullAndClearExceptions(env, cache->DateClass);
+	cache->EnumClass = LoadJavaClass(env, "java/lang/Enum", false);
+	ReturnFalseIfNullAndClearExceptions(env, cache->EnumClass);
 	cache->HashMapClass = LoadJavaClass(env, "java/util/HashMap", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->HashMapClass);
 	cache->ArrayListClass = LoadJavaClass(env, "java/util/ArrayList", false);
@@ -71,6 +82,21 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->IntegerClass);
 	cache->TraceClass = LoadJavaClass(env, "java/lang/StackTraceElement", false);
 	ReturnFalseIfNullAndClearExceptions(env, cache->TraceClass);
+
+	cache->BreadcrumbGetMessage = (*env).GetMethodID(cache->BreadcrumbClass, "getMessage", "()Ljava/lang/String;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbGetMessage);
+	cache->BreadcrumbGetMetadata = (*env).GetMethodID(cache->BreadcrumbClass, "getMetadata", "()Ljava/util/Map;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbGetMetadata);
+	cache->BreadcrumbGetTimestamp = (*env).GetMethodID(cache->BreadcrumbClass, "getTimestamp", "()Ljava/util/Date;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbGetTimestamp);
+	cache->BreadcrumbGetType = (*env).GetMethodID(cache->BreadcrumbClass, "getType", "()Lcom/bugsnag/android/BreadcrumbType;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbGetType);
+	cache->BreadcrumbSetMessage = (*env).GetMethodID(cache->BreadcrumbClass, "setMessage", "(Ljava/lang/String;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbSetMessage);
+	cache->BreadcrumbSetMetadata = (*env).GetMethodID(cache->BreadcrumbClass, "setMetadata", "(Ljava/util/Map;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbSetMetadata);
+	cache->BreadcrumbSetType = (*env).GetMethodID(cache->BreadcrumbClass, "setType", "(Lcom/bugsnag/android/BreadcrumbType;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BreadcrumbSetType);
 
 	cache->BugsnagStartMethod = (*env).GetStaticMethodID(cache->BugsnagClass, "start",
 		"(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
@@ -91,8 +117,14 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	cache->BugsnagPauseSession = (*env).GetStaticMethodID(cache->BugsnagClass, "pauseSession", "()V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagPauseSession);
 
+	cache->BugsnagUnrealPluginConstructor = (*env).GetMethodID(cache->BugsnagUnrealPluginClass, "<init>", "()V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->BugsnagUnrealPluginConstructor);
+
 	cache->MetadataParserParse = (*env).GetStaticMethodID(cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
 	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataParserParse);
+
+	cache->MetadataSerializerSerialize = (*env).GetStaticMethodID(cache->MetadataSerializerClass, "serialize", "(Ljava/util/Map;)[B");
+	ReturnFalseIfNullAndClearExceptions(env, cache->MetadataSerializerSerialize);
 
 	cache->ConfigConstructor = (*env).GetMethodID(cache->ConfigClass, "<init>",
 		"(Ljava/lang/String;)V");
@@ -101,6 +133,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigAddMetadata);
 	cache->ConfigGetNotifier = (*env).GetMethodID(cache->ConfigClass, "getNotifier", "()Lcom/bugsnag/android/Notifier;");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigGetNotifier);
+	cache->ConfigAddPlugin = (*env).GetMethodID(cache->ConfigClass, "addPlugin", "(Lcom/bugsnag/android/Plugin;)V");
+	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigAddPlugin);
 	cache->ConfigSetAppType = (*env).GetMethodID(cache->ConfigClass, "setAppType", "(Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetAppType);
 	cache->ConfigSetAppVersion = (*env).GetMethodID(cache->ConfigClass, "setAppVersion", "(Ljava/lang/String;)V");
@@ -141,6 +175,12 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetUser);
 	cache->ConfigSetVersionCode = (*env).GetMethodID(cache->ConfigClass, "setVersionCode", "(Ljava/lang/Integer;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->ConfigSetVersionCode);
+
+	cache->DateGetTime = (*env).GetMethodID(cache->DateClass, "getTime", "()J");
+	ReturnFalseIfNullAndClearExceptions(env, cache->DateGetTime);
+
+	cache->EnumGetName = (*env).GetMethodID(cache->EnumClass, "name", "()Ljava/lang/String;");
+	ReturnFalseIfNullAndClearExceptions(env, cache->EnumGetName);
 
 	cache->EndpointConfigurationConstructor = (*env).GetMethodID(cache->EndpointConfigurationClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
 	ReturnFalseIfNullAndClearExceptions(env, cache->EndpointConfigurationConstructor);
@@ -462,4 +502,30 @@ bool FAndroidPlatformJNI::SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* 
 	ReturnFalseOnException(Env);
 
 	return true;
+}
+
+TSharedPtr<FJsonObject> FAndroidPlatformJNI::ConvertJavaMapToJson(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jMap)
+{
+	TSharedPtr<FJsonObject> Json = MakeShareable(new FJsonObject);
+	jbyteArray jData = (jbyteArray)(*Env).CallStaticObjectMethod(Cache->MetadataSerializerClass, Cache->MetadataSerializerSerialize, jMap);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return Json;
+	}
+	int Len = (*Env).GetArrayLength(jData);
+	const jbyte* Bytes = (*Env).GetByteArrayElements(jData, nullptr);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return Json;
+	}
+	FString Input = UTF8_TO_TCHAR(Bytes);
+	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Input);
+	if (FJsonSerializer::Deserialize(Reader, Json))
+	{
+		return Json;
+	}
+	else
+	{
+		return MakeShareable(new FJsonObject);
+	}
 }

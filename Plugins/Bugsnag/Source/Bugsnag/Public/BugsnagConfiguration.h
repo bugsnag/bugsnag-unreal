@@ -214,9 +214,6 @@ public:
 
 	void AddOnSession(FBugsnagOnSessionCallback Callback) { OnSessionCallbacks.Add(Callback); }
 
-private:
-	FBugsnagConfiguration(const UBugsnagSettings& Settings);
-
 	const TArray<FBugsnagOnBreadcrumbCallback>& GetOnBreadcrumbCallbacks() const { return OnBreadcrumbCallbacks; }
 
 	const TArray<FBugsnagOnErrorCallback>& GetOnErrorCallbacks() const { return OnErrorCallbacks; }
@@ -226,6 +223,9 @@ private:
 	const TArray<FBugsnagOnSessionCallback>& GetOnSessionCallbacks() const { return OnSessionCallbacks; }
 
 	const TMap<FString, TSharedPtr<FJsonObject>>& GetMetadataValues() const { return MetadataValues; }
+
+private:
+	FBugsnagConfiguration(const UBugsnagSettings& Settings);
 
 	friend class FApplePlatformConfiguration;
 	friend class FAndroidPlatformConfiguration;

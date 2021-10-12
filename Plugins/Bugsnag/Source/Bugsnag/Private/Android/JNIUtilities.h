@@ -11,16 +11,21 @@ typedef struct
 	bool loaded;
 	bool initialized;
 	jclass InterfaceClass;
+	jclass BreadcrumbClass;
 	jclass BreadcrumbTypeClass;
 	jclass BugsnagClass;
+	jclass BugsnagUnrealPluginClass;
 	jclass ConfigClass;
 	jclass EndpointConfigurationClass;
 	jclass ErrorTypesClass;
 	jclass MetadataParserClass;
+	jclass MetadataSerializerClass;
 	jclass NotifierClass;
 	jclass ThreadSendPolicyClass;
 	jclass SeverityClass;
 	jclass TraceClass;
+	jclass DateClass;
+	jclass EnumClass;
 	jclass HashMapClass;
 	jclass HashSetClass;
 	jclass ArrayListClass;
@@ -28,6 +33,13 @@ typedef struct
 
 	jmethodID ArrayListConstructor;
 	jmethodID ArrayListAdd;
+	jmethodID BreadcrumbGetMessage;
+	jmethodID BreadcrumbGetMetadata;
+	jmethodID BreadcrumbGetTimestamp;
+	jmethodID BreadcrumbGetType;
+	jmethodID BreadcrumbSetMessage;
+	jmethodID BreadcrumbSetMetadata;
+	jmethodID BreadcrumbSetType;
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
 	jmethodID BugsnagSetContext;
@@ -35,7 +47,9 @@ typedef struct
 	jmethodID BugsnagStartSession;
 	jmethodID BugsnagPauseSession;
 	jmethodID BugsnagResumeSession;
+	jmethodID BugsnagUnrealPluginConstructor;
 	jmethodID ConfigAddMetadata;
+	jmethodID ConfigAddPlugin;
 	jmethodID ConfigConstructor;
 	jmethodID ConfigGetNotifier;
 	jmethodID ConfigSetAppType;
@@ -60,6 +74,8 @@ typedef struct
 	jmethodID ConfigSetVersionCode;
 	jmethodID EndpointConfigurationConstructor;
 	jmethodID ErrorTypesConstructor;
+	jmethodID DateGetTime;
+	jmethodID EnumGetName;
 	jmethodID HashMapConstructor;
 	jmethodID NotifierConstructor;
 	jmethodID NotifierGetName;
@@ -72,6 +88,7 @@ typedef struct
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID MetadataParserParse;
+	jmethodID MetadataSerializerSerialize;
 	jmethodID IntegerConstructor;
 	jmethodID TraceConstructor;
 
@@ -199,6 +216,17 @@ public:
    * @param Value The value to convert
    */
 	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value);
+
+	/**
+   * Convert a Java map into a JSON object
+   *
+   * @param Env   A JNI environment for the current thread
+   * @param Cache A populated reference cache
+   * @param jMap  A jobject representing a Java Map<String, Object>
+   *
+   * @return A JSON object, empty if the map could not be parsed as JSON
+   */
+	static TSharedPtr<FJsonObject> ConvertJavaMapToJson(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jMap);
 
 	/**
    * Check if a Java runtime exception was thrown and if so, clear it.
