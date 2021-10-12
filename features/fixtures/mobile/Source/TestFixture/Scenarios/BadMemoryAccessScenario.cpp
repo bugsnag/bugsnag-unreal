@@ -27,6 +27,17 @@ public:
 		Configuration->AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
 			{
 				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), MakeShareable(new FJsonValueString(TEXT("hello"))));
+
+				TSharedPtr<FBugsnagLastRunInfo> LastRunInfo = UBugsnagFunctionLibrary::GetLastRunInfo();
+				if (LastRunInfo.IsValid())
+				{
+					TSharedPtr<FJsonObject> Metadata = MakeShared<FJsonObject>();
+					Metadata->SetNumberField(TEXT("consecutiveLaunchCrashes"), LastRunInfo->GetConsecutiveLaunchCrashes());
+					Metadata->SetBoolField(TEXT("crashed"), LastRunInfo->GetCrashed());
+					Metadata->SetBoolField(TEXT("crashedDuringLaunch"), LastRunInfo->GetCrashedDuringLaunch());
+					Event->AddMetadata(TEXT("lastRunInfo"), Metadata);
+				}
+
 				return true;
 			});
 

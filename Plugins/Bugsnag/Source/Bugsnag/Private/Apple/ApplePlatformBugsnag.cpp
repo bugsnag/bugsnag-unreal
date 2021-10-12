@@ -115,11 +115,20 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrum
 
 void FApplePlatformBugsnag::MarkLaunchCompleted()
 {
+	[Bugsnag markLaunchCompleted];
 }
 
 TSharedPtr<FBugsnagLastRunInfo> FApplePlatformBugsnag::GetLastRunInfo()
 {
-	return nullptr;
+	BugsnagLastRunInfo* LastRunInfo = Bugsnag.lastRunInfo;
+	if (!LastRunInfo)
+	{
+		return nullptr;
+	}
+	return MakeShareable(new FBugsnagLastRunInfo(
+		LastRunInfo.consecutiveLaunchCrashes,
+		LastRunInfo.crashed,
+		LastRunInfo.crashedDuringLaunch));
 }
 
 void FApplePlatformBugsnag::StartSession()
