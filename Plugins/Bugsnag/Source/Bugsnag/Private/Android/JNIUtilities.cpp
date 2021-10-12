@@ -189,7 +189,21 @@ jstring FAndroidPlatformJNI::ParseFString(JNIEnv* Env, const FString& Text)
 	return NULL;
 }
 
-jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<FString>& Text)
+FString FAndroidPlatformJNI::ParseJavaString(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	if (!Value || !(Env)->IsInstanceOf(Value, Cache->StringClass))
+	{
+		return TEXT("");
+	}
+	const char* Text = (*Env).GetStringUTFChars((jstring)Value, nullptr);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return TEXT("");
+	}
+	return UTF8_TO_TCHAR(Text);
+}
+
+jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<class FString>& Text)
 {
 	if (Text.IsValid())
 	{
@@ -452,3 +466,17 @@ TSharedPtr<FJsonObject> FAndroidPlatformJNI::ConvertJavaMapToJson(JNIEnv* Env, c
 		return MakeShareable(new FJsonObject);
 	}
 }
+FDateTime FAndroidPlatformJNI::ParseDateTime(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	if (!Value)
+	{
+		return FDateTime(0);
+	}
+	jlong milliseconds = (*Env).CallLongMethod(Value, Cache->DateGetTime);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return FDateTime(0);
+	}
+	return FDateTime(FDateTime(1970, 1, 1).GetTicks() + milliseconds * ETimespan::TicksPerMillisecond);
+}
+

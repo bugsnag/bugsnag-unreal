@@ -218,6 +218,28 @@ public:
 	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value);
 
 	/**
+     * Convert a Java Date into a FDateTime
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A jobject representing a Java Date
+     *
+     * @return A date time object, representing the Unix epoch in the event of failure
+     */
+	static FDateTime ParseDateTime(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
+	/**
+     * Convert a Java String into a FString
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A jobject representing a Java String
+     *
+     * @return A string object, empty in the event of failure
+     */
+	static FString ParseJavaString(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
+	/**
    * Convert a Java map into a JSON object
    *
    * @param Env   A JNI environment for the current thread

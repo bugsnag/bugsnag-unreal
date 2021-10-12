@@ -23,31 +23,15 @@ public:
 	const FDateTime GetTimestamp() const override
 	{
 		jobject jTimestamp = (*Env).CallObjectMethod(Crumb, Cache->BreadcrumbGetTimestamp);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return FDateTime(0);
-		}
-		jlong milliseconds = (*Env).CallLongMethod(jTimestamp, Cache->DateGetTime);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return FDateTime(0);
-		}
-		return FDateTime(FDateTime(1970, 1, 1).GetTicks() + milliseconds * ETimespan::TicksPerMillisecond);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+		return FAndroidPlatformJNI::ParseDateTime(Env, Cache, jTimestamp);
 	}
 
 	const FString GetMessage() const override
 	{
 		jobject jMessage = (*Env).CallObjectMethod(Crumb, Cache->BreadcrumbGetMessage);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return TEXT("");
-		}
-		const char* Message = (*Env).GetStringUTFChars((jstring)jMessage, nullptr);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return TEXT("");
-		}
-		return UTF8_TO_TCHAR(Message);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+		return FAndroidPlatformJNI::ParseJavaString(Env, Cache, jMessage);
 	}
 
 	void SetMessage(const FString& Message) override
