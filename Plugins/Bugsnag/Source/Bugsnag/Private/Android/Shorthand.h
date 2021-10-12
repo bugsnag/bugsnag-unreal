@@ -31,3 +31,9 @@
 		env->ExceptionClear();      \
 		return false;               \
 	}
+
+#define ReturnVoidIf(condition) \
+	if (condition)              \
+	{                           \
+		return;                 \
+	}

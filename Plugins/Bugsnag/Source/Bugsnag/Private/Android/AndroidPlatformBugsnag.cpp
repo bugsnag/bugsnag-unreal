@@ -1,10 +1,13 @@
 #include "AndroidPlatformBugsnag.h"
 
+#include <dlfcn.h>
 #include <jni.h>
+#include <cstdio>
 
 #include "Android/AndroidJavaEnv.h"
 #include "AndroidPlatformConfiguration.h"
 #include "JNIUtilities.h"
+#include "Shorthand.h"
 
 DEFINE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag);
 
@@ -29,6 +32,68 @@ void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnVoidIf(!Env || !JNICache.initialized);
+
+	jstring jErrorClass = FAndroidPlatformJNI::ParseFString(Env, ErrorClass);
+	jstring jMessage = FAndroidPlatformJNI::ParseFString(Env, Message);
+	ReturnVoidIf(!jErrorClass || !jMessage);
+
+	jobject jSeverity = FAndroidPlatformJNI::ParseSeverity(Env, &JNICache, EBugsnagSeverity::Warning);
+	ReturnVoidIf(!jSeverity);
+
+	jobjectArray jFrames = (*Env).NewObjectArray(StackTrace.Num(), JNICache.TraceClass, NULL);
+	ReturnVoidIf(!jFrames);
+
+	// Java class name for each stack frame, intentionally empty
+	jobject jClassName = (*Env).NewStringUTF("");
+	ReturnVoidIf(!jClassName);
+
+	Dl_info Info;
+	jstring jFilename, jMethod;
+	jobject jFrame;
+	uint32 jFramesIndex = 0;
+	const uint32 MethodNameLength = 256;
+	char MethodNameBuffer[MethodNameLength] = {0};
+	for (uint64 Address : StackTrace)
+	{
+		if (dladdr((void*)Address, &Info) != 0)
+		{
+			jFilename = (*Env).NewStringUTF(Info.dli_fname ?: "");
+			if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jFilename)
+			{
+				continue;
+			}
+			if (Info.dli_sname)
+			{
+				jMethod = (*Env).NewStringUTF(Info.dli_sname);
+			}
+			else
+			{
+				// print hex formatted address "0x{frame address}" when symbol name is null
+				snprintf(MethodNameBuffer, MethodNameLength, "0x%016llx", Address);
+				jMethod = (*Env).NewStringUTF(MethodNameBuffer);
+			}
+			if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jMethod)
+			{
+				continue;
+			}
+
+			jFrame = (*Env).NewObject(JNICache.TraceClass,
+				JNICache.TraceConstructor, jClassName, jMethod, jFilename,
+				// Address offset is encoded into the line number field
+				Address - (uintptr_t)Info.dli_fbase);
+			if (jFrame && !FAndroidPlatformJNI::CheckAndClearException(Env))
+			{
+				(*Env).SetObjectArrayElement(jFrames, jFramesIndex++, jFrame);
+				FAndroidPlatformJNI::CheckAndClearException(Env);
+			}
+		}
+	}
+	(*Env).CallStaticVoidMethod(JNICache.InterfaceClass,
+		JNICache.BugsnagNotifyMethod, jErrorClass, jMessage, jSeverity, jFrames);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+	// TODO: handle callback
 }
 
 const FString FAndroidPlatformBugsnag::GetContext()

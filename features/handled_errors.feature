@@ -1,6 +1,5 @@
 Feature: Reporting handled errors
 
-  @skip_android
   Scenario: NotifyScenario
     When I run "NotifyScenario"
     And I wait to receive an error
@@ -15,9 +14,11 @@ Feature: Reporting handled errors
     And the event "app.id" equals "com.bugsnag.TestFixture"
     And the event "app.inForeground" is true
     And the event "app.isLaunching" is true
-    And the event "app.releaseStage" equals "production"
-    And the event "app.type" equals "iOS"
-    And the event "app.version" equals "1.0"
+    # TODO: PLAT-7427 - investigate android release stage detection improvements
+    And on iOS, the event "app.releaseStage" equals "production"
+    And the error payload field "events.0.app.type" equals the platform-dependent string:
+      | android | android |
+      | ios     | iOS     |
     And the event "app.version" equals "1.0"
     And the event "device.freeDisk" is not null
     And the event "device.freeMemory" is not null
@@ -26,9 +27,11 @@ Feature: Reporting handled errors
     And the event "device.locale" is not null
     And the event "device.manufacturer" is not null
     And the event "device.model" is not null
-    And the event "device.modelNumber" is not null
+    And on iOS, the event "device.modelNumber" is not null
     And the event "device.orientation" matches "(face(down|up)|landscape(left|right)|portrait(upsidedown)?)"
-    And the event "device.osName" matches "(android|iOS)"
+    And the error payload field "events.0.device.osName" equals the platform-dependent string:
+      | android | android |
+      | ios     | iOS     |
     And the event "device.osVersion" is not null
     And the event "device.runtimeVersions" is not null
     And the event "device.time" is not null
@@ -36,9 +39,14 @@ Feature: Reporting handled errors
     And the event "metaData.device.batteryLevel" is not null
     And the event "metaData.device.charging" is not null
     And the event "severity" equals "warning"
-    And the event "severityReason.type" equals "handledError"
+    And the error payload field "events.0.severityReason.type" equals the platform-dependent string:
+      | android | handledException |
+      | ios     | handledError     |
     And the event "unhandled" is false
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the exception "errorClass" equals "Internal Error"
     And the exception "message" equals "Does not compute"
     And the method of stack frame 0 is equivalent to "NotifyScenario::Run()"
+    And the error payload field "events.0.exceptions.0.type" equals the platform-dependent string:
+      | android | c     |
+      | ios     | cocoa |
