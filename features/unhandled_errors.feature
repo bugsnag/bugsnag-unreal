@@ -15,12 +15,18 @@ Feature: Unhandled errors
     And on Android, the event "context" equals "overhead view"
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the event has a "manual" breadcrumb named "About to read from a bad memory address"
+    And the event "app.isLaunching" is true
     And the event "metaData.pastries.cronut" is false
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
+    # TODO: pending on Android (PLAT-7364)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And on iOS, the event "metaData.custom.someValue" equals "foobar"
+    # TODO: pending on Android (PLAT-7364, PLAT-7367, PLAT-7369)
+    And on iOS, the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 1
+    And on iOS, the event "metaData.lastRunInfo.crashed" is true
+    And on iOS, the event "metaData.lastRunInfo.crashedDuringLaunch" is true
     And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
     And the error payload field "events.0.exceptions.0.errorClass" equals the platform-dependent string:
       | android | SIGSEGV |
