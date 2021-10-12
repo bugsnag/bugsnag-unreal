@@ -1,5 +1,13 @@
 #include "BugsnagConfiguration.h"
 
+#include "BugsnagConstants.h"
+
+#include "Engine/Engine.h"
+#include "GameFramework/GameState.h"
+#include "Misc/EngineVersion.h"
+#include "RHI.h"
+#include "UserActivityTracking.h"
+
 static TSharedPtr<FString> NullIfEmpty(const FString& String)
 {
 	return String.IsEmpty() ? nullptr : MakeShareable(new FString(String));
@@ -10,6 +18,7 @@ uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;
 FBugsnagConfiguration::FBugsnagConfiguration(const FString& ApiKey)
 {
 	SetApiKey(ApiKey);
+	AddDefaultMetadata();
 }
 
 FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
@@ -39,6 +48,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 		SetApiKey(Settings.ApiKey);
 	}
 	SetMaxBreadcrumbs(Settings.MaxBreadcrumbs);
+	AddDefaultMetadata();
 }
 
 TSharedPtr<FBugsnagConfiguration> FBugsnagConfiguration::Load()
@@ -148,4 +158,71 @@ TSharedPtr<FJsonValue> FBugsnagConfiguration::GetMetadata(const FString& Section
 	{
 		return nullptr;
 	}
+}
+
+// Because UEngine::GetCurrentPlayWorld() does not exist in 4.23 :-/
+static UWorld* GetCurrentPlayWorld()
+{
+	// This logic copied from FEngineService::SendPong() in Runtime/Engine/Private/EngineService.cpp
+	FWorldContext const* ContextToUse = nullptr;
+	if (GEngine)
+	{
+		// We're going to look through the WorldContexts and pull any Game context we find
+		// If there isn't a Game context, we'll take the first PIE we find
+		// and if none of those we'll use an Editor
+		for (const FWorldContext& WorldContext : GEngine->GetWorldContexts())
+		{
+			if (WorldContext.WorldType == EWorldType::Game)
+			{
+				ContextToUse = &WorldContext;
+				break;
+			}
+			else if (WorldContext.WorldType == EWorldType::PIE && (ContextToUse == nullptr || ContextToUse->WorldType != EWorldType::PIE))
+			{
+				ContextToUse = &WorldContext;
+			}
+			else if (WorldContext.WorldType == EWorldType::Editor && ContextToUse == nullptr)
+			{
+				ContextToUse = &WorldContext;
+			}
+		}
+	}
+	return ContextToUse ? ContextToUse->World() : nullptr;
+}
+
+void FBugsnagConfiguration::AddDefaultMetadata()
+{
+	TSharedRef<FJsonObject> DeviceMetadata = MakeShared<FJsonObject>();
+
+	if (!GRHIAdapterName.IsEmpty())
+	{
+		DeviceMetadata->SetStringField(BugsnagConstants::AdapterName, *GRHIAdapterName);
+	}
+
+	if (!GRHIAdapterInternalDriverVersion.IsEmpty())
+	{
+		DeviceMetadata->SetStringField(BugsnagConstants::DriverVersion, *GRHIAdapterInternalDriverVersion);
+	}
+
+	AddMetadata(BugsnagConstants::Device, DeviceMetadata);
+
+	//
+
+	TSharedRef<FJsonObject> EngineMetadata = MakeShared<FJsonObject>();
+
+	EngineMetadata->SetStringField(BugsnagConstants::Version, FEngineVersion::Current().ToString(EVersionComponent::Changelist));
+
+	UWorld* CurrentPlayWorld = GetCurrentPlayWorld();
+	if (CurrentPlayWorld)
+	{
+		if (CurrentPlayWorld->GetGameState())
+		{
+			EngineMetadata->SetStringField(BugsnagConstants::GameStateName, CurrentPlayWorld->GetGameState()->GetClass()->GetName());
+		}
+		EngineMetadata->SetStringField(BugsnagConstants::MapUrl, CurrentPlayWorld->GetLocalURL());
+	}
+
+	EngineMetadata->SetStringField(BugsnagConstants::UserActivity, FUserActivityTracking::GetUserActivity().ActionName);
+
+	AddMetadata(BugsnagConstants::UnrealEngine, EngineMetadata);
 }

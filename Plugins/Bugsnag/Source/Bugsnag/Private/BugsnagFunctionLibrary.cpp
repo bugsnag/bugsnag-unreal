@@ -1,5 +1,10 @@
 #include "BugsnagFunctionLibrary.h"
+
+#include "BugsnagConstants.h"
 #include "PlatformBugsnag.h"
+
+#include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 #include COMPILED_PLATFORM_HEADER(PlatformStackWalk.h)
 
@@ -13,6 +18,27 @@ void UBugsnagFunctionLibrary::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.Start(Configuration);
+
+	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& MapUrl)
+		{
+			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PreLoadMap %s"), *MapUrl);
+			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
+				MakeShared<FJsonValueString>(MapUrl));
+		});
+
+	FCoreDelegates::GameStateClassChanged.AddLambda([](const FString& InGameStateName)
+		{
+			UE_LOG(LogBugsnag, Log, TEXT("FCoreDelegates::GameStateClassChanged %s"), *InGameStateName);
+			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName,
+				MakeShared<FJsonValueString>(InGameStateName));
+		});
+
+	FCoreDelegates::UserActivityStringChanged.AddLambda([](const FString& InUserActivity)
+		{
+			UE_LOG(LogBugsnag, Log, TEXT("FCoreDelegates::UserActivityStringChanged %s"), *InUserActivity);
+			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::UserActivity,
+				MakeShared<FJsonValueString>(InUserActivity));
+		});
 #else
 	UE_LOG(LogBugsnag, Warning, TEXT("Bugsnag is not implemented on this platform"));
 #endif

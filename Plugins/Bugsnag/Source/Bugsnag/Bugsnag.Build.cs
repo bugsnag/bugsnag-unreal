@@ -14,7 +14,8 @@ public class Bugsnag : ModuleRules
 				"Core",
 				"CoreUObject",
 				"Engine",
-				"Json"
+				"Json",
+				"RHI"
 			}
 			);
 

@@ -227,6 +227,8 @@ public:
 private:
 	FBugsnagConfiguration(const UBugsnagSettings& Settings);
 
+	void AddDefaultMetadata();
+
 	friend class FApplePlatformConfiguration;
 	friend class FAndroidPlatformConfiguration;
 
