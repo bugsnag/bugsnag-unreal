@@ -166,15 +166,16 @@ void FBugsnagConfigurationSpec::Define()
 				{
 					FBugsnagConfiguration Configuration(ValidApiKey);
 
-					TSharedPtr<FJsonObject> Info = MakeShareable(new FJsonObject);
+					TSharedRef<FJsonObject> Info = MakeShared<FJsonObject>();
 					Info->SetStringField(TEXT("foo"), TEXT("bar"));
 					Configuration.AddMetadata(TEXT("Info"), Info);
 
 					TEST_TRUE(Configuration.GetMetadata(TEXT("Info")).IsValid());
 					TEST_EQUAL(Configuration.GetMetadata(TEXT("Info"))->GetStringField(TEXT("foo")), TEXT("bar"));
 
-					Info = MakeShareable(new FJsonObject);
+					Info = MakeShared<FJsonObject>();
 					Info->SetStringField(TEXT("bar"), TEXT("baz"));
+					Configuration.ClearMetadata(TEXT("Info"));
 					Configuration.AddMetadata(TEXT("Info"), Info);
 
 					TEST_TRUE(Configuration.GetMetadata(TEXT("Info")).IsValid());
@@ -203,6 +204,39 @@ void FBugsnagConfigurationSpec::Define()
 
 					Configuration.ClearMetadata(TEXT("Info"), TEXT("name"));
 					TEST_FALSE(Configuration.GetMetadata(TEXT("Info"), TEXT("name")).IsValid());
+				});
+
+			It("Should merge sections when added", [this]()
+				{
+					FBugsnagConfiguration Configuration(ValidApiKey);
+
+					const TCHAR* const Section = TEXT("Section");
+
+					TSharedRef<FJsonObject> Info1 = MakeShared<FJsonObject>();
+					Info1->SetStringField(TEXT("foo"), TEXT("bar"));
+					Configuration.AddMetadata(Section, Info1);
+
+					TSharedRef<FJsonObject> Info2 = MakeShared<FJsonObject>();
+					Info2->SetStringField(TEXT("bar"), TEXT("foo"));
+					Configuration.AddMetadata(Section, Info2);
+
+					TEST_EQUAL(Configuration.GetMetadata(Section, TEXT("foo"))->AsString(), TEXT("bar"));
+					TEST_EQUAL(Configuration.GetMetadata(Section, TEXT("bar"))->AsString(), TEXT("foo"));
+
+					TEST_EQUAL(Info1->Values.Num(), 1);
+					TEST_EQUAL(Info2->Values.Num(), 1);
+				});
+
+			It("Should not remove other values when adding one to a section", [this]()
+				{
+					FBugsnagConfiguration Configuration(ValidApiKey);
+
+					const TCHAR* const Section = TEXT("Section");
+
+					Configuration.AddMetadata(Section, TEXT("name"), MakeShared<FJsonValueString>(TEXT("Bob")));
+					Configuration.AddMetadata(Section, TEXT("email"), MakeShared<FJsonValueString>(TEXT("bob@example.com")));
+					TEST_EQUAL(Configuration.GetMetadata(Section, TEXT("name"))->AsString(), TEXT("Bob"));
+					TEST_EQUAL(Configuration.GetMetadata(Section, TEXT("email"))->AsString(), TEXT("bob@example.com"));
 				});
 		});
 }

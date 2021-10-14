@@ -7,8 +7,8 @@ class BadMemoryAccessScenario : public Scenario
 public:
 	void Configure() override
 	{
-		TSharedPtr<FJsonObject> Section1 = MakeShared<FJsonObject>();
-		TSharedPtr<FJsonObject> Section2 = MakeShared<FJsonObject>();
+		TSharedRef<FJsonObject> Section1 = MakeShared<FJsonObject>();
+		TSharedRef<FJsonObject> Section2 = MakeShared<FJsonObject>();
 		auto Value = new FJsonValueString("35");
 
 		Section1->SetBoolField("cronut", false);

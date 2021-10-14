@@ -107,6 +107,20 @@ void FBugsnagConfiguration::SetUser(const TSharedPtr<FString>& Id, const TShared
 //
 ///////////////////////////////////////////////////////////////////////////
 
+void FBugsnagConfiguration::AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata)
+{
+	if (MetadataValues.Contains(Section))
+	{
+		MetadataValues[Section]->Values.Append(Metadata->Values);
+	}
+	else
+	{
+		TSharedRef<FJsonObject> MetadataCopy = MakeShared<FJsonObject>();
+		MetadataCopy->Values = Metadata->Values;
+		MetadataValues.Add(Section, MetadataCopy);
+	}
+}
+
 void FBugsnagConfiguration::AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value)
 {
 	if (!Value.IsValid())
@@ -116,12 +130,12 @@ void FBugsnagConfiguration::AddMetadata(const FString& Section, const FString& K
 	}
 	if (MetadataValues.Contains(Section))
 	{
-		TSharedPtr<FJsonObject> Object = MetadataValues[Section];
+		TSharedRef<FJsonObject> Object = MetadataValues[Section];
 		Object->SetField(Key, Value);
 	}
 	else
 	{
-		TSharedPtr<FJsonObject> Object = MakeShareable(new FJsonObject);
+		TSharedRef<FJsonObject> Object = MakeShared<FJsonObject>();
 		Object->SetField(Key, Value);
 		MetadataValues.Add(Section, Object);
 	}
