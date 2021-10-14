@@ -23,6 +23,12 @@ Feature: Unhandled errors
     # TODO: pending on Android (PLAT-7364)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And on iOS, the event "metaData.custom.someValue" equals "foobar"
+    And on iOS, the event "metaData.device.adapterName" is not null
+    # And on Android, the event "metadata.device.driverVersion" is not null
+    And on iOS, the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
+    And on iOS, the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
+    And on iOS, the event "metaData.unrealEngine.userActivity" is not null
+    And on iOS, the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
     # TODO: pending on Android (PLAT-7364, PLAT-7367, PLAT-7369)
     And on iOS, the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 1
     And on iOS, the event "metaData.lastRunInfo.crashed" is true

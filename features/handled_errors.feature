@@ -42,9 +42,16 @@ Feature: Reporting handled errors
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
+    # TODO: pending on Android (PLAT-7364)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And on iOS, the event "metaData.custom.someValue" equals "foobar"
     And on iOS, the event "metaData.custom.notify" equals "testing"
+    And on iOS, the event "metaData.device.adapterName" is not null
+    # And on Android, the event "metadata.device.driverVersion" is not null
+    And on iOS, the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
+    And on iOS, the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
+    And on iOS, the event "metaData.unrealEngine.userActivity" is not null
+    And on iOS, the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
     And the event "severity" equals "warning"
     And the error payload field "events.0.severityReason.type" equals the platform-dependent string:
       | android | handledException |

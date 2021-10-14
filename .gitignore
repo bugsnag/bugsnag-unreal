@@ -52,7 +52,7 @@ Binaries/*
 Plugins/*/Binaries/*
 
 # Builds
-[Bb]uild/*
+[Bb]uild/
 
 # Whitelist PakBlacklist-<BuildConfiguration>.txt files
 !Build/*/
