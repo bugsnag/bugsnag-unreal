@@ -252,7 +252,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
 					Configuration->AddMetadata(TEXT("Info"), TEXT("foo"), MakeShared<FJsonValueString>(TEXT("bar")));
 
-					TSharedPtr<FJsonObject> JsonObject = MakeShareable(new FJsonObject);
+					TSharedRef<FJsonObject> JsonObject = MakeShared<FJsonObject>();
 					JsonObject->SetBoolField(TEXT("bHasCompletedLevel1"), true);
 					JsonObject->SetBoolField(TEXT("bHasCompletedLevel2"), false);
 					Configuration->AddMetadata(TEXT("Flags"), JsonObject);

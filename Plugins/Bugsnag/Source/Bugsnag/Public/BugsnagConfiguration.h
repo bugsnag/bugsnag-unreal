@@ -190,7 +190,7 @@ public:
 
 	// Metadata
 
-	void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata) { MetadataValues.Add(Section, Metadata); }
+	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata);
 
 	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value);
 
@@ -222,7 +222,7 @@ public:
 
 	const TArray<FBugsnagOnSessionCallback>& GetOnSessionCallbacks() const { return OnSessionCallbacks; }
 
-	const TMap<FString, TSharedPtr<FJsonObject>>& GetMetadataValues() const { return MetadataValues; }
+	const TMap<FString, TSharedRef<FJsonObject>>& GetMetadataValues() const { return MetadataValues; }
 
 private:
 	FBugsnagConfiguration(const UBugsnagSettings& Settings);
@@ -256,7 +256,7 @@ private:
 	TSharedPtr<FString> BundleVersion;
 	TSharedPtr<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
-	TMap<FString, TSharedPtr<FJsonObject>> MetadataValues;
+	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnErrorCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
