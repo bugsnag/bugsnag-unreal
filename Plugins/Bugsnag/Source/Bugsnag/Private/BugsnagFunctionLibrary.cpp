@@ -14,6 +14,13 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 	Start(Configuration);
 }
 
+static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString& Value)
+{
+	TSharedRef<FJsonObject> JsonObject = MakeShared<FJsonObject>();
+	JsonObject->SetStringField(Key, Value);
+	return JsonObject;
+}
+
 void UBugsnagFunctionLibrary::Start(const TSharedPtr<FBugsnagConfiguration>& Configuration)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
@@ -22,13 +29,25 @@ void UBugsnagFunctionLibrary::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& MapUrl)
 		{
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PreLoadMap %s"), *MapUrl);
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoading,
+				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
 				MakeShared<FJsonValueString>(MapUrl));
+		});
+
+	FCoreUObjectDelegates::PostLoadMapWithWorld.AddLambda([](UWorld* World)
+		{
+			FString MapUrl = World->URL.Map;
+			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PostLoadMapWithWorld %s"), *MapUrl);
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoaded,
+				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
 		});
 
 	FCoreDelegates::GameStateClassChanged.AddLambda([](const FString& InGameStateName)
 		{
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreDelegates::GameStateClassChanged %s"), *InGameStateName);
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::GameStateChanged,
+				MakeJsonObject(BugsnagConstants::Name, InGameStateName), EBugsnagBreadcrumbType::State);
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName,
 				MakeShared<FJsonValueString>(InGameStateName));
 		});
@@ -36,6 +55,8 @@ void UBugsnagFunctionLibrary::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 	FCoreDelegates::UserActivityStringChanged.AddLambda([](const FString& InUserActivity)
 		{
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreDelegates::UserActivityStringChanged %s"), *InUserActivity);
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::UserActivityChanged,
+				MakeJsonObject(BugsnagConstants::Activity, InUserActivity), EBugsnagBreadcrumbType::User);
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::UserActivity,
 				MakeShared<FJsonValueString>(InUserActivity));
 		});
