@@ -47,6 +47,8 @@ Feature: Unhandled errors
     And the exception "type" equals the platform-dependent string:
       | android | c |
       | ios | cocoa |
+    And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
+    And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
   Scenario: Crash after setting optional configuration options
     When I run "MaxConfigCrashScenario"
