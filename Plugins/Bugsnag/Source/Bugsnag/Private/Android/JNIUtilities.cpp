@@ -480,3 +480,31 @@ FDateTime FAndroidPlatformJNI::ParseDateTime(JNIEnv* Env, const JNIReferenceCach
 	return FDateTime(FDateTime(1970, 1, 1).GetTicks() + milliseconds * ETimespan::TicksPerMillisecond);
 }
 
+jobject FAndroidPlatformJNI::ParseJavaDate(JNIEnv* Env, const JNIReferenceCache* Cache, FDateTime Value)
+{
+	jlong milliseconds = (Value.GetTicks() - FDateTime(1970, 1, 1).GetTicks()) / ETimespan::TicksPerMillisecond;
+	jobject jValue = (*Env).NewObject(Cache->DateClass, Cache->DateConstructor, milliseconds);
+	return FAndroidPlatformJNI::CheckAndClearException(Env) ? nullptr : jValue;
+}
+
+void FAndroidPlatformJNI::SetStringValue(JNIEnv* Env, jobject Target, jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value)
+{
+	if (!Target)
+	{
+		return;
+	}
+	if (Value.IsValid())
+	{
+		jstring jString = FAndroidPlatformJNI::ParseFString(Env, *Value);
+		if (jString)
+		{
+			(*Env).CallVoidMethod(Target, Method, jString);
+			FAndroidPlatformJNI::CheckAndClearException(Env);
+		}
+	}
+	else if (IsNullable)
+	{
+		(*Env).CallVoidMethod(Target, Method, nullptr);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
+}

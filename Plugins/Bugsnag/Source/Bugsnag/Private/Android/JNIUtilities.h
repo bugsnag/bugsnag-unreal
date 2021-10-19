@@ -229,6 +229,17 @@ public:
 	static FDateTime ParseDateTime(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
 
 	/**
+     * Convert a FDateTime into a Java Date
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A value to convert
+     *
+     * @return A jobject representing a date or null upon failure
+     */
+	static jobject ParseJavaDate(JNIEnv* Env, const JNIReferenceCache* Cache, FDateTime Value);
+
+	/**
      * Convert a Java String into a FString
      *
      * @param Env   A JNI environment for the current thread
@@ -268,4 +279,15 @@ public:
    * @param jClient The client containing the notifier
    */
 	static bool SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jClient);
+
+	/**
+     * Call a void function with a string value
+     *
+     * @param Env        A JNI environment for the current thread
+     * @param Target     The object to call
+     * @param Method     The method to call
+     * @param IsNullable true if the method should be called with null if Value is invalid
+     * @param Value      the assigned value
+     */
+	static void SetStringValue(JNIEnv* Env, jobject Target, jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value);
 };
