@@ -4,6 +4,7 @@ static TArray<FString> ScenarioNames = {
 	TEXT("MaxConfigCrashScenario"),
 	TEXT("ModifyCrumbsScenario"),
 	TEXT("NotifyScenario"),
+	TEXT("OpenLevelBreadcrumbsScenario"),
 	TEXT("PauseSessionScenario"),
 	TEXT("ResumeSessionScenario"),
 };

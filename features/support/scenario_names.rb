@@ -4,6 +4,7 @@ $scenario_names = [
   'MaxConfigCrashScenario',
   'ModifyCrumbsScenario',
   'NotifyScenario',
+  'OpenLevelBreadcrumbsScenario',
   'PauseSessionScenario',
   'ResumeSessionScenario',
 ]

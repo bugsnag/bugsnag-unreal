@@ -1,10 +1,24 @@
 #include "BugsnagConstants.h"
 
-const TCHAR* const BugsnagConstants::AdapterName = TEXT("adapterName");
-const TCHAR* const BugsnagConstants::Device = TEXT("device");
-const TCHAR* const BugsnagConstants::DriverVersion = TEXT("driverVersion");
-const TCHAR* const BugsnagConstants::GameStateName = TEXT("gameStateName");
-const TCHAR* const BugsnagConstants::MapUrl = TEXT("mapUrl");
-const TCHAR* const BugsnagConstants::UnrealEngine = TEXT("unrealEngine");
-const TCHAR* const BugsnagConstants::UserActivity = TEXT("userActivity");
-const TCHAR* const BugsnagConstants::Version = TEXT("version");
+namespace BugsnagConstants
+{
+const TCHAR* const Activity = TEXT("activity");
+const TCHAR* const AdapterName = TEXT("adapterName");
+const TCHAR* const Device = TEXT("device");
+const TCHAR* const DriverVersion = TEXT("driverVersion");
+const TCHAR* const GameStateName = TEXT("gameStateName");
+const TCHAR* const MapUrl = TEXT("mapUrl");
+const TCHAR* const Name = TEXT("name");
+const TCHAR* const UnrealEngine = TEXT("unrealEngine");
+const TCHAR* const Url = TEXT("url");
+const TCHAR* const UserActivity = TEXT("userActivity");
+const TCHAR* const Version = TEXT("version");
+}; // namespace BugsnagConstants
+
+namespace BugsnagBreadcrumbMessages
+{
+const TCHAR* const GameStateChanged = TEXT("Game state changed");
+const TCHAR* const MapLoaded = TEXT("Map Loaded");
+const TCHAR* const MapLoading = TEXT("Map Loading");
+const TCHAR* const UserActivityChanged = TEXT("User activity changed");
+}; // namespace BugsnagBreadcrumbMessages
