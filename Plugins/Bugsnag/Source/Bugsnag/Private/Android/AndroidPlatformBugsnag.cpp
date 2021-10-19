@@ -25,6 +25,7 @@ void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Con
 	if ((JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache)))
 	{
 		OnBreadcrumbCallbacks += Config->GetOnBreadcrumbCallbacks();
+		OnSessionCallbacks += Config->GetOnSessionCallbacks();
 		jobject jActivity = AndroidJavaEnv::GetGameActivityThis();
 		jobject jConfig = FAndroidPlatformConfiguration::Parse(Env, &JNICache, Config);
 		jobject jClient = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jActivity, jConfig);
@@ -226,22 +227,6 @@ bool FAndroidPlatformBugsnag::ResumeSession()
 
 void FAndroidPlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
 {
-}
-
-void FAndroidPlatformBugsnag::AddOnSession(FBugsnagOnSessionCallback Callback)
-{
-}
-
-bool FAndroidPlatformBugsnag::RunOnBreadcrumbCallbacks(TSharedRef<IBugsnagBreadcrumb> Crumb)
-{
-	for (auto& Callback : OnBreadcrumbCallbacks)
-	{
-		if (!Callback(Crumb))
-		{
-			return false;
-		}
-	}
-	return true;
 }
 
 #ifdef __cplusplus
