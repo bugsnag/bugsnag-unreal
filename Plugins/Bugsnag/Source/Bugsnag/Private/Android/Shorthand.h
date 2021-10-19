@@ -32,8 +32,35 @@
 		return false;               \
 	}
 
+#define ReturnVoidOnException(env) \
+	if (env->ExceptionCheck())     \
+	{                              \
+		env->ExceptionClear();     \
+		return;                    \
+	}
+
+#define ContinueOnException(env) \
+	if (env->ExceptionCheck())   \
+	{                            \
+		env->ExceptionClear();   \
+		continue;                \
+	}
+
+#define ReturnValueOnException(env, value) \
+	if (env->ExceptionCheck())             \
+	{                                      \
+		env->ExceptionClear();             \
+		return value;                      \
+	}
+
 #define ReturnVoidIf(condition) \
 	if (condition)              \
 	{                           \
 		return;                 \
 	}
+
+#define ReturnStringFieldPtr(target, method)                   \
+	jobject jString = (*Env).CallObjectMethod(target, method); \
+	return FAndroidPlatformJNI::CheckAndClearException(Env)    \
+			   ? nullptr                                       \
+			   : MakeShareable(new FString(FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString)));
