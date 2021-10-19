@@ -122,11 +122,29 @@ void FAndroidPlatformBugsnag::SetContext(const FString& Context)
 
 const TSharedPtr<FBugsnagUser> FAndroidPlatformBugsnag::GetUser()
 {
-	return nullptr;
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (!Env || !JNICache.initialized)
+	{
+		return nullptr;
+	}
+	jobject jUser = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetUser);
+	return FAndroidPlatformJNI::CheckAndClearException(Env)
+			   ? nullptr
+			   : MakeShareable(new FBugsnagUser(FAndroidPlatformJNI::ParseJavaUser(Env, &JNICache, jUser)));
 }
 
 void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, const FString& Name)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	if (!Env || !JNICache.initialized)
+	{
+		return;
+	}
+	jstring jId = FAndroidPlatformJNI::ParseFString(Env, Id);
+	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	jstring jEmail = FAndroidPlatformJNI::ParseFString(Env, Email);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetUser, jId, jEmail, jName);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata)

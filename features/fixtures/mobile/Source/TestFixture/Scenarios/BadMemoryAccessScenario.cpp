@@ -72,6 +72,8 @@ public:
 
 		UBugsnagFunctionLibrary::SetContext("overhead view");
 
+		UBugsnagFunctionLibrary::SetUser("5402", "usr@example.com", "");
+
 		volatile int* Pointer = nullptr;
 		*Pointer = 42;
 	}

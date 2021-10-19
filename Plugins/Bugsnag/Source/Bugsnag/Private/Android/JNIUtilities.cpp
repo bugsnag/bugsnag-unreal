@@ -1,5 +1,6 @@
 #include "JNIUtilities.h"
 
+#include "BugsnagUser.h"
 #include "Version.h"
 
 #include <string>
@@ -110,12 +111,14 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->BreadcrumbSetMetadata, cache->BreadcrumbClass, "setMetadata", "(Ljava/util/Map;)V");
 	CacheInstanceJavaMethod(env, cache->BreadcrumbSetType, cache->BreadcrumbClass, "setType", "(Lcom/bugsnag/android/BreadcrumbType;)V");
 
+	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
 	CacheStaticJavaMethod(env, cache->BugsnagSetContext, cache->BugsnagClass, "setContext", "(Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagNotifyMethod, cache->InterfaceClass, "notify", "(Ljava/lang/String;Ljava/lang/String;Lcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagLeaveBreadcrumb, cache->BugsnagClass, "leaveBreadcrumb", "(Ljava/lang/String;Ljava/util/Map;Lcom/bugsnag/android/BreadcrumbType;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagStartSession, cache->BugsnagClass, "startSession", "()V");
 	CacheStaticJavaMethod(env, cache->BugsnagResumeSession, cache->BugsnagClass, "resumeSession", "()Z");
+	CacheStaticJavaMethod(env, cache->BugsnagSetUser, cache->BugsnagClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagPauseSession, cache->BugsnagClass, "pauseSession", "()V");
 
 	CacheInstanceJavaMethod(env, cache->BugsnagUnrealPluginConstructor, cache->BugsnagUnrealPluginClass, "<init>", "()V");
@@ -263,6 +266,30 @@ FString FAndroidPlatformJNI::ParseJavaString(JNIEnv* Env, const JNIReferenceCach
 		return TEXT("");
 	}
 	return UTF8_TO_TCHAR(Text);
+}
+
+FBugsnagUser FAndroidPlatformJNI::ParseJavaUser(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !Env->IsInstanceOf(Value, Cache->UserClass))
+	{
+		return FBugsnagUser(
+			MakeShareable(new FString("")),
+			MakeShareable(new FString("")),
+			MakeShareable(new FString("")));
+	}
+	jobject jId = (*Env).CallObjectMethod(Value, Cache->UserGetId);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+	FString Id = FAndroidPlatformJNI::ParseJavaString(Env, Cache, jId);
+	jobject jName = (*Env).CallObjectMethod(Value, Cache->UserGetName);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+	FString Name = FAndroidPlatformJNI::ParseJavaString(Env, Cache, jName);
+	jobject jEmail = (*Env).CallObjectMethod(Value, Cache->UserGetEmail);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+	FString Email = FAndroidPlatformJNI::ParseJavaString(Env, Cache, jEmail);
+	return FBugsnagUser(
+		MakeShared<FString>(Id),
+		MakeShared<FString>(Email),
+		MakeShared<FString>(Name));
 }
 
 jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<class FString>& Text)
