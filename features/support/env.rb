@@ -1,4 +1,6 @@
-$api_key = "12312312312312312312312312312312"
+BeforeAll do
+  $api_key = "12312312312312312312312312312312"
+end
 
 Before do |_scenario|
   # Wait long enough for Unreal Engine to finish loading the UI.
