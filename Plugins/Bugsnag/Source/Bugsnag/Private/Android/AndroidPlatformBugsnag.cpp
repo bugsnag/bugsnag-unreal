@@ -8,6 +8,7 @@
 
 #include "AndroidBreadcrumb.h"
 #include "AndroidPlatformConfiguration.h"
+#include "AndroidSession.h"
 #include "JNIUtilities.h"
 #include "Shorthand.h"
 
@@ -241,6 +242,17 @@ extern "C"
 		{
 			auto Crumb = FAndroidBreadcrumb::From(Env, &JNICache, jCrumb);
 			return GPlatformBugsnag.RunOnBreadcrumbCallbacks(Crumb) ? JNI_TRUE : JNI_FALSE;
+		}
+		return JNI_TRUE;
+	}
+
+	JNIEXPORT jboolean JNICALL Java_com_bugsnag_android_unreal_UnrealPlugin_runSessionCallbacks(
+		JNIEnv* Env, jobject _this, jobject jSession)
+	{
+		if (JNICache.loaded)
+		{
+			auto Session = FAndroidSession::From(Env, &JNICache, jSession);
+			return GPlatformBugsnag.RunOnSessionCallbacks(Session) ? JNI_TRUE : JNI_FALSE;
 		}
 		return JNI_TRUE;
 	}
