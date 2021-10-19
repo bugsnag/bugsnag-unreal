@@ -59,14 +59,18 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 		return false;
 	}
 
+	CacheExternalJavaClass(env, cache->AppClass, "com.bugsnag.android.App");
 	CacheExternalJavaClass(env, cache->BreadcrumbClass, "com.bugsnag.android.Breadcrumb");
 	CacheExternalJavaClass(env, cache->BugsnagClass, "com.bugsnag.android.Bugsnag");
 	CacheExternalJavaClass(env, cache->BugsnagUnrealPluginClass, "com.bugsnag.android.unreal.UnrealPlugin");
 	CacheExternalJavaClass(env, cache->ConfigClass, "com.bugsnag.android.Configuration");
+	CacheExternalJavaClass(env, cache->DeviceClass, "com.bugsnag.android.Device");
 	CacheExternalJavaClass(env, cache->InterfaceClass, "com.bugsnag.android.NativeInterface");
 	CacheExternalJavaClass(env, cache->NotifierClass, "com.bugsnag.android.Notifier");
 	CacheExternalJavaClass(env, cache->BreadcrumbTypeClass, "com.bugsnag.android.BreadcrumbType");
+	CacheExternalJavaClass(env, cache->SessionClass, "com.bugsnag.android.Session");
 	CacheExternalJavaClass(env, cache->SeverityClass, "com.bugsnag.android.Severity");
+	CacheExternalJavaClass(env, cache->UserClass, "com.bugsnag.android.User");
 	CacheExternalJavaClass(env, cache->EndpointConfigurationClass, "com.bugsnag.android.EndpointConfiguration");
 	CacheExternalJavaClass(env, cache->ErrorTypesClass, "com.bugsnag.android.ErrorTypes");
 	CacheExternalJavaClass(env, cache->ThreadSendPolicyClass, "com.bugsnag.android.ThreadSendPolicy");
@@ -79,7 +83,24 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheSystemJavaClass(env, cache->ArrayListClass, "java/util/ArrayList");
 	CacheSystemJavaClass(env, cache->HashSetClass, "java/util/HashSet");
 	CacheSystemJavaClass(env, cache->IntegerClass, "java/lang/Integer");
+	CacheSystemJavaClass(env, cache->MapClass, "java/util/Map");
+	CacheSystemJavaClass(env, cache->StringClass, "java/lang/String");
 	CacheSystemJavaClass(env, cache->TraceClass, "java/lang/StackTraceElement");
+
+	CacheInstanceJavaMethod(env, cache->AppGetBinaryArch, cache->AppClass, "getBinaryArch", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->AppGetBuildUuid, cache->AppClass, "getBuildUuid", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->AppGetId, cache->AppClass, "getId", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->AppGetReleaseStage, cache->AppClass, "getReleaseStage", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->AppGetType, cache->AppClass, "getType", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->AppGetVersion, cache->AppClass, "getVersion", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->AppGetVersionCode, cache->AppClass, "getVersionCode", "()Ljava/lang/Number;");
+	CacheInstanceJavaMethod(env, cache->AppSetBinaryArch, cache->AppClass, "setBinaryArch", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->AppSetBuildUuid, cache->AppClass, "setBuildUuid", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->AppSetId, cache->AppClass, "setId", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->AppSetReleaseStage, cache->AppClass, "setReleaseStage", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->AppSetType, cache->AppClass, "setType", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->AppSetVersion, cache->AppClass, "setVersion", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->AppSetVersionCode, cache->AppClass, "setVersionCode", "(Ljava/lang/Number;)V");
 
 	CacheInstanceJavaMethod(env, cache->BreadcrumbGetMessage, cache->BreadcrumbClass, "getMessage", "()Ljava/lang/String;");
 	CacheInstanceJavaMethod(env, cache->BreadcrumbGetMetadata, cache->BreadcrumbClass, "getMetadata", "()Ljava/util/Map;");
@@ -129,7 +150,29 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ConfigSetUser, cache->ConfigClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetVersionCode, cache->ConfigClass, "setVersionCode", "(Ljava/lang/Integer;)V");
 
+	CacheInstanceJavaMethod(env, cache->DateConstructor, cache->DateClass, "<init>", "(J)V");
 	CacheInstanceJavaMethod(env, cache->DateGetTime, cache->DateClass, "getTime", "()J");
+
+	CacheInstanceJavaMethod(env, cache->DeviceGetCpuAbi, cache->DeviceClass, "getCpuAbi", "()[Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetId, cache->DeviceClass, "getId", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetJailbroken, cache->DeviceClass, "getJailbroken", "()Ljava/lang/Boolean;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetLocale, cache->DeviceClass, "getLocale", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetManufacturer, cache->DeviceClass, "getManufacturer", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetModel, cache->DeviceClass, "getModel", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetOsName, cache->DeviceClass, "getOsName", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetOsVersion, cache->DeviceClass, "getOsVersion", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetRuntimeVersions, cache->DeviceClass, "getRuntimeVersions", "()Ljava/util/Map;");
+	CacheInstanceJavaMethod(env, cache->DeviceGetTotalMemory, cache->DeviceClass, "getTotalMemory", "()Ljava/lang/Long;");
+	CacheInstanceJavaMethod(env, cache->DeviceSetCpuAbi, cache->DeviceClass, "setCpuAbi", "([Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetId, cache->DeviceClass, "setId", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetJailbroken, cache->DeviceClass, "setJailbroken", "(Ljava/lang/Boolean;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetLocale, cache->DeviceClass, "setLocale", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetManufacturer, cache->DeviceClass, "setManufacturer", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetModel, cache->DeviceClass, "setModel", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetOsName, cache->DeviceClass, "setOsName", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetOsVersion, cache->DeviceClass, "setOsVersion", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetRuntimeVersions, cache->DeviceClass, "setRuntimeVersions", "(Ljava/util/Map;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceSetTotalMemory, cache->DeviceClass, "setTotalMemory", "(Ljava/lang/Long;)V");
 
 	CacheInstanceJavaMethod(env, cache->EnumGetName, cache->EnumClass, "name", "()Ljava/lang/String;");
 
@@ -138,6 +181,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ErrorTypesConstructor, cache->ErrorTypesClass, "<init>", "(ZZZZ)V");
 
 	CacheInstanceJavaMethod(env, cache->HashMapConstructor, cache->HashMapClass, "<init>", "()V");
+	CacheInstanceJavaMethod(env, cache->HashMapGet, cache->HashMapClass, "get", "(Ljava/lang/Object;)Ljava/lang/Object;");
 
 	CacheInstanceJavaMethod(env, cache->NotifierConstructor, cache->NotifierClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->NotifierSetDependencies, cache->NotifierClass, "setDependencies", "(Ljava/util/List;)V");
@@ -145,13 +189,31 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->NotifierSetUrl, cache->NotifierClass, "setUrl", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->NotifierSetVersion, cache->NotifierClass, "setVersion", "(Ljava/lang/String;)V");
 
+	CacheInstanceJavaMethod(env, cache->SessionGetApp, cache->SessionClass, "getApp", "()Lcom/bugsnag/android/App;");
+	CacheInstanceJavaMethod(env, cache->SessionGetDevice, cache->SessionClass, "getDevice", "()Lcom/bugsnag/android/Device;");
+	CacheInstanceJavaMethod(env, cache->SessionGetId, cache->SessionClass, "getId", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->SessionGetStartedAt, cache->SessionClass, "getStartedAt", "()Ljava/util/Date;");
+	CacheInstanceJavaMethod(env, cache->SessionGetUser, cache->SessionClass, "getUser", "()Lcom/bugsnag/android/User;");
+	CacheInstanceJavaMethod(env, cache->SessionSetId, cache->SessionClass, "setId", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->SessionSetStartedAt, cache->SessionClass, "setStartedAt", "(Ljava/util/Date;)V");
+	CacheInstanceJavaMethod(env, cache->SessionSetUser, cache->SessionClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+
+	CacheInstanceJavaMethod(env, cache->UserGetEmail, cache->UserClass, "getEmail", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->UserGetId, cache->UserClass, "getId", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->UserGetName, cache->UserClass, "getName", "()Ljava/lang/String;");
+
 	CacheInstanceJavaMethod(env, cache->ArrayListConstructor, cache->ArrayListClass, "<init>", "()V");
+	CacheInstanceJavaMethod(env, cache->ArrayListCollectionConstructor, cache->ArrayListClass, "<init>", "(Ljava/util/Collection;)V");
 	CacheInstanceJavaMethod(env, cache->ArrayListAdd, cache->ArrayListClass, "add", "(Ljava/lang/Object;)Z");
+	CacheInstanceJavaMethod(env, cache->ArrayListGet, cache->ArrayListClass, "get", "(I)Ljava/lang/Object;");
 
 	CacheInstanceJavaMethod(env, cache->IntegerConstructor, cache->IntegerClass, "<init>", "(I)V");
 
 	CacheInstanceJavaMethod(env, cache->HashSetConstructor, cache->HashSetClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->HashSetAdd, cache->HashSetClass, "add", "(Ljava/lang/Object;)Z");
+
+	CacheInstanceJavaMethod(env, cache->MapKeySet, cache->MapClass, "keySet", "()Ljava/util/Set;");
+	CacheInstanceJavaMethod(env, cache->MapSize, cache->MapClass, "size", "()I");
 
 	CacheInstanceJavaMethod(env, cache->TraceConstructor, cache->TraceClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V");
 
