@@ -44,7 +44,7 @@ format:
 
 lint:
 	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/mobile/Source -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
-	cspell cspell **/*.{cpp,h}
+	cspell **/*.{cpp,h}
 
 # If this target isn't built beforehand, the Editor will show the "Missing BugsnagExample Modules" prompt
 Binaries/Mac/UE4Editor-BugsnagExample.dylib: BugsnagCocoa

@@ -16,7 +16,7 @@ Feature: Reporting handled errors
     And the event "app.isLaunching" is true
     # TODO: PLAT-7427 - investigate android release stage detection improvements
     And on iOS, the event "app.releaseStage" equals "production"
-    And the error payload field "events.0.app.type" equals the platform-dependent string:
+    And the event "app.type" equals the platform-dependent string:
       | android | android |
       | ios     | iOS     |
     And the event "app.version" equals "1.0"
@@ -29,7 +29,7 @@ Feature: Reporting handled errors
     And the event "device.model" is not null
     And on iOS, the event "device.modelNumber" is not null
     And the event "device.orientation" matches "(face(down|up)|landscape(left|right)|portrait(upsidedown)?)"
-    And the error payload field "events.0.device.osName" equals the platform-dependent string:
+    And the event "device.osName" equals the platform-dependent string:
       | android | android |
       | ios     | iOS     |
     And the event "device.osVersion" is not null
@@ -53,7 +53,7 @@ Feature: Reporting handled errors
     And on iOS, the event "metaData.unrealEngine.userActivity" is not null
     And on iOS, the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
     And the event "severity" equals "warning"
-    And the error payload field "events.0.severityReason.type" equals the platform-dependent string:
+    And the event "severityReason.type" equals the platform-dependent string:
       | android | handledException |
       | ios     | handledError     |
     And the event "unhandled" is false
@@ -61,6 +61,6 @@ Feature: Reporting handled errors
     And the exception "errorClass" equals "Internal Error"
     And the exception "message" equals "Does not compute"
     And the method of stack frame 0 is equivalent to "NotifyScenario::Run()"
-    And the error payload field "events.0.exceptions.0.type" equals the platform-dependent string:
+    And the exception "type" equals the platform-dependent string:
       | android | c     |
       | ios     | cocoa |
