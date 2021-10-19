@@ -34,13 +34,13 @@ Feature: Unhandled errors
     And on iOS, the event "metaData.lastRunInfo.crashed" is true
     And on iOS, the event "metaData.lastRunInfo.crashedDuringLaunch" is true
     And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
-    And the error payload field "events.0.exceptions.0.errorClass" equals the platform-dependent string:
+    And the exception "errorClass" equals the platform-dependent string:
       | android | SIGSEGV |
       | ios | EXC_BAD_ACCESS |
-    And the error payload field "events.0.exceptions.0.message" equals the platform-dependent string:
+    And the exception "message" equals the platform-dependent string:
       | android | Segmentation violation (invalid memory reference) |
       | ios | Attempted to dereference null pointer. |
-    And the error payload field "events.0.exceptions.0.type" equals the platform-dependent string:
+    And the exception "type" equals the platform-dependent string:
       | android | c |
       | ios | cocoa |
 
