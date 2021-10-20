@@ -16,9 +16,9 @@ public:
 	virtual void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 		const FBugsnagOnErrorCallback& Callback) = 0;
 
-	virtual const FString GetContext() = 0;
+	virtual const TSharedPtr<FString> GetContext() = 0;
 
-	virtual void SetContext(const FString& Context) = 0;
+	virtual void SetContext(const TSharedPtr<FString>& Context) = 0;
 
 	virtual const TSharedPtr<FBugsnagUser> GetUser() = 0;
 

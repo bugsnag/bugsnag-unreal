@@ -78,12 +78,12 @@ void FApplePlatformBugsnag::Notify(
 					 block:Block];
 }
 
-const FString FApplePlatformBugsnag::GetContext()
+const TSharedPtr<FString> FApplePlatformBugsnag::GetContext()
 {
-	return TEXT("");
+	return nullptr;
 }
 
-void FApplePlatformBugsnag::SetContext(const FString& Context)
+void FApplePlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
 {
 }
 
