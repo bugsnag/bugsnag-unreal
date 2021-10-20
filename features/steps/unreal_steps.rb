@@ -73,12 +73,12 @@ def parse_method frame_index
     stop_addr = Integer(stackframe["frameAddress"]) - Integer(stackframe["machoLoadAddress"]) + Integer(stackframe["machoVMAddress"])
     start_addr = stop_addr - 4096
     cmd = HOST_OS.start_with?('darwin') ? 'xcrun objdump' : 'llvm-objdump-11'
-    `#{cmd} --arch arm64 --syms --stop-address 0x#{stop_addr.to_s(16)} --start-address 0x#{start_addr.to_s(16)} #{dsym_path} | tail -n 1 | awk '{print $5;}' | c++filt -_`.chomp
+    `#{cmd} --arch arm64 --syms --stop-address 0x#{stop_addr.to_s(16)} --start-address 0x#{start_addr.to_s(16)} #{dsym_path} | tail -n 1 | awk '{print $5;}' | c++filt --strip-underscore`.chomp
   else
     stackframe_method = Maze::Helper.read_key_path(
       Maze::Server.errors.current[:body],
       "events.0.exceptions.0.stacktrace.#{frame_index}.method")
-    `c++filt -_ '_#{stackframe_method}'`.chomp
+    `c++filt --strip-underscore '_#{stackframe_method}'`.chomp
   end
 end
 
