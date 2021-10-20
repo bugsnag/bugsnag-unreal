@@ -2,6 +2,7 @@
 $scenario_names = [
   'BadMemoryAccessScenario',
   'CancelSessionScenario',
+  'CrashAfterLaunchedScenario',
   'MaxConfigCrashScenario',
   'ModifyCrumbsScenario',
   'ModifySessionScenario',

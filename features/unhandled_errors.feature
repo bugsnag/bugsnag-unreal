@@ -67,3 +67,11 @@ Feature: Unhandled errors
     # TODO: pending on Android (PLAT-7305)
     And on iOS, the event "context" equals "Main Menu"
     And the method of stack frame 0 is equivalent to "MaxConfigCrashScenario::Run()"
+
+  Scenario: Crash after marking launch as completed
+    When I run "CrashAfterLaunchedScenario"
+    Then the app is not running
+    When I relaunch the app
+    And I configure Bugsnag for "MaxConfigCrashScenario"
+    And I wait to receive an error
+    Then the event "app.isLaunching" is false

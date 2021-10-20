@@ -67,6 +67,7 @@ typedef struct
 	jmethodID BugsnagNotifyMethod;
 	jmethodID BugsnagSetContext;
 	jmethodID BugsnagLeaveBreadcrumb;
+	jmethodID BugsnagMarkLaunchCompleted;
 	jmethodID BugsnagStartSession;
 	jmethodID BugsnagPauseSession;
 	jmethodID BugsnagResumeSession;

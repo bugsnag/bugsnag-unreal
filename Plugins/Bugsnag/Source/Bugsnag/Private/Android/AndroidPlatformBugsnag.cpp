@@ -197,6 +197,10 @@ TArray<TSharedRef<const class IBugsnagBreadcrumb>> FAndroidPlatformBugsnag::GetB
 
 void FAndroidPlatformBugsnag::MarkLaunchCompleted()
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnVoidIf(!Env || !JNICache.initialized);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagMarkLaunchCompleted);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 TSharedPtr<FBugsnagLastRunInfo> FAndroidPlatformBugsnag::GetLastRunInfo()

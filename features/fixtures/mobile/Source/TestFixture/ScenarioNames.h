@@ -2,6 +2,7 @@
 static TArray<FString> ScenarioNames = {
 	TEXT("BadMemoryAccessScenario"),
 	TEXT("CancelSessionScenario"),
+	TEXT("CrashAfterLaunchedScenario"),
 	TEXT("MaxConfigCrashScenario"),
 	TEXT("ModifyCrumbsScenario"),
 	TEXT("ModifySessionScenario"),
