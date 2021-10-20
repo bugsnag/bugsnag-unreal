@@ -11,6 +11,8 @@ typedef struct
 	bool loaded;
 	bool initialized;
 	jclass InterfaceClass;
+	jclass AppClass;
+	jclass DeviceClass;
 	jclass BreadcrumbClass;
 	jclass BreadcrumbTypeClass;
 	jclass BugsnagClass;
@@ -22,7 +24,9 @@ typedef struct
 	jclass MetadataSerializerClass;
 	jclass NotifierClass;
 	jclass ThreadSendPolicyClass;
+	jclass SessionClass;
 	jclass SeverityClass;
+	jclass UserClass;
 	jclass TraceClass;
 	jclass DateClass;
 	jclass EnumClass;
@@ -30,9 +34,27 @@ typedef struct
 	jclass HashSetClass;
 	jclass ArrayListClass;
 	jclass IntegerClass;
+	jclass MapClass;
+	jclass StringClass;
 
 	jmethodID ArrayListConstructor;
+	jmethodID ArrayListCollectionConstructor;
 	jmethodID ArrayListAdd;
+	jmethodID ArrayListGet;
+	jmethodID AppGetBinaryArch;
+	jmethodID AppGetBuildUuid;
+	jmethodID AppGetId;
+	jmethodID AppGetReleaseStage;
+	jmethodID AppGetType;
+	jmethodID AppGetVersion;
+	jmethodID AppGetVersionCode;
+	jmethodID AppSetBinaryArch;
+	jmethodID AppSetBuildUuid;
+	jmethodID AppSetId;
+	jmethodID AppSetReleaseStage;
+	jmethodID AppSetType;
+	jmethodID AppSetVersion;
+	jmethodID AppSetVersionCode;
 	jmethodID BreadcrumbGetMessage;
 	jmethodID BreadcrumbGetMetadata;
 	jmethodID BreadcrumbGetTimestamp;
@@ -72,11 +94,33 @@ typedef struct
 	jmethodID ConfigSetSendThreads;
 	jmethodID ConfigSetUser;
 	jmethodID ConfigSetVersionCode;
+	jmethodID DeviceGetCpuAbi;
+	jmethodID DeviceGetId;
+	jmethodID DeviceGetJailbroken;
+	jmethodID DeviceGetLocale;
+	jmethodID DeviceGetManufacturer;
+	jmethodID DeviceGetModel;
+	jmethodID DeviceGetOsName;
+	jmethodID DeviceGetOsVersion;
+	jmethodID DeviceGetRuntimeVersions;
+	jmethodID DeviceGetTotalMemory;
+	jmethodID DeviceSetCpuAbi;
+	jmethodID DeviceSetId;
+	jmethodID DeviceSetJailbroken;
+	jmethodID DeviceSetLocale;
+	jmethodID DeviceSetManufacturer;
+	jmethodID DeviceSetModel;
+	jmethodID DeviceSetOsName;
+	jmethodID DeviceSetOsVersion;
+	jmethodID DeviceSetRuntimeVersions;
+	jmethodID DeviceSetTotalMemory;
 	jmethodID EndpointConfigurationConstructor;
 	jmethodID ErrorTypesConstructor;
+	jmethodID DateConstructor;
 	jmethodID DateGetTime;
 	jmethodID EnumGetName;
 	jmethodID HashMapConstructor;
+	jmethodID HashMapGet;
 	jmethodID NotifierConstructor;
 	jmethodID NotifierGetName;
 	jmethodID NotifierGetUrl;
@@ -85,11 +129,24 @@ typedef struct
 	jmethodID NotifierSetUrl;
 	jmethodID NotifierSetVersion;
 	jmethodID NotifierSetDependencies;
+	jmethodID SessionGetApp;
+	jmethodID SessionGetDevice;
+	jmethodID SessionGetId;
+	jmethodID SessionGetStartedAt;
+	jmethodID SessionGetUser;
+	jmethodID SessionSetId;
+	jmethodID SessionSetStartedAt;
+	jmethodID SessionSetUser;
+	jmethodID UserGetEmail;
+	jmethodID UserGetId;
+	jmethodID UserGetName;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID MetadataParserParse;
 	jmethodID MetadataSerializerSerialize;
 	jmethodID IntegerConstructor;
+	jmethodID MapKeySet;
+	jmethodID MapSize;
 	jmethodID TraceConstructor;
 
 	jfieldID SeverityFieldInfo;
@@ -218,6 +275,39 @@ public:
 	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value);
 
 	/**
+     * Convert a Java Date into a FDateTime
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A jobject representing a Java Date
+     *
+     * @return A date time object, representing the Unix epoch in the event of failure
+     */
+	static FDateTime ParseDateTime(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
+	/**
+     * Convert a FDateTime into a Java Date
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A value to convert
+     *
+     * @return A jobject representing a date or null upon failure
+     */
+	static jobject ParseJavaDate(JNIEnv* Env, const JNIReferenceCache* Cache, FDateTime Value);
+
+	/**
+     * Convert a Java String into a FString
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A jobject representing a Java String
+     *
+     * @return A string object, empty in the event of failure
+     */
+	static FString ParseJavaString(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
+	/**
    * Convert a Java map into a JSON object
    *
    * @param Env   A JNI environment for the current thread
@@ -246,4 +336,15 @@ public:
    * @param jClient The client containing the notifier
    */
 	static bool SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jClient);
+
+	/**
+     * Call a void function with a string value
+     *
+     * @param Env        A JNI environment for the current thread
+     * @param Target     The object to call
+     * @param Method     The method to call
+     * @param IsNullable true if the method should be called with null if Value is invalid
+     * @param Value      the assigned value
+     */
+	static void SetStringValue(JNIEnv* Env, jobject Target, jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value);
 };

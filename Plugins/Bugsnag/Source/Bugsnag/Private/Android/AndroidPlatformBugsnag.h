@@ -51,12 +51,37 @@ public:
 
 	void AddOnSendError(FBugsnagOnErrorCallback Callback) override;
 
-	void AddOnSession(FBugsnagOnSessionCallback Callback) override;
+	void AddOnSession(FBugsnagOnSessionCallback Callback) override
+	{
+		OnSessionCallbacks.Add(Callback);
+	}
 
-	bool RunOnBreadcrumbCallbacks(TSharedRef<IBugsnagBreadcrumb> Crumb);
+	bool RunOnBreadcrumbCallbacks(TSharedRef<IBugsnagBreadcrumb> Crumb)
+	{
+		return RunCallbacks(OnBreadcrumbCallbacks, Crumb);
+	}
+
+	bool RunOnSessionCallbacks(TSharedRef<IBugsnagSession> Session)
+	{
+		return RunCallbacks(OnSessionCallbacks, Session);
+	}
 
 private:
+	template <typename T>
+	bool RunCallbacks(TArray<TFunction<bool(TSharedRef<T>)>> Callbacks, TSharedRef<T> CallbackArg)
+	{
+		for (auto& Callback : Callbacks)
+		{
+			if (!Callback(CallbackArg))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
+	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
 };
 
 DECLARE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag)

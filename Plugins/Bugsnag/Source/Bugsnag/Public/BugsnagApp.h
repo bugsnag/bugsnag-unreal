@@ -55,7 +55,7 @@ public:
 
 	// versionCode?: number;
 
-	virtual const TSharedPtr<uint64> GetVersionCode() const = 0;
+	virtual const TSharedPtr<int64> GetVersionCode() const = 0;
 
-	virtual void SetVersionCode(const TSharedPtr<uint64>&) = 0;
+	virtual void SetVersionCode(const TSharedPtr<int64>&) = 0;
 };
