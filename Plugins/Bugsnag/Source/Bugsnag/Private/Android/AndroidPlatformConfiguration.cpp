@@ -95,6 +95,13 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage());
 	}
+	else
+	{
+		// explicitly set production for shipping builds, otherwise use bugsnag-android default detection
+#if UE_BUILD_SHIPPING
+		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, MakeShareable(new FString("production")));
+#endif
+	}
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetSendLaunchCrashesSynchronously, Config->GetSendLaunchCrashesSynchronously());
 	jobject jThreadPolicy = FAndroidPlatformJNI::ParseThreadSendPolicy(Env, Cache, Config->GetSendThreads());
 	ReturnNullOnFail(jThreadPolicy);
