@@ -114,17 +114,17 @@ void FAndroidPlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetContext, jContext);
 }
 
-const TSharedPtr<FBugsnagUser> FAndroidPlatformBugsnag::GetUser()
+const FBugsnagUser FAndroidPlatformBugsnag::GetUser()
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	if (!Env || !JNICache.initialized)
 	{
-		return nullptr;
+		return FBugsnagUser();
 	}
 	jobject jUser = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetUser);
 	return FAndroidPlatformJNI::CheckAndClearException(Env)
-			   ? nullptr
-			   : MakeShareable(new FBugsnagUser(FAndroidPlatformJNI::ParseJavaUser(Env, &JNICache, jUser)));
+			   ? FBugsnagUser()
+			   : FBugsnagUser(FAndroidPlatformJNI::ParseJavaUser(Env, &JNICache, jUser));
 }
 
 void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, const FString& Name)

@@ -20,7 +20,7 @@ public:
 
 	virtual void SetContext(const TSharedPtr<FString>& Context) = 0;
 
-	virtual const TSharedPtr<FBugsnagUser> GetUser() = 0;
+	virtual const FBugsnagUser GetUser() = 0;
 
 	virtual void SetUser(const FString& Id, const FString& Email, const FString& Name) = 0;
 

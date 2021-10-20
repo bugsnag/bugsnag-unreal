@@ -59,7 +59,7 @@ public:
 
 	// User
 
-	static const TSharedPtr<FBugsnagUser> GetUser();
+	static const FBugsnagUser GetUser();
 
 	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
 	static void SetUser(const FString& Id = TEXT(""), const FString& Email = TEXT(""), const FString& Name = TEXT(""));

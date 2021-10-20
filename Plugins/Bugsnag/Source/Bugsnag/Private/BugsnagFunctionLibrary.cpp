@@ -118,12 +118,12 @@ void UBugsnagFunctionLibrary::SetContext(const FString& Context)
 #endif
 }
 
-const TSharedPtr<FBugsnagUser> UBugsnagFunctionLibrary::GetUser()
+const FBugsnagUser UBugsnagFunctionLibrary::GetUser()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetUser();
 #else
-	return nullptr;
+	return FBugsnagUser();
 #endif
 }
 

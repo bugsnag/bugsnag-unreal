@@ -15,7 +15,7 @@ public:
 
 	void SetContext(const TSharedPtr<FString>& Context) override;
 
-	const TSharedPtr<FBugsnagUser> GetUser() override;
+	const FBugsnagUser GetUser() override;
 
 	void SetUser(const FString& Id, const FString& Email, const FString& Name) override;
 

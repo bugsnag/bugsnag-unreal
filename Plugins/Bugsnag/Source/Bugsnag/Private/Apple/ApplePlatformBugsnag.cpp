@@ -87,9 +87,9 @@ void FApplePlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
 {
 }
 
-const TSharedPtr<FBugsnagUser> FApplePlatformBugsnag::GetUser()
+const FBugsnagUser FApplePlatformBugsnag::GetUser()
 {
-	return nullptr;
+	return FBugsnagUser();
 }
 
 void FApplePlatformBugsnag::SetUser(const FString& Id, const FString& Email, const FString& Name)
