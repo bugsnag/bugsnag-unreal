@@ -7,6 +7,7 @@ $scenario_names = [
   'ModifyCrumbsScenario',
   'ModifySessionScenario',
   'NotifyScenario',
+  'NotifyWithLaunchInfoScenario',
   'OpenLevelBreadcrumbsScenario',
   'PauseSessionScenario',
   'ResumeSessionScenario',

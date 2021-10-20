@@ -70,3 +70,18 @@ Feature: Reporting handled errors
       | ios     | cocoa |
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
+
+  Scenario: Notify after crash
+    When I run "CrashAfterLaunchedScenario"
+    Then the app is not running
+    When I relaunch the app
+    And I configure Bugsnag for "NotifyWithLaunchInfoScenario"
+    And I wait to receive 2 errors
+    Then the event "metaData.lastRunInfo" is null
+    And the event "app.isLaunching" is false
+    And I discard the oldest error
+    And the exception "errorClass" equals "Resolution failed"
+    And the exception "message" equals "invalid index (-1)"
+    And the event "metaData.lastRunInfo.crashed" is true
+    And the event "metaData.lastRunInfo.crashedDuringLaunch" is false
+    And the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 0

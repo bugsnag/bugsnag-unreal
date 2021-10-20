@@ -260,7 +260,21 @@ void FAndroidPlatformBugsnag::MarkLaunchCompleted()
 
 TSharedPtr<FBugsnagLastRunInfo> FAndroidPlatformBugsnag::GetLastRunInfo()
 {
-	return nullptr;
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnNullOnFail(Env && JNICache.initialized);
+	jobject jLastRunInfo = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetLastRunInfo);
+	ReturnNullOnException(Env);
+	ReturnNullOnFail(jLastRunInfo);
+	jboolean jCrashed = (*Env).CallBooleanMethod(jLastRunInfo, JNICache.LastRunInfoGetCrashed);
+	ReturnValueOnException(Env, nullptr);
+	jboolean jCrashedDuringLaunch = (*Env).CallBooleanMethod(jLastRunInfo, JNICache.LastRunInfoGetCrashedDuringLaunch);
+	ReturnValueOnException(Env, nullptr);
+	jint jConsecutiveCrashes = (*Env).CallIntMethod(jLastRunInfo, JNICache.LastRunInfoGetConsecutiveLaunchCrashes);
+	ReturnValueOnException(Env, nullptr);
+	return MakeShareable(new FBugsnagLastRunInfo(
+		jConsecutiveCrashes,
+		jCrashed == JNI_TRUE,
+		jCrashedDuringLaunch == JNI_TRUE));
 }
 
 void FAndroidPlatformBugsnag::StartSession()
