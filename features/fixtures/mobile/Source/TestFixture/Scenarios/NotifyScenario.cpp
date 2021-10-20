@@ -55,6 +55,8 @@ public:
 
 		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), MakeShareable(new FJsonValueString(TEXT("foobar"))));
 
+		UBugsnagFunctionLibrary::SetUser("1118", "emilie@example.com", "Emilie");
+
 		UBugsnagFunctionLibrary::Notify(TEXT("Internal Error"), TEXT("Does not compute"), [](TSharedRef<IBugsnagEvent> Event)
 			{
 				Event->AddMetadata(TEXT("custom"), TEXT("notify"), MakeShareable(new FJsonValueString(TEXT("testing"))));

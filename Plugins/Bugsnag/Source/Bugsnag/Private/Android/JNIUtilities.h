@@ -62,6 +62,7 @@ typedef struct
 	jmethodID BreadcrumbSetMessage;
 	jmethodID BreadcrumbSetMetadata;
 	jmethodID BreadcrumbSetType;
+	jmethodID BugsnagGetUser;
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
 	jmethodID BugsnagSetContext;
@@ -69,6 +70,7 @@ typedef struct
 	jmethodID BugsnagStartSession;
 	jmethodID BugsnagPauseSession;
 	jmethodID BugsnagResumeSession;
+	jmethodID BugsnagSetUser;
 	jmethodID BugsnagUnrealPluginConstructor;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigAddPlugin;
@@ -306,6 +308,17 @@ public:
      * @return A string object, empty in the event of failure
      */
 	static FString ParseJavaString(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
+	/**
+     * Convert a Bugsnag Java User into a FBugsnagUser
+     *
+     * @param Env   A JNI environment for the current thread
+     * @param Cache A populated reference cache
+     * @param Value A jobject representing a Java User
+     *
+     * @return A user object, with empty fields in the event of an error
+     */
+	static FBugsnagUser ParseJavaUser(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
 
 	/**
    * Convert a Java map into a JSON object

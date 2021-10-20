@@ -42,6 +42,10 @@ Feature: Reporting handled errors
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
+    # TODO: pending on iOS
+    And on Android, the event "user.id" equals "1118"
+    And on Android, the event "user.email" equals "emilie@example.com"
+    And on Android, the event "user.name" equals "Emilie"
     # TODO: pending on Android (PLAT-7364)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And on iOS, the event "metaData.custom.someValue" equals "foobar"
