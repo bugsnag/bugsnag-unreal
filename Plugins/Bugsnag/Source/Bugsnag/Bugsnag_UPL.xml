@@ -8,6 +8,8 @@
             section="/Script/Bugsnag.BugsnagSettings"
             property="ApiKey"
             default=""/>
+        <setBoolEquals result="bIsShipping" arg1="$S(Configuration)" arg2="Shipping"/>
+        <setBoolOr result="bShouldUploadBuildMetadata" arg1="$B(bIsShipping)" arg2="$B(Distribution)"/>
     </init>
 
     <androidManifestUpdates>
@@ -49,6 +51,17 @@
         <insert>
             apply plugin: "com.bugsnag.android.gradle"
         </insert>
+        <if condition="bShouldUploadBuildMetadata">
+            <true>
+                <insert>
+bugsnag {
+    uploadJvmMappings = true
+    uploadNdkMappings = true
+    reportBuilds = true
+}
+                </insert>
+            </true>
+        </if>
     </buildGradleAdditions>
 
     <!-- optional additions to the GameActivity imports in GameActivity.java -->

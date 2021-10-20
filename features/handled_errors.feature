@@ -14,8 +14,7 @@ Feature: Reporting handled errors
     And the event "app.id" equals "com.bugsnag.TestFixture"
     And the event "app.inForeground" is true
     And the event "app.isLaunching" is true
-    # TODO: PLAT-7427 - investigate android release stage detection improvements
-    And on iOS, the event "app.releaseStage" equals "production"
+    And the event "app.releaseStage" equals "production"
     And the event "app.type" equals the platform-dependent string:
       | android | android |
       | ios     | iOS     |
