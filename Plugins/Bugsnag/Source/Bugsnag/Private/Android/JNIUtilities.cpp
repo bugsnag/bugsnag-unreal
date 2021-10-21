@@ -531,23 +531,15 @@ bool FAndroidPlatformJNI::SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* 
 	return true;
 }
 
-TSharedPtr<FJsonObject> FAndroidPlatformJNI::ConvertJavaMapToJson(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jMap)
+TSharedPtr<FJsonObject> FAndroidPlatformJNI::ConvertJavaBytesToJson(JNIEnv* Env, const JNIReferenceCache* Cache, jbyteArray jData)
 {
 	TSharedPtr<FJsonObject> Json = MakeShareable(new FJsonObject);
-	jbyteArray jData = (jbyteArray)(*Env).CallStaticObjectMethod(Cache->MetadataSerializerClass, Cache->MetadataSerializerSerialize, jMap);
-	if (FAndroidPlatformJNI::CheckAndClearException(Env))
-	{
-		return Json;
-	}
 	int Len = (*Env).GetArrayLength(jData);
+	ReturnValueOnException(Env, Json);
 	const jbyte* Bytes = (*Env).GetByteArrayElements(jData, nullptr);
-	if (FAndroidPlatformJNI::CheckAndClearException(Env))
-	{
-		return Json;
-	}
-	FString Input = UTF8_TO_TCHAR(Bytes);
-	TSharedRef<TJsonReader<>> Reader = TJsonReaderFactory<>::Create(Input);
-	if (FJsonSerializer::Deserialize(Reader, Json))
+	ReturnValueOnException(Env, Json);
+	FLargeMemoryReader Archive((const uint8*)Bytes, Len);
+	if (FJsonSerializer::Deserialize(TJsonReaderFactory<char>::Create(&Archive), Json))
 	{
 		return Json;
 	}
@@ -556,6 +548,18 @@ TSharedPtr<FJsonObject> FAndroidPlatformJNI::ConvertJavaMapToJson(JNIEnv* Env, c
 		return MakeShareable(new FJsonObject);
 	}
 }
+
+TSharedPtr<FJsonObject> FAndroidPlatformJNI::ConvertJavaMapToJson(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jMap)
+{
+	TSharedPtr<FJsonObject> Json = MakeShareable(new FJsonObject);
+	jbyteArray jData = (jbyteArray)(*Env).CallStaticObjectMethod(Cache->MetadataSerializerClass, Cache->MetadataSerializerSerialize, jMap);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return Json;
+	}
+	return FAndroidPlatformJNI::ConvertJavaBytesToJson(Env, Cache, jData);
+}
+
 FDateTime FAndroidPlatformJNI::ParseDateTime(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
 {
 	if (!Value)

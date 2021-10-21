@@ -322,6 +322,17 @@ public:
 	static FBugsnagUser ParseJavaUser(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
 
 	/**
+   * Convert an array of bytes into a JSON object
+   *
+   * @param Env     A JNI environment for the current thread
+   * @param Cache   A populated reference cache
+   * @param jBytes  A byte array representing json data
+   *
+   * @return A JSON object, empty if the map could not be parsed as JSON
+   */
+	static TSharedPtr<FJsonObject> ConvertJavaBytesToJson(JNIEnv* Env, const JNIReferenceCache* Cache, jbyteArray jBytes);
+
+	/**
    * Convert a Java map into a JSON object
    *
    * @param Env   A JNI environment for the current thread
