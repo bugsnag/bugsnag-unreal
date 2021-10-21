@@ -8,6 +8,7 @@ PACKAGE_OUTPUT=Plugins/Bugsnag/Source/ThirdParty/Android/lib/com/bugsnag/bugsnag
 PACKAGE_INPUT=deps/bugsnag-plugin-android-unreal/build/outputs/aar/bugsnag-plugin-android-unreal-release.aar
 POM_OUTPUT=$(PACKAGE_OUTPUT:.aar=.pom)
 POM_INPUT=$(PACKAGE_INPUT:.aar=.pom)
+GRADLE=./gradlew --quiet
 
 all: package
 
@@ -17,7 +18,7 @@ package: $(PACKAGE_OUTPUT) $(POM_OUTPUT) ## Generate Android package files
 .PHONY: test
 test: ## Run unit tests (requires a device)
 	@cd deps/bugsnag-plugin-android-unreal && \
-		./gradlew connectedAndroidTest
+		$(GRADLE) connectedAndroidTest
 
 .PHONY: bump
 bump: ## Update the library version
@@ -37,11 +38,11 @@ $(POM_OUTPUT): $(POM_INPUT)
 
 $(PACKAGE_INPUT): $(PACKAGE_SOURCES)
 	cd deps/bugsnag-plugin-android-unreal && \
-		./gradlew assembleRelease
+		$(GRADLE) assembleRelease
 
 $(POM_INPUT):
 	cd deps/bugsnag-plugin-android-unreal && \
-		./gradlew generatePom
+		$(GRADLE) generatePom
 
 .PHONY: help
 help: ## Show help text
