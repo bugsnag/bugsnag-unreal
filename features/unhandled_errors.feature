@@ -11,8 +11,7 @@ Feature: Unhandled errors
     And the error payload field "notifier.dependencies.0.url" is not null
     And the error payload field "notifier.dependencies.0.version" is not null
     And the event "unhandled" is true
-    # TODO: pending on iOS (PLAT-7313)
-    And on Android, the event "context" equals "overhead view"
+    And the event "context" equals "overhead view"
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the event has a "manual" breadcrumb named "About to read from a bad memory address"
     And the event "app.isLaunching" is true
@@ -20,10 +19,9 @@ Feature: Unhandled errors
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
-    # TODO: pending on iOS
-    And on Android, the event "user.id" equals "5402"
-    And on Android, the event "user.email" equals "usr@example.com"
-    And on Android, the event "user.name" is null
+    And the event "user.id" equals "5402"
+    And the event "user.email" equals "usr@example.com"
+    And the event "user.name" is null
     # TODO: pending on Android (PLAT-7364)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And on iOS, the event "metaData.custom.someValue" equals "foobar"

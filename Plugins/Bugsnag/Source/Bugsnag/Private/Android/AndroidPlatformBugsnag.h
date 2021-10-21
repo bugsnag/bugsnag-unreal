@@ -10,11 +10,11 @@ public:
 	void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 		const FBugsnagOnErrorCallback& Callback) override;
 
-	const FString GetContext() override;
+	const TSharedPtr<FString> GetContext() override;
 
-	void SetContext(const FString& Context) override;
+	void SetContext(const TSharedPtr<FString>& Context) override;
 
-	const TSharedPtr<FBugsnagUser> GetUser() override;
+	const FBugsnagUser GetUser() override;
 
 	void SetUser(const FString& Id, const FString& Email, const FString& Name) override;
 

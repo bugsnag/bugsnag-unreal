@@ -9,7 +9,6 @@ Feature: Session tracking
     And I wait to receive an error
     Then the event "session" is null
 
-  @skip_ios
   Scenario: Resuming a session before a crash
     When I run "ResumeSessionScenario"
     Then the app is not running

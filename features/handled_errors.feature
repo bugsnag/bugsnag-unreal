@@ -8,7 +8,7 @@ Feature: Reporting handled errors
     And the error payload field "notifier.dependencies.0.name" is not null
     And the error payload field "notifier.dependencies.0.url" is not null
     And the error payload field "notifier.dependencies.0.version" is not null
-    And on Android, the event "context" equals "pause menu"
+    And the event "context" equals "pause menu"
     And the event "app.duration" is not null
     And the event "app.durationInForeground" is not null
     And the event "app.id" equals "com.bugsnag.TestFixture"
@@ -41,10 +41,9 @@ Feature: Reporting handled errors
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
     And the event "metaData.counters.thirty-five" equals "35"
-    # TODO: pending on iOS
-    And on Android, the event "user.id" equals "1118"
-    And on Android, the event "user.email" equals "emilie@example.com"
-    And on Android, the event "user.name" equals "Emilie"
+    And the event "user.id" equals "1118"
+    And the event "user.email" equals "emilie@example.com"
+    And the event "user.name" equals "Emilie"
     # TODO: pending on Android (PLAT-7364)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And on iOS, the event "metaData.custom.someValue" equals "foobar"

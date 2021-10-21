@@ -101,33 +101,30 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 	// TODO: handle callback
 }
 
-const FString FAndroidPlatformBugsnag::GetContext()
+const TSharedPtr<FString> FAndroidPlatformBugsnag::GetContext()
 {
-	return TEXT("");
+	return nullptr;
 }
 
-void FAndroidPlatformBugsnag::SetContext(const FString& Context)
+void FAndroidPlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	ReturnVoidIf(!Env || !JNICache.initialized);
-	jstring jContext = FAndroidPlatformJNI::ParseFString(Env, Context);
-	if (jContext)
-	{
-		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetContext, jContext);
-	}
+	jstring jContext = FAndroidPlatformJNI::ParseFStringPtr(Env, Context);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetContext, jContext);
 }
 
-const TSharedPtr<FBugsnagUser> FAndroidPlatformBugsnag::GetUser()
+const FBugsnagUser FAndroidPlatformBugsnag::GetUser()
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	if (!Env || !JNICache.initialized)
 	{
-		return nullptr;
+		return FBugsnagUser();
 	}
 	jobject jUser = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetUser);
 	return FAndroidPlatformJNI::CheckAndClearException(Env)
-			   ? nullptr
-			   : MakeShareable(new FBugsnagUser(FAndroidPlatformJNI::ParseJavaUser(Env, &JNICache, jUser)));
+			   ? FBugsnagUser()
+			   : FBugsnagUser(FAndroidPlatformJNI::ParseJavaUser(Env, &JNICache, jUser));
 }
 
 void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, const FString& Name)

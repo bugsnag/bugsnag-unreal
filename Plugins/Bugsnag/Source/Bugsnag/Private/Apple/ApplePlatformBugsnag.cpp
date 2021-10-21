@@ -78,22 +78,29 @@ void FApplePlatformBugsnag::Notify(
 					 block:Block];
 }
 
-const FString FApplePlatformBugsnag::GetContext()
+const TSharedPtr<FString> FApplePlatformBugsnag::GetContext()
 {
-	return TEXT("");
+	return FStringPtrFromNSString(Bugsnag.context);
 }
 
-void FApplePlatformBugsnag::SetContext(const FString& Context)
+void FApplePlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
 {
+	Bugsnag.context = NSStringFromFStringPtr(Context);
 }
 
-const TSharedPtr<FBugsnagUser> FApplePlatformBugsnag::GetUser()
+const FBugsnagUser FApplePlatformBugsnag::GetUser()
 {
-	return nullptr;
+	return FBugsnagUser(
+		FStringPtrFromNSString(Bugsnag.user.id),
+		FStringPtrFromNSString(Bugsnag.user.email),
+		FStringPtrFromNSString(Bugsnag.user.name));
 }
 
 void FApplePlatformBugsnag::SetUser(const FString& Id, const FString& Email, const FString& Name)
 {
+	[Bugsnag setUser:Id.IsEmpty() ? nil : NSStringFromFString(Id)
+		   withEmail:Email.IsEmpty() ? nil : NSStringFromFString(Email)
+			 andName:Name.IsEmpty() ? nil : NSStringFromFString(Name)];
 }
 
 void FApplePlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type)
