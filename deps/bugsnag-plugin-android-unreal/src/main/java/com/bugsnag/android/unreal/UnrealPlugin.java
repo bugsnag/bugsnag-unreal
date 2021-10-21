@@ -1,5 +1,10 @@
 package com.bugsnag.android.unreal;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.bugsnag.android.Bugsnag;
 import com.bugsnag.android.Client;
 import com.bugsnag.android.Configuration;
 import com.bugsnag.android.Breadcrumb;
@@ -54,5 +59,24 @@ public class UnrealPlugin implements Plugin {
       this.client.removeOnSession(onSessionRunner);
       this.client = null;
     }
+  }
+
+  static byte[] getMetadata(String section, String key) throws IOException {
+    if (section == null || key == null) {
+        return null;
+    }
+    Object value = Bugsnag.getMetadata(section, key);
+    // wrap the value to differentiate between an error and a literal null
+    return MetadataSerializer.serialize(new HashMap<String, Object>() {{
+        put("Value", value);
+    }});
+  }
+
+  static byte[] getMetadata(String section) throws IOException {
+    if (section == null) {
+        return null;
+    }
+    Map<String, Object> metadata = Bugsnag.getMetadata(section);
+    return metadata == null ? null : MetadataSerializer.serialize(metadata);
   }
 }

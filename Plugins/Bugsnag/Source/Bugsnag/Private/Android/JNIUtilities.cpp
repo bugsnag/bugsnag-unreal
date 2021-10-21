@@ -111,6 +111,10 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->BreadcrumbSetMetadata, cache->BreadcrumbClass, "setMetadata", "(Ljava/util/Map;)V");
 	CacheInstanceJavaMethod(env, cache->BreadcrumbSetType, cache->BreadcrumbClass, "setType", "(Lcom/bugsnag/android/BreadcrumbType;)V");
 
+	CacheStaticJavaMethod(env, cache->BugsnagClearMetadataSection, cache->BugsnagClass, "clearMetadata", "(Ljava/lang/String;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagClearMetadataValue, cache->BugsnagClass, "clearMetadata", "(Ljava/lang/String;Ljava/lang/String;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataToSection, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataValue, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
 	CacheStaticJavaMethod(env, cache->BugsnagSetContext, cache->BugsnagClass, "setContext", "(Ljava/lang/String;)V");
@@ -122,6 +126,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagSetUser, cache->BugsnagClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagPauseSession, cache->BugsnagClass, "pauseSession", "()V");
 
+	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;)[B");
+	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;Ljava/lang/String;)[B");
 	CacheInstanceJavaMethod(env, cache->BugsnagUnrealPluginConstructor, cache->BugsnagUnrealPluginClass, "<init>", "()V");
 
 	CacheStaticJavaMethod(env, cache->MetadataParserParse, cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");

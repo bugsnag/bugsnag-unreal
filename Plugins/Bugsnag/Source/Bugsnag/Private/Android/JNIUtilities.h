@@ -62,6 +62,10 @@ typedef struct
 	jmethodID BreadcrumbSetMessage;
 	jmethodID BreadcrumbSetMetadata;
 	jmethodID BreadcrumbSetType;
+	jmethodID BugsnagAddMetadataToSection;
+	jmethodID BugsnagAddMetadataValue;
+	jmethodID BugsnagClearMetadataSection;
+	jmethodID BugsnagClearMetadataValue;
 	jmethodID BugsnagGetUser;
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
@@ -73,6 +77,8 @@ typedef struct
 	jmethodID BugsnagResumeSession;
 	jmethodID BugsnagSetUser;
 	jmethodID BugsnagUnrealPluginConstructor;
+	jmethodID BugsnagUnrealPluginGetMetadataSection;
+	jmethodID BugsnagUnrealPluginGetMetadataValue;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigAddPlugin;
 	jmethodID ConfigConstructor;

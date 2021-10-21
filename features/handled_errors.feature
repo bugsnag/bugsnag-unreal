@@ -44,16 +44,18 @@ Feature: Reporting handled errors
     And the event "user.id" equals "1118"
     And the event "user.email" equals "emilie@example.com"
     And the event "user.name" equals "Emilie"
-    # TODO: pending on Android (PLAT-7364)
+    # TODO: pending on Android (PLAT-7363, other android changes)
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
-    And on iOS, the event "metaData.custom.someValue" equals "foobar"
+    And the event "metaData.custom.someValue" equals "foobar"
+    And the event "metaData.custom.lastValue" is true
+    # TODO: pending on Android (PLAT-7363)
     And on iOS, the event "metaData.custom.notify" equals "testing"
-    And on iOS, the event "metaData.device.adapterName" is not null
-    # And on Android, the event "metadata.device.driverVersion" is not null
-    And on iOS, the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
-    And on iOS, the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
-    And on iOS, the event "metaData.unrealEngine.userActivity" is not null
-    And on iOS, the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
+    And the event "metaData.device.adapterName" is not null
+    And on Android, the event "metaData.device.driverVersion" is not null
+    And the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
+    And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
+    And the event "metaData.unrealEngine.userActivity" is not null
+    And the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
     And the event "severity" equals "warning"
     And the event "severityReason.type" equals the platform-dependent string:
       | android | handledException |
