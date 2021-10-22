@@ -20,6 +20,7 @@ typedef struct
 	jclass ConfigClass;
 	jclass EndpointConfigurationClass;
 	jclass ErrorTypesClass;
+	jclass LastRunInfoClass;
 	jclass MetadataParserClass;
 	jclass MetadataSerializerClass;
 	jclass NotifierClass;
@@ -66,6 +67,7 @@ typedef struct
 	jmethodID BugsnagAddMetadataValue;
 	jmethodID BugsnagClearMetadataSection;
 	jmethodID BugsnagClearMetadataValue;
+	jmethodID BugsnagGetLastRunInfo;
 	jmethodID BugsnagGetUser;
 	jmethodID BugsnagStartMethod;
 	jmethodID BugsnagNotifyMethod;
@@ -130,6 +132,9 @@ typedef struct
 	jmethodID EnumGetName;
 	jmethodID HashMapConstructor;
 	jmethodID HashMapGet;
+	jmethodID LastRunInfoGetCrashed;
+	jmethodID LastRunInfoGetCrashedDuringLaunch;
+	jmethodID LastRunInfoGetConsecutiveLaunchCrashes;
 	jmethodID NotifierConstructor;
 	jmethodID NotifierGetName;
 	jmethodID NotifierGetUrl;

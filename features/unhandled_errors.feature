@@ -32,7 +32,7 @@ Feature: Unhandled errors
     And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
     And the event "metaData.unrealEngine.userActivity" is not null
     And the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
-    # TODO: pending on Android (PLAT-7364, PLAT-7367, PLAT-7369)
+    # TODO: pending on Android (addition of onSend)
     And on iOS, the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 1
     And on iOS, the event "metaData.lastRunInfo.crashed" is true
     And on iOS, the event "metaData.lastRunInfo.crashedDuringLaunch" is true

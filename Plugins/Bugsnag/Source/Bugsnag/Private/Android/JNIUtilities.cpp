@@ -67,6 +67,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheExternalJavaClass(env, cache->ConfigClass, "com.bugsnag.android.Configuration");
 	CacheExternalJavaClass(env, cache->DeviceClass, "com.bugsnag.android.Device");
 	CacheExternalJavaClass(env, cache->InterfaceClass, "com.bugsnag.android.NativeInterface");
+	CacheExternalJavaClass(env, cache->LastRunInfoClass, "com.bugsnag.android.LastRunInfo");
 	CacheExternalJavaClass(env, cache->NotifierClass, "com.bugsnag.android.Notifier");
 	CacheExternalJavaClass(env, cache->BreadcrumbTypeClass, "com.bugsnag.android.BreadcrumbType");
 	CacheExternalJavaClass(env, cache->SessionClass, "com.bugsnag.android.Session");
@@ -115,6 +116,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagClearMetadataValue, cache->BugsnagClass, "clearMetadata", "(Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataToSection, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataValue, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagGetLastRunInfo, cache->BugsnagClass, "getLastRunInfo", "()Lcom/bugsnag/android/LastRunInfo;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
 	CacheStaticJavaMethod(env, cache->BugsnagSetContext, cache->BugsnagClass, "setContext", "(Ljava/lang/String;)V");
@@ -192,6 +194,10 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheInstanceJavaMethod(env, cache->HashMapConstructor, cache->HashMapClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->HashMapGet, cache->HashMapClass, "get", "(Ljava/lang/Object;)Ljava/lang/Object;");
+
+	CacheInstanceJavaMethod(env, cache->LastRunInfoGetCrashed, cache->LastRunInfoClass, "getCrashed", "()Z");
+	CacheInstanceJavaMethod(env, cache->LastRunInfoGetCrashedDuringLaunch, cache->LastRunInfoClass, "getCrashedDuringLaunch", "()Z");
+	CacheInstanceJavaMethod(env, cache->LastRunInfoGetConsecutiveLaunchCrashes, cache->LastRunInfoClass, "getConsecutiveLaunchCrashes", "()I");
 
 	CacheInstanceJavaMethod(env, cache->NotifierConstructor, cache->NotifierClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->NotifierSetDependencies, cache->NotifierClass, "setDependencies", "(Ljava/util/List;)V");

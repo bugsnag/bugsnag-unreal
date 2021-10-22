@@ -7,6 +7,7 @@ static TArray<FString> ScenarioNames = {
 	TEXT("ModifyCrumbsScenario"),
 	TEXT("ModifySessionScenario"),
 	TEXT("NotifyScenario"),
+	TEXT("NotifyWithLaunchInfoScenario"),
 	TEXT("OpenLevelBreadcrumbsScenario"),
 	TEXT("PauseSessionScenario"),
 	TEXT("ResumeSessionScenario"),

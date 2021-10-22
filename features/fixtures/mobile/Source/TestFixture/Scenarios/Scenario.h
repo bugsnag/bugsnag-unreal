@@ -39,6 +39,12 @@ public:
 		}
 	}
 
+	/**
+     * Grabs the current world reference (replaces same-named helper on
+     * UEngine which is unavailable in UE 4.23 and earlier)
+     */
+	static UWorld* GetCurrentPlayWorld();
+
 	////////////////////////////////////////////////////////////////////////////
 
 	Scenario()
