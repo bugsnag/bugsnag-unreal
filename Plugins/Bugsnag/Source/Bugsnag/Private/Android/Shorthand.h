@@ -10,10 +10,10 @@
 	}
 
 // Quick exit when a call which should have returned something does not
-#define ReturnNullOnFail(prop) \
-	if (!prop)                 \
-	{                          \
-		return nullptr;        \
+#define ReturnNullOnFail(condition) \
+	if (!(condition))               \
+	{                               \
+		return nullptr;             \
 	}
 
 // Quick exit when a JNI call fails

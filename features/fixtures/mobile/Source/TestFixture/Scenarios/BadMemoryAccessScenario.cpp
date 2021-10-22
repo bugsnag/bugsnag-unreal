@@ -67,6 +67,13 @@ public:
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
 
 		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), MakeShareable(new FJsonValueString(TEXT("foobar"))));
+		TSharedPtr<FJsonObject> CustomMetadata = UBugsnagFunctionLibrary::GetMetadata("custom");
+		TSharedPtr<FJsonValue> ExistingValue = UBugsnagFunctionLibrary::GetMetadata("custom", "someValue");
+		if (CustomMetadata.IsValid() && ExistingValue.IsValid() && CustomMetadata->HasField("someValue"))
+		{
+			UBugsnagFunctionLibrary::ClearMetadata("custom", "someValue");
+			UBugsnagFunctionLibrary::AddMetadata("custom", "someOtherValue", ExistingValue);
+		}
 
 		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb / metadata I/O
 

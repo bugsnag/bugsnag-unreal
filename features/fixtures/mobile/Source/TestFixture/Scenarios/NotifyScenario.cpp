@@ -53,7 +53,10 @@ public:
 
 		UBugsnagFunctionLibrary::SetContext("pause menu");
 
-		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), MakeShareable(new FJsonValueString(TEXT("foobar"))));
+		TSharedPtr<FJsonObject> AdditionalValues = MakeShareable(new FJsonObject);
+		AdditionalValues->SetStringField("someValue", "foobar");
+		AdditionalValues->SetBoolField("lastValue", true);
+		UBugsnagFunctionLibrary::AddMetadata("custom", AdditionalValues);
 
 		UBugsnagFunctionLibrary::SetUser("1118", "emilie@example.com", "Emilie");
 

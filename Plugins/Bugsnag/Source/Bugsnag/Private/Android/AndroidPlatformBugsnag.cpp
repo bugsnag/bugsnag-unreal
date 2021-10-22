@@ -140,28 +140,86 @@ void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, c
 
 void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnVoidIf(!Env || !JNICache.initialized);
+	jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
+	ReturnVoidIf(!jSection);
+	jobject jMetadata = FAndroidPlatformJNI::ParseJsonObject(Env, &JNICache, Metadata);
+	ReturnVoidOnException(Env);
+	ReturnVoidIf(!jMetadata);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddMetadataToSection, jSection, jMetadata);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnVoidIf(!Env || !JNICache.initialized);
+	jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
+	ReturnVoidIf(!jSection);
+	jstring jKey = FAndroidPlatformJNI::ParseFString(Env, Key);
+	ReturnVoidIf(!jKey);
+	TSharedPtr<FJsonObject> Container = MakeShareable(new FJsonObject);
+	Container->SetField("Value", Value);
+	jobject jContainer = FAndroidPlatformJNI::ParseJsonObject(Env, &JNICache, Container);
+	ReturnVoidOnException(Env);
+	jstring jValueKey = (*Env).NewStringUTF("Value");
+	ReturnVoidOnException(Env);
+	jobject jMetadata = (*Env).CallObjectMethod(jContainer, JNICache.HashMapGet, jValueKey);
+	ReturnVoidOnException(Env);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddMetadataValue, jSection, jKey, jMetadata);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 TSharedPtr<FJsonObject> FAndroidPlatformBugsnag::GetMetadata(const FString& Section)
 {
-	return nullptr;
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnNullOnFail(Env && JNICache.initialized);
+	jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
+	ReturnNullOnFail(jSection);
+	jbyteArray jMetadata = (jbyteArray)(*Env).CallStaticObjectMethod(JNICache.BugsnagUnrealPluginClass, JNICache.BugsnagUnrealPluginGetMetadataSection, jSection);
+	ReturnNullOnException(Env);
+	ReturnNullOnFail(jMetadata);
+	return FAndroidPlatformJNI::ConvertJavaBytesToJson(Env, &JNICache, jMetadata);
 }
 
 TSharedPtr<FJsonValue> FAndroidPlatformBugsnag::GetMetadata(const FString& Section, const FString& Key)
 {
-	return nullptr;
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnNullOnFail(Env && JNICache.initialized);
+	jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
+	ReturnNullOnFail(jSection);
+	jstring jKey = FAndroidPlatformJNI::ParseFString(Env, Key);
+	ReturnNullOnFail(jKey);
+	jbyteArray jMetadata = (jbyteArray)(*Env).CallStaticObjectMethod(JNICache.BugsnagUnrealPluginClass, JNICache.BugsnagUnrealPluginGetMetadataValue, jSection, jKey);
+	ReturnNullOnException(Env);
+	auto MetadataContainer = FAndroidPlatformJNI::ConvertJavaBytesToJson(Env, &JNICache, jMetadata);
+
+	return MetadataContainer.IsValid()
+			   ? MetadataContainer->TryGetField("Value")
+			   : nullptr;
 }
 
 void FAndroidPlatformBugsnag::ClearMetadata(const FString& Section)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnVoidIf(!Env || !JNICache.initialized);
+	jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
+	ReturnVoidIf(!jSection);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearMetadataSection, jSection);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::ClearMetadata(const FString& Section, const FString& Key)
 {
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnVoidIf(!Env || !JNICache.initialized);
+	jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
+	ReturnVoidIf(!jSection);
+	jstring jKey = FAndroidPlatformJNI::ParseFString(Env, Key);
+	ReturnVoidIf(!jKey);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearMetadataValue, jSection, jKey);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TSharedPtr<FJsonObject>& Metadata, EBugsnagBreadcrumbType Type)
