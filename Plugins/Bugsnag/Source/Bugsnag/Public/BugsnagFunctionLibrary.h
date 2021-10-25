@@ -66,7 +66,7 @@ public:
 
 	// Metadata
 
-	static void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata);
+	static void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata);
 
 	static void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value);
 

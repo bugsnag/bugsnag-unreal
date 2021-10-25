@@ -6,7 +6,7 @@
 class BUGSNAG_API IBugsnagMetadataStore
 {
 public:
-	virtual void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata) = 0;
+	virtual void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) = 0;
 
 	virtual void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) = 0;
 

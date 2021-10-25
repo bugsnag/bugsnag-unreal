@@ -138,7 +138,7 @@ void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, c
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
-void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata)
+void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata)
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	ReturnVoidIf(!Env || !JNICache.initialized);

@@ -134,7 +134,7 @@ void UBugsnagFunctionLibrary::SetUser(const FString& Id, const FString& Email, c
 #endif
 }
 
-void UBugsnagFunctionLibrary::AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata)
+void UBugsnagFunctionLibrary::AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddMetadata(Section, Metadata);

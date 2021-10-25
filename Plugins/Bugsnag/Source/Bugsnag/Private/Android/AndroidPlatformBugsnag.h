@@ -18,7 +18,7 @@ public:
 
 	void SetUser(const FString& Id, const FString& Email, const FString& Name) override;
 
-	void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata) override;
+	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override;
 
 	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) override;
 
