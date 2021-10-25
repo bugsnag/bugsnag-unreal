@@ -31,7 +31,7 @@ public:
 				TSharedPtr<FBugsnagLastRunInfo> LastRunInfo = UBugsnagFunctionLibrary::GetLastRunInfo();
 				if (LastRunInfo.IsValid())
 				{
-					TSharedPtr<FJsonObject> Metadata = MakeShared<FJsonObject>();
+					TSharedRef<FJsonObject> Metadata = MakeShared<FJsonObject>();
 					Metadata->SetNumberField(TEXT("consecutiveLaunchCrashes"), LastRunInfo->GetConsecutiveLaunchCrashes());
 					Metadata->SetBoolField(TEXT("crashed"), LastRunInfo->GetCrashed());
 					Metadata->SetBoolField(TEXT("crashedDuringLaunch"), LastRunInfo->GetCrashedDuringLaunch());

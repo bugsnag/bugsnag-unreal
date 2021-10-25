@@ -13,7 +13,7 @@ public:
 	{
 	}
 
-	void AddMetadata(const FString& Section, const TSharedPtr<FJsonObject>& Metadata) override
+	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override
 	{
 		[CocoaStore addMetadata:NSDictionaryFromFJsonObject(Metadata) toSection:NSStringFromFString(Section)];
 	}

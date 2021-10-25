@@ -3,6 +3,7 @@
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagEndpointConfiguration.h"
 #include "BugsnagEvent.h"
+#include "BugsnagMetadataStore.h"
 #include "BugsnagSession.h"
 #include "BugsnagSettings.h"
 #include "BugsnagUser.h"
@@ -14,7 +15,7 @@ typedef TFunction<bool(TSharedRef<IBugsnagBreadcrumb>)> FBugsnagOnBreadcrumbCall
 typedef TFunction<bool(TSharedRef<IBugsnagEvent>)> FBugsnagOnErrorCallback;
 typedef TFunction<bool(TSharedRef<IBugsnagSession>)> FBugsnagOnSessionCallback;
 
-class BUGSNAG_API FBugsnagConfiguration
+class BUGSNAG_API FBugsnagConfiguration final : public IBugsnagMetadataStore
 {
 public:
 	FBugsnagConfiguration(const FString& ApiKey);
@@ -190,17 +191,17 @@ public:
 
 	// Metadata
 
-	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata);
+	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override;
 
-	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value);
+	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) override;
 
-	TSharedPtr<FJsonObject> GetMetadata(const FString& Section);
+	TSharedPtr<FJsonObject> GetMetadata(const FString& Section) override;
 
-	TSharedPtr<FJsonValue> GetMetadata(const FString& Section, const FString& Key);
+	TSharedPtr<FJsonValue> GetMetadata(const FString& Section, const FString& Key) override;
 
-	void ClearMetadata(const FString& Section) { MetadataValues.Remove(Section); }
+	void ClearMetadata(const FString& Section) override { MetadataValues.Remove(Section); }
 
-	void ClearMetadata(const FString& Section, const FString& Key);
+	void ClearMetadata(const FString& Section, const FString& Key) override;
 
 	// Callbacks
 
