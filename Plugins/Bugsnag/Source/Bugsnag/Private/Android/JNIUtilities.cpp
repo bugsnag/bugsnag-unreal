@@ -83,9 +83,13 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheSystemJavaClass(env, cache->EnumClass, "java/lang/Enum");
 	CacheSystemJavaClass(env, cache->HashMapClass, "java/util/HashMap");
 	CacheSystemJavaClass(env, cache->ArrayListClass, "java/util/ArrayList");
+	CacheSystemJavaClass(env, cache->BooleanClass, "java/lang/Boolean");
 	CacheSystemJavaClass(env, cache->HashSetClass, "java/util/HashSet");
 	CacheSystemJavaClass(env, cache->IntegerClass, "java/lang/Integer");
+	CacheSystemJavaClass(env, cache->ListClass, "java/util/List");
+	CacheSystemJavaClass(env, cache->LongClass, "java/lang/Long");
 	CacheSystemJavaClass(env, cache->MapClass, "java/util/Map");
+	CacheSystemJavaClass(env, cache->NumberClass, "java/lang/Number");
 	CacheSystemJavaClass(env, cache->StringClass, "java/lang/String");
 	CacheSystemJavaClass(env, cache->TraceClass, "java/lang/StackTraceElement");
 
@@ -199,6 +203,12 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->LastRunInfoGetCrashedDuringLaunch, cache->LastRunInfoClass, "getCrashedDuringLaunch", "()Z");
 	CacheInstanceJavaMethod(env, cache->LastRunInfoGetConsecutiveLaunchCrashes, cache->LastRunInfoClass, "getConsecutiveLaunchCrashes", "()I");
 
+	CacheInstanceJavaMethod(env, cache->ListAdd, cache->ListClass, "add", "(Ljava/lang/Object;)Z");
+	CacheInstanceJavaMethod(env, cache->ListGet, cache->ListClass, "get", "(I)Ljava/lang/Object;");
+	CacheInstanceJavaMethod(env, cache->ListSize, cache->ListClass, "size", "()I");
+
+	CacheInstanceJavaMethod(env, cache->LongConstructor, cache->LongClass, "<init>", "(J)V");
+
 	CacheInstanceJavaMethod(env, cache->NotifierConstructor, cache->NotifierClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->NotifierSetDependencies, cache->NotifierClass, "setDependencies", "(Ljava/util/List;)V");
 	CacheInstanceJavaMethod(env, cache->NotifierSetName, cache->NotifierClass, "setName", "(Ljava/lang/String;)V");
@@ -220,8 +230,9 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheInstanceJavaMethod(env, cache->ArrayListConstructor, cache->ArrayListClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->ArrayListCollectionConstructor, cache->ArrayListClass, "<init>", "(Ljava/util/Collection;)V");
-	CacheInstanceJavaMethod(env, cache->ArrayListAdd, cache->ArrayListClass, "add", "(Ljava/lang/Object;)Z");
-	CacheInstanceJavaMethod(env, cache->ArrayListGet, cache->ArrayListClass, "get", "(I)Ljava/lang/Object;");
+
+	CacheInstanceJavaMethod(env, cache->BooleanConstructor, cache->BooleanClass, "<init>", "(Z)V");
+	CacheInstanceJavaMethod(env, cache->BooleanBooleanValue, cache->BooleanClass, "booleanValue", "()Z");
 
 	CacheInstanceJavaMethod(env, cache->IntegerConstructor, cache->IntegerClass, "<init>", "(I)V");
 
@@ -230,6 +241,9 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheInstanceJavaMethod(env, cache->MapKeySet, cache->MapClass, "keySet", "()Ljava/util/Set;");
 	CacheInstanceJavaMethod(env, cache->MapSize, cache->MapClass, "size", "()I");
+
+	CacheInstanceJavaMethod(env, cache->NumberIntValue, cache->NumberClass, "intValue", "()I");
+	CacheInstanceJavaMethod(env, cache->NumberLongValue, cache->NumberClass, "longValue", "()J");
 
 	CacheInstanceJavaMethod(env, cache->TraceConstructor, cache->TraceClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V");
 
@@ -523,7 +537,7 @@ bool FAndroidPlatformJNI::SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* 
 	ReturnFalseIfNullAndClearExceptions(Env, jDependency);
 	jobject jDependencies = (*Env).NewObject(Cache->ArrayListClass, Cache->ArrayListConstructor);
 	ReturnFalseIfNullAndClearExceptions(Env, jDependencies);
-	(*Env).CallBooleanMethod(jDependencies, Cache->ArrayListAdd, jDependency);
+	(*Env).CallBooleanMethod(jDependencies, Cache->ListAdd, jDependency);
 	ReturnFalseOnException(Env);
 	jstring jName = (*Env).NewStringUTF(BUGSNAG_UNREAL_NAME);
 	ReturnFalseIfNullAndClearExceptions(Env, jName);
@@ -593,24 +607,12 @@ jobject FAndroidPlatformJNI::ParseJavaDate(JNIEnv* Env, const JNIReferenceCache*
 	return FAndroidPlatformJNI::CheckAndClearException(Env) ? nullptr : jValue;
 }
 
-void FAndroidPlatformJNI::SetStringValue(JNIEnv* Env, jobject Target, jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value)
+const char* FAndroidPlatformJNI::GetNameFromEnum(JNIEnv* Env, const JNIReferenceCache* Cache, jobject EnumValue)
 {
-	if (!Target)
-	{
-		return;
-	}
-	if (Value.IsValid())
-	{
-		jstring jString = FAndroidPlatformJNI::ParseFString(Env, *Value);
-		if (jString)
-		{
-			(*Env).CallVoidMethod(Target, Method, jString);
-			FAndroidPlatformJNI::CheckAndClearException(Env);
-		}
-	}
-	else if (IsNullable)
-	{
-		(*Env).CallVoidMethod(Target, Method, nullptr);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
-	}
+	jobject jName = (*Env).CallObjectMethod(EnumValue, Cache->EnumGetName);
+	ReturnNullOnException(Env);
+	const char* Name = (*Env).GetStringUTFChars((jstring)jName, nullptr);
+	ReturnNullOnException(Env);
+	(*Env).DeleteLocalRef(jName);
+	return Name;
 }

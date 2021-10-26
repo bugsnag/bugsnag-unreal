@@ -34,14 +34,16 @@ typedef struct
 	jclass HashMapClass;
 	jclass HashSetClass;
 	jclass ArrayListClass;
+	jclass BooleanClass;
 	jclass IntegerClass;
+	jclass ListClass;
+	jclass LongClass;
 	jclass MapClass;
+	jclass NumberClass;
 	jclass StringClass;
 
 	jmethodID ArrayListConstructor;
 	jmethodID ArrayListCollectionConstructor;
-	jmethodID ArrayListAdd;
-	jmethodID ArrayListGet;
 	jmethodID AppGetBinaryArch;
 	jmethodID AppGetBuildUuid;
 	jmethodID AppGetId;
@@ -154,13 +156,21 @@ typedef struct
 	jmethodID UserGetEmail;
 	jmethodID UserGetId;
 	jmethodID UserGetName;
+	jmethodID BooleanBooleanValue;
+	jmethodID BooleanConstructor;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
+	jmethodID ListAdd;
+	jmethodID ListGet;
+	jmethodID ListSize;
+	jmethodID LongConstructor;
 	jmethodID MetadataParserParse;
 	jmethodID MetadataSerializerSerialize;
 	jmethodID IntegerConstructor;
 	jmethodID MapKeySet;
 	jmethodID MapSize;
+	jmethodID NumberIntValue;
+	jmethodID NumberLongValue;
 	jmethodID TraceConstructor;
 
 	jfieldID SeverityFieldInfo;
@@ -374,13 +384,13 @@ public:
 	static bool SetNotifierInfo(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jClient);
 
 	/**
-     * Call a void function with a string value
+     * Get the name of a Java enum value as a string
      *
      * @param Env        A JNI environment for the current thread
-     * @param Target     The object to call
-     * @param Method     The method to call
-     * @param IsNullable true if the method should be called with null if Value is invalid
-     * @param Value      the assigned value
+     * @param Cache      A populated reference cache
+     * @param EnumValue  The named value
+     *
+     * @return the name or null upon exception
      */
-	static void SetStringValue(JNIEnv* Env, jobject Target, jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value);
+	static const char* GetNameFromEnum(JNIEnv* Env, const JNIReferenceCache* Cache, jobject EnumValue);
 };

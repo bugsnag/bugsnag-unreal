@@ -1,63 +1,34 @@
 #pragma once
 
-#include <jni.h>
-
 #include "BugsnagBreadcrumb.h"
-#include "JNIUtilities.h"
+#include "JavaObjectWrapper.h"
 
-class FAndroidBreadcrumb : public IBugsnagBreadcrumb
+class FAndroidBreadcrumb : public IBugsnagBreadcrumb, FJavaObjectWrapper
 {
 public:
-	static TSharedRef<FAndroidBreadcrumb> From(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Crumb)
-	{
-		return MakeShared<FAndroidBreadcrumb>(Env, Cache, Crumb);
-	}
-
-	FAndroidBreadcrumb(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Crumb)
-		: Crumb(Crumb)
-		, Cache(Cache)
-		, Env(Env)
-	{
-	}
+	using FJavaObjectWrapper::FJavaObjectWrapper;
 
 	const FDateTime GetTimestamp() const override
 	{
-		jobject jTimestamp = (*Env).CallObjectMethod(Crumb, Cache->BreadcrumbGetTimestamp);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
-		return FAndroidPlatformJNI::ParseDateTime(Env, Cache, jTimestamp);
+		return GetDateField(Cache->BreadcrumbGetTimestamp);
 	}
 
 	const FString GetMessage() const override
 	{
-		jobject jMessage = (*Env).CallObjectMethod(Crumb, Cache->BreadcrumbGetMessage);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
-		return FAndroidPlatformJNI::ParseJavaString(Env, Cache, jMessage);
+		return GetStringField(Cache->BreadcrumbGetMessage);
 	}
 
 	void SetMessage(const FString& Message) override
 	{
-		jstring jMessage = FAndroidPlatformJNI::ParseFString(Env, Message);
-		if (jMessage)
-		{
-			(*Env).CallVoidMethod(Crumb, Cache->BreadcrumbSetMessage, jMessage);
-			FAndroidPlatformJNI::CheckAndClearException(Env);
-		}
+		SetStringField(Cache->BreadcrumbSetMessage, false, MakeShareable(new FString(Message)));
 	}
 
 	EBugsnagBreadcrumbType GetType() const override
 	{
-		jobject jType = (*Env).CallObjectMethod(Crumb, Cache->BreadcrumbGetType);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return EBugsnagBreadcrumbType::Manual;
-		}
-		jobject jName = (*Env).CallObjectMethod(jType, Cache->EnumGetName);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return EBugsnagBreadcrumbType::Manual;
-		}
-		const char* Name = (*Env).GetStringUTFChars((jstring)jName, nullptr);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
+		jobject jType = (*Env).CallObjectMethod(JavaObject, Cache->BreadcrumbGetType);
+		ReturnValueOnException(Env, EBugsnagBreadcrumbType::Manual);
+		const char* Name = FAndroidPlatformJNI::GetNameFromEnum(Env, Cache, jType);
+		if (!Name)
 		{
 			return EBugsnagBreadcrumbType::Manual;
 		}
@@ -83,35 +54,16 @@ public:
 
 	void SetType(EBugsnagBreadcrumbType Type) override
 	{
-		jobject jType = FAndroidPlatformJNI::ParseBreadcrumbType(Env, Cache, Type);
-		if (jType)
-		{
-			(*Env).CallVoidMethod(Crumb, Cache->BreadcrumbSetType, jType);
-			FAndroidPlatformJNI::CheckAndClearException(Env);
-		}
+		SetField(Cache->BreadcrumbSetType, false, FAndroidPlatformJNI::ParseBreadcrumbType(Env, Cache, Type));
 	}
 
 	TSharedPtr<FJsonObject> GetMetadata() const override
 	{
-		jobject jMetadata = (*Env).CallObjectMethod(Crumb, Cache->BreadcrumbGetMetadata);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return MakeShareable(new FJsonObject);
-		}
-		return FAndroidPlatformJNI::ConvertJavaMapToJson(Env, Cache, jMetadata);
+		return GetJsonObjectField(Cache->BreadcrumbGetMetadata);
 	}
 
 	void SetMetadata(const TSharedPtr<FJsonObject>& Metadata) override
 	{
-		auto jMetadata = FAndroidPlatformJNI::ParseJsonObject(Env, Cache, Metadata);
-		if (jMetadata)
-		{
-			(*Env).CallVoidMethod(Crumb, Cache->BreadcrumbSetMetadata, jMetadata);
-		}
+		SetField(Cache->BreadcrumbSetMetadata, false, FAndroidPlatformJNI::ParseJsonObject(Env, Cache, Metadata));
 	}
-
-private:
-	JNIEnv* Env;
-	const JNIReferenceCache* Cache;
-	const jobject Crumb;
 };
