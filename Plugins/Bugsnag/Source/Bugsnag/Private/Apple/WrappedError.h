@@ -61,19 +61,6 @@ public:
 		}
 	}
 
-	void SetErrorType(EBugsnagErrorType Value) override
-	{
-		switch (Value)
-		{
-		case EBugsnagErrorType::C:
-			CocoaError.type = BSGErrorTypeC;
-			break;
-		case EBugsnagErrorType::Cocoa:
-			CocoaError.type = BSGErrorTypeCocoa;
-			break;
-		}
-	}
-
 	// stacktrace: Stacktrace;
 
 	TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const override
