@@ -7,6 +7,7 @@
 #include "Android/AndroidJavaEnv.h"
 
 #include "AndroidBreadcrumb.h"
+#include "AndroidEvent.h"
 #include "AndroidPlatformConfiguration.h"
 #include "AndroidSession.h"
 #include "JNIUtilities.h"

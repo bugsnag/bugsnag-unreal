@@ -355,6 +355,8 @@ public:
    */
 	static jobject ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSeverity Value);
 
+	static EBugsnagSeverity ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
 	/**
    * Convert a value into a Java ThreadSendPolicy
    *
@@ -373,7 +375,7 @@ public:
    * @param Cache A reference to a cache object to populate. Must not be null.
    * @param Value The value to convert
    */
-	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value);
+	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int64 Value);
 
 	/**
      * Convert a Java Date into a FDateTime
@@ -470,4 +472,6 @@ public:
      * @return the name or null upon exception
      */
 	static const char* GetNameFromEnum(JNIEnv* Env, const JNIReferenceCache* Cache, jobject EnumValue);
+
+	static EBugsnagErrorType ParseErrorType(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
 };
