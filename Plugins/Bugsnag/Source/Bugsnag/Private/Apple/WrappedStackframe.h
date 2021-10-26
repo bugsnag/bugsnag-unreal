@@ -48,13 +48,13 @@ public:
 
 	// lineNumber?: number,
 
-	TSharedPtr<uint32> GetLineNumber() const override
+	TSharedPtr<int32> GetLineNumber() const override
 	{
 		// Not supported by bugsnag-cocoa
 		return nullptr;
 	}
 
-	void SetLineNumber(const TSharedPtr<uint32>&) override
+	void SetLineNumber(const TSharedPtr<int32>&) override
 	{
 		// Not supported by bugsnag-cocoa
 	}
