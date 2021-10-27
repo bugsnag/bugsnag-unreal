@@ -42,13 +42,11 @@ void FWrappedErrorSpec::Define()
 					TSharedPtr<IBugsnagError> Error = FWrappedError::From(CocoaError);
 					Error->SetErrorClass(TEXT("Unreal Error"));
 					Error->SetErrorMessage(TEXT("Hello, Cocoa!"));
-					Error->SetErrorType(EBugsnagErrorType::C);
 					Error->SetStacktrace({});
 
 					TEST_EQUAL_OBJC(CocoaError.errorClass, @"Unreal Error");
 					TEST_EQUAL_OBJC(CocoaError.errorMessage, @"Hello, Cocoa!");
 					TEST_EQUAL_OBJC(CocoaError.stacktrace, @[]);
-					TEST_EQUAL((int)CocoaError.type, (int)BSGErrorTypeC);
 				});
 		});
 }

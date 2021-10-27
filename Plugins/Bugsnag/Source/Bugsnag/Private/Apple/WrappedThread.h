@@ -67,19 +67,6 @@ public:
 		}
 	}
 
-	void SetErrorType(EBugsnagErrorType Value) override
-	{
-		switch (Value)
-		{
-		case EBugsnagErrorType::C:
-			UE_LOG(LogBugsnag, Warning, TEXT("EBugsnagErrorType::Cocoa is the only supported value for threads on Apple platforms"));
-			break;
-		case EBugsnagErrorType::Cocoa:
-			CocoaThread.type = BSGThreadTypeCocoa;
-			break;
-		}
-	}
-
 	// stacktrace: Stacktrace;
 
 	TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const override

@@ -28,8 +28,6 @@ public:
 
 	virtual EBugsnagErrorType GetErrorType() const = 0;
 
-	virtual void SetErrorType(EBugsnagErrorType) = 0;
-
 	// stacktrace: Stacktrace;
 
 	virtual TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const = 0;
