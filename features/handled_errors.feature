@@ -61,7 +61,7 @@ Feature: Reporting handled errors
       | ios     | handledError     |
     And the event "unhandled" is false
     And the event has a "state" breadcrumb named "Bugsnag loaded"
-    And the exception "errorClass" equals "Internal Error"
+    And the exception "errorClass" equals "Internal Error happened"
     And the exception "message" equals "Does not compute"
     And the method of stack frame 0 is equivalent to "NotifyScenario::Run()"
     And the exception "type" equals the platform-dependent string:

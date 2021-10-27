@@ -65,6 +65,8 @@ public:
 				Event->AddMetadata(TEXT("custom"), TEXT("notify"), MakeShareable(new FJsonValueString(TEXT("testing"))));
 				Event->GetDevice()->SetId(MakeShareable(new FString("51229")));
 				Event->GetApp()->SetDuration(MakeShareable(new uint64(37)));
+				FString ErrorClass = Event->GetErrors()[0]->GetErrorClass();
+				Event->GetErrors()[0]->SetErrorClass(ErrorClass + TEXT(" happened"));
 				return true;
 			});
 	}
