@@ -319,7 +319,7 @@ extern "C"
 	{
 		if (JNICache.loaded)
 		{
-			auto Crumb = FAndroidBreadcrumb::From(Env, &JNICache, jCrumb);
+			auto Crumb = MakeShared<FAndroidBreadcrumb>(Env, &JNICache, jCrumb);
 			return GPlatformBugsnag.RunOnBreadcrumbCallbacks(Crumb) ? JNI_TRUE : JNI_FALSE;
 		}
 		return JNI_TRUE;
@@ -330,7 +330,7 @@ extern "C"
 	{
 		if (JNICache.loaded)
 		{
-			auto Session = FAndroidSession::From(Env, &JNICache, jSession);
+			auto Session = MakeShared<FAndroidSession>(Env, &JNICache, jSession);
 			return GPlatformBugsnag.RunOnSessionCallbacks(Session) ? JNI_TRUE : JNI_FALSE;
 		}
 		return JNI_TRUE;

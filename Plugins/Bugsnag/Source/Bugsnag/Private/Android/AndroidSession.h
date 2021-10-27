@@ -1,30 +1,18 @@
 #pragma once
 
-#include <jni.h>
-
 #include "AndroidApp.h"
 #include "AndroidDevice.h"
 #include "BugsnagSession.h"
-#include "JNIUtilities.h"
+#include "JavaObjectWrapper.h"
 
-class FAndroidSession : public IBugsnagSession
+class FAndroidSession : public IBugsnagSession, FJavaObjectWrapper
 {
 public:
-	static TSharedRef<FAndroidSession> From(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Session)
-	{
-		return MakeShared<FAndroidSession>(Env, Cache, Session);
-	}
-
-	FAndroidSession(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Session)
-		: Session(Session)
-		, Cache(Cache)
-		, Env(Env)
-	{
-	}
+	using FJavaObjectWrapper::FJavaObjectWrapper;
 
 	const FString GetId() const
 	{
-		jobject jId = (*Env).CallObjectMethod(Session, Cache->SessionGetId);
+		jobject jId = (*Env).CallObjectMethod(JavaObject, Cache->SessionGetId);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 		return FAndroidPlatformJNI::ParseJavaString(Env, Cache, jId);
 	}
@@ -34,16 +22,14 @@ public:
 		jstring jId = FAndroidPlatformJNI::ParseFString(Env, Id);
 		if (jId)
 		{
-			(*Env).CallVoidMethod(Session, Cache->SessionSetId, jId);
+			(*Env).CallVoidMethod(JavaObject, Cache->SessionSetId, jId);
 			FAndroidPlatformJNI::CheckAndClearException(Env);
 		}
 	}
 
 	const FDateTime GetStartedAt() const
 	{
-		jobject jTimestamp = (*Env).CallObjectMethod(Session, Cache->SessionGetStartedAt);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
-		return FAndroidPlatformJNI::ParseDateTime(Env, Cache, jTimestamp);
+		return GetDateField(Cache->SessionGetStartedAt);
 	}
 
 	void SetStartedAt(const FDateTime& StartedAt)
@@ -51,28 +37,28 @@ public:
 		jobject jStartedAt = FAndroidPlatformJNI::ParseJavaDate(Env, Cache, StartedAt);
 		if (jStartedAt)
 		{
-			(*Env).CallVoidMethod(Session, Cache->SessionSetStartedAt, jStartedAt);
+			(*Env).CallVoidMethod(JavaObject, Cache->SessionSetStartedAt, jStartedAt);
 			FAndroidPlatformJNI::CheckAndClearException(Env);
 		}
 	}
 
 	TSharedRef<IBugsnagApp> GetApp()
 	{
-		jobject jApp = (*Env).CallObjectMethod(Session, Cache->SessionGetApp);
+		jobject jApp = (*Env).CallObjectMethod(JavaObject, Cache->SessionGetApp);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
-		return FAndroidApp::From(Env, Cache, jApp);
+		return MakeShared<FAndroidApp>(Env, Cache, jApp);
 	}
 
 	TSharedRef<IBugsnagDevice> GetDevice()
 	{
-		jobject jDevice = (*Env).CallObjectMethod(Session, Cache->SessionGetDevice);
+		jobject jDevice = (*Env).CallObjectMethod(JavaObject, Cache->SessionGetDevice);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
-		return FAndroidDevice::From(Env, Cache, jDevice);
+		return MakeShared<FAndroidDevice>(Env, Cache, jDevice);
 	}
 
 	const FBugsnagUser GetUser() const
 	{
-		jobject jUser = (*Env).CallObjectMethod(Session, Cache->SessionGetUser);
+		jobject jUser = (*Env).CallObjectMethod(JavaObject, Cache->SessionGetUser);
 		return FAndroidPlatformJNI::ParseJavaUser(Env, Cache, jUser);
 	}
 
@@ -81,12 +67,7 @@ public:
 		jstring jId = Id.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Id) : nullptr;
 		jstring jName = Name.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Name) : nullptr;
 		jstring jEmail = Email.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Email) : nullptr;
-		(*Env).CallVoidMethod(Session, Cache->SessionSetUser, jId, jEmail, jName);
+		(*Env).CallVoidMethod(JavaObject, Cache->SessionSetUser, jId, jEmail, jName);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
-
-private:
-	JNIEnv* Env;
-	const JNIReferenceCache* Cache;
-	const jobject Session;
 };
