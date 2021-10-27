@@ -16,12 +16,9 @@ public:
 				TSharedPtr<FBugsnagLastRunInfo> LastRunInfo = UBugsnagFunctionLibrary::GetLastRunInfo();
 				if (LastRunInfo.IsValid())
 				{
-					UBugsnagFunctionLibrary::AddMetadata("lastRunInfo", "consecutiveLaunchCrashes",
-						MakeShareable(new FJsonValueNumber(LastRunInfo->GetConsecutiveLaunchCrashes())));
-					UBugsnagFunctionLibrary::AddMetadata("lastRunInfo", "crashed",
-						MakeShareable(new FJsonValueBoolean(LastRunInfo->GetCrashed())));
-					UBugsnagFunctionLibrary::AddMetadata("lastRunInfo", "crashedDuringLaunch",
-						MakeShareable(new FJsonValueBoolean(LastRunInfo->GetCrashedDuringLaunch())));
+					UBugsnagFunctionLibrary::AddMetadata("lastRunInfo", "consecutiveLaunchCrashes", LastRunInfo->GetConsecutiveLaunchCrashes());
+					UBugsnagFunctionLibrary::AddMetadata("lastRunInfo", "crashed", LastRunInfo->GetCrashed());
+					UBugsnagFunctionLibrary::AddMetadata("lastRunInfo", "crashedDuringLaunch", LastRunInfo->GetCrashedDuringLaunch());
 				}
 
 				UBugsnagFunctionLibrary::Notify(TEXT("Resolution failed"), TEXT("invalid index (-1)"));
