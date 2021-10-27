@@ -63,6 +63,8 @@ public:
 		UBugsnagFunctionLibrary::Notify(TEXT("Internal Error"), TEXT("Does not compute"), [](TSharedRef<IBugsnagEvent> Event)
 			{
 				Event->AddMetadata(TEXT("custom"), TEXT("notify"), MakeShareable(new FJsonValueString(TEXT("testing"))));
+				Event->GetDevice()->SetId(MakeShareable(new FString("51229")));
+				Event->GetApp()->SetDuration(MakeShareable(new uint64(37)));
 				return true;
 			});
 	}
