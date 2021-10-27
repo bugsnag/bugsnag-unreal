@@ -8,6 +8,7 @@ import com.bugsnag.android.Bugsnag;
 import com.bugsnag.android.Client;
 import com.bugsnag.android.Configuration;
 import com.bugsnag.android.Breadcrumb;
+import com.bugsnag.android.Event;
 import com.bugsnag.android.OnBreadcrumbCallback;
 import com.bugsnag.android.OnSessionCallback;
 import com.bugsnag.android.Plugin;
@@ -61,22 +62,30 @@ public class UnrealPlugin implements Plugin {
     }
   }
 
+  static byte[] getMetadata(Event event, String section, String key) throws IOException {
+    return section == null || key == null ? null : wrapAndSerialize(event.getMetadata(section, key));
+  }
+
   static byte[] getMetadata(String section, String key) throws IOException {
-    if (section == null || key == null) {
-        return null;
-    }
-    Object value = Bugsnag.getMetadata(section, key);
+    return section == null || key == null ? null : wrapAndSerialize(Bugsnag.getMetadata(section, key));
+  }
+
+  static byte[] getMetadata(Event event, String section) throws IOException {
+    return section == null ? null : serialize(event.getMetadata(section));
+  }
+
+  static byte[] getMetadata(String section) throws IOException {
+    return section == null ? null : serialize(Bugsnag.getMetadata(section));
+  }
+
+  private static byte[] serialize(Map<String, Object> metadata) throws IOException {
+    return metadata == null ? null : MetadataSerializer.serialize(metadata);
+  }
+
+  private static byte[] wrapAndSerialize(Object value) throws IOException {
     // wrap the value to differentiate between an error and a literal null
     return MetadataSerializer.serialize(new HashMap<String, Object>() {{
         put("Value", value);
     }});
-  }
-
-  static byte[] getMetadata(String section) throws IOException {
-    if (section == null) {
-        return null;
-    }
-    Map<String, Object> metadata = Bugsnag.getMetadata(section);
-    return metadata == null ? null : MetadataSerializer.serialize(metadata);
   }
 }
