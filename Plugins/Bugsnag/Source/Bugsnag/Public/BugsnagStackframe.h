@@ -21,9 +21,9 @@ public:
 
 	// lineNumber?: number,
 
-	virtual TSharedPtr<uint32> GetLineNumber() const = 0;
+	virtual TSharedPtr<int32> GetLineNumber() const = 0;
 
-	virtual void SetLineNumber(const TSharedPtr<uint32>&) = 0;
+	virtual void SetLineNumber(const TSharedPtr<int32>&) = 0;
 
 	// method?: string,
 
