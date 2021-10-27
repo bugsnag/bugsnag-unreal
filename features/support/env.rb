@@ -54,3 +54,7 @@ def artifact_path
     '/app/build'
   end
 end
+
+def app_state
+  Maze.driver.app_state('com.bugsnag.TestFixture')
+end

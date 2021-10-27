@@ -43,14 +43,19 @@ end
 
 Then('the app is running') do
   wait_for_true do
-    $logger.info Maze.driver.app_state('com.bugsnag.TestFixture')
-    Maze.driver.app_state('com.bugsnag.TestFixture') == :running_in_foreground
+    state = app_state()
+    $logger.info "app state: #{state}"
+    state == :running_in_foreground
   end
 end
 
 Then('the app is not running') do
   wait_for_true do
-    Maze.driver.app_state('com.bugsnag.TestFixture') == :not_running
+    state = app_state()
+    # workaround for faulty app state detection in appium v1.23 and lower on
+    # Android where an app that is not running is detected to be running in
+    # the background
+    state == :not_running || (state == :running_in_background && is_platform?('Android'))
   end
 end
 
