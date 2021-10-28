@@ -54,6 +54,14 @@ public class UnrealPlugin implements Plugin {
    */
   static native boolean runSessionCallbacks(Session session);
 
+  /**
+   * Run native notify callback
+   *
+   * @param event The event
+   * @param userdata The userdata object passed to notify()
+   */
+  static native boolean runNotifyCallback(Event event, ByteBuffer userdata);
+
   public void load(Client client) {
     this.client = client;
     this.client.addOnBreadcrumb(onBreadcrumbRunner);
@@ -89,7 +97,7 @@ public class UnrealPlugin implements Plugin {
             err.setType(ErrorType.C);
           }
         }
-        return true;
+        return runNotifyCallback(event, userdata);
       }
     });
   }

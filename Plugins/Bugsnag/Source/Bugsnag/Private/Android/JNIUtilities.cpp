@@ -549,7 +549,7 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIRefere
 	return nullptr;
 }
 
-jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value)
+jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int64 Value)
 {
 	jobject jValue = (*Env).NewObject(Cache->IntegerClass, Cache->IntegerConstructor, Value);
 	if (FAndroidPlatformJNI::CheckAndClearException(Env))
@@ -557,6 +557,25 @@ jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* 
 		return nullptr;
 	}
 	return jValue;
+}
+
+EBugsnagSeverity FAndroidPlatformJNI::ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	const char* Name = FAndroidPlatformJNI::GetNameFromEnum(Env, Cache, Value);
+	if (!Name)
+	{
+		return EBugsnagSeverity::Warning;
+	}
+	switch (Name[0])
+	{
+	case 'E':
+		return EBugsnagSeverity::Error;
+	case 'I':
+		return EBugsnagSeverity::Info;
+	case 'W':
+	default:
+		return EBugsnagSeverity::Warning;
+	}
 }
 
 jobject FAndroidPlatformJNI::ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSeverity Value)
@@ -696,4 +715,21 @@ const char* FAndroidPlatformJNI::GetNameFromEnum(JNIEnv* Env, const JNIReference
 	ReturnNullOnException(Env);
 	(*Env).DeleteLocalRef(jName);
 	return Name;
+}
+
+EBugsnagErrorType FAndroidPlatformJNI::ParseErrorType(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	const char* Name = FAndroidPlatformJNI::GetNameFromEnum(Env, Cache, Value);
+	if (!Name)
+	{
+		return EBugsnagErrorType::C;
+	}
+	switch (Name[0])
+	{
+	case 'A':
+		return EBugsnagErrorType::Android;
+	case 'C':
+	default:
+		return EBugsnagErrorType::C;
+	}
 }

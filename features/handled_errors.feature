@@ -9,7 +9,7 @@ Feature: Reporting handled errors
     And the error payload field "notifier.dependencies.0.url" is not null
     And the error payload field "notifier.dependencies.0.version" is not null
     And the event "context" equals "pause menu"
-    And the event "app.duration" is not null
+    And the event "app.duration" equals 37
     And the event "app.durationInForeground" is not null
     And the event "app.id" equals "com.bugsnag.TestFixture"
     And the event "app.inForeground" is true
@@ -21,7 +21,7 @@ Feature: Reporting handled errors
     And the event "app.version" equals "1.0"
     And the event "device.freeDisk" is not null
     And the event "device.freeMemory" is not null
-    And the event "device.id" is not null
+    And the event "device.id" equals "51229"
     And the event "device.jailbroken" is false
     And the event "device.locale" is not null
     And the event "device.manufacturer" is not null
@@ -48,8 +48,7 @@ Feature: Reporting handled errors
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And the event "metaData.custom.someValue" equals "foobar"
     And the event "metaData.custom.lastValue" is true
-    # TODO: pending on Android (PLAT-7363)
-    And on iOS, the event "metaData.custom.notify" equals "testing"
+    And the event "metaData.custom.notify" equals "testing"
     And the event "metaData.device.adapterName" is not null
     And on Android, the event "metaData.device.driverVersion" is not null
     And the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
