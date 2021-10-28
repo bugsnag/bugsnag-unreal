@@ -13,6 +13,8 @@ public:
 	{
 	}
 
+	using IBugsnagMetadataStore::AddMetadata;
+
 	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override
 	{
 		[CocoaStore addMetadata:NSDictionaryFromFJsonObject(Metadata) toSection:NSStringFromFString(Section)];

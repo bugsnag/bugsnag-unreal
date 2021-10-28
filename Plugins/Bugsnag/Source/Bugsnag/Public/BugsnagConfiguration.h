@@ -191,6 +191,8 @@ public:
 
 	// Metadata
 
+	using IBugsnagMetadataStore::AddMetadata;
+
 	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override;
 
 	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) override;
