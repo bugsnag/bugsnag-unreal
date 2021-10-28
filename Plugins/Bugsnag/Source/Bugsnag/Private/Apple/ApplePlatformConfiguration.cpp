@@ -61,9 +61,9 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	CocoaConfig.autoTrackSessions = Configuration->GetAutoTrackSessions();
 
-	if (Configuration->GetContext().IsValid())
+	if (Configuration->GetContext().IsSet())
 	{
-		CocoaConfig.context = NSStringFromFStringPtr(Configuration->GetContext());
+		CocoaConfig.context = NSStringFromFString(Configuration->GetContext().GetValue());
 	}
 
 	if (Configuration->GetDiscardClasses().Num())
@@ -108,24 +108,24 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	CocoaConfig.persistUser = Configuration->GetPersistUser();
 
-	if (Configuration->GetReleaseStage().IsValid())
+	if (Configuration->GetReleaseStage().IsSet())
 	{
-		CocoaConfig.releaseStage = NSStringFromFStringPtr(Configuration->GetReleaseStage());
+		CocoaConfig.releaseStage = NSStringFromFString(Configuration->GetReleaseStage().GetValue());
 	}
 
-	if (Configuration->GetAppType().IsValid())
+	if (Configuration->GetAppType().IsSet())
 	{
-		CocoaConfig.appType = NSStringFromFStringPtr(Configuration->GetAppType());
+		CocoaConfig.appType = NSStringFromFString(Configuration->GetAppType().GetValue());
 	}
 
-	if (Configuration->GetAppVersion().IsValid())
+	if (Configuration->GetAppVersion().IsSet())
 	{
-		CocoaConfig.appVersion = NSStringFromFStringPtr(Configuration->GetAppVersion());
+		CocoaConfig.appVersion = NSStringFromFString(Configuration->GetAppVersion().GetValue());
 	}
 
-	if (Configuration->GetBundleVersion().IsValid())
+	if (Configuration->GetBundleVersion().IsSet())
 	{
-		CocoaConfig.bundleVersion = NSStringFromFStringPtr(Configuration->GetBundleVersion());
+		CocoaConfig.bundleVersion = NSStringFromFString(Configuration->GetBundleVersion().GetValue());
 	}
 
 	CocoaConfig.endpoints = [[BugsnagEndpointConfiguration alloc]
@@ -134,9 +134,9 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPt
 
 	if (!Configuration->GetUser().IsEmpty())
 	{
-		[CocoaConfig setUser:NSStringFromFStringPtr(Configuration->GetUser().GetId())
-				   withEmail:NSStringFromFStringPtr(Configuration->GetUser().GetEmail())
-					 andName:NSStringFromFStringPtr(Configuration->GetUser().GetName())];
+		[CocoaConfig setUser:NSStringFromOptional(Configuration->GetUser().GetId())
+				   withEmail:NSStringFromOptional(Configuration->GetUser().GetEmail())
+					 andName:NSStringFromOptional(Configuration->GetUser().GetName())];
 	}
 
 	for (auto& Item : Configuration->GetMetadataValues())

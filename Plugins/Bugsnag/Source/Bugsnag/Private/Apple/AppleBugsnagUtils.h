@@ -25,9 +25,19 @@ static inline TSharedPtr<FString> FStringPtrFromNSString(NSString* _Nullable Str
 	return String ? MakeShareable(new FString(UTF8_TO_TCHAR(String.UTF8String))) : nullptr;
 }
 
+static inline TOptional<FString> OptionalFromNSString(NSString* _Nullable String)
+{
+	return String ? TOptional<FString>(FString(UTF8_TO_TCHAR(String.UTF8String))) : TOptional<FString>();
+}
+
 static inline NSString* _Nullable NSStringFromFStringPtr(const TSharedPtr<FString>& String)
 {
 	return String.IsValid() ? @(TCHAR_TO_UTF8(**String)) : nil;
+}
+
+static inline NSString* _Nullable NSStringFromOptional(const TOptional<FString>& String)
+{
+	return String.IsSet() ? @(TCHAR_TO_UTF8(*(String.GetValue()))) : nil;
 }
 
 // Date conversion

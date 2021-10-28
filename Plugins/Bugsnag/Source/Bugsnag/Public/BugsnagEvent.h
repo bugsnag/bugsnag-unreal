@@ -78,7 +78,7 @@ public:
 	// setUser(id: String?, email: String?, name: String?): void;
 
 	virtual void SetUser(
-		const TSharedPtr<FString>& Id = nullptr,
-		const TSharedPtr<FString>& Email = nullptr,
-		const TSharedPtr<FString>& Name = nullptr) = 0;
+		const TOptional<FString>& Id = TOptional<FString>(),
+		const TOptional<FString>& Email = TOptional<FString>(),
+		const TOptional<FString>& Name = TOptional<FString>()) = 0;
 };

@@ -42,9 +42,9 @@ public:
 
 	// Context
 
-	const TSharedPtr<FString>& GetContext() const { return Context; }
+	const TOptional<FString>& GetContext() const { return Context; }
 
-	void SetContext(const TSharedPtr<FString>& Value) { Context = Value; }
+	void SetContext(const TOptional<FString>& Value) { Context = Value; }
 
 	// DiscardClasses
 
@@ -149,27 +149,27 @@ public:
 
 	// Release Stage
 
-	const TSharedPtr<FString>& GetReleaseStage() const { return ReleaseStage; }
+	const TOptional<FString>& GetReleaseStage() const { return ReleaseStage; }
 
-	void SetReleaseStage(const TSharedPtr<FString>& Value) { ReleaseStage = Value; }
+	void SetReleaseStage(const TOptional<FString>& Value) { ReleaseStage = Value; }
 
 	// App Type
 
-	const TSharedPtr<FString>& GetAppType() const { return AppType; }
+	const TOptional<FString>& GetAppType() const { return AppType; }
 
-	void SetAppType(const TSharedPtr<FString>& Value) { AppType = Value; }
+	void SetAppType(const TOptional<FString>& Value) { AppType = Value; }
 
 	// App Version
 
-	const TSharedPtr<FString>& GetAppVersion() const { return AppVersion; }
+	const TOptional<FString>& GetAppVersion() const { return AppVersion; }
 
-	void SetAppVersion(const TSharedPtr<FString>& Value) { AppVersion = Value; }
+	void SetAppVersion(const TOptional<FString>& Value) { AppVersion = Value; }
 
 	// Bundle Version
 
-	const TSharedPtr<FString>& GetBundleVersion() const { return BundleVersion; }
+	const TOptional<FString>& GetBundleVersion() const { return BundleVersion; }
 
-	void SetBundleVersion(const TSharedPtr<FString>& Value) { BundleVersion = Value; }
+	void SetBundleVersion(const TOptional<FString>& Value) { BundleVersion = Value; }
 
 	// Version Code
 
@@ -187,7 +187,10 @@ public:
 
 	const FBugsnagUser GetUser() const { return User; }
 
-	void SetUser(const TSharedPtr<FString>& Id = nullptr, const TSharedPtr<FString>& Email = nullptr, const TSharedPtr<FString>& Name = nullptr);
+	void SetUser(
+		const TOptional<FString>& Id = TOptional<FString>(),
+		const TOptional<FString>& Email = TOptional<FString>(),
+		const TOptional<FString>& Name = TOptional<FString>());
 
 	// Metadata
 
@@ -238,7 +241,7 @@ private:
 	FString ApiKey;
 	bool bAutoDetectErrors = true;
 	bool bAutoTrackSessions = true;
-	TSharedPtr<FString> Context;
+	TOptional<FString> Context;
 	TArray<FString> DiscardClasses;
 	FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes;
 	FBugsnagErrorTypes EnabledErrorTypes;
@@ -253,10 +256,10 @@ private:
 	uint64 MaxPersistedSessions = 128;
 	bool bPersistUser = true;
 	FBugsnagUser User;
-	TSharedPtr<FString> ReleaseStage;
-	TSharedPtr<FString> AppType;
-	TSharedPtr<FString> AppVersion;
-	TSharedPtr<FString> BundleVersion;
+	TOptional<FString> ReleaseStage;
+	TOptional<FString> AppType;
+	TOptional<FString> AppVersion;
+	TOptional<FString> BundleVersion;
 	TOptional<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;

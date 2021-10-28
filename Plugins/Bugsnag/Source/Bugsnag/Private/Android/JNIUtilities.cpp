@@ -299,10 +299,7 @@ FBugsnagUser FAndroidPlatformJNI::ParseJavaUser(JNIEnv* Env, const JNIReferenceC
 {
 	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !Env->IsInstanceOf(Value, Cache->UserClass))
 	{
-		return FBugsnagUser(
-			MakeShareable(new FString("")),
-			MakeShareable(new FString("")),
-			MakeShareable(new FString("")));
+		return FBugsnagUser();
 	}
 	jobject jId = (*Env).CallObjectMethod(Value, Cache->UserGetId);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
@@ -313,10 +310,7 @@ FBugsnagUser FAndroidPlatformJNI::ParseJavaUser(JNIEnv* Env, const JNIReferenceC
 	jobject jEmail = (*Env).CallObjectMethod(Value, Cache->UserGetEmail);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 	FString Email = FAndroidPlatformJNI::ParseJavaString(Env, Cache, jEmail);
-	return FBugsnagUser(
-		MakeShared<FString>(Id),
-		MakeShared<FString>(Email),
-		MakeShared<FString>(Name));
+	return FBugsnagUser(Id, Email, Name);
 }
 
 jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<class FString>& Text)
@@ -324,6 +318,15 @@ jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<class
 	if (Text.IsValid())
 	{
 		return ParseFString(Env, *Text);
+	}
+	return NULL;
+}
+
+jstring FAndroidPlatformJNI::ParseFStringOptional(JNIEnv* Env, const TOptional<FString>& Text)
+{
+	if (Text.IsSet())
+	{
+		return ParseFString(Env, Text.GetValue());
 	}
 	return NULL;
 }

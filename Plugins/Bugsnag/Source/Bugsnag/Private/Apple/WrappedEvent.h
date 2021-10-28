@@ -164,18 +164,18 @@ public:
 	const FBugsnagUser GetUser() const override
 	{
 		return FBugsnagUser(
-			FStringPtrFromNSString(CocoaEvent.user.id),
-			FStringPtrFromNSString(CocoaEvent.user.name),
-			FStringPtrFromNSString(CocoaEvent.user.email));
+			OptionalFromNSString(CocoaEvent.user.id),
+			OptionalFromNSString(CocoaEvent.user.name),
+			OptionalFromNSString(CocoaEvent.user.email));
 	}
 
 	// setUser(id: String?, email: String?, name: String?): void;
 
-	void SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name) override
+	void SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name) override
 	{
-		[CocoaEvent setUser:NSStringFromFStringPtr(Id)
-				  withEmail:NSStringFromFStringPtr(Email)
-					andName:NSStringFromFStringPtr(Name)];
+		[CocoaEvent setUser:NSStringFromOptional(Id)
+				  withEmail:NSStringFromOptional(Email)
+					andName:NSStringFromOptional(Name)];
 	}
 
 private:
