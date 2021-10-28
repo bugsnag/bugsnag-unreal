@@ -24,7 +24,8 @@ public:
 
 		Configuration->AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
 			{
-				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), MakeShareable(new FJsonValueString(TEXT("hello"))));
+				// Intentionally passing a char* value to check it isn't implicitly casted to a non-string type
+				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), "hello");
 				return true;
 			});
 
@@ -62,7 +63,7 @@ public:
 
 		UBugsnagFunctionLibrary::Notify(TEXT("Internal Error"), TEXT("Does not compute"), [](TSharedRef<IBugsnagEvent> Event)
 			{
-				Event->AddMetadata(TEXT("custom"), TEXT("notify"), MakeShareable(new FJsonValueString(TEXT("testing"))));
+				Event->AddMetadata(TEXT("custom"), TEXT("notify"), TEXT("testing"));
 				Event->GetDevice()->SetId(MakeShareable(new FString("51229")));
 				Event->GetApp()->SetDuration(MakeShareable(new uint64(37)));
 				FString ErrorClass = Event->GetErrors()[0]->GetErrorClass();

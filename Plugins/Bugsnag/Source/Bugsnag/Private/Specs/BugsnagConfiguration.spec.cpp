@@ -196,11 +196,17 @@ void FBugsnagConfigurationSpec::Define()
 					Configuration.AddMetadata(TEXT("Info"), TEXT("foo"), MakeShared<FJsonValueString>(TEXT("baz")));
 					TEST_EQUAL(Configuration.GetMetadata(TEXT("Info"), TEXT("foo"))->AsString(), TEXT("baz"));
 
-					Configuration.AddMetadata(TEXT("Info"), TEXT("foo"), nullptr);
+					Configuration.AddMetadata(TEXT("Info"), TEXT("foo"), TSharedPtr<FJsonValue>(nullptr));
 					TEST_FALSE(Configuration.GetMetadata(TEXT("Info"), TEXT("foo")).IsValid());
 
 					Configuration.AddMetadata(TEXT("Info"), TEXT("name"), MakeShared<FJsonValueString>(TEXT("test")));
 					TEST_EQUAL(Configuration.GetMetadata(TEXT("Info"), TEXT("name"))->AsString(), TEXT("test"));
+
+					Configuration.AddMetadata(TEXT("Info"), TEXT("name"), TEXT("test_1"));
+					TEST_EQUAL(Configuration.GetMetadata(TEXT("Info"), TEXT("name"))->AsString(), TEXT("test_1"));
+
+					Configuration.AddMetadata(TEXT("Info"), TEXT("name"), "test_2");
+					TEST_EQUAL(Configuration.GetMetadata(TEXT("Info"), TEXT("name"))->AsString(), TEXT("test_2"));
 
 					Configuration.ClearMetadata(TEXT("Info"), TEXT("name"));
 					TEST_FALSE(Configuration.GetMetadata(TEXT("Info"), TEXT("name")).IsValid());

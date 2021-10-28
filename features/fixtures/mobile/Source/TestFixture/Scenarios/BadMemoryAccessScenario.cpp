@@ -26,16 +26,14 @@ public:
 
 		Configuration->AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
 			{
-				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), MakeShareable(new FJsonValueString(TEXT("hello"))));
+				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), TEXT("hello"));
 
 				TSharedPtr<FBugsnagLastRunInfo> LastRunInfo = UBugsnagFunctionLibrary::GetLastRunInfo();
 				if (LastRunInfo.IsValid())
 				{
-					TSharedRef<FJsonObject> Metadata = MakeShared<FJsonObject>();
-					Metadata->SetNumberField(TEXT("consecutiveLaunchCrashes"), LastRunInfo->GetConsecutiveLaunchCrashes());
-					Metadata->SetBoolField(TEXT("crashed"), LastRunInfo->GetCrashed());
-					Metadata->SetBoolField(TEXT("crashedDuringLaunch"), LastRunInfo->GetCrashedDuringLaunch());
-					Event->AddMetadata(TEXT("lastRunInfo"), Metadata);
+					Event->AddMetadata(TEXT("lastRunInfo"), TEXT("consecutiveLaunchCrashes"), LastRunInfo->GetConsecutiveLaunchCrashes());
+					Event->AddMetadata(TEXT("lastRunInfo"), TEXT("crashed"), LastRunInfo->GetCrashed());
+					Event->AddMetadata(TEXT("lastRunInfo"), TEXT("crashedDuringLaunch"), LastRunInfo->GetCrashedDuringLaunch());
 				}
 
 				return true;
@@ -66,7 +64,7 @@ public:
 
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
 
-		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), MakeShareable(new FJsonValueString(TEXT("foobar"))));
+		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), TEXT("foobar"));
 		TSharedPtr<FJsonObject> CustomMetadata = UBugsnagFunctionLibrary::GetMetadata("custom");
 		TSharedPtr<FJsonValue> ExistingValue = UBugsnagFunctionLibrary::GetMetadata("custom", "someValue");
 		if (CustomMetadata.IsValid() && ExistingValue.IsValid() && CustomMetadata->HasField("someValue"))
