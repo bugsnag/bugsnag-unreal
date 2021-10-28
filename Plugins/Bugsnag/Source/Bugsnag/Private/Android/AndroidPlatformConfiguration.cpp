@@ -121,6 +121,19 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
 	}
 
+	if (Config->GetPersistenceDirectory().IsValid())
+	{
+		jstring jDirPath = FAndroidPlatformJNI::ParseFString(Env, *Config->GetPersistenceDirectory());
+		if (jDirPath)
+		{
+			jobject jDirFile = (*Env).NewObject(Cache->FileClass, Cache->FileConstructor, jDirPath);
+			if (!FAndroidPlatformJNI::CheckAndClearException(Env))
+			{
+				jniCallWithObjects(Env, jConfig, Cache->ConfigSetPersistenceDirectory, jDirFile);
+			}
+		}
+	}
+
 	for (auto& Item : Config->GetMetadataValues())
 	{
 		jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Item.Key);

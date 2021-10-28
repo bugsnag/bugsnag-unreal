@@ -183,6 +183,13 @@ public:
 
 	void SetEndpoints(const FString& Notify, const FString& Sessions) { Endpoints = FBugsnagEndpointConfiguration(Notify, Sessions); }
 
+	// Android-only
+	// -- PersistenceDirectory
+
+	const TSharedPtr<FString>& GetPersistenceDirectory() const { return PersistenceDirectory; }
+
+	void SetPersistenceDirectory(const TSharedPtr<FString>& Value) { PersistenceDirectory = Value; }
+
 	// User
 
 	const FBugsnagUser GetUser() const { return User; }
@@ -257,6 +264,7 @@ private:
 	TSharedPtr<FString> AppType;
 	TSharedPtr<FString> AppVersion;
 	TSharedPtr<FString> BundleVersion;
+	TSharedPtr<FString> PersistenceDirectory;
 	TSharedPtr<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;

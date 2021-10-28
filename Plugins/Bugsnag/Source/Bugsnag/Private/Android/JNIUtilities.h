@@ -35,6 +35,7 @@ typedef struct
 	jclass HashSetClass;
 	jclass ArrayListClass;
 	jclass BooleanClass;
+	jclass FileClass;
 	jclass IntegerClass;
 	jclass ListClass;
 	jclass LongClass;
@@ -100,6 +101,7 @@ typedef struct
 	jmethodID ConfigSetLaunchDurationMillis;
 	jmethodID ConfigSetMaxBreadcrumbs;
 	jmethodID ConfigSetMaxPersistedEvents;
+	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
 	jmethodID ConfigSetRedactedKeys;
 	jmethodID ConfigSetReleaseStage;
@@ -158,6 +160,7 @@ typedef struct
 	jmethodID UserGetName;
 	jmethodID BooleanBooleanValue;
 	jmethodID BooleanConstructor;
+	jmethodID FileConstructor;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID ListAdd;
