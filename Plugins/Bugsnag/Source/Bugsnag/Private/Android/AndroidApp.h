@@ -68,12 +68,12 @@ public:
 		SetStringField(Cache->AppSetVersion, true, Value);
 	}
 
-	const TSharedPtr<int64> GetVersionCode() const
+	const TOptional<int64> GetVersionCode() const
 	{
 		return GetLongObjectField<int64>(Cache->AppGetVersionCode);
 	}
 
-	void SetVersionCode(const TSharedPtr<int64>& Value)
+	void SetVersionCode(const TOptional<int64>& Value)
 	{
 		SetLongObjectField(Cache->AppSetVersionCode, true, Value);
 	}

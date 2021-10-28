@@ -117,13 +117,13 @@ public:
 
 	// versionCode?: number;
 
-	const TSharedPtr<int64> GetVersionCode() const
+	const TOptional<int64> GetVersionCode() const
 	{
 		// Not supported by bugsnag-cocoa
-		return nullptr;
+		return TOptional<int64>();
 	}
 
-	void SetVersionCode(const TSharedPtr<int64>& Value)
+	void SetVersionCode(const TOptional<int64>& Value)
 	{
 		// Not supported by bugsnag-cocoa
 	}

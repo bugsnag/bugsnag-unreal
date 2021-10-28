@@ -21,9 +21,9 @@ public:
 
 	// lineNumber?: number,
 
-	virtual TSharedPtr<int32> GetLineNumber() const = 0;
+	virtual TOptional<int32> GetLineNumber() const = 0;
 
-	virtual void SetLineNumber(const TSharedPtr<int32>&) = 0;
+	virtual void SetLineNumber(const TOptional<int32>&) = 0;
 
 	// method?: string,
 
@@ -33,15 +33,15 @@ public:
 
 	// type?: ErrorType,
 
-	virtual TSharedPtr<EBugsnagErrorType> GetType() const = 0;
+	virtual TOptional<EBugsnagErrorType> GetType() const = 0;
 
 #if PLATFORM_APPLE
 
 	// machoVMAddress?: number
 
-	virtual TSharedPtr<uint64> GetMachoVmAddress() const = 0;
+	virtual TOptional<uint64> GetMachoVmAddress() const = 0;
 
-	virtual void SetMachoVmAddress(const TSharedPtr<uint64>&) = 0;
+	virtual void SetMachoVmAddress(const TOptional<uint64>&) = 0;
 
 	// machoFile?: string
 
@@ -51,15 +51,15 @@ public:
 
 	// symbolAddress?: number
 
-	virtual TSharedPtr<uint64> GetSymbolAddress() const = 0;
+	virtual TOptional<uint64> GetSymbolAddress() const = 0;
 
-	virtual void SetSymbolAddress(const TSharedPtr<uint64>&) = 0;
+	virtual void SetSymbolAddress(const TOptional<uint64>&) = 0;
 
 	// machoLoadAddress?: number
 
-	virtual TSharedPtr<uint64> GetMachoLoadAddress() const = 0;
+	virtual TOptional<uint64> GetMachoLoadAddress() const = 0;
 
-	virtual void SetMachoLoadAddress(const TSharedPtr<uint64>&) = 0;
+	virtual void SetMachoLoadAddress(const TOptional<uint64>&) = 0;
 
 	// machoUUID?: string
 
@@ -69,21 +69,21 @@ public:
 
 	// frameAddress?: number
 
-	virtual TSharedPtr<uint64> GetFrameAddress() const = 0;
+	virtual TOptional<uint64> GetFrameAddress() const = 0;
 
-	virtual void SetFrameAddress(const TSharedPtr<uint64>&) = 0;
+	virtual void SetFrameAddress(const TOptional<uint64>&) = 0;
 
 	// isPC?: boolean
 
-	virtual TSharedPtr<bool> GetIsPC() const = 0;
+	virtual TOptional<bool> GetIsPC() const = 0;
 
-	virtual void SetIsPC(const TSharedPtr<bool>&) = 0;
+	virtual void SetIsPC(const TOptional<bool>&) = 0;
 
 	// isLR?: boolean
 
-	virtual TSharedPtr<bool> GetIsLR() const = 0;
+	virtual TOptional<bool> GetIsLR() const = 0;
 
-	virtual void SetIsLR(const TSharedPtr<bool>&) = 0;
+	virtual void SetIsLR(const TOptional<bool>&) = 0;
 
 #endif
 };

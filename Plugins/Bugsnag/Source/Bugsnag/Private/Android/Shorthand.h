@@ -16,6 +16,13 @@
 		return nullptr;             \
 	}
 
+// Quick exit when a call which should have returned something does not
+#define ReturnValueOnFail(condition, value) \
+	if (!(condition))                       \
+	{                                       \
+		return value;                       \
+	}
+
 // Quick exit when a JNI call fails
 #define ReturnNullOnException(env) \
 	if (env->ExceptionCheck())     \

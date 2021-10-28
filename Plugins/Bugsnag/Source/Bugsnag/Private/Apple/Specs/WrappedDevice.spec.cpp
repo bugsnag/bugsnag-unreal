@@ -27,7 +27,7 @@ void FWrappedDeviceSpec::Define()
 					CocoaDevice.totalMemory = @(100 * 1024 * 1024);
 
 					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
-					TEST_EQUAL(*Device->GetJailbroken(), true);
+					TEST_EQUAL(Device->GetJailbroken().GetValue(), true);
 					TEST_EQUAL(*Device->GetId(), TEXT("uniqueId"));
 					TEST_EQUAL(*Device->GetLocale(), TEXT("en_EN"));
 					TEST_EQUAL(*Device->GetManufacturer(), TEXT("Apple"));
@@ -39,7 +39,7 @@ void FWrappedDeviceSpec::Define()
 					TEST_EQUAL(RuntimeVersions->Num(), 2);
 					TEST_EQUAL((*RuntimeVersions)[TEXT("something")], TEXT("1.0"));
 					TEST_EQUAL((*RuntimeVersions)[TEXT("else")], TEXT("2.0"));
-					TEST_EQUAL(*Device->GetTotalMemory(), 100 * 1024 * 1024);
+					TEST_EQUAL(Device->GetTotalMemory().GetValue(), 100 * 1024 * 1024);
 				});
 
 			It("Sets values on the Cocoa object", [this]()
@@ -47,7 +47,7 @@ void FWrappedDeviceSpec::Define()
 					BugsnagDevice* CocoaDevice = [[BugsnagDevice alloc] init];
 
 					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
-					Device->SetJailbroken(MakeShareable(new bool(true)));
+					Device->SetJailbroken(true);
 					Device->SetId(MakeShareable(new FString(TEXT("uniqueId"))));
 					Device->SetLocale(MakeShareable(new FString(TEXT("en_EN"))));
 					Device->SetManufacturer(MakeShareable(new FString(TEXT("Apple"))));
@@ -59,7 +59,7 @@ void FWrappedDeviceSpec::Define()
 					RuntimeVersions->Add(TEXT("something"), TEXT("1.0"));
 					RuntimeVersions->Add(TEXT("else"), TEXT("2.0"));
 					Device->SetRuntimeVersions(RuntimeVersions);
-					Device->SetTotalMemory(MakeShareable(new uint64(100 * 1024 * 1024)));
+					Device->SetTotalMemory(100 * 1024 * 1024);
 
 					TEST_EQUAL(CocoaDevice.jailbroken, YES);
 					TEST_EQUAL_OBJC(CocoaDevice.id, @"uniqueId");

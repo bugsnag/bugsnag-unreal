@@ -11,7 +11,7 @@ public:
 				Session->SetId(TEXT("4a"));
 				Session->SetStartedAt(FDateTime(1976, 1, 3));
 				Session->GetApp()->SetType(MakeShareable(new FString("variant 2")));
-				Session->GetApp()->SetVersionCode(MakeShareable(new int64(21)));
+				Session->GetApp()->SetVersionCode(21);
 				Session->GetDevice()->SetOsName(MakeShareable(new FString("Fun OS")));
 				Session->GetDevice()->SetOsVersion(MakeShareable(new FString("3.1")));
 				TSharedPtr<TArray<FString>> ABIs = Session->GetDevice()->GetCpuAbi();

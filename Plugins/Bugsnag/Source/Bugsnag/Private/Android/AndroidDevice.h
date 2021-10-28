@@ -28,12 +28,12 @@ public:
 		SetStringField(Cache->DeviceSetId, true, Value);
 	}
 
-	TSharedPtr<bool> GetJailbroken() const
+	TOptional<bool> GetJailbroken() const
 	{
 		return GetBoolObjectField(Cache->DeviceGetJailbroken);
 	}
 
-	void SetJailbroken(const TSharedPtr<bool>& Value)
+	void SetJailbroken(const TOptional<bool>& Value)
 	{
 		SetBoolObjectField(Cache->DeviceSetJailbroken, true, Value);
 	}
@@ -136,12 +136,12 @@ public:
 		}
 	}
 
-	const TSharedPtr<uint64> GetTotalMemory() const
+	const TOptional<uint64> GetTotalMemory() const
 	{
 		return GetLongObjectField<uint64>(Cache->DeviceGetTotalMemory);
 	}
 
-	void SetTotalMemory(const TSharedPtr<uint64>& Value)
+	void SetTotalMemory(const TOptional<uint64>& Value)
 	{
 		SetLongObjectField(Cache->DeviceSetTotalMemory, true, Value);
 	}

@@ -173,9 +173,9 @@ public:
 
 	// Version Code
 
-	const TSharedPtr<int>& GetVersionCode() const { return VersionCode; }
+	const TOptional<int>& GetVersionCode() const { return VersionCode; }
 
-	void SetVersionCode(const TSharedPtr<int>& Value) { VersionCode = Value; }
+	void SetVersionCode(const TOptional<int>& Value) { VersionCode = Value; }
 
 	// Endpoints
 
@@ -257,7 +257,7 @@ private:
 	TSharedPtr<FString> AppType;
 	TSharedPtr<FString> AppVersion;
 	TSharedPtr<FString> BundleVersion;
-	TSharedPtr<int> VersionCode;
+	TOptional<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;

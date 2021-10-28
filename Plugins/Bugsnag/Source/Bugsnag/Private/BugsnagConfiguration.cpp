@@ -13,6 +13,12 @@ static TSharedPtr<FString> NullIfEmpty(const FString& String)
 	return String.IsEmpty() ? nullptr : MakeShareable(new FString(String));
 }
 
+template <typename T>
+static TOptional<T> UnsetIfZero(const T Value)
+{
+	return Value == 0 ? TOptional<T>() : Value;
+}
+
 uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;
 
 FBugsnagConfiguration::FBugsnagConfiguration(const FString& ApiKey)
@@ -40,7 +46,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	, AppType(NullIfEmpty(Settings.AppType))
 	, AppVersion(NullIfEmpty(Settings.AppVersion))
 	, BundleVersion(NullIfEmpty(Settings.BundleVersion))
-	, VersionCode(Settings.VersionCode ? MakeShareable(new int(Settings.VersionCode)) : nullptr)
+	, VersionCode(UnsetIfZero(Settings.VersionCode))
 	, Endpoints(FBugsnagEndpointConfiguration(Settings.NotifyEndpoint, Settings.SessionsEndpoint))
 {
 	if (!Settings.ApiKey.IsEmpty())

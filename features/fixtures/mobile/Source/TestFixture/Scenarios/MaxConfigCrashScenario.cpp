@@ -6,7 +6,7 @@ public:
 	void Configure() override
 	{
 		Configuration->SetApiKey(TEXT("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-		Configuration->SetVersionCode(MakeShareable(new int(22)));
+		Configuration->SetVersionCode(22);
 		Configuration->SetAppType(MakeShareable(new FString("mailer")));
 		Configuration->SetAppVersion(MakeShareable(new FString("2.61.0")));
 		Configuration->SetBundleVersion(MakeShareable(new FString("2.61.0.1")));

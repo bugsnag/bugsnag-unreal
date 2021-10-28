@@ -7,15 +7,15 @@ class BUGSNAG_API IBugsnagDeviceWithState : virtual public IBugsnagDevice
 public:
 	// freeDisk?: number;
 
-	virtual TSharedPtr<uint64> GetFreeDisk() const = 0;
+	virtual TOptional<uint64> GetFreeDisk() const = 0;
 
-	virtual void SetFreeDisk(TSharedPtr<uint64>) = 0;
+	virtual void SetFreeDisk(TOptional<uint64>) = 0;
 
 	// freeMemory?: number;
 
-	virtual TSharedPtr<uint64> GetFreeMemory() const = 0;
+	virtual TOptional<uint64> GetFreeMemory() const = 0;
 
-	virtual void SetFreeMemory(TSharedPtr<uint64>) = 0;
+	virtual void SetFreeMemory(TOptional<uint64>) = 0;
 
 	// orientation?: string;
 
@@ -25,7 +25,7 @@ public:
 
 	// time?: Date;
 
-	virtual TSharedPtr<FDateTime> GetTime() const = 0;
+	virtual TOptional<FDateTime> GetTime() const = 0;
 
-	virtual void SetTime(TSharedPtr<FDateTime>) = 0;
+	virtual void SetTime(TOptional<FDateTime>) = 0;
 };

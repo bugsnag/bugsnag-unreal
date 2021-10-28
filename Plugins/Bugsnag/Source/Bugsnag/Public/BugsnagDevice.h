@@ -17,9 +17,9 @@ public:
 
 	// jailbroken?: boolean;
 
-	virtual TSharedPtr<bool> GetJailbroken() const = 0;
+	virtual TOptional<bool> GetJailbroken() const = 0;
 
-	virtual void SetJailbroken(const TSharedPtr<bool>&) = 0;
+	virtual void SetJailbroken(const TOptional<bool>&) = 0;
 
 	// locale?: string;
 
@@ -65,7 +65,7 @@ public:
 
 	// totalMemory?: number;
 
-	virtual const TSharedPtr<uint64> GetTotalMemory() const = 0;
+	virtual const TOptional<uint64> GetTotalMemory() const = 0;
 
-	virtual void SetTotalMemory(const TSharedPtr<uint64>&) = 0;
+	virtual void SetTotalMemory(const TOptional<uint64>&) = 0;
 };

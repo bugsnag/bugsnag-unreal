@@ -44,9 +44,15 @@ static inline NSDate* NSDateFromFDateTime(const FDateTime& DateTime)
 
 // Number conversion
 
-static inline TSharedPtr<uint64> UInt64PtrFromNSNumber(NSNumber* _Nullable Number)
+static inline TOptional<uint64> OptionalUInt64FromNSNumber(NSNumber* _Nullable Number)
 {
-	return Number ? MakeShareable(new uint64(Number.unsignedLongValue)) : nullptr;
+	return Number ? Number.unsignedLongValue : TOptional<uint64>();
+}
+
+template <typename T>
+static inline NSNumber* NSNumberFromOptional(const TOptional<T>& Value)
+{
+	return Value.IsSet() ? @(Value.GetValue()) : nil;
 }
 
 // JSON object conversion

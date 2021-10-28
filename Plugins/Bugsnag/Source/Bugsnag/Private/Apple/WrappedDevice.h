@@ -45,14 +45,14 @@ public:
 
 	// jailbroken?: boolean;
 
-	TSharedPtr<bool> GetJailbroken() const
+	TOptional<bool> GetJailbroken() const
 	{
-		return MakeShareable(new bool(CocoaDevice.jailbroken));
+		return CocoaDevice.jailbroken;
 	}
 
-	void SetJailbroken(const TSharedPtr<bool>& Value)
+	void SetJailbroken(const TOptional<bool>& Value)
 	{
-		CocoaDevice.jailbroken = Value.IsValid() && *Value;
+		CocoaDevice.jailbroken = Value.IsSet() && Value.GetValue();
 	}
 
 	// locale?: string;
@@ -164,14 +164,14 @@ public:
 
 	// totalMemory?: number;
 
-	const TSharedPtr<uint64> GetTotalMemory() const
+	const TOptional<uint64> GetTotalMemory() const
 	{
-		return UInt64PtrFromNSNumber(CocoaDevice.totalMemory);
+		return OptionalUInt64FromNSNumber(CocoaDevice.totalMemory);
 	}
 
-	void SetTotalMemory(const TSharedPtr<uint64>& Value)
+	void SetTotalMemory(const TOptional<uint64>& Value)
 	{
-		CocoaDevice.totalMemory = Value.IsValid() ? @(*Value) : nil;
+		CocoaDevice.totalMemory = NSNumberFromOptional(Value);
 	}
 
 private:
