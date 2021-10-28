@@ -44,9 +44,6 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 	jstring jMessage = FAndroidPlatformJNI::ParseFString(Env, Message);
 	ReturnVoidIf(!jErrorClass || !jMessage);
 
-	jobject jSeverity = FAndroidPlatformJNI::ParseSeverity(Env, &JNICache, EBugsnagSeverity::Warning);
-	ReturnVoidIf(!jSeverity);
-
 	jobjectArray jFrames = (*Env).NewObjectArray(StackTrace.Num(), JNICache.TraceClass, NULL);
 	ReturnVoidIf(!jFrames);
 
@@ -95,8 +92,9 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 			}
 		}
 	}
-	(*Env).CallStaticVoidMethod(JNICache.InterfaceClass,
-		JNICache.BugsnagNotifyMethod, jErrorClass, jMessage, jSeverity, jFrames);
+	jobject jCallbackBuffer = nullptr;
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagUnrealPluginClass,
+		JNICache.BugsnagUnrealPluginNotify, jErrorClass, jMessage, jFrames, jCallbackBuffer);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 	// TODO: handle callback
 }

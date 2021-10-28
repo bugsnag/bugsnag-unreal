@@ -72,7 +72,6 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheExternalJavaClass(env, cache->ErrorTypeClass, "com.bugsnag.android.ErrorType");
 	CacheExternalJavaClass(env, cache->ErrorTypesClass, "com.bugsnag.android.ErrorTypes");
 	CacheExternalJavaClass(env, cache->EventClass, "com.bugsnag.android.Event");
-	CacheExternalJavaClass(env, cache->InterfaceClass, "com.bugsnag.android.NativeInterface");
 	CacheExternalJavaClass(env, cache->LastRunInfoClass, "com.bugsnag.android.LastRunInfo");
 	CacheExternalJavaClass(env, cache->NotifierClass, "com.bugsnag.android.Notifier");
 	CacheExternalJavaClass(env, cache->BreadcrumbTypeClass, "com.bugsnag.android.BreadcrumbType");
@@ -141,7 +140,6 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
 	CacheStaticJavaMethod(env, cache->BugsnagSetContext, cache->BugsnagClass, "setContext", "(Ljava/lang/String;)V");
-	CacheStaticJavaMethod(env, cache->BugsnagNotifyMethod, cache->InterfaceClass, "notify", "(Ljava/lang/String;Ljava/lang/String;Lcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagLeaveBreadcrumb, cache->BugsnagClass, "leaveBreadcrumb", "(Ljava/lang/String;Ljava/util/Map;Lcom/bugsnag/android/BreadcrumbType;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagMarkLaunchCompleted, cache->BugsnagClass, "markLaunchCompleted", "()V");
 	CacheStaticJavaMethod(env, cache->BugsnagStartSession, cache->BugsnagClass, "startSession", "()V");
@@ -153,6 +151,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetEventMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Lcom/bugsnag/android/Event;Ljava/lang/String;Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;Ljava/lang/String;)[B");
+	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginNotify, cache->BugsnagUnrealPluginClass, "notify", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/StackTraceElement;Ljava/nio/ByteBuffer;)V");
 	CacheInstanceJavaMethod(env, cache->BugsnagUnrealPluginConstructor, cache->BugsnagUnrealPluginClass, "<init>", "()V");
 
 	CacheStaticJavaMethod(env, cache->MetadataParserParse, cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");

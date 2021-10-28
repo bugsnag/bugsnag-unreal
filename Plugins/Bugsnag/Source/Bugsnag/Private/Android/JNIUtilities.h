@@ -10,7 +10,6 @@ typedef struct
 {
 	bool loaded;
 	bool initialized;
-	jclass InterfaceClass;
 	jclass AppClass;
 	jclass AppWithStateClass;
 	jclass BreadcrumbClass;
@@ -101,6 +100,7 @@ typedef struct
 	jmethodID BugsnagUnrealPluginGetEventMetadataValue;
 	jmethodID BugsnagUnrealPluginGetMetadataSection;
 	jmethodID BugsnagUnrealPluginGetMetadataValue;
+	jmethodID BugsnagUnrealPluginNotify;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigAddPlugin;
 	jmethodID ConfigConstructor;
