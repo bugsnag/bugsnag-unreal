@@ -58,7 +58,7 @@ public:
 		ReturnVoidIf(!jSection);
 		jstring jKey = FAndroidPlatformJNI::ParseFString(Env, Key);
 		ReturnVoidIf(!jKey);
-		(*Env).CallVoidMethod(JavaObject, Cache->EventClearMetadataSection, jSection, jKey);
+		(*Env).CallVoidMethod(JavaObject, Cache->EventClearMetadataValue, jSection, jKey);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
