@@ -61,7 +61,7 @@ Feature: Reporting handled errors
       | ios     | handledError     |
     And the event "unhandled" is false
     And the event has a "state" breadcrumb named "Bugsnag loaded"
-    And the exception "errorClass" equals "Internal Error"
+    And the exception "errorClass" equals "Internal Error happened"
     And the exception "message" equals "Does not compute"
     And the method of stack frame 0 is equivalent to "NotifyScenario::Run()"
     And the exception "type" equals the platform-dependent string:
@@ -84,3 +84,32 @@ Feature: Reporting handled errors
     And the event "metaData.lastRunInfo.crashed" is true
     And the event "metaData.lastRunInfo.crashedDuringLaunch" is false
     And the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 0
+
+  Scenario: Notify with a callback changing a lot of things
+    When I run "NotifyChangingEverythingInCallback"
+    And I wait to receive an error
+    Then the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
+    And the event "context" equals "changing lots"
+    And the event "app.inForeground" is false
+    And the event "app.isLaunching" is false
+    And the event "device.id" equals "51229"
+    And the event "device.jailbroken" is true
+    And the event "metaData.custom.inConfigure" is null
+    And the event "metaData.custom.missing" is true
+    And the event "metaData.custom.number" equals 40
+    And the event "metaData.custom.text" equals "some"
+    And the event "severity" equals "info"
+    And the event "unhandled" is true
+    And the event "user.email" is null
+    And the event "user.id" equals "319"
+    And the event "user.name" is null
+    And the exception "errorClass" equals "Why would you change this lol"
+    And the exception "message" equals "Its literally a function argument"
+    And the error payload field "events.0.threads" is a non-empty array
+    And the error payload field "events.0.threads.0.name" equals "Why would you change this either?"
+    And on iOS, the error payload field "events.0.threads.0.id" equals "9000"
+    And on Android, the error payload field "events.0.threads.0.id" equals 9000
+
+  Scenario: Cancel notify from callback
+    When I run "CancelNotifyFromCallback"
+    Then I should receive no errors

@@ -5,6 +5,8 @@
 #include "AndroidAppWithState.h"
 #include "AndroidBreadcrumb.h"
 #include "AndroidDeviceWithState.h"
+#include "AndroidError.h"
+#include "AndroidThread.h"
 #include "BugsnagEvent.h"
 #include "BugsnagUser.h"
 #include "JavaObjectWrapper.h"
@@ -56,7 +58,7 @@ public:
 		ReturnVoidIf(!jSection);
 		jstring jKey = FAndroidPlatformJNI::ParseFString(Env, Key);
 		ReturnVoidIf(!jKey);
-		(*Env).CallVoidMethod(JavaObject, Cache->EventClearMetadataSection, jSection, jKey);
+		(*Env).CallVoidMethod(JavaObject, Cache->EventClearMetadataValue, jSection, jKey);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
@@ -143,14 +145,12 @@ public:
 
 	const TArray<TSharedRef<IBugsnagError>> GetErrors() const override
 	{
-		TArray<TSharedRef<IBugsnagError>> Errors;
-		return Errors;
+		return GetListItems<IBugsnagError, FAndroidError>(Cache->EventGetErrors);
 	}
 
 	const TArray<TSharedRef<IBugsnagThread>> GetThreads() const override
 	{
-		TArray<TSharedRef<IBugsnagThread>> Threads;
-		return Threads;
+		return GetListItems<IBugsnagThread, FAndroidThread>(Cache->EventGetThreads);
 	}
 
 	const EBugsnagSeverity GetSeverity() const override
