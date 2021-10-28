@@ -171,12 +171,6 @@ public:
 
 	void SetBundleVersion(const TSharedPtr<FString>& Value) { BundleVersion = Value; }
 
-	// Version Code
-
-	const TSharedPtr<int>& GetVersionCode() const { return VersionCode; }
-
-	void SetVersionCode(const TSharedPtr<int>& Value) { VersionCode = Value; }
-
 	// Endpoints
 
 	const FBugsnagEndpointConfiguration& GetEndpoints() const { return Endpoints; }
@@ -195,6 +189,12 @@ public:
 	const TArray<FString>& GetProjectPackages() const { return ProjectPackages; }
 
 	void SetProjectPackages(const TArray<FString>& Value) { ProjectPackages = Value; }
+
+	// -- Version Code
+
+	const TSharedPtr<int>& GetVersionCode() const { return VersionCode; }
+
+	void SetVersionCode(const TSharedPtr<int>& Value) { VersionCode = Value; }
 
 	// User
 
