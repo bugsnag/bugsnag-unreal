@@ -222,17 +222,12 @@ public:
 
 	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) { OnBreadcrumbCallbacks.Add(Callback); }
 
-	// Android only, and only for handled errors.
-	void AddOnError(FBugsnagOnErrorCallback Callback) { OnErrorCallbacks.Add(Callback); }
-
 	// iOS only, may be called long after the crash occurred.
 	void AddOnSendError(FBugsnagOnErrorCallback Callback) { OnSendErrorCallbacks.Add(Callback); }
 
 	void AddOnSession(FBugsnagOnSessionCallback Callback) { OnSessionCallbacks.Add(Callback); }
 
 	const TArray<FBugsnagOnBreadcrumbCallback>& GetOnBreadcrumbCallbacks() const { return OnBreadcrumbCallbacks; }
-
-	const TArray<FBugsnagOnErrorCallback>& GetOnErrorCallbacks() const { return OnErrorCallbacks; }
 
 	const TArray<FBugsnagOnErrorCallback>& GetOnSendErrorCallbacks() const { return OnSendErrorCallbacks; }
 
@@ -276,7 +271,6 @@ private:
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
-	TArray<FBugsnagOnErrorCallback> OnErrorCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
 	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
 };

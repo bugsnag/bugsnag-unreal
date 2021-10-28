@@ -63,18 +63,6 @@ void FBugsnagConfigurationSpec::Define()
 							return false;
 						});
 
-					Configuration.AddOnError([](TSharedRef<IBugsnagEvent> Error)
-						{
-							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
-							return true;
-						});
-
-					Configuration.AddOnError([](TSharedRef<IBugsnagEvent> Error)
-						{
-							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
-							return false;
-						});
-
 					Configuration.AddOnSession([](TSharedRef<IBugsnagSession> Session)
 						{
 							UE_LOG(LogCore, Display, TEXT("Nothing to see here"));
