@@ -103,6 +103,7 @@ typedef struct
 	jmethodID ConfigSetMaxPersistedEvents;
 	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
+	jmethodID ConfigSetProjectPackages;
 	jmethodID ConfigSetRedactedKeys;
 	jmethodID ConfigSetReleaseStage;
 	jmethodID ConfigSetSendLaunchCrashesSynchronously;

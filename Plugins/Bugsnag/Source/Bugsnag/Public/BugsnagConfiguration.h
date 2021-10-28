@@ -190,6 +190,12 @@ public:
 
 	void SetPersistenceDirectory(const TSharedPtr<FString>& Value) { PersistenceDirectory = Value; }
 
+	// -- ProjectPackages
+
+	const TArray<FString>& GetProjectPackages() const { return ProjectPackages; }
+
+	void SetProjectPackages(const TArray<FString>& Value) { ProjectPackages = Value; }
+
 	// User
 
 	const FBugsnagUser GetUser() const { return User; }
@@ -265,6 +271,7 @@ private:
 	TSharedPtr<FString> AppVersion;
 	TSharedPtr<FString> BundleVersion;
 	TSharedPtr<FString> PersistenceDirectory;
+	TArray<FString> ProjectPackages;
 	TSharedPtr<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;

@@ -91,6 +91,12 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	{
 		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
 	}
+
+	if (Config->GetProjectPackages().Num())
+	{
+		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetProjectPackages, Config->GetProjectPackages());
+	}
+
 	if (Config->GetReleaseStage().IsValid())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage());

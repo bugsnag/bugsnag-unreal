@@ -52,6 +52,8 @@ Feature: Reporting handled errors
     And on iOS, the event "metaData.custom.notify" equals "testing"
     And the event "metaData.device.adapterName" is not null
     And on Android, the event "metaData.device.driverVersion" is not null
+    And on Android, the error payload field "events.0.projectPackages" is an array with 1 elements
+    And on Android, the event "projectPackages.0" equals "com.example.package"
     And the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
     And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
     And the event "metaData.unrealEngine.userActivity" is not null

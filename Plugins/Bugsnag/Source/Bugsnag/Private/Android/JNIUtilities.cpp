@@ -161,6 +161,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ConfigSetMaxPersistedEvents, cache->ConfigClass, "setMaxPersistedEvents", "(I)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetPersistenceDirectory, cache->ConfigClass, "setPersistenceDirectory", "(Ljava/io/File;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetPersistUser, cache->ConfigClass, "setPersistUser", "(Z)V");
+	CacheInstanceJavaMethod(env, cache->ConfigSetProjectPackages, cache->ConfigClass, "setProjectPackages", "(Ljava/util/Set;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetRedactedKeys, cache->ConfigClass, "setRedactedKeys", "(Ljava/util/Set;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetReleaseStage, cache->ConfigClass, "setReleaseStage", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetSendLaunchCrashesSynchronously, cache->ConfigClass, "setSendLaunchCrashesSynchronously", "(Z)V");
