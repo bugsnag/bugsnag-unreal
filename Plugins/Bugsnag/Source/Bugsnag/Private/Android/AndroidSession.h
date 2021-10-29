@@ -62,11 +62,11 @@ public:
 		return FAndroidPlatformJNI::ParseJavaUser(Env, Cache, jUser);
 	}
 
-	void SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name)
+	void SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name)
 	{
-		jstring jId = Id.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Id) : nullptr;
-		jstring jName = Name.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Name) : nullptr;
-		jstring jEmail = Email.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Email) : nullptr;
+		jstring jId = FAndroidPlatformJNI::ParseFStringOptional(Env, *Id);
+		jstring jName = FAndroidPlatformJNI::ParseFStringOptional(Env, *Name);
+		jstring jEmail = FAndroidPlatformJNI::ParseFStringOptional(Env, *Email);
 		(*Env).CallVoidMethod(JavaObject, Cache->SessionSetUser, jId, jEmail, jName);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}

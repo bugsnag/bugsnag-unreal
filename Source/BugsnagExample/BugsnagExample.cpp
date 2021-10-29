@@ -36,10 +36,7 @@ void StartWithConfiguration()
 	//
 	// This sets some user information that will be attached to each error.
 	//
-	Configuration->SetUser(
-		MakeShareable(new FString(TEXT("DefaultUser"))),
-		MakeShareable(new FString(TEXT("user@example.com"))),
-		MakeShareable(new FString(TEXT("Default User"))));
+	Configuration->SetUser(FString(TEXT("DefaultUser")), FString(TEXT("user@example.com")), FString(TEXT("Default User")));
 
 	//
 	// When persisting a user you won't need to set the user information every time the app opens, it will be persisted between app sessions.
@@ -50,7 +47,7 @@ void StartWithConfiguration()
 	// The appVersion will let you see what release an error is present in.
 	// This will be picked up automatically from your app at run-time, but can be manually overriden here if necessary.
 	//
-	Configuration->SetAppVersion(MakeShareable(new FString(TEXT("1.5.0"))));
+	Configuration->SetAppVersion(FString(TEXT("1.5.0")));
 
 	//
 	// Enabled error types allow you to customize exactly which errors are automatically captured and delivered to your Bugsnag dashboard.

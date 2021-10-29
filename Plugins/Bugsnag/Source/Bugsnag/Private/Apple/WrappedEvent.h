@@ -32,38 +32,38 @@ public:
 
 	// apiKey?: string;
 
-	const TSharedPtr<FString> GetApiKey() const override
+	const TOptional<FString> GetApiKey() const override
 	{
-		return FStringPtrFromNSString(CocoaEvent.apiKey);
+		return OptionalFromNSString(CocoaEvent.apiKey);
 	}
 
-	void SetApiKey(const TSharedPtr<FString>& Value) override
+	void SetApiKey(const TOptional<FString>& Value) override
 	{
-		CocoaEvent.apiKey = NSStringFromFStringPtr(Value);
+		CocoaEvent.apiKey = NSStringFromOptional(Value);
 	}
 
 	// context?: Context;
 
-	const TSharedPtr<FString> GetContext() const override
+	const TOptional<FString> GetContext() const override
 	{
-		return FStringPtrFromNSString(CocoaEvent.context);
+		return OptionalFromNSString(CocoaEvent.context);
 	}
 
-	void SetContext(const TSharedPtr<FString>& Value) override
+	void SetContext(const TOptional<FString>& Value) override
 	{
-		CocoaEvent.context = NSStringFromFStringPtr(Value);
+		CocoaEvent.context = NSStringFromOptional(Value);
 	}
 
 	// groupingHash?: string = null;
 
-	const TSharedPtr<FString> GetGroupingHash() const override
+	const TOptional<FString> GetGroupingHash() const override
 	{
-		return FStringPtrFromNSString(CocoaEvent.groupingHash);
+		return OptionalFromNSString(CocoaEvent.groupingHash);
 	}
 
-	void SetGroupingHash(const TSharedPtr<FString>& Value) override
+	void SetGroupingHash(const TOptional<FString>& Value) override
 	{
-		CocoaEvent.groupingHash = NSStringFromFStringPtr(Value);
+		CocoaEvent.groupingHash = NSStringFromOptional(Value);
 	}
 
 	// readonly app: AppWithState;
@@ -164,18 +164,18 @@ public:
 	const FBugsnagUser GetUser() const override
 	{
 		return FBugsnagUser(
-			FStringPtrFromNSString(CocoaEvent.user.id),
-			FStringPtrFromNSString(CocoaEvent.user.name),
-			FStringPtrFromNSString(CocoaEvent.user.email));
+			OptionalFromNSString(CocoaEvent.user.id),
+			OptionalFromNSString(CocoaEvent.user.name),
+			OptionalFromNSString(CocoaEvent.user.email));
 	}
 
 	// setUser(id: String?, email: String?, name: String?): void;
 
-	void SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name) override
+	void SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name) override
 	{
-		[CocoaEvent setUser:NSStringFromFStringPtr(Id)
-				  withEmail:NSStringFromFStringPtr(Email)
-					andName:NSStringFromFStringPtr(Name)];
+		[CocoaEvent setUser:NSStringFromOptional(Id)
+				  withEmail:NSStringFromOptional(Email)
+					andName:NSStringFromOptional(Name)];
 	}
 
 private:

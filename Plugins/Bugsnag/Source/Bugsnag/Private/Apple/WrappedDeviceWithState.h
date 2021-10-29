@@ -24,55 +24,54 @@ public:
 
 	// freeDisk?: number;
 
-	TSharedPtr<uint64> GetFreeDisk() const override
+	TOptional<uint64> GetFreeDisk() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaDeviceWithState.freeDisk);
+		return OptionalUInt64FromNSNumber(CocoaDeviceWithState.freeDisk);
 	}
 
-	void SetFreeDisk(TSharedPtr<uint64> Value) override
+	void SetFreeDisk(TOptional<uint64> Value) override
 	{
-		CocoaDeviceWithState.freeDisk = Value.IsValid() ? @(*Value) : nil;
+		CocoaDeviceWithState.freeDisk = NSNumberFromOptional(Value);
 	}
 
 	// freeMemory?: number;
 
-	TSharedPtr<uint64> GetFreeMemory() const override
+	TOptional<uint64> GetFreeMemory() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaDeviceWithState.freeMemory);
+		return OptionalUInt64FromNSNumber(CocoaDeviceWithState.freeMemory);
 	}
 
-	void SetFreeMemory(TSharedPtr<uint64> Value) override
+	void SetFreeMemory(TOptional<uint64> Value) override
 	{
-		CocoaDeviceWithState.freeMemory = Value.IsValid() ? @(*Value) : nil;
+		CocoaDeviceWithState.freeMemory = NSNumberFromOptional(Value);
 	}
 
 	// orientation?: string;
 
-	TSharedPtr<FString> GetOrientation() const override
+	TOptional<FString> GetOrientation() const override
 	{
-		return FStringPtrFromNSString(CocoaDeviceWithState.orientation);
+		return OptionalFromNSString(CocoaDeviceWithState.orientation);
 	}
 
-	void SetOrientation(TSharedPtr<FString> Value) override
+	void SetOrientation(TOptional<FString> Value) override
 	{
-		CocoaDeviceWithState.orientation = NSStringFromFStringPtr(Value);
+		CocoaDeviceWithState.orientation = NSStringFromOptional(Value);
 	}
 
 	// time?: Date;
 
-	TSharedPtr<FDateTime> GetTime() const override
+	TOptional<FDateTime> GetTime() const override
 	{
 		if (!CocoaDeviceWithState.time)
 		{
-			return nullptr;
+			return TOptional<FDateTime>();
 		}
-		FDateTime DateTime = FDateTimeFromNSDate(CocoaDeviceWithState.time);
-		return MakeShareable(new FDateTime(DateTime));
+		return FDateTimeFromNSDate(CocoaDeviceWithState.time);
 	}
 
-	void SetTime(TSharedPtr<FDateTime> Value) override
+	void SetTime(TOptional<FDateTime> Value) override
 	{
-		CocoaDeviceWithState.time = Value.IsValid() ? NSDateFromFDateTime(*Value) : nil;
+		CocoaDeviceWithState.time = Value.IsSet() ? NSDateFromFDateTime(Value.GetValue()) : nil;
 	}
 
 private:

@@ -23,50 +23,50 @@ public:
 
 	// duration?: number;
 
-	TSharedPtr<uint64> GetDuration() const override
+	TOptional<uint64> GetDuration() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaAppWithState.duration);
+		return OptionalUInt64FromNSNumber(CocoaAppWithState.duration);
 	}
 
-	void SetDuration(TSharedPtr<uint64> Value) override
+	void SetDuration(TOptional<uint64> Value) override
 	{
-		CocoaAppWithState.duration = Value.IsValid() ? @(*Value) : nil;
+		CocoaAppWithState.duration = NSNumberFromOptional(Value);
 	}
 
 	// durationInForeground?: number;
 
-	TSharedPtr<uint64> GetDurationInForeground() const override
+	TOptional<uint64> GetDurationInForeground() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaAppWithState.durationInForeground);
+		return OptionalUInt64FromNSNumber(CocoaAppWithState.durationInForeground);
 	}
 
-	void SetDurationInForeground(TSharedPtr<uint64> Value) override
+	void SetDurationInForeground(TOptional<uint64> Value) override
 	{
-		CocoaAppWithState.durationInForeground = Value.IsValid() ? @(*Value) : nil;
+		CocoaAppWithState.durationInForeground = NSNumberFromOptional(Value);
 	}
 
 	// inForeground?: boolean;
 
-	TSharedPtr<bool> GetIsInForeground() const override
+	TOptional<bool> GetIsInForeground() const override
 	{
-		return MakeShareable(new bool(CocoaAppWithState.inForeground));
+		return CocoaAppWithState.inForeground;
 	}
 
-	void SetIsInForeground(TSharedPtr<bool> Value) override
+	void SetIsInForeground(TOptional<bool> Value) override
 	{
-		CocoaAppWithState.inForeground = Value.IsValid() && *Value;
+		CocoaAppWithState.inForeground = Value.Get(false);
 	}
 
 	// isLaunching?: boolean;
 
-	TSharedPtr<bool> GetIsLaunching() const override
+	TOptional<bool> GetIsLaunching() const override
 	{
-		return MakeShareable(new bool(CocoaAppWithState.isLaunching));
+		return CocoaAppWithState.isLaunching;
 	}
 
-	void SetIsLaunching(TSharedPtr<bool> Value) override
+	void SetIsLaunching(TOptional<bool> Value) override
 	{
-		CocoaAppWithState.isLaunching = Value.IsValid() && *Value;
+		CocoaAppWithState.isLaunching = Value.Get(false);
 	}
 
 private:

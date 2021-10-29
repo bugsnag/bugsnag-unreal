@@ -11,51 +11,51 @@ public:
 
 	// id?: string;
 
-	virtual const TSharedPtr<FString> GetId() const = 0;
+	virtual const TOptional<FString> GetId() const = 0;
 
-	virtual void SetId(const TSharedPtr<FString>&) = 0;
+	virtual void SetId(const TOptional<FString>&) = 0;
 
 	// jailbroken?: boolean;
 
-	virtual TSharedPtr<bool> GetJailbroken() const = 0;
+	virtual TOptional<bool> GetJailbroken() const = 0;
 
-	virtual void SetJailbroken(const TSharedPtr<bool>&) = 0;
+	virtual void SetJailbroken(const TOptional<bool>&) = 0;
 
 	// locale?: string;
 
-	virtual const TSharedPtr<FString> GetLocale() const = 0;
+	virtual const TOptional<FString> GetLocale() const = 0;
 
-	virtual void SetLocale(const TSharedPtr<FString>&) = 0;
+	virtual void SetLocale(const TOptional<FString>&) = 0;
 
 	// modelNumber?: string;
 
-	virtual const TSharedPtr<FString> GetModelNumber() const = 0;
+	virtual const TOptional<FString> GetModelNumber() const = 0;
 
-	virtual void SetModelNumber(const TSharedPtr<FString>&) = 0;
+	virtual void SetModelNumber(const TOptional<FString>&) = 0;
 
 	// manufacturer?: string;
 
-	virtual const TSharedPtr<FString> GetManufacturer() const = 0;
+	virtual const TOptional<FString> GetManufacturer() const = 0;
 
-	virtual void SetManufacturer(const TSharedPtr<FString>&) = 0;
+	virtual void SetManufacturer(const TOptional<FString>&) = 0;
 
 	// model?: string;
 
-	virtual const TSharedPtr<FString> GetModel() const = 0;
+	virtual const TOptional<FString> GetModel() const = 0;
 
-	virtual void SetModel(const TSharedPtr<FString>&) = 0;
+	virtual void SetModel(const TOptional<FString>&) = 0;
 
 	// osName?: string;
 
-	virtual const TSharedPtr<FString> GetOsName() const = 0;
+	virtual const TOptional<FString> GetOsName() const = 0;
 
-	virtual void SetOsName(const TSharedPtr<FString>&) = 0;
+	virtual void SetOsName(const TOptional<FString>&) = 0;
 
 	// osVersion?: string;
 
-	virtual const TSharedPtr<FString> GetOsVersion() const = 0;
+	virtual const TOptional<FString> GetOsVersion() const = 0;
 
-	virtual void SetOsVersion(const TSharedPtr<FString>&) = 0;
+	virtual void SetOsVersion(const TOptional<FString>&) = 0;
 
 	// runtimeVersions?: map[string->string];
 
@@ -65,7 +65,7 @@ public:
 
 	// totalMemory?: number;
 
-	virtual const TSharedPtr<uint64> GetTotalMemory() const = 0;
+	virtual const TOptional<uint64> GetTotalMemory() const = 0;
 
-	virtual void SetTotalMemory(const TSharedPtr<uint64>&) = 0;
+	virtual void SetTotalMemory(const TOptional<uint64>&) = 0;
 };

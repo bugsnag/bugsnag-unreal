@@ -22,13 +22,13 @@ public:
 
 	// file?: string,
 
-	TSharedPtr<FString> GetFile() const override
+	TOptional<FString> GetFile() const override
 	{
 		// Not supported by bugsnag-cocoa
-		return nullptr;
+		return TOptional<FString>();
 	}
 
-	void SetFile(const TSharedPtr<FString>& Value) override
+	void SetFile(const TOptional<FString>& Value) override
 	{
 		// Not supported by bugsnag-cocoa
 	}
@@ -48,145 +48,145 @@ public:
 
 	// lineNumber?: number,
 
-	TSharedPtr<int32> GetLineNumber() const override
+	TOptional<int32> GetLineNumber() const override
 	{
 		// Not supported by bugsnag-cocoa
-		return nullptr;
+		return TOptional<int32>();
 	}
 
-	void SetLineNumber(const TSharedPtr<int32>&) override
+	void SetLineNumber(const TOptional<int32>&) override
 	{
 		// Not supported by bugsnag-cocoa
 	}
 
 	// method?: string,
 
-	TSharedPtr<FString> GetMethod() const override
+	TOptional<FString> GetMethod() const override
 	{
-		return FStringPtrFromNSString(CocoaStackframe.method);
+		return OptionalFromNSString(CocoaStackframe.method);
 	}
 
-	void SetMethod(const TSharedPtr<FString>& Value) override
+	void SetMethod(const TOptional<FString>& Value) override
 	{
-		CocoaStackframe.method = NSStringFromFStringPtr(Value);
+		CocoaStackframe.method = NSStringFromOptional(Value);
 	}
 
 	// type?: ErrorType,
 
-	TSharedPtr<EBugsnagErrorType> GetType() const override
+	TOptional<EBugsnagErrorType> GetType() const override
 	{
 		if (CocoaStackframe.type)
 		{
 			if ([CocoaStackframe.type isEqual:BugsnagStackframeTypeCocoa])
 			{
-				return MakeShareable(new EBugsnagErrorType(EBugsnagErrorType::Cocoa));
+				return EBugsnagErrorType::Cocoa;
 			}
 			else
 			{
 				// Note: this is inaccurate
-				return MakeShareable(new EBugsnagErrorType(EBugsnagErrorType::C));
+				return EBugsnagErrorType::C;
 			}
 		}
 		else
 		{
-			return nullptr;
+			return TOptional<EBugsnagErrorType>();
 		}
 	}
 
 	// machoVMAddress?: number
 
-	TSharedPtr<uint64> GetMachoVmAddress() const override
+	TOptional<uint64> GetMachoVmAddress() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaStackframe.machoVmAddress);
+		return OptionalUInt64FromNSNumber(CocoaStackframe.machoVmAddress);
 	}
 
-	void SetMachoVmAddress(const TSharedPtr<uint64>& Value) override
+	void SetMachoVmAddress(const TOptional<uint64>& Value) override
 	{
-		CocoaStackframe.machoVmAddress = Value.IsValid() ? @(*Value) : nil;
+		CocoaStackframe.machoVmAddress = NSNumberFromOptional(Value);
 	}
 
 	// machoFile?: string
 
-	TSharedPtr<FString> GetMachoFile() const override
+	TOptional<FString> GetMachoFile() const override
 	{
-		return FStringPtrFromNSString(CocoaStackframe.machoFile);
+		return OptionalFromNSString(CocoaStackframe.machoFile);
 	}
 
-	void SetMachoFile(const TSharedPtr<FString>& Value) override
+	void SetMachoFile(const TOptional<FString>& Value) override
 	{
-		CocoaStackframe.machoFile = NSStringFromFStringPtr(Value);
+		CocoaStackframe.machoFile = NSStringFromOptional(Value);
 	}
 
 	// symbolAddress?: number
 
-	TSharedPtr<uint64> GetSymbolAddress() const override
+	TOptional<uint64> GetSymbolAddress() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaStackframe.symbolAddress);
+		return OptionalUInt64FromNSNumber(CocoaStackframe.symbolAddress);
 	}
 
-	void SetSymbolAddress(const TSharedPtr<uint64>& Value) override
+	void SetSymbolAddress(const TOptional<uint64>& Value) override
 	{
-		CocoaStackframe.symbolAddress = Value.IsValid() ? @(*Value) : nil;
+		CocoaStackframe.symbolAddress = NSNumberFromOptional(Value);
 	}
 
 	// machoLoadAddress?: number
 
-	TSharedPtr<uint64> GetMachoLoadAddress() const override
+	TOptional<uint64> GetMachoLoadAddress() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaStackframe.machoLoadAddress);
+		return OptionalUInt64FromNSNumber(CocoaStackframe.machoLoadAddress);
 	}
 
-	void SetMachoLoadAddress(const TSharedPtr<uint64>& Value) override
+	void SetMachoLoadAddress(const TOptional<uint64>& Value) override
 	{
-		CocoaStackframe.machoLoadAddress = Value.IsValid() ? @(*Value) : nil;
+		CocoaStackframe.machoLoadAddress = NSNumberFromOptional(Value);
 	}
 
 	// machoUUID?: string
 
-	TSharedPtr<FString> GetMachoUuid() const override
+	TOptional<FString> GetMachoUuid() const override
 	{
-		return FStringPtrFromNSString(CocoaStackframe.machoUuid);
+		return OptionalFromNSString(CocoaStackframe.machoUuid);
 	}
 
-	void SetMachoUuid(const TSharedPtr<FString>& Value) override
+	void SetMachoUuid(const TOptional<FString>& Value) override
 	{
-		CocoaStackframe.machoUuid = NSStringFromFStringPtr(Value);
+		CocoaStackframe.machoUuid = NSStringFromOptional(Value);
 	}
 
 	// frameAddress?: number
 
-	TSharedPtr<uint64> GetFrameAddress() const override
+	TOptional<uint64> GetFrameAddress() const override
 	{
-		return UInt64PtrFromNSNumber(CocoaStackframe.frameAddress);
+		return OptionalUInt64FromNSNumber(CocoaStackframe.frameAddress);
 	}
 
-	void SetFrameAddress(const TSharedPtr<uint64>& Value) override
+	void SetFrameAddress(const TOptional<uint64>& Value) override
 	{
-		CocoaStackframe.frameAddress = Value.IsValid() ? @(*Value) : nil;
+		CocoaStackframe.frameAddress = NSNumberFromOptional(Value);
 	}
 
 	// isPC?: boolean
 
-	TSharedPtr<bool> GetIsPC() const override
+	TOptional<bool> GetIsPC() const override
 	{
-		return MakeShareable(new bool(CocoaStackframe.isPc));
+		return CocoaStackframe.isPc;
 	}
 
-	void SetIsPC(const TSharedPtr<bool>& Value) override
+	void SetIsPC(const TOptional<bool>& Value) override
 	{
-		CocoaStackframe.isPc = Value.IsValid() && *Value;
+		CocoaStackframe.isPc = Value.Get(false);
 	}
 
 	// isLR?: boolean
 
-	TSharedPtr<bool> GetIsLR() const override
+	TOptional<bool> GetIsLR() const override
 	{
-		return MakeShareable(new bool(CocoaStackframe.isLr));
+		return CocoaStackframe.isLr;
 	}
 
-	void SetIsLR(const TSharedPtr<bool>& Value) override
+	void SetIsLR(const TOptional<bool>& Value) override
 	{
-		CocoaStackframe.isLr = Value.IsValid() && *Value;
+		CocoaStackframe.isLr = Value.Get(false);
 	}
 
 private:

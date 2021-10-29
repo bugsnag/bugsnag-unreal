@@ -53,16 +53,16 @@ public:
 	const FBugsnagUser GetUser() const
 	{
 		return FBugsnagUser(
-			FStringPtrFromNSString(CocoaSession.user.id),
-			FStringPtrFromNSString(CocoaSession.user.email),
-			FStringPtrFromNSString(CocoaSession.user.name));
+			OptionalFromNSString(CocoaSession.user.id),
+			OptionalFromNSString(CocoaSession.user.email),
+			OptionalFromNSString(CocoaSession.user.name));
 	}
 
-	void SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name)
+	void SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name)
 	{
-		[CocoaSession setUser:NSStringFromFStringPtr(Id)
-					withEmail:NSStringFromFStringPtr(Email)
-					  andName:NSStringFromFStringPtr(Name)];
+		[CocoaSession setUser:NSStringFromOptional(Id)
+					withEmail:NSStringFromOptional(Email)
+					  andName:NSStringFromOptional(Name)];
 	}
 
 private:

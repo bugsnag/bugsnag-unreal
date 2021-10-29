@@ -27,30 +27,30 @@ void FAppleBugsnagUtilsSpec::Define()
 				});
 		});
 
-	Describe("FStringPtrFromNSString", [this]()
+	Describe("OptionalFromNSString", [this]()
 		{
-			It("Converts from NSString to TSharedPtr<FString>", [this]()
+			It("Converts from NSString to TOptional<FString>", [this]()
 				{
-					TEST_EQUAL(*FStringPtrFromNSString(@""), TEXT(""));
-					TEST_EQUAL(*FStringPtrFromNSString(@"Hello, Unreal Engine!"), TEXT("Hello, Unreal Engine!"));
+					TEST_EQUAL(OptionalFromNSString(@"").GetValue(), TEXT(""));
+					TEST_EQUAL(OptionalFromNSString(@"Hello, Unreal Engine!").GetValue(), TEXT("Hello, Unreal Engine!"));
 				});
-			It("Returns nullptr for nil", [this]()
+			It("Returns unset for nil", [this]()
 				{
-					TEST_FALSE(FStringPtrFromNSString(nil).IsValid());
+					TEST_FALSE(OptionalFromNSString(nil).IsSet());
 				});
 		});
 
-	Describe("NSStringFromFStringPtr", [this]()
+	Describe("NSStringFromOptional", [this]()
 		{
-			It("Converts from TSharedPtr<FString> to NSString", [this]()
+			It("Converts from TOptional<FString> to NSString", [this]()
 				{
-					TEST_EQUAL_OBJC(NSStringFromFStringPtr(MakeShareable(new FString(TEXT("")))), @"");
-					TEST_EQUAL_OBJC(NSStringFromFStringPtr(MakeShareable(new FString(TEXT("Hello, Unreal Engine!")))), @"Hello, Unreal Engine!");
-					TEST_EQUAL_OBJC(NSStringFromFStringPtr(MakeShareable(new FString(FString()))), @"");
+					TEST_EQUAL_OBJC(NSStringFromOptional(FString(TEXT(""))), @"");
+					TEST_EQUAL_OBJC(NSStringFromOptional(FString(TEXT("Hello, Unreal Engine!"))), @"Hello, Unreal Engine!");
+					TEST_EQUAL_OBJC(NSStringFromOptional(FString(FString())), @"");
 				});
 			It("Returns nil for nullptr", [this]()
 				{
-					TEST_TRUE(NSStringFromFStringPtr(nullptr) == nil);
+					TEST_TRUE(NSStringFromOptional(TOptional<FString>()) == nil);
 				});
 		});
 

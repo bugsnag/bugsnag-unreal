@@ -12,7 +12,7 @@
 
 static inline FString FStringFromNSString(NSString* _Nullable String)
 {
-	return String ? FString(UTF8_TO_TCHAR(String.UTF8String)) : TEXT("");
+	return String ? FString(UTF8_TO_TCHAR(String.UTF8String)) : FString();
 }
 
 static inline NSString* _Nonnull NSStringFromFString(const FString& String)
@@ -20,14 +20,14 @@ static inline NSString* _Nonnull NSStringFromFString(const FString& String)
 	return @(TCHAR_TO_UTF8(*String));
 }
 
-static inline TSharedPtr<FString> FStringPtrFromNSString(NSString* _Nullable String)
+static inline TOptional<FString> OptionalFromNSString(NSString* _Nullable String)
 {
-	return String ? MakeShareable(new FString(UTF8_TO_TCHAR(String.UTF8String))) : nullptr;
+	return String ? TOptional<FString>(FStringFromNSString(String)) : TOptional<FString>();
 }
 
-static inline NSString* _Nullable NSStringFromFStringPtr(const TSharedPtr<FString>& String)
+static inline NSString* _Nullable NSStringFromOptional(const TOptional<FString>& String)
 {
-	return String.IsValid() ? @(TCHAR_TO_UTF8(**String)) : nil;
+	return String.IsSet() ? NSStringFromFString(String.GetValue()) : nil;
 }
 
 // Date conversion
@@ -44,9 +44,15 @@ static inline NSDate* NSDateFromFDateTime(const FDateTime& DateTime)
 
 // Number conversion
 
-static inline TSharedPtr<uint64> UInt64PtrFromNSNumber(NSNumber* _Nullable Number)
+static inline TOptional<uint64> OptionalUInt64FromNSNumber(NSNumber* _Nullable Number)
 {
-	return Number ? MakeShareable(new uint64(Number.unsignedLongValue)) : nullptr;
+	return Number ? Number.unsignedLongValue : TOptional<uint64>();
+}
+
+template <typename T>
+static inline NSNumber* NSNumberFromOptional(const TOptional<T>& Value)
+{
+	return Value.IsSet() ? @(Value.GetValue()) : nil;
 }
 
 // JSON object conversion

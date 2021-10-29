@@ -16,6 +16,13 @@
 		return nullptr;             \
 	}
 
+// Quick exit when a call which should have returned something does not
+#define ReturnValueOnFail(condition, value) \
+	if (!(condition))                       \
+	{                                       \
+		return value;                       \
+	}
+
 // Quick exit when a JNI call fails
 #define ReturnNullOnException(env) \
 	if (env->ExceptionCheck())     \
@@ -59,8 +66,8 @@
 		return;                 \
 	}
 
-#define ReturnStringFieldPtr(target, method)                   \
+#define ReturnStringFieldOptional(target, method)              \
 	jobject jString = (*Env).CallObjectMethod(target, method); \
 	return FAndroidPlatformJNI::CheckAndClearException(Env)    \
-			   ? nullptr                                       \
-			   : MakeShareable(new FString(FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString)));
+			   ? TOptional<FString>()                          \
+			   : TOptional<FString>(FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString));
