@@ -29,7 +29,7 @@ void FAppleBugsnagUtilsSpec::Define()
 
 	Describe("OptionalFromNSString", [this]()
 		{
-			It("Converts from NSString to TSharedPtr<FString>", [this]()
+			It("Converts from NSString to TOptional<FString>", [this]()
 				{
 					TEST_EQUAL(OptionalFromNSString(@"").GetValue(), TEXT(""));
 					TEST_EQUAL(OptionalFromNSString(@"Hello, Unreal Engine!").GetValue(), TEXT("Hello, Unreal Engine!"));
@@ -42,7 +42,7 @@ void FAppleBugsnagUtilsSpec::Define()
 
 	Describe("NSStringFromOptional", [this]()
 		{
-			It("Converts from TSharedPtr<FString> to NSString", [this]()
+			It("Converts from TOptional<FString> to NSString", [this]()
 				{
 					TEST_EQUAL_OBJC(NSStringFromOptional(FString(TEXT(""))), @"");
 					TEST_EQUAL_OBJC(NSStringFromOptional(FString(TEXT("Hello, Unreal Engine!"))), @"Hello, Unreal Engine!");
