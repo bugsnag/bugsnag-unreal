@@ -20,3 +20,10 @@ Feature: Breadcrumbs and modifying with callbacks
     And the event "breadcrumbs.1.name" equals "Map Loaded"
     And the event "breadcrumbs.1.type" equals "navigation"
     And the event "breadcrumbs.1.metaData.url" equals "/Game/AnotherWorld"
+
+  Scenario: Introspecting breadcrumbs at runtime
+    When I run "GetCrumbScenario"
+    And I wait to receive an error
+    Then the error payload field "events.0.breadcrumbs" is an array with 1 elements
+    And the event "breadcrumbs.0.name" equals "Introspected?"
+    And the event "breadcrumbs.0.type" equals "user"

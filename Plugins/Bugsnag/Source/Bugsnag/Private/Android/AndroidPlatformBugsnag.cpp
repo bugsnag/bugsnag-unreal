@@ -251,7 +251,21 @@ void FAndroidPlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TSha
 
 TArray<TSharedRef<const class IBugsnagBreadcrumb>> FAndroidPlatformBugsnag::GetBreadcrumbs()
 {
-	return {};
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnValueOnFail(Env && JNICache.initialized, {});
+	jobject jBreadcrumbs = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetBreadcrumbs);
+	ReturnValueOnException(Env, {});
+	ReturnValueOnFail(jBreadcrumbs, {});
+	jint Len = (*Env).CallIntMethod(jBreadcrumbs, JNICache.ListSize);
+	ReturnValueOnException(Env, {});
+	TArray<TSharedRef<const class IBugsnagBreadcrumb>> Items;
+	for (jint Index = 0; Index < Len; Index++)
+	{
+		jobject jItem = (*Env).CallObjectMethod(jBreadcrumbs, JNICache.ListGet, Index);
+		ContinueOnException(Env);
+		Items.Add(MakeShared<FAndroidBreadcrumb>(Env, &JNICache, jItem));
+	}
+	return Items;
 }
 
 void FAndroidPlatformBugsnag::MarkLaunchCompleted()
