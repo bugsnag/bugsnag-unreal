@@ -53,7 +53,7 @@ static BugsnagErrorTypes* GetEnabledErrorTypes(FBugsnagErrorTypes EnabledErrorTy
 	return Types;
 }
 
-BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedPtr<FBugsnagConfiguration>& Configuration)
+BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
 	BugsnagConfiguration* CocoaConfig = [[BugsnagConfiguration alloc] initWithApiKey:NSStringFromFString(Configuration->GetApiKey())];
 

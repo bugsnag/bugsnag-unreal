@@ -17,7 +17,7 @@ DEFINE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag);
 
 static JNIReferenceCache JNICache;
 
-void FAndroidPlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Config)
+void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Config)
 {
 	if (JNICache.loaded) // only attempt initialization once
 	{

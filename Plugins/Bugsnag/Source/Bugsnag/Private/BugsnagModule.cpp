@@ -8,7 +8,7 @@ void FBugsnagModule::StartupModule()
 	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
 	if (Configuration.IsValid() && !Configuration->GetApiKey().IsEmpty())
 	{
-		UBugsnagFunctionLibrary::Start(Configuration);
+		UBugsnagFunctionLibrary::Start(Configuration.ToSharedRef());
 	}
 }
 

@@ -31,7 +31,7 @@ void StartWithConfiguration()
 	//
 	// Create an empty configuration object
 	//
-	TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(TEXT("YOUR-API-KEY")));
+	TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(TEXT("YOUR-API-KEY"));
 
 	//
 	// This sets some user information that will be attached to each error.

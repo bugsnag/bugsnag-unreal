@@ -28,7 +28,7 @@ void FApplePlatformConfigurationSpec::Define()
 		{
 			It("Defaults", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					BugsnagConfiguration* DefaultConfig = [[BugsnagConfiguration alloc] initWithApiKey:@(TCHAR_TO_UTF8(*ApiKey))];
 					TEST_TRUE(CocoaConfig.appHangThresholdMillis == DefaultConfig.appHangThresholdMillis);
@@ -49,14 +49,14 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("ApiKey", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.apiKey.UTF8String), ApiKey);
 				});
 
 			It("AutoDetectErrors", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetAutoDetectErrors(false);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.autoDetectErrors, Configuration->GetAutoDetectErrors());
@@ -64,7 +64,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("AutoTrackSessions", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetAutoTrackSessions(false);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.autoTrackSessions, Configuration->GetAutoTrackSessions());
@@ -72,7 +72,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("Context", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetContext(FString(TEXT("LevelOne")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.context.UTF8String), TEXT("LevelOne"));
@@ -80,7 +80,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("DiscardClasses", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetDiscardClasses({TEXT("Error1"), TEXT("Error2")});
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_TRUE([CocoaConfig.discardClasses containsObject:@"Error1"]);
@@ -89,7 +89,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("EnabledBreadcrumbTypes", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes;
 					EnabledBreadcrumbTypes.bLog = false;
 					Configuration->SetEnabledBreadcrumbTypes(EnabledBreadcrumbTypes);
@@ -99,7 +99,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("EnabledErrorTypes", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					FBugsnagErrorTypes EnabledErrorTypes;
 					EnabledErrorTypes.bOOMs = false;
 					Configuration->SetEnabledErrorTypes(EnabledErrorTypes);
@@ -109,7 +109,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("EnabledReleaseStages", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetEnabledReleaseStages({TEXT("production"), TEXT("staging")});
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_TRUE([CocoaConfig.enabledReleaseStages containsObject:@"production"]);
@@ -118,7 +118,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("RedactedKeys", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetRedactedKeys({TEXT("password"), TEXT("secret")});
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_TRUE([CocoaConfig.redactedKeys containsObject:@"password"]);
@@ -127,7 +127,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("AppHangThreshold", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetAppHangThresholdMillis(FBugsnagConfiguration::AppHangThresholdFatalOnly);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.appHangThresholdMillis, BugsnagAppHangThresholdFatalOnly);
@@ -139,7 +139,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("LaunchDurationMillis", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetLaunchDurationMillis(0);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL((int64)CocoaConfig.launchDurationMillis, (int64)0);
@@ -147,7 +147,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("SendLaunchCrashesSynchronously", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetSendLaunchCrashesSynchronously(false);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.sendLaunchCrashesSynchronously, NO);
@@ -155,7 +155,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("MaxBreadcrumbs", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetMaxBreadcrumbs(100);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL((int64)CocoaConfig.maxBreadcrumbs, (int64)100);
@@ -163,7 +163,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("MaxPersistedEvents", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetMaxPersistedEvents(100);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL((int64)CocoaConfig.maxPersistedEvents, (int64)100);
@@ -171,7 +171,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("MaxPersistedSessions", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetMaxPersistedSessions(100);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL((int64)CocoaConfig.maxPersistedSessions, (int64)100);
@@ -179,7 +179,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("PersistUser", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetPersistUser(false);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.persistUser, NO);
@@ -187,7 +187,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("ReleaseStage", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetReleaseStage(FString(TEXT("testing")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.releaseStage.UTF8String), TEXT("testing"));
@@ -195,7 +195,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("AppType", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetAppType(FString(TEXT("unreal")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appType.UTF8String), TEXT("unreal"));
@@ -203,7 +203,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("AppVersion", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetAppVersion(FString(TEXT("1.2.3")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appVersion.UTF8String), TEXT("1.2.3"));
@@ -211,7 +211,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("BundleVersion", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetBundleVersion(FString(TEXT("123.4")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.bundleVersion.UTF8String), TEXT("123.4"));
@@ -219,7 +219,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("Endpoints", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetEndpoints(TEXT("https://notify.example.com"), TEXT("https://sessions.example.com"));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.endpoints.notify.UTF8String), TEXT("https://notify.example.com"));
@@ -228,7 +228,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("User", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetPersistUser(false);
 					Configuration->SetUser(
 						FString(TEXT("123")),
@@ -249,7 +249,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("Metadata", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->AddMetadata(TEXT("Info"), TEXT("foo"), TEXT("bar"));
 
 					TSharedRef<FJsonObject> JsonObject = MakeShared<FJsonObject>();
@@ -269,7 +269,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("Callbacks", [this]()
 				{
-					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 
 					bool OnBreadcrumbCalled = false;
 					Configuration->AddOnBreadcrumb([&OnBreadcrumbCalled](TSharedRef<IBugsnagBreadcrumb> Breadcrumb) mutable

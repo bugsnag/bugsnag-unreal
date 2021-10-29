@@ -22,7 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
 	static void Start(const FString& ApiKey);
 
-	static void Start(const TSharedPtr<FBugsnagConfiguration>& Configuration);
+	static void Start(const TSharedRef<FBugsnagConfiguration>& Configuration);
 
 	// Notify
 

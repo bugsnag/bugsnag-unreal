@@ -10,8 +10,7 @@
 
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
-	TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
-	Start(Configuration);
+	Start(MakeShared<FBugsnagConfiguration>(ApiKey));
 }
 
 static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString& Value)
@@ -21,7 +20,7 @@ static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString&
 	return JsonObject;
 }
 
-void UBugsnagFunctionLibrary::Start(const TSharedPtr<FBugsnagConfiguration>& Configuration)
+void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.Start(Configuration);
