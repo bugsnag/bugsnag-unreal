@@ -19,9 +19,9 @@ public:
 
 	// orientation?: string;
 
-	virtual TSharedPtr<FString> GetOrientation() const = 0;
+	virtual TOptional<FString> GetOrientation() const = 0;
 
-	virtual void SetOrientation(TSharedPtr<FString>) = 0;
+	virtual void SetOrientation(TOptional<FString>) = 0;
 
 	// time?: Date;
 

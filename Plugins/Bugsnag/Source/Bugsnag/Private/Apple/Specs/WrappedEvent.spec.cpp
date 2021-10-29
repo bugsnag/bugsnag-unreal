@@ -32,9 +32,9 @@ void FWrappedEventSpec::Define()
 							 session:nil];
 
 					TSharedPtr<IBugsnagEvent> Event = FWrappedEvent::From(CocoaEvent);
-					TEST_TRUE(Event->GetApiKey() == nullptr);
-					TEST_TRUE(Event->GetContext() == nullptr);
-					TEST_TRUE(Event->GetGroupingHash() == nullptr);
+					TEST_FALSE(Event->GetApiKey().IsSet());
+					TEST_FALSE(Event->GetContext().IsSet());
+					TEST_FALSE(Event->GetGroupingHash().IsSet());
 					TEST_EQUAL(Event->GetBreadcrumbs().Num(), 0);
 					TEST_EQUAL(Event->GetErrors().Num(), 0);
 					TEST_EQUAL(Event->GetThreads().Num(), 0);
@@ -86,13 +86,13 @@ void FWrappedEventSpec::Define()
 
 					TSharedPtr<IBugsnagEvent> Event = FWrappedEvent::From(CocoaEvent);
 
-					Event->SetApiKey(MakeShareable(new FString(TEXT("0192837465afbecd0192837465afbecd"))));
+					Event->SetApiKey(FString(TEXT("0192837465afbecd0192837465afbecd")));
 					TEST_EQUAL_OBJC(CocoaEvent.apiKey, @"0192837465afbecd0192837465afbecd");
 
-					Event->SetContext(MakeShareable(new FString(TEXT("Some Context"))));
+					Event->SetContext(FString(TEXT("Some Context")));
 					TEST_EQUAL_OBJC(CocoaEvent.context, @"Some Context");
 
-					Event->SetGroupingHash(MakeShareable(new FString(TEXT("Group On This"))));
+					Event->SetGroupingHash(FString(TEXT("Group On This")));
 					TEST_EQUAL_OBJC(CocoaEvent.groupingHash, @"Group On This");
 
 					Event->SetSeverity(EBugsnagSeverity::Error);

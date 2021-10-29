@@ -290,8 +290,8 @@ void FApplePlatformConfigurationSpec::Define()
 					Configuration->AddOnSession([&OnSessionCalled](TSharedRef<IBugsnagSession> Session) mutable
 						{
 							Session->SetUser(FString(TEXT("user123")));
-							Session->GetApp()->SetReleaseStage(MakeShareable(new FString(TEXT("testing"))));
-							Session->GetDevice()->SetLocale(nullptr);
+							Session->GetApp()->SetReleaseStage(FString(TEXT("testing")));
+							Session->GetDevice()->SetLocale(TOptional<FString>());
 							OnSessionCalled = true;
 							return false;
 						});

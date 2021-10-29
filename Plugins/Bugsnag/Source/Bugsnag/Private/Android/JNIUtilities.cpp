@@ -313,15 +313,6 @@ FBugsnagUser FAndroidPlatformJNI::ParseJavaUser(JNIEnv* Env, const JNIReferenceC
 	return FBugsnagUser(Id, Email, Name);
 }
 
-jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<class FString>& Text)
-{
-	if (Text.IsValid())
-	{
-		return ParseFString(Env, *Text);
-	}
-	return NULL;
-}
-
 jstring FAndroidPlatformJNI::ParseFStringOptional(JNIEnv* Env, const TOptional<FString>& Text)
 {
 	if (Text.IsSet())

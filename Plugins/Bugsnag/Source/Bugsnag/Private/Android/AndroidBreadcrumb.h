@@ -20,7 +20,7 @@ public:
 
 	void SetMessage(const FString& Message) override
 	{
-		SetStringField(Cache->BreadcrumbSetMessage, false, MakeShareable(new FString(Message)));
+		SetStringField(Cache->BreadcrumbSetMessage, false, Message);
 	}
 
 	EBugsnagBreadcrumbType GetType() const override

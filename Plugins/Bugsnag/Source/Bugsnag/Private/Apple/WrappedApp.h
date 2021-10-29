@@ -20,99 +20,99 @@ public:
 
 	// binaryArch?: string;
 
-	const TSharedPtr<FString> GetBinaryArch() const
+	const TOptional<FString> GetBinaryArch() const
 	{
-		return FStringPtrFromNSString(CocoaApp.binaryArch);
+		return OptionalFromNSString(CocoaApp.binaryArch);
 	}
 
-	void SetBinaryArch(const TSharedPtr<FString>& Value)
+	void SetBinaryArch(const TOptional<FString>& Value)
 	{
-		CocoaApp.binaryArch = NSStringFromFStringPtr(Value);
+		CocoaApp.binaryArch = NSStringFromOptional(Value);
 	}
 
 	// buildUuid?: string;
 
-	const TSharedPtr<FString> GetBuildUuid() const
+	const TOptional<FString> GetBuildUuid() const
 	{
 		// Not supported by bugsnag-cocoa
-		return nullptr;
+		return TOptional<FString>();
 	}
 
-	void SetBuildUuid(const TSharedPtr<FString>&)
+	void SetBuildUuid(const TOptional<FString>&)
 	{
 		// Not supported by bugsnag-cocoa
 	}
 
 	// bundleVersion?: string;
 
-	const TSharedPtr<FString> GetBundleVersion() const
+	const TOptional<FString> GetBundleVersion() const
 	{
-		return FStringPtrFromNSString(CocoaApp.bundleVersion);
+		return OptionalFromNSString(CocoaApp.bundleVersion);
 	}
 
-	void SetBundleVersion(const TSharedPtr<FString>& Value)
+	void SetBundleVersion(const TOptional<FString>& Value)
 	{
-		CocoaApp.bundleVersion = NSStringFromFStringPtr(Value);
+		CocoaApp.bundleVersion = NSStringFromOptional(Value);
 	}
 
 	// dsymUuid?: string;
 
-	const TSharedPtr<FString> GetDsymUuid() const
+	const TOptional<FString> GetDsymUuid() const
 	{
-		return FStringPtrFromNSString(CocoaApp.dsymUuid);
+		return OptionalFromNSString(CocoaApp.dsymUuid);
 	}
 
-	void SetDsymUuid(const TSharedPtr<FString>& Value)
+	void SetDsymUuid(const TOptional<FString>& Value)
 	{
-		CocoaApp.dsymUuid = NSStringFromFStringPtr(Value);
+		CocoaApp.dsymUuid = NSStringFromOptional(Value);
 	}
 
 	// id?: string;
 
-	const TSharedPtr<FString> GetId() const
+	const TOptional<FString> GetId() const
 	{
-		return FStringPtrFromNSString(CocoaApp.id);
+		return OptionalFromNSString(CocoaApp.id);
 	}
 
-	void SetId(const TSharedPtr<FString>& Value)
+	void SetId(const TOptional<FString>& Value)
 	{
-		CocoaApp.id = NSStringFromFStringPtr(Value);
+		CocoaApp.id = NSStringFromOptional(Value);
 	}
 
 	// releaseStage: string = "production";
 
-	const TSharedPtr<FString> GetReleaseStage() const
+	const TOptional<FString> GetReleaseStage() const
 	{
-		return FStringPtrFromNSString(CocoaApp.releaseStage);
+		return OptionalFromNSString(CocoaApp.releaseStage);
 	}
 
-	void SetReleaseStage(const TSharedPtr<FString>& Value)
+	void SetReleaseStage(const TOptional<FString>& Value)
 	{
-		CocoaApp.releaseStage = NSStringFromFStringPtr(Value);
+		CocoaApp.releaseStage = NSStringFromOptional(Value);
 	}
 
 	// type?: string;
 
-	const TSharedPtr<FString> GetType() const
+	const TOptional<FString> GetType() const
 	{
-		return FStringPtrFromNSString(CocoaApp.type);
+		return OptionalFromNSString(CocoaApp.type);
 	}
 
-	void SetType(const TSharedPtr<FString>& Value)
+	void SetType(const TOptional<FString>& Value)
 	{
-		CocoaApp.type = NSStringFromFStringPtr(Value);
+		CocoaApp.type = NSStringFromOptional(Value);
 	}
 
 	// version?: string;
 
-	const TSharedPtr<FString> GetVersion() const
+	const TOptional<FString> GetVersion() const
 	{
-		return FStringPtrFromNSString(CocoaApp.version);
+		return OptionalFromNSString(CocoaApp.version);
 	}
 
-	void SetVersion(const TSharedPtr<FString>& Value)
+	void SetVersion(const TOptional<FString>& Value)
 	{
-		CocoaApp.version = NSStringFromFStringPtr(Value);
+		CocoaApp.version = NSStringFromOptional(Value);
 	}
 
 	// versionCode?: number;

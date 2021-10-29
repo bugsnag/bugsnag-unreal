@@ -66,8 +66,8 @@
 		return;                 \
 	}
 
-#define ReturnStringFieldPtr(target, method)                   \
+#define ReturnStringFieldOptional(target, method)                   \
 	jobject jString = (*Env).CallObjectMethod(target, method); \
 	return FAndroidPlatformJNI::CheckAndClearException(Env)    \
-			   ? nullptr                                       \
-			   : MakeShareable(new FString(FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString)));
+			   ? TOptional<FString>()                                       \
+			   : TOptional<FString>(FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString));

@@ -33,14 +33,14 @@ public:
 
 	// id?: string;
 
-	const TSharedPtr<FString> GetId() const
+	const TOptional<FString> GetId() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.id);
+		return OptionalFromNSString(CocoaDevice.id);
 	}
 
-	void SetId(const TSharedPtr<FString>& Value)
+	void SetId(const TOptional<FString>& Value)
 	{
-		CocoaDevice.id = NSStringFromFStringPtr(Value);
+		CocoaDevice.id = NSStringFromOptional(Value);
 	}
 
 	// jailbroken?: boolean;
@@ -57,74 +57,74 @@ public:
 
 	// locale?: string;
 
-	const TSharedPtr<FString> GetLocale() const
+	const TOptional<FString> GetLocale() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.locale);
+		return OptionalFromNSString(CocoaDevice.locale);
 	}
 
-	void SetLocale(const TSharedPtr<FString>& Value)
+	void SetLocale(const TOptional<FString>& Value)
 	{
-		CocoaDevice.locale = NSStringFromFStringPtr(Value);
+		CocoaDevice.locale = NSStringFromOptional(Value);
 	}
 
 	// modelNumber?: string;
 
-	const TSharedPtr<FString> GetModelNumber() const
+	const TOptional<FString> GetModelNumber() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.modelNumber);
+		return OptionalFromNSString(CocoaDevice.modelNumber);
 	}
 
-	void SetModelNumber(const TSharedPtr<FString>& Value)
+	void SetModelNumber(const TOptional<FString>& Value)
 	{
-		CocoaDevice.modelNumber = NSStringFromFStringPtr(Value);
+		CocoaDevice.modelNumber = NSStringFromOptional(Value);
 	}
 
 	// manufacturer?: string;
 
-	const TSharedPtr<FString> GetManufacturer() const
+	const TOptional<FString> GetManufacturer() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.manufacturer);
+		return OptionalFromNSString(CocoaDevice.manufacturer);
 	}
 
-	void SetManufacturer(const TSharedPtr<FString>& Value)
+	void SetManufacturer(const TOptional<FString>& Value)
 	{
-		CocoaDevice.manufacturer = NSStringFromFStringPtr(Value);
+		CocoaDevice.manufacturer = NSStringFromOptional(Value);
 	}
 
 	// model?: string;
 
-	const TSharedPtr<FString> GetModel() const
+	const TOptional<FString> GetModel() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.model);
+		return OptionalFromNSString(CocoaDevice.model);
 	}
 
-	void SetModel(const TSharedPtr<FString>& Value)
+	void SetModel(const TOptional<FString>& Value)
 	{
-		CocoaDevice.model = NSStringFromFStringPtr(Value);
+		CocoaDevice.model = NSStringFromOptional(Value);
 	}
 
 	// osName?: string;
 
-	const TSharedPtr<FString> GetOsName() const
+	const TOptional<FString> GetOsName() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.osName);
+		return OptionalFromNSString(CocoaDevice.osName);
 	}
 
-	void SetOsName(const TSharedPtr<FString>& Value)
+	void SetOsName(const TOptional<FString>& Value)
 	{
-		CocoaDevice.osName = NSStringFromFStringPtr(Value);
+		CocoaDevice.osName = NSStringFromOptional(Value);
 	}
 
 	// osVersion?: string;
 
-	const TSharedPtr<FString> GetOsVersion() const
+	const TOptional<FString> GetOsVersion() const
 	{
-		return FStringPtrFromNSString(CocoaDevice.osVersion);
+		return OptionalFromNSString(CocoaDevice.osVersion);
 	}
 
-	void SetOsVersion(const TSharedPtr<FString>& Value)
+	void SetOsVersion(const TOptional<FString>& Value)
 	{
-		CocoaDevice.osVersion = NSStringFromFStringPtr(Value);
+		CocoaDevice.osVersion = NSStringFromOptional(Value);
 	}
 
 	// runtimeVersions?: map[string->string];

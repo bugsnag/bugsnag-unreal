@@ -9,9 +9,9 @@ class BUGSNAG_API IBugsnagStackframe
 public:
 	// file?: string,
 
-	virtual TSharedPtr<FString> GetFile() const = 0;
+	virtual TOptional<FString> GetFile() const = 0;
 
-	virtual void SetFile(const TSharedPtr<FString>&) = 0;
+	virtual void SetFile(const TOptional<FString>&) = 0;
 
 	// inProject: boolean,
 
@@ -27,9 +27,9 @@ public:
 
 	// method?: string,
 
-	virtual TSharedPtr<FString> GetMethod() const = 0;
+	virtual TOptional<FString> GetMethod() const = 0;
 
-	virtual void SetMethod(const TSharedPtr<FString>&) = 0;
+	virtual void SetMethod(const TOptional<FString>&) = 0;
 
 	// type?: ErrorType,
 
@@ -45,9 +45,9 @@ public:
 
 	// machoFile?: string
 
-	virtual TSharedPtr<FString> GetMachoFile() const = 0;
+	virtual TOptional<FString> GetMachoFile() const = 0;
 
-	virtual void SetMachoFile(const TSharedPtr<FString>&) = 0;
+	virtual void SetMachoFile(const TOptional<FString>&) = 0;
 
 	// symbolAddress?: number
 
@@ -63,9 +63,9 @@ public:
 
 	// machoUUID?: string
 
-	virtual TSharedPtr<FString> GetMachoUuid() const = 0;
+	virtual TOptional<FString> GetMachoUuid() const = 0;
 
-	virtual void SetMachoUuid(const TSharedPtr<FString>&) = 0;
+	virtual void SetMachoUuid(const TOptional<FString>&) = 0;
 
 	// frameAddress?: number
 

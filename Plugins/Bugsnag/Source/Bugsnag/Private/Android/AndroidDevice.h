@@ -18,12 +18,12 @@ public:
 		SetStringArrayField(Cache->DeviceSetCpuAbi, Value);
 	}
 
-	const TSharedPtr<FString> GetId() const
+	const TOptional<FString> GetId() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceGetId);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceGetId);
 	}
 
-	void SetId(const TSharedPtr<FString>& Value)
+	void SetId(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->DeviceSetId, true, Value);
 	}
@@ -38,52 +38,52 @@ public:
 		SetBoolObjectField(Cache->DeviceSetJailbroken, true, Value);
 	}
 
-	const TSharedPtr<FString> GetLocale() const
+	const TOptional<FString> GetLocale() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceGetLocale);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceGetLocale);
 	}
 
-	void SetLocale(const TSharedPtr<FString>& Value)
+	void SetLocale(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->DeviceSetLocale, true, Value);
 	}
 
-	const TSharedPtr<FString> GetManufacturer() const
+	const TOptional<FString> GetManufacturer() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceGetManufacturer);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceGetManufacturer);
 	}
 
-	void SetManufacturer(const TSharedPtr<FString>& Value)
+	void SetManufacturer(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->DeviceSetManufacturer, true, Value);
 	}
 
-	const TSharedPtr<FString> GetModel() const
+	const TOptional<FString> GetModel() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceGetModel);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceGetModel);
 	}
 
-	void SetModel(const TSharedPtr<FString>& Value)
+	void SetModel(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->DeviceSetModel, true, Value);
 	}
 
-	const TSharedPtr<FString> GetOsName() const
+	const TOptional<FString> GetOsName() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceGetOsName);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceGetOsName);
 	}
 
-	void SetOsName(const TSharedPtr<FString>& Value)
+	void SetOsName(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->DeviceSetOsName, true, Value);
 	}
 
-	const TSharedPtr<FString> GetOsVersion() const
+	const TOptional<FString> GetOsVersion() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceGetOsVersion);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceGetOsVersion);
 	}
 
-	void SetOsVersion(const TSharedPtr<FString>& Value)
+	void SetOsVersion(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->DeviceSetOsVersion, true, Value);
 	}
@@ -148,12 +148,12 @@ public:
 
 	// -- unsupported fields
 
-	const TSharedPtr<FString> GetModelNumber() const
+	const TOptional<FString> GetModelNumber() const
 	{
-		return nullptr;
+		return TOptional<FString>();
 	}
 
-	void SetModelNumber(const TSharedPtr<FString>& Value)
+	void SetModelNumber(const TOptional<FString>& Value)
 	{
 	}
 };

@@ -97,10 +97,9 @@ FORCENOINLINE TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 const FString UBugsnagFunctionLibrary::GetContext()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
-	TSharedPtr<FString> Context = GPlatformBugsnag.GetContext();
-	return Context.IsValid() ? *Context : TEXT("");
+	return GPlatformBugsnag.GetContext().Get(FString());
 #else
-	return TEXT("");
+	return FString();
 #endif
 }
 
@@ -109,11 +108,11 @@ void UBugsnagFunctionLibrary::SetContext(const FString& Context)
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	if (Context.IsEmpty())
 	{
-		GPlatformBugsnag.SetContext(nullptr);
+		GPlatformBugsnag.SetContext(TOptional<FString>());
 	}
 	else
 	{
-		GPlatformBugsnag.SetContext(MakeShared<FString>(Context));
+		GPlatformBugsnag.SetContext(TOptional<FString>(Context));
 	}
 #endif
 }

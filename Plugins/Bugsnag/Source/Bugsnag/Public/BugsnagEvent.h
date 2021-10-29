@@ -23,21 +23,21 @@ class BUGSNAG_API IBugsnagEvent : public virtual IBugsnagMetadataStore
 public:
 	// apiKey?: string;
 
-	virtual const TSharedPtr<FString> GetApiKey() const = 0;
+	virtual const TOptional<FString> GetApiKey() const = 0;
 
-	virtual void SetApiKey(const TSharedPtr<FString>&) = 0;
+	virtual void SetApiKey(const TOptional<FString>&) = 0;
 
 	// context?: Context;
 
-	virtual const TSharedPtr<FString> GetContext() const = 0;
+	virtual const TOptional<FString> GetContext() const = 0;
 
-	virtual void SetContext(const TSharedPtr<FString>&) = 0;
+	virtual void SetContext(const TOptional<FString>&) = 0;
 
 	// groupingHash?: string = null;
 
-	virtual const TSharedPtr<FString> GetGroupingHash() const = 0;
+	virtual const TOptional<FString> GetGroupingHash() const = 0;
 
-	virtual void SetGroupingHash(const TSharedPtr<FString>&) = 0;
+	virtual void SetGroupingHash(const TOptional<FString>&) = 0;
 
 	// readonly app: AppWithState;
 

@@ -101,16 +101,16 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 	// TODO: handle callback
 }
 
-const TSharedPtr<FString> FAndroidPlatformBugsnag::GetContext()
+const TOptional<FString> FAndroidPlatformBugsnag::GetContext()
 {
-	return nullptr;
+	return TOptional<FString>();
 }
 
-void FAndroidPlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
+void FAndroidPlatformBugsnag::SetContext(const TOptional<FString>& Context)
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	ReturnVoidIf(!Env || !JNICache.initialized);
-	jstring jContext = FAndroidPlatformJNI::ParseFStringPtr(Env, Context);
+	jstring jContext = FAndroidPlatformJNI::ParseFStringOptional(Env, Context);
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetContext, jContext);
 }
 

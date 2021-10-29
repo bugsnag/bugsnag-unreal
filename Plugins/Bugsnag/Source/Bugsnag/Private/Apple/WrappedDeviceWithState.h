@@ -48,14 +48,14 @@ public:
 
 	// orientation?: string;
 
-	TSharedPtr<FString> GetOrientation() const override
+	TOptional<FString> GetOrientation() const override
 	{
-		return FStringPtrFromNSString(CocoaDeviceWithState.orientation);
+		return OptionalFromNSString(CocoaDeviceWithState.orientation);
 	}
 
-	void SetOrientation(TSharedPtr<FString> Value) override
+	void SetOrientation(TOptional<FString> Value) override
 	{
-		CocoaDeviceWithState.orientation = NSStringFromFStringPtr(Value);
+		CocoaDeviceWithState.orientation = NSStringFromOptional(Value);
 	}
 
 	// time?: Date;

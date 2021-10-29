@@ -91,11 +91,11 @@ public:
 		SetPrimitiveObjectField(Cache->BooleanClass, Cache->BooleanConstructor, Method, IsNullable, jValue);
 	}
 
-	void SetStringField(jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value) const
+	void SetStringField(jmethodID Method, bool IsNullable, const TOptional<FString>& Value) const
 	{
-		if (Value.IsValid())
+		if (Value.IsSet())
 		{
-			jstring jString = FAndroidPlatformJNI::ParseFString(Env, *Value);
+			jstring jString = FAndroidPlatformJNI::ParseFString(Env, Value.GetValue());
 			ReturnVoidIf(!jString);
 			(*Env).CallVoidMethod(JavaObject, Method, jString);
 			FAndroidPlatformJNI::CheckAndClearException(Env);

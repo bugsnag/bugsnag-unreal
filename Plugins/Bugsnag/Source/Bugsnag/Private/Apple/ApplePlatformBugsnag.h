@@ -11,9 +11,9 @@ public:
 	void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 		const FBugsnagOnErrorCallback& Callback) override;
 
-	const TSharedPtr<FString> GetContext() override;
+	const TOptional<FString> GetContext() override;
 
-	void SetContext(const TSharedPtr<FString>& Context) override;
+	void SetContext(const TOptional<FString>& Context) override;
 
 	const FBugsnagUser GetUser() override;
 

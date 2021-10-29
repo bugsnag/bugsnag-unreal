@@ -78,14 +78,14 @@ void FApplePlatformBugsnag::Notify(
 					 block:Block];
 }
 
-const TSharedPtr<FString> FApplePlatformBugsnag::GetContext()
+const TOptional<FString> FApplePlatformBugsnag::GetContext()
 {
-	return FStringPtrFromNSString(Bugsnag.context);
+	return OptionalFromNSString(Bugsnag.context);
 }
 
-void FApplePlatformBugsnag::SetContext(const TSharedPtr<FString>& Context)
+void FApplePlatformBugsnag::SetContext(const TOptional<FString>& Context)
 {
-	Bugsnag.context = NSStringFromFStringPtr(Context);
+	Bugsnag.context = NSStringFromOptional(Context);
 }
 
 const FBugsnagUser FApplePlatformBugsnag::GetUser()

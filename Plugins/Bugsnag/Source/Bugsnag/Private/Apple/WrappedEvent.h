@@ -32,38 +32,38 @@ public:
 
 	// apiKey?: string;
 
-	const TSharedPtr<FString> GetApiKey() const override
+	const TOptional<FString> GetApiKey() const override
 	{
-		return FStringPtrFromNSString(CocoaEvent.apiKey);
+		return OptionalFromNSString(CocoaEvent.apiKey);
 	}
 
-	void SetApiKey(const TSharedPtr<FString>& Value) override
+	void SetApiKey(const TOptional<FString>& Value) override
 	{
-		CocoaEvent.apiKey = NSStringFromFStringPtr(Value);
+		CocoaEvent.apiKey = NSStringFromOptional(Value);
 	}
 
 	// context?: Context;
 
-	const TSharedPtr<FString> GetContext() const override
+	const TOptional<FString> GetContext() const override
 	{
-		return FStringPtrFromNSString(CocoaEvent.context);
+		return OptionalFromNSString(CocoaEvent.context);
 	}
 
-	void SetContext(const TSharedPtr<FString>& Value) override
+	void SetContext(const TOptional<FString>& Value) override
 	{
-		CocoaEvent.context = NSStringFromFStringPtr(Value);
+		CocoaEvent.context = NSStringFromOptional(Value);
 	}
 
 	// groupingHash?: string = null;
 
-	const TSharedPtr<FString> GetGroupingHash() const override
+	const TOptional<FString> GetGroupingHash() const override
 	{
-		return FStringPtrFromNSString(CocoaEvent.groupingHash);
+		return OptionalFromNSString(CocoaEvent.groupingHash);
 	}
 
-	void SetGroupingHash(const TSharedPtr<FString>& Value) override
+	void SetGroupingHash(const TOptional<FString>& Value) override
 	{
-		CocoaEvent.groupingHash = NSStringFromFStringPtr(Value);
+		CocoaEvent.groupingHash = NSStringFromOptional(Value);
 	}
 
 	// readonly app: AppWithState;

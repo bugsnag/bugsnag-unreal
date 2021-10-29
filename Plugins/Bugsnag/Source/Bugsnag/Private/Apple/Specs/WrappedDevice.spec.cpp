@@ -28,13 +28,13 @@ void FWrappedDeviceSpec::Define()
 
 					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
 					TEST_EQUAL(Device->GetJailbroken().GetValue(), true);
-					TEST_EQUAL(*Device->GetId(), TEXT("uniqueId"));
-					TEST_EQUAL(*Device->GetLocale(), TEXT("en_EN"));
-					TEST_EQUAL(*Device->GetManufacturer(), TEXT("Apple"));
-					TEST_EQUAL(*Device->GetModel(), TEXT("iPhone99,9"));
-					TEST_EQUAL(*Device->GetModelNumber(), TEXT("D79AP"));
-					TEST_EQUAL(*Device->GetOsName(), TEXT("iOS"));
-					TEST_EQUAL(*Device->GetOsVersion(), TEXT("14.1"));
+					TEST_EQUAL(Device->GetId().GetValue(), TEXT("uniqueId"));
+					TEST_EQUAL(Device->GetLocale().GetValue(), TEXT("en_EN"));
+					TEST_EQUAL(Device->GetManufacturer().GetValue(), TEXT("Apple"));
+					TEST_EQUAL(Device->GetModel().GetValue(), TEXT("iPhone99,9"));
+					TEST_EQUAL(Device->GetModelNumber().GetValue(), TEXT("D79AP"));
+					TEST_EQUAL(Device->GetOsName().GetValue(), TEXT("iOS"));
+					TEST_EQUAL(Device->GetOsVersion().GetValue(), TEXT("14.1"));
 					TSharedPtr<TMap<FString, FString>> RuntimeVersions = Device->GetRuntimeVersions();
 					TEST_EQUAL(RuntimeVersions->Num(), 2);
 					TEST_EQUAL((*RuntimeVersions)[TEXT("something")], TEXT("1.0"));
@@ -48,13 +48,13 @@ void FWrappedDeviceSpec::Define()
 
 					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
 					Device->SetJailbroken(true);
-					Device->SetId(MakeShareable(new FString(TEXT("uniqueId"))));
-					Device->SetLocale(MakeShareable(new FString(TEXT("en_EN"))));
-					Device->SetManufacturer(MakeShareable(new FString(TEXT("Apple"))));
-					Device->SetModel(MakeShareable(new FString(TEXT("iPhone99,9"))));
-					Device->SetModelNumber(MakeShareable(new FString(TEXT("D79AP"))));
-					Device->SetOsName(MakeShareable(new FString(TEXT("iOS"))));
-					Device->SetOsVersion(MakeShareable(new FString(TEXT("14.1"))));
+					Device->SetId(FString(TEXT("uniqueId")));
+					Device->SetLocale(FString(TEXT("en_EN")));
+					Device->SetManufacturer(FString(TEXT("Apple")));
+					Device->SetModel(FString(TEXT("iPhone99,9")));
+					Device->SetModelNumber(FString(TEXT("D79AP")));
+					Device->SetOsName(FString(TEXT("iOS")));
+					Device->SetOsVersion(FString(TEXT("14.1")));
 					TSharedPtr<TMap<FString, FString>> RuntimeVersions = MakeShareable(new TMap<FString, FString>);
 					RuntimeVersions->Add(TEXT("something"), TEXT("1.0"));
 					RuntimeVersions->Add(TEXT("else"), TEXT("2.0"));

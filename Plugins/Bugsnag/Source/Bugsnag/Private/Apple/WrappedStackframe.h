@@ -22,13 +22,13 @@ public:
 
 	// file?: string,
 
-	TSharedPtr<FString> GetFile() const override
+	TOptional<FString> GetFile() const override
 	{
 		// Not supported by bugsnag-cocoa
-		return nullptr;
+		return TOptional<FString>();
 	}
 
-	void SetFile(const TSharedPtr<FString>& Value) override
+	void SetFile(const TOptional<FString>& Value) override
 	{
 		// Not supported by bugsnag-cocoa
 	}
@@ -61,14 +61,14 @@ public:
 
 	// method?: string,
 
-	TSharedPtr<FString> GetMethod() const override
+	TOptional<FString> GetMethod() const override
 	{
-		return FStringPtrFromNSString(CocoaStackframe.method);
+		return OptionalFromNSString(CocoaStackframe.method);
 	}
 
-	void SetMethod(const TSharedPtr<FString>& Value) override
+	void SetMethod(const TOptional<FString>& Value) override
 	{
-		CocoaStackframe.method = NSStringFromFStringPtr(Value);
+		CocoaStackframe.method = NSStringFromOptional(Value);
 	}
 
 	// type?: ErrorType,
@@ -107,14 +107,14 @@ public:
 
 	// machoFile?: string
 
-	TSharedPtr<FString> GetMachoFile() const override
+	TOptional<FString> GetMachoFile() const override
 	{
-		return FStringPtrFromNSString(CocoaStackframe.machoFile);
+		return OptionalFromNSString(CocoaStackframe.machoFile);
 	}
 
-	void SetMachoFile(const TSharedPtr<FString>& Value) override
+	void SetMachoFile(const TOptional<FString>& Value) override
 	{
-		CocoaStackframe.machoFile = NSStringFromFStringPtr(Value);
+		CocoaStackframe.machoFile = NSStringFromOptional(Value);
 	}
 
 	// symbolAddress?: number
@@ -143,14 +143,14 @@ public:
 
 	// machoUUID?: string
 
-	TSharedPtr<FString> GetMachoUuid() const override
+	TOptional<FString> GetMachoUuid() const override
 	{
-		return FStringPtrFromNSString(CocoaStackframe.machoUuid);
+		return OptionalFromNSString(CocoaStackframe.machoUuid);
 	}
 
-	void SetMachoUuid(const TSharedPtr<FString>& Value) override
+	void SetMachoUuid(const TOptional<FString>& Value) override
 	{
-		CocoaStackframe.machoUuid = NSStringFromFStringPtr(Value);
+		CocoaStackframe.machoUuid = NSStringFromOptional(Value);
 	}
 
 	// frameAddress?: number
