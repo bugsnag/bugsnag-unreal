@@ -7,6 +7,7 @@
 #include "Android/AndroidJavaEnv.h"
 
 #include "AndroidBreadcrumb.h"
+#include "AndroidEvent.h"
 #include "AndroidPlatformConfiguration.h"
 #include "AndroidSession.h"
 #include "JNIUtilities.h"
@@ -43,9 +44,6 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 	jstring jErrorClass = FAndroidPlatformJNI::ParseFString(Env, ErrorClass);
 	jstring jMessage = FAndroidPlatformJNI::ParseFString(Env, Message);
 	ReturnVoidIf(!jErrorClass || !jMessage);
-
-	jobject jSeverity = FAndroidPlatformJNI::ParseSeverity(Env, &JNICache, EBugsnagSeverity::Warning);
-	ReturnVoidIf(!jSeverity);
 
 	jobjectArray jFrames = (*Env).NewObjectArray(StackTrace.Num(), JNICache.TraceClass, NULL);
 	ReturnVoidIf(!jFrames);
@@ -95,10 +93,16 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 			}
 		}
 	}
-	(*Env).CallStaticVoidMethod(JNICache.InterfaceClass,
-		JNICache.BugsnagNotifyMethod, jErrorClass, jMessage, jSeverity, jFrames);
+	jobject jCallbackBuffer = nullptr;
+	if (Callback)
+	{
+		jCallbackBuffer = (*Env).NewDirectByteBuffer((void*)&Callback, sizeof(FBugsnagOnErrorCallback));
+		// in the event the buffer could not be created, the callback is set to null
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagUnrealPluginClass,
+		JNICache.BugsnagUnrealPluginNotify, jErrorClass, jMessage, jFrames, jCallbackBuffer);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
-	// TODO: handle callback
 }
 
 const TOptional<FString> FAndroidPlatformBugsnag::GetContext()
@@ -313,6 +317,18 @@ void FAndroidPlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
 extern "C"
 {
 #endif
+
+	JNIEXPORT jboolean JNICALL Java_com_bugsnag_android_unreal_UnrealPlugin_runNotifyCallback(
+		JNIEnv* Env, jobject _this, jobject jEvent, jobject jCallbackPtr)
+	{
+		if (JNICache.initialized && jCallbackPtr)
+		{
+			auto Event = MakeShared<FAndroidEvent>(Env, &JNICache, jEvent);
+			auto Callback = (FBugsnagOnErrorCallback*)(*Env).GetDirectBufferAddress(jCallbackPtr);
+			return (*Callback)(Event) ? JNI_TRUE : JNI_FALSE;
+		}
+		return JNI_TRUE;
+	}
 
 	JNIEXPORT jboolean JNICALL Java_com_bugsnag_android_unreal_UnrealPlugin_runBreadcrumbCallbacks(
 		JNIEnv* Env, jobject _this, jobject jCrumb)

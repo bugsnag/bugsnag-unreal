@@ -64,9 +64,9 @@ public:
 
 	void SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name)
 	{
-		jstring jId = FAndroidPlatformJNI::ParseFStringOptional(Env, *Id);
-		jstring jName = FAndroidPlatformJNI::ParseFStringOptional(Env, *Name);
-		jstring jEmail = FAndroidPlatformJNI::ParseFStringOptional(Env, *Email);
+		jstring jId = FAndroidPlatformJNI::ParseFStringOptional(Env, Id);
+		jstring jName = FAndroidPlatformJNI::ParseFStringOptional(Env, Name);
+		jstring jEmail = FAndroidPlatformJNI::ParseFStringOptional(Env, Email);
 		(*Env).CallVoidMethod(JavaObject, Cache->SessionSetUser, jId, jEmail, jName);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}

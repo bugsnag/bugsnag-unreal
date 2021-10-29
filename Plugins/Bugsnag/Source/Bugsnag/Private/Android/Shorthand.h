@@ -66,6 +66,12 @@
 		return;                 \
 	}
 
+#define ReturnStringField(target, method)                      \
+	jobject jString = (*Env).CallObjectMethod(target, method); \
+	return FAndroidPlatformJNI::CheckAndClearException(Env)    \
+			   ? FString("")                                   \
+			   : FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString);
+
 #define ReturnStringFieldOptional(target, method)              \
 	jobject jString = (*Env).CallObjectMethod(target, method); \
 	return FAndroidPlatformJNI::CheckAndClearException(Env)    \

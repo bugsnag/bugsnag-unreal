@@ -61,21 +61,28 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	}
 
 	CacheExternalJavaClass(env, cache->AppClass, "com.bugsnag.android.App");
+	CacheExternalJavaClass(env, cache->AppWithStateClass, "com.bugsnag.android.AppWithState");
 	CacheExternalJavaClass(env, cache->BreadcrumbClass, "com.bugsnag.android.Breadcrumb");
 	CacheExternalJavaClass(env, cache->BugsnagClass, "com.bugsnag.android.Bugsnag");
 	CacheExternalJavaClass(env, cache->BugsnagUnrealPluginClass, "com.bugsnag.android.unreal.UnrealPlugin");
 	CacheExternalJavaClass(env, cache->ConfigClass, "com.bugsnag.android.Configuration");
 	CacheExternalJavaClass(env, cache->DeviceClass, "com.bugsnag.android.Device");
-	CacheExternalJavaClass(env, cache->InterfaceClass, "com.bugsnag.android.NativeInterface");
+	CacheExternalJavaClass(env, cache->DeviceWithStateClass, "com.bugsnag.android.DeviceWithState");
+	CacheExternalJavaClass(env, cache->ErrorClass, "com.bugsnag.android.Error");
+	CacheExternalJavaClass(env, cache->ErrorTypeClass, "com.bugsnag.android.ErrorType");
+	CacheExternalJavaClass(env, cache->ErrorTypesClass, "com.bugsnag.android.ErrorTypes");
+	CacheExternalJavaClass(env, cache->EventClass, "com.bugsnag.android.Event");
 	CacheExternalJavaClass(env, cache->LastRunInfoClass, "com.bugsnag.android.LastRunInfo");
 	CacheExternalJavaClass(env, cache->NotifierClass, "com.bugsnag.android.Notifier");
 	CacheExternalJavaClass(env, cache->BreadcrumbTypeClass, "com.bugsnag.android.BreadcrumbType");
 	CacheExternalJavaClass(env, cache->SessionClass, "com.bugsnag.android.Session");
 	CacheExternalJavaClass(env, cache->SeverityClass, "com.bugsnag.android.Severity");
+	CacheExternalJavaClass(env, cache->StackframeClass, "com.bugsnag.android.Stackframe");
+	CacheExternalJavaClass(env, cache->ThreadClass, "com.bugsnag.android.Thread");
 	CacheExternalJavaClass(env, cache->UserClass, "com.bugsnag.android.User");
 	CacheExternalJavaClass(env, cache->EndpointConfigurationClass, "com.bugsnag.android.EndpointConfiguration");
-	CacheExternalJavaClass(env, cache->ErrorTypesClass, "com.bugsnag.android.ErrorTypes");
 	CacheExternalJavaClass(env, cache->ThreadSendPolicyClass, "com.bugsnag.android.ThreadSendPolicy");
+	CacheExternalJavaClass(env, cache->ThreadTypeClass, "com.bugsnag.android.ThreadType");
 	CacheExternalJavaClass(env, cache->MetadataParserClass, "com.bugsnag.android.unreal.MetadataParser");
 	CacheExternalJavaClass(env, cache->MetadataSerializerClass, "com.bugsnag.android.unreal.MetadataSerializer");
 
@@ -109,6 +116,15 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->AppSetVersion, cache->AppClass, "setVersion", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->AppSetVersionCode, cache->AppClass, "setVersionCode", "(Ljava/lang/Number;)V");
 
+	CacheInstanceJavaMethod(env, cache->AppWithStateGetDuration, cache->AppWithStateClass, "getDuration", "()Ljava/lang/Number;");
+	CacheInstanceJavaMethod(env, cache->AppWithStateGetDurationInForeground, cache->AppWithStateClass, "getDurationInForeground", "()Ljava/lang/Number;");
+	CacheInstanceJavaMethod(env, cache->AppWithStateGetInForeground, cache->AppWithStateClass, "getInForeground", "()Ljava/lang/Boolean;");
+	CacheInstanceJavaMethod(env, cache->AppWithStateGetIsLaunching, cache->AppWithStateClass, "isLaunching", "()Ljava/lang/Boolean;");
+	CacheInstanceJavaMethod(env, cache->AppWithStateSetDuration, cache->AppWithStateClass, "setDuration", "(Ljava/lang/Number;)V");
+	CacheInstanceJavaMethod(env, cache->AppWithStateSetDurationInForeground, cache->AppWithStateClass, "setDurationInForeground", "(Ljava/lang/Number;)V");
+	CacheInstanceJavaMethod(env, cache->AppWithStateSetInForeground, cache->AppWithStateClass, "setInForeground", "(Ljava/lang/Boolean;)V");
+	CacheInstanceJavaMethod(env, cache->AppWithStateSetIsLaunching, cache->AppWithStateClass, "setLaunching", "(Ljava/lang/Boolean;)V");
+
 	CacheInstanceJavaMethod(env, cache->BreadcrumbGetMessage, cache->BreadcrumbClass, "getMessage", "()Ljava/lang/String;");
 	CacheInstanceJavaMethod(env, cache->BreadcrumbGetMetadata, cache->BreadcrumbClass, "getMetadata", "()Ljava/util/Map;");
 	CacheInstanceJavaMethod(env, cache->BreadcrumbGetTimestamp, cache->BreadcrumbClass, "getTimestamp", "()Ljava/util/Date;");
@@ -125,7 +141,6 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
 	CacheStaticJavaMethod(env, cache->BugsnagSetContext, cache->BugsnagClass, "setContext", "(Ljava/lang/String;)V");
-	CacheStaticJavaMethod(env, cache->BugsnagNotifyMethod, cache->InterfaceClass, "notify", "(Ljava/lang/String;Ljava/lang/String;Lcom/bugsnag/android/Severity;[Ljava/lang/StackTraceElement;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagLeaveBreadcrumb, cache->BugsnagClass, "leaveBreadcrumb", "(Ljava/lang/String;Ljava/util/Map;Lcom/bugsnag/android/BreadcrumbType;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagMarkLaunchCompleted, cache->BugsnagClass, "markLaunchCompleted", "()V");
 	CacheStaticJavaMethod(env, cache->BugsnagStartSession, cache->BugsnagClass, "startSession", "()V");
@@ -133,8 +148,11 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagSetUser, cache->BugsnagClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagPauseSession, cache->BugsnagClass, "pauseSession", "()V");
 
+	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetEventMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Lcom/bugsnag/android/Event;Ljava/lang/String;)[B");
+	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetEventMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Lcom/bugsnag/android/Event;Ljava/lang/String;Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;Ljava/lang/String;)[B");
+	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginNotify, cache->BugsnagUnrealPluginClass, "notify", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/StackTraceElement;Ljava/nio/ByteBuffer;)V");
 	CacheInstanceJavaMethod(env, cache->BugsnagUnrealPluginConstructor, cache->BugsnagUnrealPluginClass, "<init>", "()V");
 
 	CacheStaticJavaMethod(env, cache->MetadataParserParse, cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
@@ -193,11 +211,50 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->DeviceSetRuntimeVersions, cache->DeviceClass, "setRuntimeVersions", "(Ljava/util/Map;)V");
 	CacheInstanceJavaMethod(env, cache->DeviceSetTotalMemory, cache->DeviceClass, "setTotalMemory", "(Ljava/lang/Long;)V");
 
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateGetFreeDisk, cache->DeviceWithStateClass, "getFreeDisk", "()Ljava/lang/Long;");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateGetFreeMemory, cache->DeviceWithStateClass, "getFreeMemory", "()Ljava/lang/Long;");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateGetOrientation, cache->DeviceWithStateClass, "getOrientation", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateGetTime, cache->DeviceWithStateClass, "getTime", "()Ljava/util/Date;");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateSetFreeDisk, cache->DeviceWithStateClass, "setFreeDisk", "(Ljava/lang/Long;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateSetFreeMemory, cache->DeviceWithStateClass, "setFreeMemory", "(Ljava/lang/Long;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateSetOrientation, cache->DeviceWithStateClass, "setOrientation", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->DeviceWithStateSetTime, cache->DeviceWithStateClass, "setTime", "(Ljava/util/Date;)V");
+
 	CacheInstanceJavaMethod(env, cache->EnumGetName, cache->EnumClass, "name", "()Ljava/lang/String;");
 
 	CacheInstanceJavaMethod(env, cache->EndpointConfigurationConstructor, cache->EndpointConfigurationClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;)V");
 
+	CacheInstanceJavaMethod(env, cache->ErrorGetErrorClass, cache->ErrorClass, "getErrorClass", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->ErrorGetErrorMessage, cache->ErrorClass, "getErrorMessage", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->ErrorGetStacktrace, cache->ErrorClass, "getStacktrace", "()Ljava/util/List;");
+	CacheInstanceJavaMethod(env, cache->ErrorGetType, cache->ErrorClass, "getType", "()Lcom/bugsnag/android/ErrorType;");
+	CacheInstanceJavaMethod(env, cache->ErrorSetErrorClass, cache->ErrorClass, "setErrorClass", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->ErrorSetErrorMessage, cache->ErrorClass, "setErrorMessage", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->ErrorSetType, cache->ErrorClass, "setType", "(Lcom/bugsnag/android/ErrorType;)V");
+
 	CacheInstanceJavaMethod(env, cache->ErrorTypesConstructor, cache->ErrorTypesClass, "<init>", "(ZZZZ)V");
+
+	CacheInstanceJavaMethod(env, cache->EventAddMetadataToSection, cache->EventClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
+	CacheInstanceJavaMethod(env, cache->EventAddMetadataValue, cache->EventClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
+	CacheInstanceJavaMethod(env, cache->EventClearMetadataSection, cache->EventClass, "clearMetadata", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventClearMetadataValue, cache->EventClass, "clearMetadata", "(Ljava/lang/String;Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventGetApiKey, cache->EventClass, "getApiKey", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->EventGetApp, cache->EventClass, "getApp", "()Lcom/bugsnag/android/AppWithState;");
+	CacheInstanceJavaMethod(env, cache->EventGetBreadcrumbs, cache->EventClass, "getBreadcrumbs", "()Ljava/util/List;");
+	CacheInstanceJavaMethod(env, cache->EventGetContext, cache->EventClass, "getContext", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->EventGetDevice, cache->EventClass, "getDevice", "()Lcom/bugsnag/android/DeviceWithState;");
+	CacheInstanceJavaMethod(env, cache->EventGetErrors, cache->EventClass, "getErrors", "()Ljava/util/List;");
+	CacheInstanceJavaMethod(env, cache->EventGetGroupingHash, cache->EventClass, "getGroupingHash", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->EventGetSeverity, cache->EventClass, "getSeverity", "()Lcom/bugsnag/android/Severity;");
+	CacheInstanceJavaMethod(env, cache->EventGetThreads, cache->EventClass, "getThreads", "()Ljava/util/List;");
+	CacheInstanceJavaMethod(env, cache->EventGetUnhandled, cache->EventClass, "isUnhandled", "()Z");
+	CacheInstanceJavaMethod(env, cache->EventGetUser, cache->EventClass, "getUser", "()Lcom/bugsnag/android/User;");
+	CacheInstanceJavaMethod(env, cache->EventSetApiKey, cache->EventClass, "setApiKey", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventSetContext, cache->EventClass, "setContext", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventSetGroupingHash, cache->EventClass, "setGroupingHash", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventSetSeverity, cache->EventClass, "setSeverity", "(Lcom/bugsnag/android/Severity;)V");
+	CacheInstanceJavaMethod(env, cache->EventSetUnhandled, cache->EventClass, "setUnhandled", "(Z)V");
+	CacheInstanceJavaMethod(env, cache->EventSetUser, cache->EventClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 
 	CacheInstanceJavaMethod(env, cache->FileConstructor, cache->FileClass, "<init>", "(Ljava/lang/String;)V");
 
@@ -209,6 +266,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->LastRunInfoGetConsecutiveLaunchCrashes, cache->LastRunInfoClass, "getConsecutiveLaunchCrashes", "()I");
 
 	CacheInstanceJavaMethod(env, cache->ListAdd, cache->ListClass, "add", "(Ljava/lang/Object;)Z");
+	CacheInstanceJavaMethod(env, cache->ListClear, cache->ListClass, "clear", "()V");
 	CacheInstanceJavaMethod(env, cache->ListGet, cache->ListClass, "get", "(I)Ljava/lang/Object;");
 	CacheInstanceJavaMethod(env, cache->ListSize, cache->ListClass, "size", "()I");
 
@@ -228,6 +286,26 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->SessionSetId, cache->SessionClass, "setId", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->SessionSetStartedAt, cache->SessionClass, "setStartedAt", "(Ljava/util/Date;)V");
 	CacheInstanceJavaMethod(env, cache->SessionSetUser, cache->SessionClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+
+	CacheInstanceJavaMethod(env, cache->StackframeGetFile, cache->StackframeClass, "getFile", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->StackframeGetInProject, cache->StackframeClass, "getInProject", "()Ljava/lang/Boolean;");
+	CacheInstanceJavaMethod(env, cache->StackframeGetLineNumber, cache->StackframeClass, "getLineNumber", "()Ljava/lang/Number;");
+	CacheInstanceJavaMethod(env, cache->StackframeGetMethod, cache->StackframeClass, "getMethod", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->StackframeGetType, cache->StackframeClass, "getType", "()Lcom/bugsnag/android/ErrorType;");
+	CacheInstanceJavaMethod(env, cache->StackframeSetFile, cache->StackframeClass, "setFile", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->StackframeSetInProject, cache->StackframeClass, "setInProject", "(Ljava/lang/Boolean;)V");
+	CacheInstanceJavaMethod(env, cache->StackframeSetLineNumber, cache->StackframeClass, "setLineNumber", "(Ljava/lang/Number;)V");
+	CacheInstanceJavaMethod(env, cache->StackframeSetMethod, cache->StackframeClass, "setMethod", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->StackframeSetType, cache->StackframeClass, "setType", "(Lcom/bugsnag/android/ErrorType;)V");
+
+	CacheInstanceJavaMethod(env, cache->ThreadGetErrorReportingThread, cache->ThreadClass, "getErrorReportingThread", "()Z");
+	CacheInstanceJavaMethod(env, cache->ThreadGetId, cache->ThreadClass, "getId", "()J");
+	CacheInstanceJavaMethod(env, cache->ThreadGetName, cache->ThreadClass, "getName", "()Ljava/lang/String;");
+	CacheInstanceJavaMethod(env, cache->ThreadGetType, cache->ThreadClass, "getType", "()Lcom/bugsnag/android/ThreadType;");
+	CacheInstanceJavaMethod(env, cache->ThreadGetStacktrace, cache->ThreadClass, "getStacktrace", "()Ljava/util/List;");
+	CacheInstanceJavaMethod(env, cache->ThreadSetId, cache->ThreadClass, "setId", "(J)V");
+	CacheInstanceJavaMethod(env, cache->ThreadSetName, cache->ThreadClass, "setName", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->ThreadSetStacktrace, cache->ThreadClass, "setStacktrace", "(Ljava/util/List;)V");
 
 	CacheInstanceJavaMethod(env, cache->UserGetEmail, cache->UserClass, "getEmail", "()Ljava/lang/String;");
 	CacheInstanceJavaMethod(env, cache->UserGetId, cache->UserClass, "getId", "()Ljava/lang/String;");
@@ -263,10 +341,13 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaField(env, cache->BreadcrumbTypeRequest, cache->BreadcrumbTypeClass, "REQUEST", "Lcom/bugsnag/android/BreadcrumbType;");
 	CacheStaticJavaField(env, cache->BreadcrumbTypeState, cache->BreadcrumbTypeClass, "STATE", "Lcom/bugsnag/android/BreadcrumbType;");
 	CacheStaticJavaField(env, cache->BreadcrumbTypeUser, cache->BreadcrumbTypeClass, "USER", "Lcom/bugsnag/android/BreadcrumbType;");
-
+	CacheStaticJavaField(env, cache->ErrorTypeAndroid, cache->ErrorTypeClass, "ANDROID", "Lcom/bugsnag/android/ErrorType;");
+	CacheStaticJavaField(env, cache->ErrorTypeC, cache->ErrorTypeClass, "C", "Lcom/bugsnag/android/ErrorType;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyAlways, cache->ThreadSendPolicyClass, "ALWAYS", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyUnhandledOnly, cache->ThreadSendPolicyClass, "UNHANDLED_ONLY", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyNever, cache->ThreadSendPolicyClass, "NEVER", "Lcom/bugsnag/android/ThreadSendPolicy;");
+	CacheStaticJavaField(env, cache->ThreadTypeAndroid, cache->ThreadTypeClass, "ANDROID", "Lcom/bugsnag/android/ThreadType;");
+	CacheStaticJavaField(env, cache->ThreadTypeC, cache->ThreadTypeClass, "C", "Lcom/bugsnag/android/ThreadType;");
 
 	return true;
 }
@@ -467,7 +548,7 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIRefere
 	return nullptr;
 }
 
-jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value)
+jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int64 Value)
 {
 	jobject jValue = (*Env).NewObject(Cache->IntegerClass, Cache->IntegerConstructor, Value);
 	if (FAndroidPlatformJNI::CheckAndClearException(Env))
@@ -475,6 +556,25 @@ jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* 
 		return nullptr;
 	}
 	return jValue;
+}
+
+EBugsnagSeverity FAndroidPlatformJNI::ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	const char* Name = FAndroidPlatformJNI::GetNameFromEnum(Env, Cache, Value);
+	if (!Name)
+	{
+		return EBugsnagSeverity::Warning;
+	}
+	switch (Name[0])
+	{
+	case 'E':
+		return EBugsnagSeverity::Error;
+	case 'I':
+		return EBugsnagSeverity::Info;
+	case 'W':
+	default:
+		return EBugsnagSeverity::Warning;
+	}
 }
 
 jobject FAndroidPlatformJNI::ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSeverity Value)
@@ -614,4 +714,21 @@ const char* FAndroidPlatformJNI::GetNameFromEnum(JNIEnv* Env, const JNIReference
 	ReturnNullOnException(Env);
 	(*Env).DeleteLocalRef(jName);
 	return Name;
+}
+
+EBugsnagErrorType FAndroidPlatformJNI::ParseErrorType(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)
+{
+	const char* Name = FAndroidPlatformJNI::GetNameFromEnum(Env, Cache, Value);
+	if (!Name)
+	{
+		return EBugsnagErrorType::C;
+	}
+	switch (Name[0])
+	{
+	case 'A':
+		return EBugsnagErrorType::Android;
+	case 'C':
+	default:
+		return EBugsnagErrorType::C;
+	}
 }

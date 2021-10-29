@@ -121,11 +121,11 @@ public:
 		return FAndroidPlatformJNI::ParseDateTime(Env, Cache, jValue);
 	}
 
-	void SetDateField(jmethodID Method, bool IsNullable, TSharedPtr<FDateTime> Value) const
+	void SetDateField(jmethodID Method, bool IsNullable, TOptional<FDateTime> Value) const
 	{
-		if (Value.IsValid())
+		if (Value.IsSet())
 		{
-			jobject jValue = FAndroidPlatformJNI::ParseJavaDate(Env, Cache, *Value);
+			jobject jValue = FAndroidPlatformJNI::ParseJavaDate(Env, Cache, Value.GetValue());
 			ReturnVoidOnException(Env);
 			(*Env).CallVoidMethod(JavaObject, Method, jValue);
 		}

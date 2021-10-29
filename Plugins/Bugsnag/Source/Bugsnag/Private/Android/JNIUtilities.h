@@ -10,23 +10,30 @@ typedef struct
 {
 	bool loaded;
 	bool initialized;
-	jclass InterfaceClass;
 	jclass AppClass;
-	jclass DeviceClass;
+	jclass AppWithStateClass;
 	jclass BreadcrumbClass;
 	jclass BreadcrumbTypeClass;
 	jclass BugsnagClass;
 	jclass BugsnagUnrealPluginClass;
 	jclass ConfigClass;
+	jclass DeviceClass;
+	jclass DeviceWithStateClass;
 	jclass EndpointConfigurationClass;
+	jclass ErrorClass;
 	jclass ErrorTypesClass;
+	jclass ErrorTypeClass;
+	jclass EventClass;
 	jclass LastRunInfoClass;
 	jclass MetadataParserClass;
 	jclass MetadataSerializerClass;
 	jclass NotifierClass;
+	jclass ThreadClass;
 	jclass ThreadSendPolicyClass;
+	jclass ThreadTypeClass;
 	jclass SessionClass;
 	jclass SeverityClass;
+	jclass StackframeClass;
 	jclass UserClass;
 	jclass TraceClass;
 	jclass DateClass;
@@ -59,6 +66,14 @@ typedef struct
 	jmethodID AppSetType;
 	jmethodID AppSetVersion;
 	jmethodID AppSetVersionCode;
+	jmethodID AppWithStateGetDuration;
+	jmethodID AppWithStateGetDurationInForeground;
+	jmethodID AppWithStateGetInForeground;
+	jmethodID AppWithStateGetIsLaunching;
+	jmethodID AppWithStateSetDuration;
+	jmethodID AppWithStateSetDurationInForeground;
+	jmethodID AppWithStateSetInForeground;
+	jmethodID AppWithStateSetIsLaunching;
 	jmethodID BreadcrumbGetMessage;
 	jmethodID BreadcrumbGetMetadata;
 	jmethodID BreadcrumbGetTimestamp;
@@ -82,8 +97,11 @@ typedef struct
 	jmethodID BugsnagResumeSession;
 	jmethodID BugsnagSetUser;
 	jmethodID BugsnagUnrealPluginConstructor;
+	jmethodID BugsnagUnrealPluginGetEventMetadataSection;
+	jmethodID BugsnagUnrealPluginGetEventMetadataValue;
 	jmethodID BugsnagUnrealPluginGetMetadataSection;
 	jmethodID BugsnagUnrealPluginGetMetadataValue;
+	jmethodID BugsnagUnrealPluginNotify;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigAddPlugin;
 	jmethodID ConfigConstructor;
@@ -130,11 +148,47 @@ typedef struct
 	jmethodID DeviceSetOsVersion;
 	jmethodID DeviceSetRuntimeVersions;
 	jmethodID DeviceSetTotalMemory;
+	jmethodID DeviceWithStateGetFreeDisk;
+	jmethodID DeviceWithStateGetFreeMemory;
+	jmethodID DeviceWithStateGetOrientation;
+	jmethodID DeviceWithStateGetTime;
+	jmethodID DeviceWithStateSetFreeDisk;
+	jmethodID DeviceWithStateSetFreeMemory;
+	jmethodID DeviceWithStateSetOrientation;
+	jmethodID DeviceWithStateSetTime;
 	jmethodID EndpointConfigurationConstructor;
 	jmethodID ErrorTypesConstructor;
 	jmethodID DateConstructor;
 	jmethodID DateGetTime;
 	jmethodID EnumGetName;
+	jmethodID ErrorGetErrorClass;
+	jmethodID ErrorGetErrorMessage;
+	jmethodID ErrorGetStacktrace;
+	jmethodID ErrorGetType;
+	jmethodID ErrorSetErrorClass;
+	jmethodID ErrorSetErrorMessage;
+	jmethodID ErrorSetType;
+	jmethodID EventAddMetadataToSection;
+	jmethodID EventAddMetadataValue;
+	jmethodID EventClearMetadataSection;
+	jmethodID EventClearMetadataValue;
+	jmethodID EventGetApiKey;
+	jmethodID EventGetApp;
+	jmethodID EventGetBreadcrumbs;
+	jmethodID EventGetContext;
+	jmethodID EventGetDevice;
+	jmethodID EventGetErrors;
+	jmethodID EventGetGroupingHash;
+	jmethodID EventGetSeverity;
+	jmethodID EventGetThreads;
+	jmethodID EventGetUnhandled;
+	jmethodID EventGetUser;
+	jmethodID EventSetApiKey;
+	jmethodID EventSetContext;
+	jmethodID EventSetGroupingHash;
+	jmethodID EventSetSeverity;
+	jmethodID EventSetUnhandled;
+	jmethodID EventSetUser;
 	jmethodID HashMapConstructor;
 	jmethodID HashMapGet;
 	jmethodID LastRunInfoGetCrashed;
@@ -156,6 +210,24 @@ typedef struct
 	jmethodID SessionSetId;
 	jmethodID SessionSetStartedAt;
 	jmethodID SessionSetUser;
+	jmethodID StackframeGetFile;
+	jmethodID StackframeGetInProject;
+	jmethodID StackframeGetLineNumber;
+	jmethodID StackframeGetMethod;
+	jmethodID StackframeGetType;
+	jmethodID StackframeSetFile;
+	jmethodID StackframeSetInProject;
+	jmethodID StackframeSetLineNumber;
+	jmethodID StackframeSetMethod;
+	jmethodID StackframeSetType;
+	jmethodID ThreadGetErrorReportingThread;
+	jmethodID ThreadGetId;
+	jmethodID ThreadGetName;
+	jmethodID ThreadGetType;
+	jmethodID ThreadGetStacktrace;
+	jmethodID ThreadSetId;
+	jmethodID ThreadSetName;
+	jmethodID ThreadSetStacktrace;
 	jmethodID UserGetEmail;
 	jmethodID UserGetId;
 	jmethodID UserGetName;
@@ -165,6 +237,7 @@ typedef struct
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID ListAdd;
+	jmethodID ListClear;
 	jmethodID ListGet;
 	jmethodID ListSize;
 	jmethodID LongConstructor;
@@ -188,9 +261,13 @@ typedef struct
 	jfieldID BreadcrumbTypeRequest;
 	jfieldID BreadcrumbTypeState;
 	jfieldID BreadcrumbTypeUser;
+	jfieldID ErrorTypeAndroid;
+	jfieldID ErrorTypeC;
 	jfieldID ThreadSendPolicyAlways;
 	jfieldID ThreadSendPolicyUnhandledOnly;
 	jfieldID ThreadSendPolicyNever;
+	jfieldID ThreadTypeAndroid;
+	jfieldID ThreadTypeC;
 } JNIReferenceCache;
 
 class FAndroidPlatformJNI
@@ -282,6 +359,8 @@ public:
    */
 	static jobject ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagSeverity Value);
 
+	static EBugsnagSeverity ParseSeverity(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
+
 	/**
    * Convert a value into a Java ThreadSendPolicy
    *
@@ -300,7 +379,7 @@ public:
    * @param Cache A reference to a cache object to populate. Must not be null.
    * @param Value The value to convert
    */
-	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int Value);
+	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int64 Value);
 
 	/**
      * Convert a Java Date into a FDateTime
@@ -397,4 +476,6 @@ public:
      * @return the name or null upon exception
      */
 	static const char* GetNameFromEnum(JNIEnv* Env, const JNIReferenceCache* Cache, jobject EnumValue);
+
+	static EBugsnagErrorType ParseErrorType(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value);
 };
