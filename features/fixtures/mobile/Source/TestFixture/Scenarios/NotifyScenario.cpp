@@ -33,6 +33,9 @@ public:
 			{
 				return true;
 			});
+
+		// sent in event payload
+		Configuration->SetProjectPackages({TEXT("com.example.package")});
 	}
 
 	void Run() override
