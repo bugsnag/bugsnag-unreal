@@ -8,93 +8,93 @@ class FAndroidApp : virtual public IBugsnagApp, public FJavaObjectWrapper
 public:
 	using FJavaObjectWrapper::FJavaObjectWrapper;
 
-	const TSharedPtr<FString> GetBinaryArch() const
+	const TOptional<FString> GetBinaryArch() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->AppGetBinaryArch);
+		ReturnStringFieldOptional(JavaObject, Cache->AppGetBinaryArch);
 	}
 
-	void SetBinaryArch(const TSharedPtr<FString>& Value)
+	void SetBinaryArch(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->AppSetBinaryArch, true, Value);
 	}
 
-	const TSharedPtr<FString> GetBuildUuid() const
+	const TOptional<FString> GetBuildUuid() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->AppGetBuildUuid);
+		ReturnStringFieldOptional(JavaObject, Cache->AppGetBuildUuid);
 	}
 
-	void SetBuildUuid(const TSharedPtr<FString>& Value)
+	void SetBuildUuid(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->AppSetBuildUuid, true, Value);
 	}
 
-	const TSharedPtr<FString> GetId() const
+	const TOptional<FString> GetId() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->AppGetId);
+		ReturnStringFieldOptional(JavaObject, Cache->AppGetId);
 	}
 
-	void SetId(const TSharedPtr<FString>& Value)
+	void SetId(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->AppSetId, true, Value);
 	}
 
-	const TSharedPtr<FString> GetReleaseStage() const
+	const TOptional<FString> GetReleaseStage() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->AppGetReleaseStage);
+		ReturnStringFieldOptional(JavaObject, Cache->AppGetReleaseStage);
 	}
 
-	void SetReleaseStage(const TSharedPtr<FString>& Value)
+	void SetReleaseStage(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->AppSetReleaseStage, true, Value);
 	}
 
-	const TSharedPtr<FString> GetType() const
+	const TOptional<FString> GetType() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->AppGetType);
+		ReturnStringFieldOptional(JavaObject, Cache->AppGetType);
 	}
 
-	void SetType(const TSharedPtr<FString>& Value)
+	void SetType(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->AppSetType, true, Value);
 	}
 
-	const TSharedPtr<FString> GetVersion() const
+	const TOptional<FString> GetVersion() const
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->AppGetVersion);
+		ReturnStringFieldOptional(JavaObject, Cache->AppGetVersion);
 	}
 
-	void SetVersion(const TSharedPtr<FString>& Value)
+	void SetVersion(const TOptional<FString>& Value)
 	{
 		SetStringField(Cache->AppSetVersion, true, Value);
 	}
 
-	const TSharedPtr<int64> GetVersionCode() const
+	const TOptional<int64> GetVersionCode() const
 	{
 		return GetLongObjectField<int64>(Cache->AppGetVersionCode);
 	}
 
-	void SetVersionCode(const TSharedPtr<int64>& Value)
+	void SetVersionCode(const TOptional<int64>& Value)
 	{
 		SetLongObjectField(Cache->AppSetVersionCode, true, Value);
 	}
 
 	// -- unsupported fields
 
-	const TSharedPtr<FString> GetBundleVersion() const
+	const TOptional<FString> GetBundleVersion() const
 	{
-		return nullptr;
+		return TOptional<FString>();
 	}
 
-	void SetBundleVersion(const TSharedPtr<FString>& Value)
+	void SetBundleVersion(const TOptional<FString>& Value)
 	{
 	}
 
-	const TSharedPtr<FString> GetDsymUuid() const
+	const TOptional<FString> GetDsymUuid() const
 	{
-		return nullptr;
+		return TOptional<FString>();
 	}
 
-	void SetDsymUuid(const TSharedPtr<FString>& Value)
+	void SetDsymUuid(const TOptional<FString>& Value)
 	{
 	}
 };

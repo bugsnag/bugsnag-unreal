@@ -8,9 +8,15 @@
 #include "RHI.h"
 #include "UserActivityTracking.h"
 
-static TSharedPtr<FString> NullIfEmpty(const FString& String)
+static TOptional<FString> UnsetIfEmpty(const FString& Value)
 {
-	return String.IsEmpty() ? nullptr : MakeShareable(new FString(String));
+	return Value.IsEmpty() ? TOptional<FString>() : TOptional<FString>(Value);
+}
+
+template <typename T>
+static TOptional<T> UnsetIfZero(const T Value)
+{
+	return Value == 0 ? TOptional<T>() : Value;
 }
 
 uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;
@@ -24,7 +30,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const FString& ApiKey)
 FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	: bAutoDetectErrors(Settings.bAutoDetectErrors)
 	, bAutoTrackSessions(Settings.bAutoTrackSessions)
-	, Context(NullIfEmpty(Settings.Context))
+	, Context(UnsetIfEmpty(Settings.Context))
 	, DiscardClasses(Settings.DiscardClasses)
 	, EnabledBreadcrumbTypes(Settings.EnabledBreadcrumbTypes)
 	, EnabledErrorTypes(Settings.EnabledErrorTypes)
@@ -36,11 +42,11 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	, MaxPersistedEvents(Settings.MaxPersistedEvents)
 	, MaxPersistedSessions(Settings.MaxPersistedSessions)
 	, bPersistUser(Settings.bPersistUser)
-	, ReleaseStage(NullIfEmpty(Settings.ReleaseStage))
-	, AppType(NullIfEmpty(Settings.AppType))
-	, AppVersion(NullIfEmpty(Settings.AppVersion))
-	, BundleVersion(NullIfEmpty(Settings.BundleVersion))
-	, VersionCode(Settings.VersionCode ? MakeShareable(new int(Settings.VersionCode)) : nullptr)
+	, ReleaseStage(UnsetIfEmpty(Settings.ReleaseStage))
+	, AppType(UnsetIfEmpty(Settings.AppType))
+	, AppVersion(UnsetIfEmpty(Settings.AppVersion))
+	, BundleVersion(UnsetIfEmpty(Settings.BundleVersion))
+	, VersionCode(UnsetIfZero(Settings.VersionCode))
 	, Endpoints(FBugsnagEndpointConfiguration(Settings.NotifyEndpoint, Settings.SessionsEndpoint))
 {
 	if (!Settings.ApiKey.IsEmpty())
@@ -96,7 +102,7 @@ void FBugsnagConfiguration::SetApiKey(const FString& Value)
 	ApiKey = Value;
 }
 
-void FBugsnagConfiguration::SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name)
+void FBugsnagConfiguration::SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name)
 {
 	User = FBugsnagUser(Id, Email, Name);
 }

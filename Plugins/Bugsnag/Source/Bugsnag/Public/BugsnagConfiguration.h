@@ -42,9 +42,9 @@ public:
 
 	// Context
 
-	const TSharedPtr<FString>& GetContext() const { return Context; }
+	const TOptional<FString>& GetContext() const { return Context; }
 
-	void SetContext(const TSharedPtr<FString>& Value) { Context = Value; }
+	void SetContext(const TOptional<FString>& Value) { Context = Value; }
 
 	// DiscardClasses
 
@@ -149,33 +149,27 @@ public:
 
 	// Release Stage
 
-	const TSharedPtr<FString>& GetReleaseStage() const { return ReleaseStage; }
+	const TOptional<FString>& GetReleaseStage() const { return ReleaseStage; }
 
-	void SetReleaseStage(const TSharedPtr<FString>& Value) { ReleaseStage = Value; }
+	void SetReleaseStage(const TOptional<FString>& Value) { ReleaseStage = Value; }
 
 	// App Type
 
-	const TSharedPtr<FString>& GetAppType() const { return AppType; }
+	const TOptional<FString>& GetAppType() const { return AppType; }
 
-	void SetAppType(const TSharedPtr<FString>& Value) { AppType = Value; }
+	void SetAppType(const TOptional<FString>& Value) { AppType = Value; }
 
 	// App Version
 
-	const TSharedPtr<FString>& GetAppVersion() const { return AppVersion; }
+	const TOptional<FString>& GetAppVersion() const { return AppVersion; }
 
-	void SetAppVersion(const TSharedPtr<FString>& Value) { AppVersion = Value; }
+	void SetAppVersion(const TOptional<FString>& Value) { AppVersion = Value; }
 
 	// Bundle Version
 
-	const TSharedPtr<FString>& GetBundleVersion() const { return BundleVersion; }
+	const TOptional<FString>& GetBundleVersion() const { return BundleVersion; }
 
-	void SetBundleVersion(const TSharedPtr<FString>& Value) { BundleVersion = Value; }
-
-	// Version Code
-
-	const TSharedPtr<int>& GetVersionCode() const { return VersionCode; }
-
-	void SetVersionCode(const TSharedPtr<int>& Value) { VersionCode = Value; }
+	void SetBundleVersion(const TOptional<FString>& Value) { BundleVersion = Value; }
 
 	// Endpoints
 
@@ -183,11 +177,33 @@ public:
 
 	void SetEndpoints(const FString& Notify, const FString& Sessions) { Endpoints = FBugsnagEndpointConfiguration(Notify, Sessions); }
 
+	// Android-only
+	// -- PersistenceDirectory
+
+	const TOptional<FString>& GetPersistenceDirectory() const { return PersistenceDirectory; }
+
+	void SetPersistenceDirectory(const TOptional<FString>& Value) { PersistenceDirectory = Value; }
+
+	// -- ProjectPackages
+
+	const TArray<FString>& GetProjectPackages() const { return ProjectPackages; }
+
+	void SetProjectPackages(const TArray<FString>& Value) { ProjectPackages = Value; }
+
+	// -- Version Code
+
+	const TOptional<int>& GetVersionCode() const { return VersionCode; }
+
+	void SetVersionCode(const TOptional<int>& Value) { VersionCode = Value; }
+
 	// User
 
 	const FBugsnagUser GetUser() const { return User; }
 
-	void SetUser(const TSharedPtr<FString>& Id = nullptr, const TSharedPtr<FString>& Email = nullptr, const TSharedPtr<FString>& Name = nullptr);
+	void SetUser(
+		const TOptional<FString>& Id = TOptional<FString>(),
+		const TOptional<FString>& Email = TOptional<FString>(),
+		const TOptional<FString>& Name = TOptional<FString>());
 
 	// Metadata
 
@@ -209,17 +225,12 @@ public:
 
 	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) { OnBreadcrumbCallbacks.Add(Callback); }
 
-	// Android only, and only for handled errors.
-	void AddOnError(FBugsnagOnErrorCallback Callback) { OnErrorCallbacks.Add(Callback); }
-
 	// iOS only, may be called long after the crash occurred.
 	void AddOnSendError(FBugsnagOnErrorCallback Callback) { OnSendErrorCallbacks.Add(Callback); }
 
 	void AddOnSession(FBugsnagOnSessionCallback Callback) { OnSessionCallbacks.Add(Callback); }
 
 	const TArray<FBugsnagOnBreadcrumbCallback>& GetOnBreadcrumbCallbacks() const { return OnBreadcrumbCallbacks; }
-
-	const TArray<FBugsnagOnErrorCallback>& GetOnErrorCallbacks() const { return OnErrorCallbacks; }
 
 	const TArray<FBugsnagOnErrorCallback>& GetOnSendErrorCallbacks() const { return OnSendErrorCallbacks; }
 
@@ -238,7 +249,7 @@ private:
 	FString ApiKey;
 	bool bAutoDetectErrors = true;
 	bool bAutoTrackSessions = true;
-	TSharedPtr<FString> Context;
+	TOptional<FString> Context;
 	TArray<FString> DiscardClasses;
 	FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes;
 	FBugsnagErrorTypes EnabledErrorTypes;
@@ -253,15 +264,16 @@ private:
 	uint64 MaxPersistedSessions = 128;
 	bool bPersistUser = true;
 	FBugsnagUser User;
-	TSharedPtr<FString> ReleaseStage;
-	TSharedPtr<FString> AppType;
-	TSharedPtr<FString> AppVersion;
-	TSharedPtr<FString> BundleVersion;
-	TSharedPtr<int> VersionCode;
+	TOptional<FString> ReleaseStage;
+	TOptional<FString> AppType;
+	TOptional<FString> AppVersion;
+	TOptional<FString> BundleVersion;
+	TOptional<FString> PersistenceDirectory;
+	TArray<FString> ProjectPackages;
+	TOptional<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
-	TArray<FBugsnagOnErrorCallback> OnErrorCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
 	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
 };

@@ -14,7 +14,7 @@
 
 // Call a void JNI method, parsing value as a (nullable) jstring
 #define jniCallWithString(env, obj, method, value) \
-	jniCallWithObjects(env, obj, method, FAndroidPlatformJNI::ParseFStringPtr(env, value));
+	jniCallWithObjects(env, obj, method, FAndroidPlatformJNI::ParseFString(env, value));
 
 // Call a void JNI method, parsing value as a Java HashSet<String>
 #define jniCallWithSet(env, cache, obj, method, value)                         \
@@ -35,19 +35,19 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	ReturnNullOnException(Env);
 
 	FAndroidPlatformJNI::SetNotifierInfo(Env, Cache, jConfig);
-	if (Config->GetAppType().IsValid())
+	if (Config->GetAppType().IsSet())
 	{
-		jniCallWithString(Env, jConfig, Cache->ConfigSetAppType, Config->GetAppType());
+		jniCallWithString(Env, jConfig, Cache->ConfigSetAppType, Config->GetAppType().GetValue());
 	}
-	if (Config->GetAppVersion().IsValid())
+	if (Config->GetAppVersion().IsSet())
 	{
-		jniCallWithString(Env, jConfig, Cache->ConfigSetAppVersion, Config->GetAppVersion());
+		jniCallWithString(Env, jConfig, Cache->ConfigSetAppVersion, Config->GetAppVersion().GetValue());
 	}
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetAutoDetectErrors, Config->GetAutoDetectErrors());
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetAutoTrackSessions, Config->GetAutoTrackSessions());
-	if (Config->GetContext().IsValid())
+	if (Config->GetContext().IsSet())
 	{
-		jniCallWithString(Env, jConfig, Cache->ConfigSetContext, Config->GetContext());
+		jniCallWithString(Env, jConfig, Cache->ConfigSetContext, Config->GetContext().GetValue());
 	}
 	if (Config->GetDiscardClasses().Num())
 	{
@@ -91,15 +91,21 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	{
 		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
 	}
-	if (Config->GetReleaseStage().IsValid())
+
+	if (Config->GetProjectPackages().Num())
 	{
-		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage());
+		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetProjectPackages, Config->GetProjectPackages());
+	}
+
+	if (Config->GetReleaseStage().IsSet())
+	{
+		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage().GetValue());
 	}
 	else
 	{
 		// explicitly set production for shipping builds, otherwise use bugsnag-android default detection
 #if UE_BUILD_SHIPPING
-		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, MakeShareable(new FString("production")));
+		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, FString(TEXT("production")));
 #endif
 	}
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetSendLaunchCrashesSynchronously, Config->GetSendLaunchCrashesSynchronously());
@@ -107,18 +113,31 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	ReturnNullOnFail(jThreadPolicy);
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetSendThreads, jThreadPolicy);
 
-	if (Config->GetVersionCode().IsValid())
+	if (Config->GetVersionCode().IsSet())
 	{
-		jobject jVersionCode = FAndroidPlatformJNI::ParseInteger(Env, Cache, *Config->GetVersionCode());
+		jobject jVersionCode = FAndroidPlatformJNI::ParseInteger(Env, Cache, Config->GetVersionCode().GetValue());
 		ReturnNullOnFail(jVersionCode);
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetVersionCode, jVersionCode);
 	}
 	if (!Config->GetUser().IsEmpty())
 	{
-		jstring jId = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetId());
-		jstring jEmail = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetEmail());
-		jstring jName = FAndroidPlatformJNI::ParseFStringPtr(Env, Config->GetUser().GetName());
+		jstring jId = FAndroidPlatformJNI::ParseFStringOptional(Env, Config->GetUser().GetId());
+		jstring jEmail = FAndroidPlatformJNI::ParseFStringOptional(Env, Config->GetUser().GetEmail());
+		jstring jName = FAndroidPlatformJNI::ParseFStringOptional(Env, Config->GetUser().GetName());
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
+	}
+
+	if (Config->GetPersistenceDirectory().IsSet())
+	{
+		jstring jDirPath = FAndroidPlatformJNI::ParseFString(Env, Config->GetPersistenceDirectory().GetValue());
+		if (jDirPath)
+		{
+			jobject jDirFile = (*Env).NewObject(Cache->FileClass, Cache->FileConstructor, jDirPath);
+			if (!FAndroidPlatformJNI::CheckAndClearException(Env))
+			{
+				jniCallWithObjects(Env, jConfig, Cache->ConfigSetPersistenceDirectory, jDirFile);
+			}
+		}
 	}
 
 	for (auto& Item : Config->GetMetadataValues())

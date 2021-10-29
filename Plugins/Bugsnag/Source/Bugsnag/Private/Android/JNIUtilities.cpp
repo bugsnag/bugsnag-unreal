@@ -91,6 +91,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheSystemJavaClass(env, cache->HashMapClass, "java/util/HashMap");
 	CacheSystemJavaClass(env, cache->ArrayListClass, "java/util/ArrayList");
 	CacheSystemJavaClass(env, cache->BooleanClass, "java/lang/Boolean");
+	CacheSystemJavaClass(env, cache->FileClass, "java/io/File");
 	CacheSystemJavaClass(env, cache->HashSetClass, "java/util/HashSet");
 	CacheSystemJavaClass(env, cache->IntegerClass, "java/lang/Integer");
 	CacheSystemJavaClass(env, cache->ListClass, "java/util/List");
@@ -176,7 +177,9 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ConfigSetLaunchDurationMillis, cache->ConfigClass, "setLaunchDurationMillis", "(J)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetMaxBreadcrumbs, cache->ConfigClass, "setMaxBreadcrumbs", "(I)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetMaxPersistedEvents, cache->ConfigClass, "setMaxPersistedEvents", "(I)V");
+	CacheInstanceJavaMethod(env, cache->ConfigSetPersistenceDirectory, cache->ConfigClass, "setPersistenceDirectory", "(Ljava/io/File;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetPersistUser, cache->ConfigClass, "setPersistUser", "(Z)V");
+	CacheInstanceJavaMethod(env, cache->ConfigSetProjectPackages, cache->ConfigClass, "setProjectPackages", "(Ljava/util/Set;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetRedactedKeys, cache->ConfigClass, "setRedactedKeys", "(Ljava/util/Set;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetReleaseStage, cache->ConfigClass, "setReleaseStage", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetSendLaunchCrashesSynchronously, cache->ConfigClass, "setSendLaunchCrashesSynchronously", "(Z)V");
@@ -252,6 +255,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->EventSetSeverity, cache->EventClass, "setSeverity", "(Lcom/bugsnag/android/Severity;)V");
 	CacheInstanceJavaMethod(env, cache->EventSetUnhandled, cache->EventClass, "setUnhandled", "(Z)V");
 	CacheInstanceJavaMethod(env, cache->EventSetUser, cache->EventClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+
+	CacheInstanceJavaMethod(env, cache->FileConstructor, cache->FileClass, "<init>", "(Ljava/lang/String;)V");
 
 	CacheInstanceJavaMethod(env, cache->HashMapConstructor, cache->HashMapClass, "<init>", "()V");
 	CacheInstanceJavaMethod(env, cache->HashMapGet, cache->HashMapClass, "get", "(Ljava/lang/Object;)Ljava/lang/Object;");
@@ -380,10 +385,7 @@ FBugsnagUser FAndroidPlatformJNI::ParseJavaUser(JNIEnv* Env, const JNIReferenceC
 {
 	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !Env->IsInstanceOf(Value, Cache->UserClass))
 	{
-		return FBugsnagUser(
-			MakeShareable(new FString("")),
-			MakeShareable(new FString("")),
-			MakeShareable(new FString("")));
+		return FBugsnagUser();
 	}
 	jobject jId = (*Env).CallObjectMethod(Value, Cache->UserGetId);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
@@ -394,17 +396,14 @@ FBugsnagUser FAndroidPlatformJNI::ParseJavaUser(JNIEnv* Env, const JNIReferenceC
 	jobject jEmail = (*Env).CallObjectMethod(Value, Cache->UserGetEmail);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 	FString Email = FAndroidPlatformJNI::ParseJavaString(Env, Cache, jEmail);
-	return FBugsnagUser(
-		MakeShared<FString>(Id),
-		MakeShared<FString>(Email),
-		MakeShared<FString>(Name));
+	return FBugsnagUser(Id, Email, Name);
 }
 
-jstring FAndroidPlatformJNI::ParseFStringPtr(JNIEnv* Env, const TSharedPtr<class FString>& Text)
+jstring FAndroidPlatformJNI::ParseFStringOptional(JNIEnv* Env, const TOptional<FString>& Text)
 {
-	if (Text.IsValid())
+	if (Text.IsSet())
 	{
-		return ParseFString(Env, *Text);
+		return ParseFString(Env, Text.GetValue());
 	}
 	return NULL;
 }

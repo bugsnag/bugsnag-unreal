@@ -94,32 +94,32 @@ public:
 				   : nullptr;
 	}
 
-	const TSharedPtr<FString> GetApiKey() const override
+	const TOptional<FString> GetApiKey() const override
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->EventGetApiKey);
+		ReturnStringFieldOptional(JavaObject, Cache->EventGetApiKey);
 	}
 
-	void SetApiKey(const TSharedPtr<FString>& Value) override
+	void SetApiKey(const TOptional<FString>& Value) override
 	{
 		SetStringField(Cache->EventSetApiKey, false, Value);
 	}
 
-	const TSharedPtr<FString> GetContext() const override
+	const TOptional<FString> GetContext() const override
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->EventGetContext);
+		ReturnStringFieldOptional(JavaObject, Cache->EventGetContext);
 	}
 
-	void SetContext(const TSharedPtr<FString>& Value) override
+	void SetContext(const TOptional<FString>& Value) override
 	{
 		SetStringField(Cache->EventSetContext, true, Value);
 	}
 
-	const TSharedPtr<FString> GetGroupingHash() const override
+	const TOptional<FString> GetGroupingHash() const override
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->EventGetGroupingHash);
+		ReturnStringFieldOptional(JavaObject, Cache->EventGetGroupingHash);
 	}
 
-	void SetGroupingHash(const TSharedPtr<FString>& Value) override
+	void SetGroupingHash(const TOptional<FString>& Value) override
 	{
 		SetStringField(Cache->EventSetGroupingHash, true, Value);
 	}
@@ -185,11 +185,11 @@ public:
 		return FAndroidPlatformJNI::ParseJavaUser(Env, Cache, jUser);
 	}
 
-	void SetUser(const TSharedPtr<FString>& Id, const TSharedPtr<FString>& Email, const TSharedPtr<FString>& Name) override
+	void SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name) override
 	{
-		jstring jId = Id.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Id) : nullptr;
-		jstring jName = Name.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Name) : nullptr;
-		jstring jEmail = Email.IsValid() ? FAndroidPlatformJNI::ParseFString(Env, *Email) : nullptr;
+		jstring jId = Id.IsSet() ? FAndroidPlatformJNI::ParseFString(Env, Id.GetValue()) : nullptr;
+		jstring jName = Name.IsSet() ? FAndroidPlatformJNI::ParseFString(Env, Name.GetValue()) : nullptr;
+		jstring jEmail = Email.IsSet() ? FAndroidPlatformJNI::ParseFString(Env, Email.GetValue()) : nullptr;
 		(*Env).CallVoidMethod(JavaObject, Cache->EventSetUser, jId, jEmail, jName);
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}

@@ -73,7 +73,7 @@ void FApplePlatformConfigurationSpec::Define()
 			It("Context", [this]()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
-					Configuration->SetContext(MakeShareable(new FString(TEXT("LevelOne"))));
+					Configuration->SetContext(FString(TEXT("LevelOne")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.context.UTF8String), TEXT("LevelOne"));
 				});
@@ -188,7 +188,7 @@ void FApplePlatformConfigurationSpec::Define()
 			It("ReleaseStage", [this]()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
-					Configuration->SetReleaseStage(MakeShareable(new FString(TEXT("testing"))));
+					Configuration->SetReleaseStage(FString(TEXT("testing")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.releaseStage.UTF8String), TEXT("testing"));
 				});
@@ -196,7 +196,7 @@ void FApplePlatformConfigurationSpec::Define()
 			It("AppType", [this]()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
-					Configuration->SetAppType(MakeShareable(new FString(TEXT("unreal"))));
+					Configuration->SetAppType(FString(TEXT("unreal")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appType.UTF8String), TEXT("unreal"));
 				});
@@ -204,7 +204,7 @@ void FApplePlatformConfigurationSpec::Define()
 			It("AppVersion", [this]()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
-					Configuration->SetAppVersion(MakeShareable(new FString(TEXT("1.2.3"))));
+					Configuration->SetAppVersion(FString(TEXT("1.2.3")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appVersion.UTF8String), TEXT("1.2.3"));
 				});
@@ -212,7 +212,7 @@ void FApplePlatformConfigurationSpec::Define()
 			It("BundleVersion", [this]()
 				{
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
-					Configuration->SetBundleVersion(MakeShareable(new FString(TEXT("123.4"))));
+					Configuration->SetBundleVersion(FString(TEXT("123.4")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.bundleVersion.UTF8String), TEXT("123.4"));
 				});
@@ -231,9 +231,9 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedPtr<FBugsnagConfiguration> Configuration(new FBugsnagConfiguration(ApiKey));
 					Configuration->SetPersistUser(false);
 					Configuration->SetUser(
-						MakeShareable(new FString(TEXT("123"))),
-						MakeShareable(new FString(TEXT("foobar@example.com"))),
-						MakeShareable(new FString(TEXT("Foo Bar"))));
+						FString(TEXT("123")),
+						FString(TEXT("foobar@example.com")),
+						FString(TEXT("Foo Bar")));
 
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.user.id.UTF8String), TEXT("123"));
@@ -289,9 +289,9 @@ void FApplePlatformConfigurationSpec::Define()
 					bool OnSessionCalled = false;
 					Configuration->AddOnSession([&OnSessionCalled](TSharedRef<IBugsnagSession> Session) mutable
 						{
-							Session->SetUser(MakeShareable(new FString(TEXT("user123"))));
-							Session->GetApp()->SetReleaseStage(MakeShareable(new FString(TEXT("testing"))));
-							Session->GetDevice()->SetLocale(nullptr);
+							Session->SetUser(FString(TEXT("user123")));
+							Session->GetApp()->SetReleaseStage(FString(TEXT("testing")));
+							Session->GetDevice()->SetLocale(TOptional<FString>());
 							OnSessionCalled = true;
 							return false;
 						});

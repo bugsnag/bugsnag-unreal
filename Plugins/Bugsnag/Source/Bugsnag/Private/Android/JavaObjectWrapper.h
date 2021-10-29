@@ -35,11 +35,11 @@ public:
 	}
 
 	template <typename T>
-	void SetPrimitiveObjectField(jclass PrimitiveClass, jmethodID PrimitiveConstructor, jmethodID Method, bool IsNullable, const TSharedPtr<T> Value) const
+	void SetPrimitiveObjectField(jclass PrimitiveClass, jmethodID PrimitiveConstructor, jmethodID Method, bool IsNullable, const TOptional<T> Value) const
 	{
-		if (Value.IsValid())
+		if (Value.IsSet())
 		{
-			jobject jValue = (*Env).NewObject(PrimitiveClass, PrimitiveConstructor, *Value);
+			jobject jValue = (*Env).NewObject(PrimitiveClass, PrimitiveConstructor, Value.GetValue());
 			ReturnVoidOnException(Env);
 			(*Env).CallVoidMethod(JavaObject, Method, jValue);
 		}
@@ -51,51 +51,51 @@ public:
 	}
 
 	template <typename T>
-	TSharedPtr<T> GetLongObjectField(jmethodID Method) const
+	TOptional<T> GetLongObjectField(jmethodID Method) const
 	{
 		jobject jValue = (*Env).CallObjectMethod(JavaObject, Method);
-		ReturnNullOnException(Env);
-		ReturnNullOnFail(jValue); // might be nullable
+		ReturnValueOnException(Env, TOptional<T>());
+		ReturnValueOnFail(jValue, TOptional<T>()); // might be nullable
 		jlong Value = (*Env).CallLongMethod(jValue, Cache->NumberLongValue);
-		ReturnNullOnException(Env);
-		return MakeShareable(new T(Value));
+		ReturnValueOnException(Env, TOptional<T>());
+		return TOptional<T>(Value);
 	}
 
 	template <typename T>
-	void SetLongObjectField(jmethodID Method, bool IsNullable, const TSharedPtr<T> Value) const
+	void SetLongObjectField(jmethodID Method, bool IsNullable, const TOptional<T> Value) const
 	{
 		SetPrimitiveObjectField(Cache->LongClass, Cache->LongConstructor, Method, IsNullable, Value);
 	}
 
-	TSharedPtr<bool> GetBoolField(jmethodID Method)
+	TOptional<bool> GetBoolField(jmethodID Method)
 	{
 		jboolean jValue = (*Env).CallBooleanMethod(JavaObject, Method);
 		return FAndroidPlatformJNI::CheckAndClearException(Env)
-				   ? nullptr
-				   : MakeShareable(new bool(jValue == JNI_TRUE));
+				   ? TOptional<bool>()
+				   : TOptional<bool>(jValue == JNI_TRUE);
 	}
 
-	TSharedPtr<bool> GetBoolObjectField(jmethodID Method) const
+	TOptional<bool> GetBoolObjectField(jmethodID Method) const
 	{
 		jobject jValue = (*Env).CallObjectMethod(JavaObject, Method);
-		ReturnNullOnException(Env);
-		ReturnNullOnFail(jValue); // boolean objects are nullable
+		ReturnValueOnException(Env, TOptional<bool>());
+		ReturnValueOnFail(jValue, TOptional<bool>()); // boolean objects are nullable
 		jboolean Value = (*Env).CallBooleanMethod(jValue, Cache->BooleanBooleanValue);
-		ReturnNullOnException(Env);
-		return MakeShareable(new bool(Value == JNI_TRUE));
+		ReturnValueOnException(Env, TOptional<bool>());
+		return TOptional<bool>(Value == JNI_TRUE);
 	}
 
-	void SetBoolObjectField(jmethodID Method, bool IsNullable, const TSharedPtr<bool> Value) const
+	void SetBoolObjectField(jmethodID Method, bool IsNullable, const TOptional<bool> Value) const
 	{
-		TSharedPtr<jboolean> jValue = Value.IsValid() ? MakeShareable(new jboolean(*Value ? JNI_TRUE : JNI_FALSE)) : nullptr;
+		TOptional<jboolean> jValue = Value.IsSet() ? TOptional<jboolean>(Value.GetValue() ? JNI_TRUE : JNI_FALSE) : TOptional<jboolean>();
 		SetPrimitiveObjectField(Cache->BooleanClass, Cache->BooleanConstructor, Method, IsNullable, jValue);
 	}
 
-	void SetStringField(jmethodID Method, bool IsNullable, const TSharedPtr<FString>& Value) const
+	void SetStringField(jmethodID Method, bool IsNullable, const TOptional<FString>& Value) const
 	{
-		if (Value.IsValid())
+		if (Value.IsSet())
 		{
-			jstring jString = FAndroidPlatformJNI::ParseFString(Env, *Value);
+			jstring jString = FAndroidPlatformJNI::ParseFString(Env, Value.GetValue());
 			ReturnVoidIf(!jString);
 			(*Env).CallVoidMethod(JavaObject, Method, jString);
 			FAndroidPlatformJNI::CheckAndClearException(Env);
@@ -121,11 +121,11 @@ public:
 		return FAndroidPlatformJNI::ParseDateTime(Env, Cache, jValue);
 	}
 
-	void SetDateField(jmethodID Method, bool IsNullable, TSharedPtr<FDateTime> Value) const
+	void SetDateField(jmethodID Method, bool IsNullable, TOptional<FDateTime> Value) const
 	{
-		if (Value.IsValid())
+		if (Value.IsSet())
 		{
-			jobject jValue = FAndroidPlatformJNI::ParseJavaDate(Env, Cache, *Value);
+			jobject jValue = FAndroidPlatformJNI::ParseJavaDate(Env, Cache, Value.GetValue());
 			ReturnVoidOnException(Env);
 			(*Env).CallVoidMethod(JavaObject, Method, jValue);
 		}

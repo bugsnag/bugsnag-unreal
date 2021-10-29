@@ -8,43 +8,43 @@ class FAndroidDeviceWithState : public IBugsnagDeviceWithState, FAndroidDevice
 public:
 	using FAndroidDevice::FAndroidDevice;
 
-	TSharedPtr<uint64> GetFreeDisk() const override
+	TOptional<uint64> GetFreeDisk() const override
 	{
 		return GetLongObjectField<uint64>(Cache->DeviceWithStateGetFreeDisk);
 	}
 
-	void SetFreeDisk(TSharedPtr<uint64> Value) override
+	void SetFreeDisk(TOptional<uint64> Value) override
 	{
 		SetLongObjectField<uint64>(Cache->DeviceWithStateSetFreeDisk, true, Value);
 	}
 
-	TSharedPtr<uint64> GetFreeMemory() const override
+	TOptional<uint64> GetFreeMemory() const override
 	{
 		return GetLongObjectField<uint64>(Cache->DeviceWithStateGetFreeMemory);
 	}
 
-	void SetFreeMemory(TSharedPtr<uint64> Value) override
+	void SetFreeMemory(TOptional<uint64> Value) override
 	{
 		SetLongObjectField<uint64>(Cache->DeviceWithStateSetFreeMemory, true, Value);
 	}
 
-	TSharedPtr<FString> GetOrientation() const override
+	TOptional<FString> GetOrientation() const override
 	{
-		ReturnStringFieldPtr(JavaObject, Cache->DeviceWithStateGetOrientation);
+		ReturnStringFieldOptional(JavaObject, Cache->DeviceWithStateGetOrientation);
 	}
 
-	void SetOrientation(TSharedPtr<FString> Value) override
+	void SetOrientation(TOptional<FString> Value) override
 	{
 		SetStringField(Cache->DeviceWithStateSetOrientation, true, Value);
 	}
 
-	TSharedPtr<FDateTime> GetTime() const override
+	TOptional<FDateTime> GetTime() const override
 	{
 		auto Timestamp = GetDateField(Cache->DeviceWithStateSetTime);
-		return Timestamp == FDateTime(0) ? nullptr : MakeShareable(new FDateTime(Timestamp));
+		return Timestamp == FDateTime(0) ? TOptional<FDateTime>() : Timestamp;
 	}
 
-	void SetTime(TSharedPtr<FDateTime> Value) override
+	void SetTime(TOptional<FDateTime> Value) override
 	{
 		SetDateField(Cache->DeviceWithStateSetTime, true, Value);
 	}

@@ -42,6 +42,7 @@ typedef struct
 	jclass HashSetClass;
 	jclass ArrayListClass;
 	jclass BooleanClass;
+	jclass FileClass;
 	jclass IntegerClass;
 	jclass ListClass;
 	jclass LongClass;
@@ -118,7 +119,9 @@ typedef struct
 	jmethodID ConfigSetLaunchDurationMillis;
 	jmethodID ConfigSetMaxBreadcrumbs;
 	jmethodID ConfigSetMaxPersistedEvents;
+	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
+	jmethodID ConfigSetProjectPackages;
 	jmethodID ConfigSetRedactedKeys;
 	jmethodID ConfigSetReleaseStage;
 	jmethodID ConfigSetSendLaunchCrashesSynchronously;
@@ -230,6 +233,7 @@ typedef struct
 	jmethodID UserGetName;
 	jmethodID BooleanBooleanValue;
 	jmethodID BooleanConstructor;
+	jmethodID FileConstructor;
 	jmethodID HashSetConstructor;
 	jmethodID HashSetAdd;
 	jmethodID ListAdd;
@@ -290,7 +294,7 @@ public:
    */
 	static jstring ParseFString(JNIEnv* Env, const FString& Text);
 
-	static jstring ParseFStringPtr(JNIEnv* Env, const TSharedPtr<FString>& Text);
+	static jstring ParseFStringOptional(JNIEnv* Env, const TOptional<FString>& Text);
 
 	/**
    * Convert a bool value into a Java boolean
