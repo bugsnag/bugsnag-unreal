@@ -42,13 +42,13 @@ void FWrappedEventSpec::Define()
 					TEST_EQUAL(Event->GetUnhandled(), false);
 
 					CocoaEvent.apiKey = @"0192837465afbecd0192837465afbecd";
-					TEST_EQUAL(*Event->GetApiKey(), TEXT("0192837465afbecd0192837465afbecd"));
+					TEST_EQUAL(Event->GetApiKey().GetValue(), TEXT("0192837465afbecd0192837465afbecd"));
 
 					CocoaEvent.context = @"Level three";
-					TEST_EQUAL(*Event->GetContext(), TEXT("Level three"));
+					TEST_EQUAL(Event->GetContext().GetValue(), TEXT("Level three"));
 
 					CocoaEvent.groupingHash = @"UnrealEngine.cpp:32";
-					TEST_EQUAL(*Event->GetGroupingHash(), TEXT("UnrealEngine.cpp:32"));
+					TEST_EQUAL(Event->GetGroupingHash().GetValue(), TEXT("UnrealEngine.cpp:32"));
 
 					CocoaEvent.breadcrumbs = @[[[BugsnagBreadcrumb alloc] init]];
 					TEST_EQUAL(Event->GetBreadcrumbs().Num(), 1);

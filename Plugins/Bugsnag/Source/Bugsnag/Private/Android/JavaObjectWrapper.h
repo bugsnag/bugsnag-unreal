@@ -39,7 +39,7 @@ public:
 	{
 		if (Value.IsSet())
 		{
-			jobject jValue = (*Env).NewObject(PrimitiveClass, PrimitiveConstructor, *Value);
+			jobject jValue = (*Env).NewObject(PrimitiveClass, PrimitiveConstructor, Value.GetValue());
 			ReturnVoidOnException(Env);
 			(*Env).CallVoidMethod(JavaObject, Method, jValue);
 		}
