@@ -17,5 +17,5 @@ public:
    *
    * @return A Java configuration object or null if the configuration failed to initialize
    */
-	static jobject Parse(JNIEnv* Env, const JNIReferenceCache* Cache, const TSharedPtr<FBugsnagConfiguration>& Config);
+	static jobject Parse(JNIEnv* Env, const JNIReferenceCache* Cache, const TSharedRef<FBugsnagConfiguration>& Config);
 };

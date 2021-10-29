@@ -21,7 +21,7 @@
 
 DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
-void FApplePlatformBugsnag::Start(const TSharedPtr<FBugsnagConfiguration>& Configuration)
+void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
 	FWrappedMetadataStore::CocoaStore = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 }

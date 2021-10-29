@@ -26,7 +26,7 @@
 
 jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	const JNIReferenceCache* Cache,
-	const TSharedPtr<FBugsnagConfiguration>& Config)
+	const TSharedRef<FBugsnagConfiguration>& Config)
 {
 	jstring jApiKey = FAndroidPlatformJNI::ParseFString(Env, Config->GetApiKey());
 	ReturnNullOnFail(jApiKey);

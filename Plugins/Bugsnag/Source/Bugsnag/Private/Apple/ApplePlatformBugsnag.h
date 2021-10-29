@@ -6,7 +6,7 @@
 class FApplePlatformBugsnag : public IPlatformBugsnag, public FWrappedMetadataStore
 {
 public:
-	void Start(const TSharedPtr<FBugsnagConfiguration>& Configuration) override;
+	void Start(const TSharedRef<FBugsnagConfiguration>& Configuration) override;
 
 	void Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 		const FBugsnagOnErrorCallback& Callback) override;

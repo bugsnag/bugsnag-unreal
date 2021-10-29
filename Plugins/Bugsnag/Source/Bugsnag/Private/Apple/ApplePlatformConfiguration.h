@@ -7,5 +7,5 @@
 class FApplePlatformConfiguration
 {
 public:
-	static BugsnagConfiguration* Configuration(const TSharedPtr<FBugsnagConfiguration>& Configuration);
+	static BugsnagConfiguration* Configuration(const TSharedRef<FBugsnagConfiguration>& Configuration);
 };
