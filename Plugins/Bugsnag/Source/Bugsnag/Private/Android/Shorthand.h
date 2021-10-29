@@ -66,8 +66,8 @@
 		return;                 \
 	}
 
-#define ReturnStringFieldOptional(target, method)                   \
+#define ReturnStringFieldOptional(target, method)              \
 	jobject jString = (*Env).CallObjectMethod(target, method); \
 	return FAndroidPlatformJNI::CheckAndClearException(Env)    \
-			   ? TOptional<FString>()                                       \
+			   ? TOptional<FString>()                          \
 			   : TOptional<FString>(FAndroidPlatformJNI::ParseJavaString(Env, Cache, jString));
