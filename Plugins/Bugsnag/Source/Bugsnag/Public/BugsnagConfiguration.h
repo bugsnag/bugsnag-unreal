@@ -171,17 +171,30 @@ public:
 
 	void SetBundleVersion(const TOptional<FString>& Value) { BundleVersion = Value; }
 
-	// Version Code
-
-	const TOptional<int>& GetVersionCode() const { return VersionCode; }
-
-	void SetVersionCode(const TOptional<int>& Value) { VersionCode = Value; }
-
 	// Endpoints
 
 	const FBugsnagEndpointConfiguration& GetEndpoints() const { return Endpoints; }
 
 	void SetEndpoints(const FString& Notify, const FString& Sessions) { Endpoints = FBugsnagEndpointConfiguration(Notify, Sessions); }
+
+	// Android-only
+	// -- PersistenceDirectory
+
+	const TOptional<FString>& GetPersistenceDirectory() const { return PersistenceDirectory; }
+
+	void SetPersistenceDirectory(const TOptional<FString>& Value) { PersistenceDirectory = Value; }
+
+	// -- ProjectPackages
+
+	const TArray<FString>& GetProjectPackages() const { return ProjectPackages; }
+
+	void SetProjectPackages(const TArray<FString>& Value) { ProjectPackages = Value; }
+
+	// -- Version Code
+
+	const TOptional<int>& GetVersionCode() const { return VersionCode; }
+
+	void SetVersionCode(const TOptional<int>& Value) { VersionCode = Value; }
 
 	// User
 
@@ -212,17 +225,12 @@ public:
 
 	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) { OnBreadcrumbCallbacks.Add(Callback); }
 
-	// Android only, and only for handled errors.
-	void AddOnError(FBugsnagOnErrorCallback Callback) { OnErrorCallbacks.Add(Callback); }
-
 	// iOS only, may be called long after the crash occurred.
 	void AddOnSendError(FBugsnagOnErrorCallback Callback) { OnSendErrorCallbacks.Add(Callback); }
 
 	void AddOnSession(FBugsnagOnSessionCallback Callback) { OnSessionCallbacks.Add(Callback); }
 
 	const TArray<FBugsnagOnBreadcrumbCallback>& GetOnBreadcrumbCallbacks() const { return OnBreadcrumbCallbacks; }
-
-	const TArray<FBugsnagOnErrorCallback>& GetOnErrorCallbacks() const { return OnErrorCallbacks; }
 
 	const TArray<FBugsnagOnErrorCallback>& GetOnSendErrorCallbacks() const { return OnSendErrorCallbacks; }
 
@@ -260,11 +268,12 @@ private:
 	TOptional<FString> AppType;
 	TOptional<FString> AppVersion;
 	TOptional<FString> BundleVersion;
+	TOptional<FString> PersistenceDirectory;
+	TArray<FString> ProjectPackages;
 	TOptional<int> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
-	TArray<FBugsnagOnErrorCallback> OnErrorCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
 	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
 };

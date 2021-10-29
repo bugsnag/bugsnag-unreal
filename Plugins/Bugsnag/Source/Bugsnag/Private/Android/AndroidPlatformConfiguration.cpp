@@ -91,6 +91,12 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	{
 		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
 	}
+
+	if (Config->GetProjectPackages().Num())
+	{
+		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetProjectPackages, Config->GetProjectPackages());
+	}
+
 	if (Config->GetReleaseStage().IsSet())
 	{
 		jniCallWithString(Env, jConfig, Cache->ConfigSetReleaseStage, Config->GetReleaseStage().GetValue());
@@ -119,6 +125,19 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		jstring jEmail = FAndroidPlatformJNI::ParseFStringOptional(Env, Config->GetUser().GetEmail());
 		jstring jName = FAndroidPlatformJNI::ParseFStringOptional(Env, Config->GetUser().GetName());
 		jniCallWithObjects(Env, jConfig, Cache->ConfigSetUser, jId, jEmail, jName);
+	}
+
+	if (Config->GetPersistenceDirectory().IsSet())
+	{
+		jstring jDirPath = FAndroidPlatformJNI::ParseFString(Env, Config->GetPersistenceDirectory().GetValue());
+		if (jDirPath)
+		{
+			jobject jDirFile = (*Env).NewObject(Cache->FileClass, Cache->FileConstructor, jDirPath);
+			if (!FAndroidPlatformJNI::CheckAndClearException(Env))
+			{
+				jniCallWithObjects(Env, jConfig, Cache->ConfigSetPersistenceDirectory, jDirFile);
+			}
+		}
 	}
 
 	for (auto& Item : Config->GetMetadataValues())
