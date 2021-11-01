@@ -1,3 +1,3 @@
 #pragma once
 
-#include "Apple/ApplePlatformBugsnag.h"
+#include "ApplePlatformBugsnag.h"

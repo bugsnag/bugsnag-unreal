@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/WrappedEvent.h"
+#include "../WrappedEvent.h"
 
 #import <Bugsnag/Bugsnag.h>
 #import <BugsnagPrivate/BugsnagEvent+Private.h>

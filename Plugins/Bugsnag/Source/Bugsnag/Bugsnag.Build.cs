@@ -19,7 +19,7 @@ public class Bugsnag : ModuleRules
 			}
 			);
 
-		if (Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Mac)
+		if (Target.Platform == UnrealTargetPlatform.IOS)
 		{
 			// Statically link to BugsnagCocoa
 			PrivateDependencyModuleNames.Add("BugsnagCocoa");

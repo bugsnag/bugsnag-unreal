@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/WrappedError.h"
+#include "../WrappedError.h"
 
 #import <BugsnagPrivate/BugsnagError+Private.h>
 #import <BugsnagPrivate/BugsnagStackframe+Private.h>

@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/WrappedBreadcrumb.h"
+#include "../WrappedBreadcrumb.h"
 
 BEGIN_DEFINE_SPEC(FWrappedBreadcrumbSpec, "Bugsnag.FWrappedBreadcrumbSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)

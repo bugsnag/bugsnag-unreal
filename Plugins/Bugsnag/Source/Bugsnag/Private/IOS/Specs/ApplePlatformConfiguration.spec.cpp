@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/ApplePlatformConfiguration.h"
+#include "../ApplePlatformConfiguration.h"
 #include "BugsnagConfiguration.h"
 
 #import <Bugsnag/BugsnagConfiguration.h>
