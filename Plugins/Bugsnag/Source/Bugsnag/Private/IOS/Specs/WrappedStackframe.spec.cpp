@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/WrappedStackframe.h"
+#include "../WrappedStackframe.h"
 
 #import <Bugsnag/Bugsnag.h>
 #import <BugsnagPrivate/BugsnagStackframe+Private.h>

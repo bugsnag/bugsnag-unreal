@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/WrappedDevice.h"
+#include "../WrappedDevice.h"
 
 BEGIN_DEFINE_SPEC(FWrappedDeviceSpec, "Bugsnag.FWrappedDeviceSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)

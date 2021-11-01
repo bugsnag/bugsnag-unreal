@@ -1,6 +1,6 @@
 #include "AutomationTest.h"
 
-#include "Apple/AppleBugsnagUtils.h"
+#include "../AppleBugsnagUtils.h"
 
 BEGIN_DEFINE_SPEC(FAppleBugsnagUtilsSpec, "Bugsnag.FAppleBugsnagUtilsSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
