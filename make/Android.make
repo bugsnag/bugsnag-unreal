@@ -28,6 +28,11 @@ endif
 	sed -i '' "s/version '.*'/version '$(VERSION)'/" deps/bugsnag-plugin-android-unreal/build.gradle
 	sed -i '' "s/com\.bugsnag,bugsnag-plugin-android-unreal,.*/com.bugsnag,bugsnag-plugin-android-unreal,$(VERSION)/" Plugins/Bugsnag/Source/Bugsnag/Bugsnag_UPL.xml
 
+.PHONY: clean
+clean: ## remove build artifacts
+	@cd deps/bugsnag-plugin-android-unreal && \
+		$(GRADLE) clean
+
 $(PACKAGE_OUTPUT): $(PACKAGE_INPUT)
 	mkdir -p $(@D)
 	cp -a "$<" "$@"
