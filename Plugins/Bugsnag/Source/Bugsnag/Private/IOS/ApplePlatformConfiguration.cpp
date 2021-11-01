@@ -28,15 +28,16 @@ static BSGThreadSendPolicy GetThreadSendPolicy(EBugsnagSendThreadsPolicy Policy)
 	return BSGThreadSendPolicyAlways;
 }
 
-static BSGEnabledBreadcrumbType GetEnabledBreadcrumbTypes(FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes)
+static BSGEnabledBreadcrumbType GetEnabledBreadcrumbTypes(EBugsnagEnabledBreadcrumbTypes Value)
 {
-	return (EnabledBreadcrumbTypes.bError ? BSGEnabledBreadcrumbTypeError : 0) |
-		   (EnabledBreadcrumbTypes.bLog ? BSGEnabledBreadcrumbTypeLog : 0) |
-		   (EnabledBreadcrumbTypes.bNavigation ? BSGEnabledBreadcrumbTypeNavigation : 0) |
-		   (EnabledBreadcrumbTypes.bProcess ? BSGEnabledBreadcrumbTypeProcess : 0) |
-		   (EnabledBreadcrumbTypes.bRequest ? BSGEnabledBreadcrumbTypeRequest : 0) |
-		   (EnabledBreadcrumbTypes.bState ? BSGEnabledBreadcrumbTypeState : 0) |
-		   (EnabledBreadcrumbTypes.bUser ? BSGEnabledBreadcrumbTypeUser : 0);
+	// Note: There is no BSGEnabledBreadcrumbTypeManual
+	return (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Error) ? BSGEnabledBreadcrumbTypeError : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Log) ? BSGEnabledBreadcrumbTypeLog : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Navigation) ? BSGEnabledBreadcrumbTypeNavigation : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Process) ? BSGEnabledBreadcrumbTypeProcess : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Request) ? BSGEnabledBreadcrumbTypeRequest : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::State) ? BSGEnabledBreadcrumbTypeState : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::User) ? BSGEnabledBreadcrumbTypeUser : 0);
 }
 
 static BugsnagErrorTypes* GetEnabledErrorTypes(FBugsnagErrorTypes EnabledErrorTypes)

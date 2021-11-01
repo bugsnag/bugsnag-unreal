@@ -54,9 +54,9 @@ public:
 
 	// Enabled Breadcrumb Types
 
-	const FBugsnagEnabledBreadcrumbTypes GetEnabledBreadcrumbTypes() const { return EnabledBreadcrumbTypes; }
+	const EBugsnagEnabledBreadcrumbTypes GetEnabledBreadcrumbTypes() const { return EnabledBreadcrumbTypes; }
 
-	void SetEnabledBreadcrumbTypes(FBugsnagEnabledBreadcrumbTypes Value) { EnabledBreadcrumbTypes = Value; }
+	void SetEnabledBreadcrumbTypes(EBugsnagEnabledBreadcrumbTypes Value) { EnabledBreadcrumbTypes = Value; }
 
 	// Enabled Error Types
 
@@ -251,7 +251,7 @@ private:
 	bool bAutoTrackSessions = true;
 	TOptional<FString> Context;
 	TArray<FString> DiscardClasses;
-	FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes;
+	EBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes = EBugsnagEnabledBreadcrumbTypes::All;
 	FBugsnagErrorTypes EnabledErrorTypes;
 	TArray<FString> EnabledReleaseStages;
 	TArray<FString> RedactedKeys = {TEXT("password")};

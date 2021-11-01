@@ -347,7 +347,7 @@ public:
    *
    * @return A Java object reference or null on failure
    */
-	static jobject ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const FBugsnagEnabledBreadcrumbTypes Value);
+	static jobject ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagEnabledBreadcrumbTypes Value);
 
 	/**
    * Convert a value into a Java Severity

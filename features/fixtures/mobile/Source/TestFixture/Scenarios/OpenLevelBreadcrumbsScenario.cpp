@@ -7,16 +7,7 @@ class OpenLevelBreadcrumbsScenario : public Scenario
 public:
 	void Configure() override
 	{
-		FBugsnagEnabledBreadcrumbTypes BugsnagEnabledBreadcrumbTypes;
-		BugsnagEnabledBreadcrumbTypes.bError = false;
-		BugsnagEnabledBreadcrumbTypes.bLog = false;
-		BugsnagEnabledBreadcrumbTypes.bManual = false;
-		BugsnagEnabledBreadcrumbTypes.bNavigation = true;
-		BugsnagEnabledBreadcrumbTypes.bProcess = false;
-		BugsnagEnabledBreadcrumbTypes.bRequest = false;
-		BugsnagEnabledBreadcrumbTypes.bState = false;
-		BugsnagEnabledBreadcrumbTypes.bUser = false;
-		Configuration->SetEnabledBreadcrumbTypes(BugsnagEnabledBreadcrumbTypes);
+		Configuration->SetEnabledBreadcrumbTypes(EBugsnagEnabledBreadcrumbTypes::Navigation);
 	}
 
 	void Run() override

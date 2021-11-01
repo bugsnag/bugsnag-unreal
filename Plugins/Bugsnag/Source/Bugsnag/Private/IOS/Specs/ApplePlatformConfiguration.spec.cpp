@@ -90,9 +90,7 @@ void FApplePlatformConfigurationSpec::Define()
 			It("EnabledBreadcrumbTypes", [this]()
 				{
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
-					FBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes;
-					EnabledBreadcrumbTypes.bLog = false;
-					Configuration->SetEnabledBreadcrumbTypes(EnabledBreadcrumbTypes);
+					Configuration->SetEnabledBreadcrumbTypes(EBugsnagEnabledBreadcrumbTypes::All & ~EBugsnagEnabledBreadcrumbTypes::Log);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.enabledBreadcrumbTypes, BSGEnabledBreadcrumbTypeAll & ~BSGEnabledBreadcrumbTypeLog);
 				});
