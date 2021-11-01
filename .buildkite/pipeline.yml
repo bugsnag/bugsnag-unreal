@@ -109,6 +109,7 @@ steps:
           - "--order=random"
     concurrency: 9
     concurrency_group: browserstack-app
+    concurrency_method: eager
     retry:
       automatic:
         - exit_status: -1  # Agent was lost
@@ -138,6 +139,7 @@ steps:
           - "--order=random"
     concurrency: 9
     concurrency_group: browserstack-app
+    concurrency_method: eager
     retry:
       automatic:
         - exit_status: -1  # Agent was lost
