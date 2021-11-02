@@ -43,6 +43,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	: bAutoDetectErrors(Settings.bAutoDetectErrors)
 	, bAutoTrackSessions(Settings.bAutoTrackSessions)
 	, Context(UnsetIfEmpty(Settings.Context))
+	, bHasCustomContext(Context.IsSet())
 	, DiscardClasses(Settings.DiscardClasses)
 	, EnabledBreadcrumbTypes(Convert(Settings.EnabledBreadcrumbTypes))
 	, EnabledErrorTypes(Settings.EnabledErrorTypes)
@@ -252,6 +253,11 @@ void FBugsnagConfiguration::AddDefaultMetadata()
 			EngineMetadata->SetStringField(BugsnagConstants::GameStateName, CurrentPlayWorld->GetGameState()->GetClass()->GetName());
 		}
 		EngineMetadata->SetStringField(BugsnagConstants::MapUrl, CurrentPlayWorld->GetLocalURL());
+
+		if (!Context.IsSet())
+		{
+			Context = CurrentPlayWorld->GetLocalURL();
+		}
 	}
 
 	EngineMetadata->SetStringField(BugsnagConstants::UserActivity, FUserActivityTracking::GetUserActivity().ActionName);

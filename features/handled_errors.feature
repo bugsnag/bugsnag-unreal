@@ -80,9 +80,11 @@ Feature: Reporting handled errors
     And I wait to receive 2 errors
     Then the event "metaData.lastRunInfo" is null
     And the event "app.isLaunching" is false
+    And the event "context" matches "/Game/MainLevel"
     And I discard the oldest error
     And the exception "errorClass" equals "Resolution failed"
     And the exception "message" equals "invalid index (-1)"
+    And the event "context" matches "/Game/MainLevel"
     And the event "metaData.lastRunInfo.crashed" is true
     And the event "metaData.lastRunInfo.crashedDuringLaunch" is false
     And the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 0
@@ -115,3 +117,8 @@ Feature: Reporting handled errors
   Scenario: Cancel notify from callback
     When I run "CancelNotifyFromCallback"
     Then I should receive no errors
+
+  Scenario: Custom context is not overwritten by level changes
+    When I run "CustomContextOpenLevelScenario"
+    And I wait to receive an error
+    Then the event "context" equals "game"
