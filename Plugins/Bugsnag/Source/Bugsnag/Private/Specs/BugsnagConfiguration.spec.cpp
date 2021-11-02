@@ -77,6 +77,15 @@ void FBugsnagConfigurationSpec::Define()
 				});
 		});
 
+	Describe("EnabledBreadcrumbTypes", [this]()
+		{
+			It("All are enabled by default", [this]()
+				{
+					TEST_EQUAL(FBugsnagConfiguration(ValidApiKey).GetEnabledBreadcrumbTypes(), EBugsnagEnabledBreadcrumbTypes::All);
+					TEST_EQUAL(FBugsnagConfiguration::Load()->GetEnabledBreadcrumbTypes(), EBugsnagEnabledBreadcrumbTypes::All);
+				});
+		});
+
 	Describe("Endpoints", [this]()
 		{
 			It("Should have sensible defaults", [this]()

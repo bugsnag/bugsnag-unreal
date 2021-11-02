@@ -19,6 +19,18 @@ static TOptional<T> UnsetIfZero(const T Value)
 	return Value == 0 ? TOptional<T>() : Value;
 }
 
+static EBugsnagEnabledBreadcrumbTypes Convert(FBugsnagEnabledBreadcrumbTypes Value)
+{
+	return (Value.bManual ? EBugsnagEnabledBreadcrumbTypes::Manual : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bError ? EBugsnagEnabledBreadcrumbTypes::Error : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bLog ? EBugsnagEnabledBreadcrumbTypes::Log : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bNavigation ? EBugsnagEnabledBreadcrumbTypes::Navigation : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bProcess ? EBugsnagEnabledBreadcrumbTypes::Process : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bRequest ? EBugsnagEnabledBreadcrumbTypes::Request : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bState ? EBugsnagEnabledBreadcrumbTypes::State : EBugsnagEnabledBreadcrumbTypes::None) |
+		   (Value.bUser ? EBugsnagEnabledBreadcrumbTypes::User : EBugsnagEnabledBreadcrumbTypes::None);
+}
+
 uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;
 
 FBugsnagConfiguration::FBugsnagConfiguration(const FString& ApiKey)
@@ -32,7 +44,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	, bAutoTrackSessions(Settings.bAutoTrackSessions)
 	, Context(UnsetIfEmpty(Settings.Context))
 	, DiscardClasses(Settings.DiscardClasses)
-	, EnabledBreadcrumbTypes(Settings.EnabledBreadcrumbTypes)
+	, EnabledBreadcrumbTypes(Convert(Settings.EnabledBreadcrumbTypes))
 	, EnabledErrorTypes(Settings.EnabledErrorTypes)
 	, EnabledReleaseStages(Settings.EnabledReleaseStages)
 	, RedactedKeys(Settings.RedactedKeys)

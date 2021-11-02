@@ -18,6 +18,21 @@ enum class EBugsnagBreadcrumbType : uint8
 	User
 };
 
+enum class EBugsnagEnabledBreadcrumbTypes : uint8
+{
+	None = 0,
+	Manual = 1 << 0,
+	Error = 1 << 1,
+	Log = 1 << 2,
+	Navigation = 1 << 3,
+	Process = 1 << 4,
+	Request = 1 << 5,
+	State = 1 << 6,
+	User = 1 << 7,
+	All = Manual | Error | Log | Navigation | Process | Request | State | User
+};
+ENUM_CLASS_FLAGS(EBugsnagEnabledBreadcrumbTypes)
+
 class BUGSNAG_API IBugsnagBreadcrumb
 {
 public:

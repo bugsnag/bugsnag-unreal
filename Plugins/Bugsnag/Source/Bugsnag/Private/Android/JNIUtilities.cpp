@@ -528,21 +528,21 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbType(JNIEnv* Env, const JNIReference
 	return result;
 }
 
-jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const FBugsnagEnabledBreadcrumbTypes Value)
+jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagEnabledBreadcrumbTypes Value)
 {
 	jobject jSet = (*Env).NewObject(Cache->HashSetClass, Cache->HashSetConstructor);
 	if (FAndroidPlatformJNI::CheckAndClearException(Env))
 	{
 		return nullptr;
 	}
-	if (addTypeToSet(Env, jSet, Value.bError, Cache, Cache->BreadcrumbTypeError) &&
-		addTypeToSet(Env, jSet, Value.bLog, Cache, Cache->BreadcrumbTypeLog) &&
-		addTypeToSet(Env, jSet, Value.bManual, Cache, Cache->BreadcrumbTypeManual) &&
-		addTypeToSet(Env, jSet, Value.bNavigation, Cache, Cache->BreadcrumbTypeNavigation) &&
-		addTypeToSet(Env, jSet, Value.bProcess, Cache, Cache->BreadcrumbTypeProcess) &&
-		addTypeToSet(Env, jSet, Value.bRequest, Cache, Cache->BreadcrumbTypeRequest) &&
-		addTypeToSet(Env, jSet, Value.bState, Cache, Cache->BreadcrumbTypeState) &&
-		addTypeToSet(Env, jSet, Value.bUser, Cache, Cache->BreadcrumbTypeUser))
+	if (addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Error), Cache, Cache->BreadcrumbTypeError) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Log), Cache, Cache->BreadcrumbTypeLog) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Manual), Cache, Cache->BreadcrumbTypeManual) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Navigation), Cache, Cache->BreadcrumbTypeNavigation) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Process), Cache, Cache->BreadcrumbTypeProcess) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Request), Cache, Cache->BreadcrumbTypeRequest) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::State), Cache, Cache->BreadcrumbTypeState) &&
+		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::User), Cache, Cache->BreadcrumbTypeUser))
 	{
 		return jSet;
 	}
