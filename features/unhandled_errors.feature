@@ -26,8 +26,8 @@ Feature: Unhandled errors
     And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
     And the event "metaData.custom.someOtherValue" equals "foobar"
     And the event "metaData.custom.someValue" is null
-    And the event "metaData.device.adapterName" is not null
-    And on Android, the event "metaData.device.driverVersion" is not null
+    And the event "metaData.device.gpuAdapterName" is not null
+    And on Android, the event "metaData.device.gpuDriverVersion" is not null
     And the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
     And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
     And the event "metaData.unrealEngine.userActivity" is not null

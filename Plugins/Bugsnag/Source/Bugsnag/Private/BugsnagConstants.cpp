@@ -3,10 +3,10 @@
 namespace BugsnagConstants
 {
 const TCHAR* const Activity = TEXT("activity");
-const TCHAR* const AdapterName = TEXT("adapterName");
 const TCHAR* const Device = TEXT("device");
-const TCHAR* const DriverVersion = TEXT("driverVersion");
 const TCHAR* const GameStateName = TEXT("gameStateName");
+const TCHAR* const GPUAdapterName = TEXT("gpuAdapterName");
+const TCHAR* const GPUDriverVersion = TEXT("gpuDriverVersion");
 const TCHAR* const MapUrl = TEXT("mapUrl");
 const TCHAR* const Name = TEXT("name");
 const TCHAR* const UnrealEngine = TEXT("unrealEngine");
