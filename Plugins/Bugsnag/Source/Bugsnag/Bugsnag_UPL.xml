@@ -58,6 +58,7 @@ bugsnag {
     uploadJvmMappings = true
     uploadNdkMappings = true
     reportBuilds = true
+    sharedObjectPaths = [new File("</insert><insertValue value="$S(BuildDir)/jni/$S(Architecture)"/><insert>")]
 }
                 </insert>
             </true>
