@@ -229,12 +229,12 @@ void FBugsnagConfiguration::AddDefaultMetadata()
 
 	if (!GRHIAdapterName.IsEmpty())
 	{
-		DeviceMetadata->SetStringField(BugsnagConstants::AdapterName, *GRHIAdapterName);
+		DeviceMetadata->SetStringField(BugsnagConstants::GPUAdapterName, *GRHIAdapterName);
 	}
 
 	if (!GRHIAdapterInternalDriverVersion.IsEmpty())
 	{
-		DeviceMetadata->SetStringField(BugsnagConstants::DriverVersion, *GRHIAdapterInternalDriverVersion);
+		DeviceMetadata->SetStringField(BugsnagConstants::GPUDriverVersion, *GRHIAdapterInternalDriverVersion);
 	}
 
 	AddMetadata(BugsnagConstants::Device, DeviceMetadata);

@@ -49,8 +49,8 @@ Feature: Reporting handled errors
     And the event "metaData.custom.someValue" equals "foobar"
     And the event "metaData.custom.lastValue" is true
     And the event "metaData.custom.notify" equals "testing"
-    And the event "metaData.device.adapterName" is not null
-    And on Android, the event "metaData.device.driverVersion" is not null
+    And the event "metaData.device.gpuAdapterName" is not null
+    And on Android, the event "metaData.device.gpuDriverVersion" is not null
     And on Android, the error payload field "events.0.projectPackages" is an array with 1 elements
     And on Android, the event "projectPackages.0" equals "com.example.package"
     And the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"

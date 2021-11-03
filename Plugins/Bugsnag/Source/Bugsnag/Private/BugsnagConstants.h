@@ -5,10 +5,10 @@
 namespace BugsnagConstants
 {
 extern const TCHAR* const Activity;
-extern const TCHAR* const AdapterName;
 extern const TCHAR* const Device;
-extern const TCHAR* const DriverVersion;
 extern const TCHAR* const GameStateName;
+extern const TCHAR* const GPUAdapterName;
+extern const TCHAR* const GPUDriverVersion;
 extern const TCHAR* const MapUrl;
 extern const TCHAR* const Name;
 extern const TCHAR* const UnrealEngine;
