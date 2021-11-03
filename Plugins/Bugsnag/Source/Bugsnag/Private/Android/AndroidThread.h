@@ -62,7 +62,7 @@ public:
 		ReturnVoidOnException(Env);
 		for (auto& Frame : Value)
 		{
-			(*Env).CallVoidMethod(jFrames, Cache->ListAdd, (StaticCastSharedRef<FAndroidStackframe>(Frame))->GetJavaObject());
+			(*Env).CallBooleanMethod(jFrames, Cache->ListAdd, (StaticCastSharedRef<FAndroidStackframe>(Frame))->GetJavaObject());
 			FAndroidPlatformJNI::CheckAndClearException(Env);
 		}
 		(*Env).CallVoidMethod(JavaObject, Cache->ThreadSetStacktrace, jFrames);
