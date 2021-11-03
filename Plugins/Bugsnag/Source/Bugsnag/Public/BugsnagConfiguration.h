@@ -44,7 +44,11 @@ public:
 
 	const TOptional<FString>& GetContext() const { return Context; }
 
-	void SetContext(const TOptional<FString>& Value) { Context = Value; }
+	void SetContext(const TOptional<FString>& Value)
+	{
+		Context = Value;
+		bHasCustomContext = Value.IsSet();
+	}
 
 	// DiscardClasses
 
@@ -245,11 +249,13 @@ private:
 
 	friend class FApplePlatformConfiguration;
 	friend class FAndroidPlatformConfiguration;
+	friend class UBugsnagFunctionLibrary;
 
 	FString ApiKey;
 	bool bAutoDetectErrors = true;
 	bool bAutoTrackSessions = true;
 	TOptional<FString> Context;
+	bool bHasCustomContext = false;
 	TArray<FString> DiscardClasses;
 	EBugsnagEnabledBreadcrumbTypes EnabledBreadcrumbTypes = EBugsnagEnabledBreadcrumbTypes::All;
 	FBugsnagErrorTypes EnabledErrorTypes;
