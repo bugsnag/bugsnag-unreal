@@ -2,7 +2,7 @@
 .SUFFIXES:        # remove default suffix rules
 MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
-BUGSNAG_COCOA_VERSION?=a93fbb6002727810b7040a48b7a88fc5debed691
+BUGSNAG_COCOA_VERSION?=a0e2c1922c4c45bd7a2ed30c1ffa5194f1cf83ac
 BUGSNAG_COCOA_SRC=deps/bugsnag-cocoa
 BUGSNAG_COCOA_SENTINEL=$(BUGSNAG_COCOA_SRC)/VERSION
 
