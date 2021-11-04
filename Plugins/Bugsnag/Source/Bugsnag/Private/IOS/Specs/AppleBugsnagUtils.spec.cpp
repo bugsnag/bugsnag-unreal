@@ -84,7 +84,7 @@ void FAppleBugsnagUtilsSpec::Define()
 
 			It("Returns an invalid pointer if NSDictionary is not JSON convertible", [this]()
 				{
-					TEST_FALSE(FJsonObjectFromNSDictionary(@{@"date": [NSDate date]}).IsValid())
+					TEST_FALSE(FJsonObjectFromNSDictionary(@{@"date": [NSDate date]}).IsValid());
 				});
 		});
 

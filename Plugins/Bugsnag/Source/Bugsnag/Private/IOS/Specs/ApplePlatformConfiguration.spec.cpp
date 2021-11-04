@@ -43,7 +43,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TEST_TRUE([CocoaConfig.apiKey isEqual:DefaultConfig.apiKey]);
 					TEST_TRUE([CocoaConfig.appType isEqual:DefaultConfig.appType]);
 					TEST_TRUE([CocoaConfig.bundleVersion isEqual:DefaultConfig.bundleVersion]);
-					TEST_TRUE([CocoaConfig.redactedKeys isEqual:DefaultConfig.redactedKeys])
+					TEST_TRUE([CocoaConfig.redactedKeys isEqual:DefaultConfig.redactedKeys]);
 					TEST_TRUE([CocoaConfig.releaseStage isEqual:DefaultConfig.releaseStage]);
 				});
 
