@@ -2,20 +2,14 @@
 
 #include "BugsnagConfiguration.h"
 
-//
-// Macros copied from Engine/Source/Developer/AutomationDriver/Private/Specs/AutomationDriver.spec.cpp
-//
 #define TEST_TRUE(expression) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, true)
+	TestTrue(TEXT(#expression), expression)
 
 #define TEST_FALSE(expression) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, false)
+	TestFalse(TEXT(#expression), expression)
 
 #define TEST_EQUAL(expression, expected) \
-	EPIC_TEST_BOOLEAN_(TEXT(#expression), expression, expected)
-
-#define EPIC_TEST_BOOLEAN_(text, expression, expected) \
-	TestEqual(text, expression, expected);
+	TestEqual(TEXT(#expression), expression, expected)
 
 //
 // This is an example of an Automation Spec, a newer type of test that follows BDD methodology.
