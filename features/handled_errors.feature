@@ -33,6 +33,7 @@ Feature: Reporting handled errors
       | ios     | iOS     |
     And the event "device.osVersion" is not null
     And the event "device.runtimeVersions" is not null
+    And on Android, the event "device.runtimeVersions.androidApiLevel" is not null
     And the event "device.time" is not null
     And the event "device.totalMemory" is not null
     And the event "metaData.device.batteryLevel" is not null
@@ -58,9 +59,7 @@ Feature: Reporting handled errors
     And the event "metaData.unrealEngine.userActivity" is not null
     And the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
     And the event "severity" equals "warning"
-    And the event "severityReason.type" equals the platform-dependent string:
-      | android | handledException |
-      | ios     | handledError     |
+    And the event "severityReason.type" equals "handledError"
     And the event "unhandled" is false
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the exception "errorClass" equals "Internal Error happened"

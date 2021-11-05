@@ -190,6 +190,7 @@ typedef struct
 	jmethodID EventSetSeverity;
 	jmethodID EventSetUnhandled;
 	jmethodID EventSetUser;
+	jmethodID EventUpdateSeverityReason;
 	jmethodID HashMapConstructor;
 	jmethodID HashMapGet;
 	jmethodID LastRunInfoGetCrashed;

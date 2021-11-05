@@ -65,8 +65,7 @@ Feature: Unhandled errors
     And the event "user.email" equals "j@example.com"
     And on iOS, the event "app.bundleVersion" equals "2.61.0.1"
     And on Android, the event "app.versionCode" equals 22
-    # TODO: pending on Android (PLAT-7305)
-    And on iOS, the event "context" equals "Main Menu"
+    And the event "context" equals "Main Menu"
     And the method of stack frame 0 is equivalent to "MaxConfigCrashScenario::Run()"
 
   Scenario: Crash after marking launch as completed

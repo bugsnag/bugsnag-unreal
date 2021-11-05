@@ -18,8 +18,6 @@ Feature: Session tracking
     And I wait to receive an error
     Then the event "session.id" is not null
 
-  # TODO: pending PLAT-7437
-  @skip_android
   Scenario: Cancel session from a callback
     When I run "CancelSessionScenario"
     And I wait to receive an error

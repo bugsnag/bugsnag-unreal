@@ -21,7 +21,9 @@ import com.bugsnag.android.Session;
 import com.bugsnag.android.Severity;
 
 public class UnrealPlugin implements Plugin {
+  static final String DEFAULT_HANDLED_REASON = "handledError";
   static Client client = null;
+
   OnBreadcrumbCallback onBreadcrumbRunner = new OnBreadcrumbCallback() {
     @Override
     public boolean onBreadcrumb(Breadcrumb crumb) {
@@ -62,6 +64,15 @@ public class UnrealPlugin implements Plugin {
    */
   static native boolean runNotifyCallback(Event event, ByteBuffer userdata);
 
+  /**
+   * Set the severity reason based on a String
+   * Workaround for lacking a public setter
+   *
+   * @param event The event
+   * @param reasonType one of the constants in SeverityReason class
+   */
+  static native void setSeverityReason(Event event, String reasonType);
+
   public void load(Client client) {
     this.client = client;
     this.client.addOnBreadcrumb(onBreadcrumbRunner);
@@ -86,6 +97,7 @@ public class UnrealPlugin implements Plugin {
     client.notify(exc, new OnErrorCallback() {
       @Override
       public boolean onError(Event event) {
+        setSeverityReason(event, DEFAULT_HANDLED_REASON);
         List<Error> errors = event.getErrors();
 
         if (!errors.isEmpty()) {

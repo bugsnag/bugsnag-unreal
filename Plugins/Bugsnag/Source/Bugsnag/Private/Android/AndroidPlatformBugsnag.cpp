@@ -366,6 +366,16 @@ extern "C"
 		return JNI_TRUE;
 	}
 
+	JNIEXPORT void JNICALL Java_com_bugsnag_android_unreal_UnrealPlugin_setSeverityReason(
+		JNIEnv* Env, jobject _this, jobject jEvent, jobject jReasonType)
+	{
+		if (JNICache.loaded)
+		{
+			(*Env).CallVoidMethod(jEvent, JNICache.EventUpdateSeverityReason, jReasonType);
+			ReturnVoidOnException(Env);
+		}
+	}
+
 #ifdef __cplusplus
 }
 #endif
