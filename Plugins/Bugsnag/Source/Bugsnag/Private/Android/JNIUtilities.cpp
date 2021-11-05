@@ -256,6 +256,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->EventSetSeverity, cache->EventClass, "setSeverity", "(Lcom/bugsnag/android/Severity;)V");
 	CacheInstanceJavaMethod(env, cache->EventSetUnhandled, cache->EventClass, "setUnhandled", "(Z)V");
 	CacheInstanceJavaMethod(env, cache->EventSetUser, cache->EventClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventUpdateSeverityReason, cache->EventClass, "updateSeverityReason", "(Ljava/lang/String;)V");
 
 	CacheInstanceJavaMethod(env, cache->FileConstructor, cache->FileClass, "<init>", "(Ljava/lang/String;)V");
 
