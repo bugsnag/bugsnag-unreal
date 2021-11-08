@@ -40,7 +40,7 @@ public:
 
 	TOptional<FDateTime> GetTime() const override
 	{
-		auto Timestamp = GetDateField(Cache->DeviceWithStateSetTime);
+		auto Timestamp = GetDateField(Cache->DeviceWithStateGetTime);
 		return Timestamp == FDateTime(0) ? TOptional<FDateTime>() : Timestamp;
 	}
 
