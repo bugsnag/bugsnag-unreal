@@ -27,7 +27,6 @@ public:
 	// Notify
 
 	// Report an error to Bugsnag.
-	FORCEINLINE
 	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
 	static void Notify(const FString& ErrorClass, const FString& Message)
 	{
