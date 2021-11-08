@@ -23,6 +23,7 @@ public:
 		TArray<TSharedRef<Interface>> Items;
 		jobject jItems = (*Env).CallObjectMethod(JavaObject, Method);
 		ReturnValueOnException(Env, Items);
+		ReturnValueOnFail(jItems, Items);
 		jint Len = (*Env).CallIntMethod(jItems, Cache->ListSize);
 		ReturnValueOnException(Env, Items);
 		for (jint Index = 0; Index < Len; Index++)
