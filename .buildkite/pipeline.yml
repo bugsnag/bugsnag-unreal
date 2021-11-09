@@ -55,6 +55,7 @@ steps:
     env:
       UE_VERSION: "4.23"
     command: make package
+    artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
   - name: 'Build Plugin - UE 4.27'
@@ -63,6 +64,7 @@ steps:
     env:
       UE_VERSION: "4.27"
     command: make package
+    artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
   - name: 'Build Plugin - UE 5 EA'
@@ -71,6 +73,7 @@ steps:
     env:
       UE_VERSION: "5.0EA"
     command: make package
+    artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
   - name: ':windows: Build Example - UE 4.27'
