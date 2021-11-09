@@ -86,6 +86,7 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetLaunchDurationMillis, Config->GetLaunchDurationMillis());
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxBreadcrumbs, Config->GetMaxBreadcrumbs());
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxPersistedEvents, Config->GetMaxPersistedEvents());
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxPersistedSessions, Config->GetMaxPersistedSessions());
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetPersistUser, Config->GetPersistUser());
 	if (Config->GetRedactedKeys().Num())
 	{
