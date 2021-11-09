@@ -44,7 +44,8 @@ package: ## assemble library for release or testing
 	$(MAKE) -f make/Cocoa.make package
 	"$(UE_RUNUAT)" BuildPlugin \
 		-Plugin="$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin" \
-		-Package="$(PWD)/Build/Package"
+		-Package="$(PWD)/Build/Plugin/Bugsnag"
+	cd "$(PWD)/Build/Plugin" && zip -r Bugsnag-UE$(UE_VERSION).zip Bugsnag
 
 .PHONY: bump
 bump: ## Bump the version numbers to $VERSION
