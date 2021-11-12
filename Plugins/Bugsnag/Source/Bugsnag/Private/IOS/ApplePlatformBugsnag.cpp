@@ -2,6 +2,8 @@
 
 #include "AppleBugsnagUtils.h"
 #include "ApplePlatformConfiguration.h"
+#include "BugsnagConstants.h"
+#include "BugsnagUtils.h"
 #include "WrappedBreadcrumb.h"
 #include "WrappedEvent.h"
 #include "WrappedSession.h"
@@ -23,7 +25,10 @@ DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
 void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
-	FWrappedMetadataStore::CocoaStore = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
+	BugsnagClient* Client = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
+	[Client addRuntimeVersionInfo:NSStringFromFString(BugsnagUtils::GetUnrealEngineVersion())
+						  withKey:NSStringFromFString(BugsnagConstants::UnrealEngine)];
+	FWrappedMetadataStore::CocoaStore = Client;
 }
 
 void FApplePlatformBugsnag::Notify(

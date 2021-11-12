@@ -34,6 +34,7 @@ Feature: Reporting handled errors
     And the event "device.osVersion" is not null
     And the event "device.runtimeVersions" is not null
     And on Android, the event "device.runtimeVersions.androidApiLevel" is not null
+    And the event "device.runtimeVersions.unrealEngine" is not null
     And the event "device.time" is not null
     And the event "device.totalMemory" is not null
     And the event "metaData.device.batteryLevel" is not null

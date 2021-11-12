@@ -1,10 +1,10 @@
 #include "BugsnagConfiguration.h"
 
 #include "BugsnagConstants.h"
+#include "BugsnagUtils.h"
 
 #include "Engine/Engine.h"
 #include "GameFramework/GameState.h"
-#include "Misc/EngineVersion.h"
 #include "RHI.h"
 #include "UserActivityTracking.h"
 
@@ -229,7 +229,7 @@ void FBugsnagConfiguration::AddDefaultMetadata()
 
 	TSharedRef<FJsonObject> EngineMetadata = MakeShared<FJsonObject>();
 
-	EngineMetadata->SetStringField(BugsnagConstants::Version, FEngineVersion::Current().ToString(EVersionComponent::Changelist));
+	EngineMetadata->SetStringField(BugsnagConstants::Version, BugsnagUtils::GetUnrealEngineVersion());
 
 	UWorld* CurrentPlayWorld = GetCurrentPlayWorld();
 	if (CurrentPlayWorld)
