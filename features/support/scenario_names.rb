@@ -4,7 +4,6 @@ $scenario_names = [
   'CancelNotifyFromCallback',
   'CancelSessionScenario',
   'CrashAfterLaunchedScenario',
-  'CustomContextOpenLevelScenario',
   'GetCrumbScenario',
   'MaxConfigCrashScenario',
   'ModifyCrumbsScenario',
