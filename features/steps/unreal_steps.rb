@@ -4,7 +4,7 @@ HOST_OS = RbConfig::CONFIG['host_os']
 
 When('I relaunch the app') do
   Maze.driver.launch_app
-  sleep(3) if is_platform? 'Android'
+  sleep 3
 end
 
 When('I run {string}') do |scenario_name|
