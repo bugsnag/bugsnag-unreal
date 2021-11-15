@@ -8,7 +8,7 @@ Before do |_scenario|
   # does its own loading on a background thread.
   # TODO: We could have the test fixture send a /log request on load,
   #   with a Background step to wait for the receipt of that.
-  sleep 5 if is_platform? 'Android'
+  sleep 5
 end
 
 Before('@skip_android') do |_scenario|
