@@ -20,4 +20,7 @@ class UExampleBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 
 	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
 	static void Notify();
+
+	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
+	const FString GetApiKeyFromConfig();
 };

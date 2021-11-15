@@ -24,6 +24,13 @@ void UExampleBlueprintFunctionLibrary::Notify()
 	UBugsnagFunctionLibrary::Notify(TEXT("Non-fatal"), TEXT("Notify() called from C++"));
 }
 
+const FString UExampleBlueprintFunctionLibrary::GetApiKeyFromConfig()
+{
+	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
+
+	return Configuration->GetApiKey();
+}
+
 //
 // Unreal Engine disables C++ exceptions on non-desktop platforms, so
 // for now there is no example throwing a C++ exception.
