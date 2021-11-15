@@ -10,7 +10,17 @@
 
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
-	Start(MakeShared<FBugsnagConfiguration>(ApiKey));
+	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
+	if (Configuration.IsValid())
+	{
+		Configuration->SetApiKey(ApiKey);
+	}
+	else
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Could not load configuration from DefaultEngine.ini"));
+		Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
+	}
+	Start(Configuration.ToSharedRef());
 }
 
 static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString& Value)

@@ -15,4 +15,5 @@ $scenario_names = [
   'OpenLevelBreadcrumbsScenario',
   'PauseSessionScenario',
   'ResumeSessionScenario',
+  'StartWithApiKeyScenario',
 ]

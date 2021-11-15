@@ -121,3 +121,8 @@ Feature: Reporting handled errors
     When I run "CustomContextOpenLevelScenario"
     And I wait to receive an error
     Then the event "context" equals "game"
+
+  Scenario: Settings are honored when using Start(ApiKey)
+    When I run "StartWithApiKeyScenario"
+    And I wait to receive an error
+    And the event "context" equals "FromSettings"
