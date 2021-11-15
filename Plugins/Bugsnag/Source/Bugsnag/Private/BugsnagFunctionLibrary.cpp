@@ -4,9 +4,15 @@
 #include "PlatformBugsnag.h"
 
 #include "Engine/Engine.h"
+#include "HAL/PlatformProperties.h"
 #include "Misc/CoreDelegates.h"
 
 #include COMPILED_PLATFORM_HEADER(PlatformStackWalk.h)
+
+#define LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM()                                          \
+	UE_LOG(LogBugsnag, Log,                                                             \
+		TEXT("UBugsnagFunctionLibrary::%s() is not implemented on this platform (%s)"), \
+		*FString(__func__), *FString(FPlatformProperties::PlatformName()))
 
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
@@ -68,7 +74,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 				MakeShared<FJsonValueString>(InUserActivity));
 		});
 #else
-	UE_LOG(LogBugsnag, Warning, TEXT("Bugsnag is not implemented on this platform"));
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -77,6 +83,8 @@ void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& M
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.Notify(ErrorClass, Message, StackTrace, Callback);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -106,6 +114,7 @@ const FString UBugsnagFunctionLibrary::GetContext()
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetContext().Get(FString());
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return FString();
 #endif
 }
@@ -122,6 +131,8 @@ void UBugsnagFunctionLibrary::SetContext(const FString& Context)
 		GPlatformBugsnag.SetContext(TOptional<FString>(Context));
 	}
 	bHasCustomContext = true;
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -130,6 +141,7 @@ const FBugsnagUser UBugsnagFunctionLibrary::GetUser()
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetUser();
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return FBugsnagUser();
 #endif
 }
@@ -138,6 +150,8 @@ void UBugsnagFunctionLibrary::SetUser(const FString& Id, const FString& Email, c
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.SetUser(Id, Email, Name);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -145,6 +159,8 @@ void UBugsnagFunctionLibrary::AddMetadata(const FString& Section, const TSharedR
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddMetadata(Section, Metadata);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -152,6 +168,8 @@ void UBugsnagFunctionLibrary::AddMetadata(const FString& Section, const FString&
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddMetadata(Section, Key, Value);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -160,6 +178,7 @@ TSharedPtr<FJsonObject> UBugsnagFunctionLibrary::GetMetadata(const FString& Sect
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetMetadata(Section);
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return nullptr;
 #endif
 }
@@ -169,6 +188,7 @@ TSharedPtr<FJsonValue> UBugsnagFunctionLibrary::GetMetadata(const FString& Secti
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetMetadata(Section, Key);
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return nullptr;
 #endif
 }
@@ -177,6 +197,8 @@ void UBugsnagFunctionLibrary::ClearMetadata(const FString& Section)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.ClearMetadata(Section);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -184,6 +206,8 @@ void UBugsnagFunctionLibrary::ClearMetadata(const FString& Section, const FStrin
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.ClearMetadata(Section, Key);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -191,6 +215,8 @@ void UBugsnagFunctionLibrary::LeaveBreadcrumb(const FString& Message, EBugsnagBr
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.LeaveBreadcrumb(Message, nullptr, Type);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -198,6 +224,8 @@ void UBugsnagFunctionLibrary::LeaveBreadcrumb(const FString& Message, const TSha
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.LeaveBreadcrumb(Message, Metadata, Type);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -206,6 +234,7 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetBreadcrumbs();
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return {};
 #endif
 }
@@ -214,6 +243,8 @@ void UBugsnagFunctionLibrary::MarkLaunchCompleted()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.MarkLaunchCompleted();
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -222,6 +253,7 @@ TSharedPtr<FBugsnagLastRunInfo> UBugsnagFunctionLibrary::GetLastRunInfo()
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.GetLastRunInfo();
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return nullptr;
 #endif
 }
@@ -230,6 +262,8 @@ void UBugsnagFunctionLibrary::StartSession()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.StartSession();
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -237,6 +271,8 @@ void UBugsnagFunctionLibrary::PauseSession()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.PauseSession();
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -245,6 +281,7 @@ bool UBugsnagFunctionLibrary::ResumeSession()
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	return GPlatformBugsnag.ResumeSession();
 #else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return false;
 #endif
 }
@@ -253,6 +290,8 @@ void UBugsnagFunctionLibrary::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callb
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnBreadcrumb(Callback);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -260,6 +299,8 @@ void UBugsnagFunctionLibrary::AddOnSendError(FBugsnagOnErrorCallback Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnSendError(Callback);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
 
@@ -267,5 +308,7 @@ void UBugsnagFunctionLibrary::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnSession(Callback);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
 }
