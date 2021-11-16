@@ -87,6 +87,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheExternalJavaClass(env, cache->MetadataParserClass, "com.bugsnag.android.unreal.MetadataParser");
 	CacheExternalJavaClass(env, cache->MetadataSerializerClass, "com.bugsnag.android.unreal.MetadataSerializer");
 
+	CacheSystemJavaClass(env, cache->ContextClass, "android/content/Context");
 	CacheSystemJavaClass(env, cache->DateClass, "java/util/Date");
 	CacheSystemJavaClass(env, cache->EnumClass, "java/lang/Enum");
 	CacheSystemJavaClass(env, cache->HashMapClass, "java/util/HashMap");
@@ -190,6 +191,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ConfigSetSendThreads, cache->ConfigClass, "setSendThreads", "(Lcom/bugsnag/android/ThreadSendPolicy;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetUser, cache->ConfigClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetVersionCode, cache->ConfigClass, "setVersionCode", "(Ljava/lang/Integer;)V");
+
+	CacheInstanceJavaMethod(env, cache->ContextGetApplication, cache->ContextClass, "getApplicationContext", "()Landroid/content/Context;");
 
 	CacheInstanceJavaMethod(env, cache->DateConstructor, cache->DateClass, "<init>", "(J)V");
 	CacheInstanceJavaMethod(env, cache->DateGetTime, cache->DateClass, "getTime", "()J");

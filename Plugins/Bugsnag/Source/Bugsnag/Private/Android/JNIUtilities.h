@@ -37,6 +37,7 @@ typedef struct
 	jclass StackframeClass;
 	jclass UserClass;
 	jclass TraceClass;
+	jclass ContextClass;
 	jclass DateClass;
 	jclass EnumClass;
 	jclass HashMapClass;
@@ -131,6 +132,7 @@ typedef struct
 	jmethodID ConfigSetSendThreads;
 	jmethodID ConfigSetUser;
 	jmethodID ConfigSetVersionCode;
+	jmethodID ContextGetApplication;
 	jmethodID DeviceGetCpuAbi;
 	jmethodID DeviceGetId;
 	jmethodID DeviceGetJailbroken;
