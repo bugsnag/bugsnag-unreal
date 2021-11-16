@@ -36,14 +36,10 @@ static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString&
 	return JsonObject;
 }
 
-static bool bHasCustomContext;
-
 void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.Start(Configuration);
-
-	bHasCustomContext = Configuration->bHasCustomContext;
 
 	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& MapUrl)
 		{
@@ -52,10 +48,6 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
 				MakeShared<FJsonValueString>(MapUrl));
-			if (!bHasCustomContext)
-			{
-				GPlatformBugsnag.SetContext(MapUrl);
-			}
 		});
 
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddLambda([](UWorld* World)
@@ -140,7 +132,6 @@ void UBugsnagFunctionLibrary::SetContext(const FString& Context)
 	{
 		GPlatformBugsnag.SetContext(TOptional<FString>(Context));
 	}
-	bHasCustomContext = true;
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
