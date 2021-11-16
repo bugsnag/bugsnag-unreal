@@ -13,6 +13,7 @@ UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib
+EXAMPLE_IOS_APP=Binaries/IOS/BugsnagExample-IOS-Shipping.ipa
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 TEST_OUTDIR=features/fixtures/mobile/Binaries
 TEST_ANDROID_APP=$(TEST_OUTDIR)/Android/TestFixture-Android-Shipping-arm64.apk
@@ -30,8 +31,7 @@ all: $(EXAMPLE_MAC_LIB)
 test: $(EXAMPLE_MAC_LIB) ## run unit tests
 ifeq ($(PLATFORM),Android)
 	$(MAKE) -f make/Android.make test
-endif
-ifeq ($(PLATFORM),iOS)
+else
 	"$(UE_EDITOR)" "$(UPROJECT)" \
 		-ExecCmds="Automation RunTests $(TESTSCOPE); Quit" -NoSplash \
 		-NullRHI -ReportOutputPath="$(PWD)/Saved/Automation/Reports"
@@ -107,7 +107,7 @@ e2e_ios_local: $(TEST_IOS_APP)
 	bundle exec maze-runner --app=$< --farm=local --os=ios --os-version=14 --apple-team-id=372ZUL2ZB7 --udid="$(shell idevice_id -l)" $(TESTS) --color
 
 .PHONY: build_example_android
-build_example_android:
+build_example_android: $(EXAMPLE_MAC_LIB)
 	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Android
 
 .PHONY: install_example_android
@@ -115,14 +115,13 @@ install_example_android: build_example_android
 	./Binaries/Android/Install_TestFixture-Android-Shipping-arm64.command
 
 .PHONY: build_example_ios
-build_example_ios:
+build_example_ios: $(EXAMPLE_MAC_LIB)
 	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=IOS
 
 # Note: ideviceinstaller does not make the app visible on the home screen :-/
 .PHONY: install_example_ios
 install_example_ios: build_example_ios
-	ideviceinstaller --install Binaries/IOS/BugsnagExample-IOS-Shipping.ipa \
-		--udid="$(shell idevice_id -l)"
+	ideviceinstaller --install $(EXAMPLE_IOS_APP) --udid="$(shell idevice_id -l)"
 
 .PHONY: build
 ifeq ($(PLATFORM),iOS)
@@ -132,9 +131,10 @@ ifeq ($(PLATFORM),Android)
 build: build_example_android
 endif
 
+# UE4Editor-BugsnagExample.dylib is required for BuildCookRun to succeed
 # If this target isn't built beforehand, the Editor will show the "Missing
 # BugsnagExample Modules" prompt
-$(EXAMPLE_MAC_LIB): $(shell find Plugins Source -type f)
+$(EXAMPLE_MAC_LIB): $(shell find Plugins/Bugsnag/Source Source -type f)
 	$(MAKE) -f make/Cocoa.make package
 	"$(UE_BUILD)" BugsnagExample Mac Development -TargetType=Editor "$(UPROJECT)"
 
