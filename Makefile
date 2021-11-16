@@ -134,7 +134,7 @@ endif
 
 # If this target isn't built beforehand, the Editor will show the "Missing
 # BugsnagExample Modules" prompt
-$(EXAMPLE_MAC_LIB):
+$(EXAMPLE_MAC_LIB): $(shell find Plugins Source -type f)
 	$(MAKE) -f make/Cocoa.make package
 	"$(UE_BUILD)" BugsnagExample Mac Development -TargetType=Editor "$(UPROJECT)"
 

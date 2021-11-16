@@ -114,3 +114,8 @@ Feature: Reporting handled errors
   Scenario: Cancel notify from callback
     When I run "CancelNotifyFromCallback"
     Then I should receive no errors
+
+  Scenario: Settings are honored when using Start(ApiKey)
+    When I run "StartWithApiKeyScenario"
+    And I wait to receive an error
+    And the event "context" equals "FromSettings"

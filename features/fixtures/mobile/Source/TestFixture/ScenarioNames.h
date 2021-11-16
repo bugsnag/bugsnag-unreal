@@ -14,4 +14,5 @@ static TArray<FString> ScenarioNames = {
 	TEXT("OpenLevelBreadcrumbsScenario"),
 	TEXT("PauseSessionScenario"),
 	TEXT("ResumeSessionScenario"),
+	TEXT("StartWithApiKeyScenario"),
 };

@@ -47,14 +47,14 @@ public:
 
 	////////////////////////////////////////////////////////////////////////////
 
+	const FString ApiKey = TEXT("12312312312312312312312312312312");
+	const FString NotifyEndpoint = TEXT("http://bs-local.com:9339/notify");
+	const FString SessionsEndpoint = TEXT("http://bs-local.com:9339/sessions");
+
 	Scenario()
 	{
-		Configuration = new FBugsnagConfiguration(
-			TEXT("12312312312312312312312312312312"));
-
-		Configuration->SetEndpoints(
-			TEXT("http://bs-local.com:9339/notify"),
-			TEXT("http://bs-local.com:9339/sessions"));
+		Configuration = new FBugsnagConfiguration(ApiKey);
+		Configuration->SetEndpoints(NotifyEndpoint, SessionsEndpoint);
 	}
 
 	virtual void Configure()
