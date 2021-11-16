@@ -16,6 +16,7 @@ typedef struct
 	jclass BreadcrumbTypeClass;
 	jclass BugsnagClass;
 	jclass BugsnagUnrealPluginClass;
+	jclass ClientClass;
 	jclass ConfigClass;
 	jclass DeviceClass;
 	jclass DeviceWithStateClass;
@@ -103,6 +104,7 @@ typedef struct
 	jmethodID BugsnagUnrealPluginGetMetadataSection;
 	jmethodID BugsnagUnrealPluginGetMetadataValue;
 	jmethodID BugsnagUnrealPluginNotify;
+	jmethodID ClientAddRuntimeVersionInfo;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigAddPlugin;
 	jmethodID ConfigConstructor;

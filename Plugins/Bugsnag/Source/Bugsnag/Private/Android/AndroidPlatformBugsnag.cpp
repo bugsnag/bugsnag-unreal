@@ -10,6 +10,8 @@
 #include "AndroidEvent.h"
 #include "AndroidPlatformConfiguration.h"
 #include "AndroidSession.h"
+#include "BugsnagConstants.h"
+#include "BugsnagUtils.h"
 #include "JNIUtilities.h"
 #include "Shorthand.h"
 
@@ -32,6 +34,13 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 		jobject jConfig = FAndroidPlatformConfiguration::Parse(Env, &JNICache, Config);
 		jobject jClient = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jActivity, jConfig);
 		JNICache.initialized = !FAndroidPlatformJNI::CheckAndClearException(Env) && jClient != NULL;
+		if (JNICache.initialized)
+		{
+			jstring jKey = FAndroidPlatformJNI::ParseFString(Env, BugsnagConstants::UnrealEngine);
+			jstring jValue = FAndroidPlatformJNI::ParseFString(Env, BugsnagUtils::GetUnrealEngineVersion());
+			(*Env).CallVoidMethod(jClient, JNICache.ClientAddRuntimeVersionInfo, jKey, jValue);
+			FAndroidPlatformJNI::CheckAndClearException(Env);
+		}
 	}
 }
 

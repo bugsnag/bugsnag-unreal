@@ -65,6 +65,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheExternalJavaClass(env, cache->BreadcrumbClass, "com.bugsnag.android.Breadcrumb");
 	CacheExternalJavaClass(env, cache->BugsnagClass, "com.bugsnag.android.Bugsnag");
 	CacheExternalJavaClass(env, cache->BugsnagUnrealPluginClass, "com.bugsnag.android.unreal.UnrealPlugin");
+	CacheExternalJavaClass(env, cache->ClientClass, "com.bugsnag.android.Client");
 	CacheExternalJavaClass(env, cache->ConfigClass, "com.bugsnag.android.Configuration");
 	CacheExternalJavaClass(env, cache->DeviceClass, "com.bugsnag.android.Device");
 	CacheExternalJavaClass(env, cache->DeviceWithStateClass, "com.bugsnag.android.DeviceWithState");
@@ -159,6 +160,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->MetadataParserParse, cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
 
 	CacheStaticJavaMethod(env, cache->MetadataSerializerSerialize, cache->MetadataSerializerClass, "serialize", "(Ljava/util/Map;)[B");
+
+	CacheInstanceJavaMethod(env, cache->ClientAddRuntimeVersionInfo, cache->ClientClass, "addRuntimeVersionInfo", "(Ljava/lang/String;Ljava/lang/String;)V");
 
 	CacheInstanceJavaMethod(env, cache->ConfigConstructor, cache->ConfigClass, "<init>", "(Ljava/lang/String;)V");
 

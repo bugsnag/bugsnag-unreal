@@ -15,6 +15,8 @@ Feature: Unhandled errors
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the event has a "manual" breadcrumb named "About to read from a bad memory address"
     And the event "app.isLaunching" is true
+    # TODO: pending on Android (PLAT-7602)
+    And on iOS, the event "device.runtimeVersions.unrealEngine" is not null
     And the event "metaData.pastries.cronut" is false
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
