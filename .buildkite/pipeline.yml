@@ -21,6 +21,7 @@ steps:
       queue: opensource-mac-unreal-4.23
     env:
       UE_VERSION: "4.23"
+      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
     command: make package
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
