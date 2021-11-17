@@ -5,6 +5,7 @@ static TArray<FString> ScenarioNames = {
 	TEXT("CancelNotifyFromCallback"),
 	TEXT("CancelSessionScenario"),
 	TEXT("CrashAfterLaunchedScenario"),
+	TEXT("CrashWithoutAutoDetectionScenario"),
 	TEXT("GetCrumbScenario"),
 	TEXT("MaxConfigCrashScenario"),
 	TEXT("ModifyCrumbsScenario"),

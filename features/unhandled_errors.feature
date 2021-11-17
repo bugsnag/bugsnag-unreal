@@ -68,3 +68,7 @@ Feature: Unhandled errors
     Given I run "CrashAfterLaunchedScenario" and restart the crashed app
     And I wait to receive an error
     Then the event "app.isLaunching" is false
+
+  Scenario: Crash with auto detect errors disabled
+    Given I run "CrashWithoutAutoDetectionScenario" and restart the crashed app
+    Then I should receive no errors
