@@ -43,3 +43,8 @@ Feature: Session tracking
     And on Android, the session payload field "app.versionCode" equals 21
     And on Android, the session payload field "device.cpuAbi" is an array with 1 elements
     And on Android, the session payload field "device.cpuAbi.0" equals "beanmachine"
+
+  Scenario: Automatic session tracking
+    When I run "AutoSessionScenario"
+    And I wait to receive a session
+    Then the session is valid for the session reporting API version "1.0" for the "Unreal Bugsnag Notifier" notifier
