@@ -1,3 +1,5 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 #pragma once
 #define ReturnFalseIfNullAndClearExceptions(env, var) \
 	if (var == NULL)                                  \

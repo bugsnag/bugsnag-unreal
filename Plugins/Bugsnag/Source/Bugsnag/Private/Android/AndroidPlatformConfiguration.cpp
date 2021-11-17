@@ -1,3 +1,5 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 #include "AndroidPlatformConfiguration.h"
 #include "JNIUtilities.h"
 #include "Shorthand.h"

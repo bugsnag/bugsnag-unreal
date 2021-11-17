@@ -1,3 +1,5 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 #pragma once
 
 #define BUGSNAG_UNREAL_NAME "Unreal Bugsnag Notifier"

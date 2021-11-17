@@ -1,3 +1,5 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 #include "AndroidPlatformBugsnag.h"
 
 #include <dlfcn.h>

@@ -1,3 +1,5 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 #include "BugsnagExample.h"
 #include "Modules/ModuleManager.h"
 
