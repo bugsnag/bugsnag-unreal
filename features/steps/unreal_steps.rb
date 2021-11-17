@@ -26,6 +26,10 @@ When('I run {string} and restart the crashed app') do |scenario_name|
   )
 end
 
+When('I background the app for {int} seconds') do |duration|
+  Maze.driver.background_app(duration)
+end
+
 def dial_number_for(scenario_name)
   number = $scenario_names.index scenario_name
   raise "Scenario name #{scenario_name} is not in the list; try running update-scenario-names.sh" if number.nil?

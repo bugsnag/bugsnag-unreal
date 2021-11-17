@@ -48,3 +48,8 @@ Feature: Session tracking
     When I run "AutoSessionScenario"
     And I wait to receive a session
     Then the session is valid for the session reporting API version "1.0" for the "Unreal Bugsnag Notifier" notifier
+
+  Scenario: Automatic session tracking disabled
+    When I run "AutoTrackSessionsDisabledScenario"
+    And I background the app for 3 seconds
+    Then I should receive no sessions
