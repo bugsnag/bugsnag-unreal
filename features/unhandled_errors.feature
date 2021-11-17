@@ -1,10 +1,7 @@
 Feature: Unhandled errors
 
   Scenario: BadMemoryAccessScenario
-    When I run "BadMemoryAccessScenario"
-    And the app is not running
-    And I relaunch the app
-    And I configure Bugsnag for "BadMemoryAccessScenario"
+    Given I run "BadMemoryAccessScenario" and restart the crashed app
     And I wait to receive an error
     Then the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
     And the error payload field "notifier.dependencies.0.name" is not null
@@ -52,10 +49,7 @@ Feature: Unhandled errors
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
   Scenario: Crash after setting optional configuration options
-    When I run "MaxConfigCrashScenario"
-    Then the app is not running
-    When I relaunch the app
-    And I configure Bugsnag for "MaxConfigCrashScenario"
+    Given I run "MaxConfigCrashScenario" and restart the crashed app
     And I wait to receive an error
     Then the error payload field "apiKey" equals "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     And the event "unhandled" is true
@@ -71,9 +65,6 @@ Feature: Unhandled errors
     And the method of stack frame 0 is equivalent to "MaxConfigCrashScenario::Run()"
 
   Scenario: Crash after marking launch as completed
-    When I run "CrashAfterLaunchedScenario"
-    Then the app is not running
-    When I relaunch the app
-    And I configure Bugsnag for "MaxConfigCrashScenario"
+    Given I run "CrashAfterLaunchedScenario" and restart the crashed app
     And I wait to receive an error
     Then the event "app.isLaunching" is false
