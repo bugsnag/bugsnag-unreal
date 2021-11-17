@@ -7,6 +7,7 @@ $scenario_names = [
   'CancelSessionScenario',
   'CrashAfterLaunchedScenario',
   'CrashWithoutAutoDetectionScenario',
+  'DiscardClassesHandledErrorsScenario',
   'GetCrumbScenario',
   'MaxConfigCrashScenario',
   'ModifyCrumbsScenario',
