@@ -1,3 +1,5 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 #include "BugsnagEditorModule.h"
 #include "BugsnagSettings.h"
 #include "ISettingsModule.h"
