@@ -11,6 +11,22 @@ Feature: Breadcrumbs and modifying with callbacks
     And the event "breadcrumbs.0.metaData.macaron" equals 3
     And the event "breadcrumbs.0.metaData.cronut" is false
 
+  Scenario: Filtering out all automatic breadcrumbs
+    When I run "RestrictAllCrumbTypesScenario"
+    And I wait to receive an error
+    Then the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
+    And the error payload field "events.0.breadcrumbs" is an array with 1 elements
+    And the event "breadcrumbs.0.name" equals "Message in a bottle"
+    And the event "breadcrumbs.0.type" equals "navigation"
+
+  Scenario: Filtering out some automatic breadcrumbs by type
+    When I run "RestrictSomeCrumbTypesScenario"
+    And I wait to receive an error
+    Then the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
+    And the error payload field "events.0.breadcrumbs" is an array with 1 elements
+    And the event "breadcrumbs.0.name" equals "Message in a bottle"
+    And the event "breadcrumbs.0.type" equals "manual"
+
   Scenario: Automatic breadcrumbs for Unreal Engine map changes
     When I run "OpenLevelBreadcrumbsScenario"
     And I wait to receive an error
