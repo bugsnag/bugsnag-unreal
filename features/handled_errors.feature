@@ -117,7 +117,7 @@ Feature: Reporting handled errors
     Then I should receive no errors
 
   @skip_android
-  Scenario: Discard handled error via DisardClasses
+  Scenario: Discard handled error via DiscardClasses
     When I run "DiscardClassesHandledErrorsScenario"
     And I wait to receive an error
     Then the exception "errorClass" equals "ImportantError"
