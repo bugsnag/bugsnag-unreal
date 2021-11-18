@@ -40,6 +40,7 @@ Feature: Session tracking
     And the session payload field "device.osName" equals "Fun OS"
     And the session payload field "device.osVersion" equals "3.1"
     And the session payload field "device.runtimeVersions.libpastry" equals "4.5.0.0"
+    And the session payload field "device.runtimeVersions.libsauce" equals "1.0-beta_1"
     And on Android, the session payload field "app.versionCode" equals 21
     And on Android, the session payload field "device.cpuAbi" is an array with 1 elements
     And on Android, the session payload field "device.cpuAbi.0" equals "beanmachine"
