@@ -12,39 +12,6 @@ steps:
 
   ##############################################################################
   #
-  # Build E2E Fixtures
-  #
-  ##############################################################################
-
-  - name: 'Build Android test fixture - UE 4.27'
-    agents:
-      queue: opensource-mac-unreal-4.27
-    env:
-      UE_VERSION: "4.27"
-    plugins:
-      artifacts#v1.2.0:
-        upload:
-          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-    command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-    timeout_in_minutes: 40
-    key: android_fixture
-
-  - name: 'Build iOS test fixture - UE 4.27'
-    agents:
-      queue: opensource-mac-unreal-4.27
-    env:
-      UE_VERSION: "4.27"
-    plugins:
-      artifacts#v1.2.0:
-        upload:
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    timeout_in_minutes: 40
-    key: ios_fixture
-
-  ##############################################################################
-  #
   # Build Plugin
   #
   ##############################################################################
@@ -54,6 +21,25 @@ steps:
       queue: opensource-mac-unreal-4.23
     env:
       UE_VERSION: "4.23"
+      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
+    command: make package
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 30
+
+  - name: 'Build Plugin - UE 4.25'
+    agents:
+      queue: opensource-mac-unreal-4.25
+    env:
+      UE_VERSION: "4.25"
+    command: make package
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 30
+
+  - name: 'Build Plugin - UE 4.26'
+    agents:
+      queue: opensource-mac-unreal-4.26
+    env:
+      UE_VERSION: "4.26"
     command: make package
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
@@ -83,6 +69,39 @@ steps:
       UE_VERSION: "4.27"
     command: build.bat
     timeout_in_minutes: 30
+
+  ##############################################################################
+  #
+  # Build E2E Fixtures
+  #
+  ##############################################################################
+
+  - name: 'Build Android test fixture - UE 4.27'
+    agents:
+      queue: opensource-mac-unreal-4.27
+    env:
+      UE_VERSION: "4.27"
+    plugins:
+      artifacts#v1.2.0:
+        upload:
+          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+    command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+    timeout_in_minutes: 60
+    key: android_fixture
+
+  - name: 'Build iOS test fixture - UE 4.27'
+    agents:
+      queue: opensource-mac-unreal-4.27
+    env:
+      UE_VERSION: "4.27"
+    plugins:
+      artifacts#v1.2.0:
+        upload:
+          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
+          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    timeout_in_minutes: 60
+    key: ios_fixture
 
   ##############################################################################
   #
