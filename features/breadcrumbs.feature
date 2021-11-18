@@ -10,6 +10,7 @@ Feature: Breadcrumbs and modifying with callbacks
     And the event "breadcrumbs.0.metaData.forty" equals "four zero"
     And the event "breadcrumbs.0.metaData.macaron" equals 3
     And the event "breadcrumbs.0.metaData.cronut" is false
+    And the event "breadcrumbs.0.metaData.functionLibrary" equals "ok"
 
   Scenario: Filtering out all automatic breadcrumbs
     When I run "RestrictAllCrumbTypesScenario"
