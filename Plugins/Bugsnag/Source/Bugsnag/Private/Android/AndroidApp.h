@@ -70,14 +70,14 @@ public:
 		SetStringField(Cache->AppSetVersion, true, Value);
 	}
 
-	const TOptional<int64> GetVersionCode() const
+	const TOptional<int32> GetVersionCode() const
 	{
-		return GetLongObjectField<int64>(Cache->AppGetVersionCode);
+		return GetIntObjectField<int32>(Cache->AppGetVersionCode);
 	}
 
-	void SetVersionCode(const TOptional<int64>& Value)
+	void SetVersionCode(const TOptional<int32>& Value)
 	{
-		SetLongObjectField(Cache->AppSetVersionCode, true, Value);
+		SetIntObjectField(Cache->AppSetVersionCode, true, Value);
 	}
 
 	// -- unsupported fields

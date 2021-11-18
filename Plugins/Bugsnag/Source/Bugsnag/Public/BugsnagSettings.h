@@ -195,7 +195,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 
 	// Overrides `app.versionCode` if not empty (Android only.)
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "App Information", DisplayName = "Version Code (Android only)")
-	int VersionCode;
+	int32 VersionCode;
 
 	///////////////////////////////////////////////////////////////////////////
 	//

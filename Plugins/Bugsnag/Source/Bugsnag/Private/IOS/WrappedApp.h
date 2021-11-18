@@ -119,13 +119,13 @@ public:
 
 	// versionCode?: number;
 
-	const TOptional<int64> GetVersionCode() const
+	const TOptional<int32> GetVersionCode() const
 	{
 		// Not supported by bugsnag-cocoa
-		return TOptional<int64>();
+		return TOptional<int32>();
 	}
 
-	void SetVersionCode(const TOptional<int64>& Value)
+	void SetVersionCode(const TOptional<int32>& Value)
 	{
 		// Not supported by bugsnag-cocoa
 	}
