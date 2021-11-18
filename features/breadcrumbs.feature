@@ -37,6 +37,16 @@ Feature: Breadcrumbs and modifying with callbacks
     And the event "breadcrumbs.1.name" equals "Map Loaded"
     And the event "breadcrumbs.1.type" equals "navigation"
     And the event "breadcrumbs.1.metaData.url" equals "/Game/AnotherWorld"
+    And the event "metaData.unrealEngine.mapUrl" equals "/Game/AnotherWorld"
+
+  Scenario: Automatic breadcrumbs for Unreal Engine user activity
+    When I run "UserActivityBreadcrumbsScenario"
+    And I wait to receive an error
+    Then the error payload field "events.0.breadcrumbs" is an array with 1 elements
+    And the event "breadcrumbs.0.name" equals "User activity changed"
+    And the event "breadcrumbs.0.type" equals "user"
+    And the event "breadcrumbs.0.metaData.activity" equals "Cheat mode enabled"
+    And the event "metaData.unrealEngine.userActivity" equals "Cheat mode enabled"
 
   Scenario: Introspecting breadcrumbs at runtime
     When I run "GetCrumbScenario"

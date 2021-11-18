@@ -24,4 +24,5 @@ static TArray<FString> ScenarioNames = {
 	TEXT("RestrictSomeCrumbTypesScenario"),
 	TEXT("ResumeSessionScenario"),
 	TEXT("StartWithApiKeyScenario"),
+	TEXT("UserActivityBreadcrumbsScenario"),
 };

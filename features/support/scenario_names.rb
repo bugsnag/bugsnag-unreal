@@ -24,4 +24,5 @@ $scenario_names = [
   'RestrictSomeCrumbTypesScenario',
   'ResumeSessionScenario',
   'StartWithApiKeyScenario',
+  'UserActivityBreadcrumbsScenario',
 ]
