@@ -117,6 +117,10 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bAutoTrackSessions = true;
 
+	// Whether symbol mapping files for showing file paths and line numbers in errors should be automatically uploaded. (Android only)
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Auto Upload Symbol Files (Android only)")
+	bool bAutoUploadSymbolFiles = true;
+
 	// A general summary of what was occuring in the application.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	FString Context;
@@ -210,4 +214,12 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	// Where sessions should be sent.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Endpoints", DisplayName = "Sessions")
 	FString SessionsEndpoint = TEXT("https://sessions.bugsnag.com");
+
+	// Where new release build information should be sent.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Endpoints", DisplayName = "Releases")
+	FString ReleasesEndpoint = TEXT("https://build.bugsnag.com");
+
+	// Where symbol mapping files should be sent.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Endpoints", DisplayName = "Symbol File Upload")
+	FString SymbolUploadEndpoint = TEXT("https://upload.bugsnag.com");
 };
