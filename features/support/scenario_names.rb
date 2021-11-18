@@ -17,6 +17,7 @@ $scenario_names = [
   'NotifyWithLaunchInfoScenario',
   'OpenLevelBreadcrumbsScenario',
   'PauseSessionScenario',
+  'RedactedKeysScenario',
   'ReleaseStageDisabledScenario',
   'ReleaseStageEnabledScenario',
   'RestrictAllCrumbTypesScenario',
