@@ -98,10 +98,13 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	//
 	///////////////////////////////////////////////////////////////////////////
 
-	// Provide your project's API key here to have Bugsnag start automatically.
-	// If more advanced configuration is required, start Bugsnag programatically instead.
+	// Your API key from your Bugsnag project dashboard
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Basic Configuration", DisplayName = "API Key")
 	FString ApiKey;
+
+	// Start capturing events and sessions when the game launches. (requires API key to be set)
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Basic Configuration", DisplayName = "Start Automatically (requires API key to be set)")
+	bool bStartAutomaticallyAtLaunch = true;
 
 	///////////////////////////////////////////////////////////////////////////
 	//
