@@ -194,9 +194,9 @@ public:
 
 	// -- Version Code
 
-	const TOptional<int>& GetVersionCode() const { return VersionCode; }
+	const TOptional<int32>& GetVersionCode() const { return VersionCode; }
 
-	void SetVersionCode(const TOptional<int>& Value) { VersionCode = Value; }
+	void SetVersionCode(const TOptional<int32>& Value) { VersionCode = Value; }
 
 	// User
 
@@ -272,7 +272,7 @@ private:
 	TOptional<FString> BundleVersion;
 	TOptional<FString> PersistenceDirectory;
 	TArray<FString> ProjectPackages;
-	TOptional<int> VersionCode;
+	TOptional<int32> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;

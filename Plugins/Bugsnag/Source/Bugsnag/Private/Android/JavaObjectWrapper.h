@@ -54,6 +54,17 @@ public:
 	}
 
 	template <typename T>
+	TOptional<T> GetIntObjectField(jmethodID Method) const
+	{
+		jobject jValue = (*Env).CallObjectMethod(JavaObject, Method);
+		ReturnValueOnException(Env, TOptional<T>());
+		ReturnValueOnFail(jValue, TOptional<T>()); // might be nullable
+		jlong Value = (*Env).CallLongMethod(jValue, Cache->NumberIntValue);
+		ReturnValueOnException(Env, TOptional<T>());
+		return TOptional<T>(Value);
+	}
+
+	template <typename T>
 	TOptional<T> GetLongObjectField(jmethodID Method) const
 	{
 		jobject jValue = (*Env).CallObjectMethod(JavaObject, Method);
@@ -62,6 +73,12 @@ public:
 		jlong Value = (*Env).CallLongMethod(jValue, Cache->NumberLongValue);
 		ReturnValueOnException(Env, TOptional<T>());
 		return TOptional<T>(Value);
+	}
+
+	template <typename T>
+	void SetIntObjectField(jmethodID Method, bool IsNullable, const TOptional<T> Value) const
+	{
+		SetPrimitiveObjectField(Cache->IntegerClass, Cache->IntegerConstructor, Method, IsNullable, Value);
 	}
 
 	template <typename T>

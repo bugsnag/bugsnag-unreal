@@ -558,7 +558,7 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIRefere
 	return nullptr;
 }
 
-jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int64 Value)
+jobject FAndroidPlatformJNI::ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int32 Value)
 {
 	jobject jValue = (*Env).NewObject(Cache->IntegerClass, Cache->IntegerConstructor, Value);
 	if (FAndroidPlatformJNI::CheckAndClearException(Env))

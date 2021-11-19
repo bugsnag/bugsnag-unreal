@@ -37,19 +37,12 @@ public:
 
 	TOptional<int32> GetLineNumber() const override
 	{
-		jobject jLineNumber = (*Env).CallObjectMethod(JavaObject, Cache->StackframeGetLineNumber);
-		ReturnValueOnException(Env, TOptional<int32>());
-		jint LineNumber = (*Env).CallIntMethod(jLineNumber, Cache->NumberIntValue);
-		ReturnValueOnException(Env, TOptional<int32>());
-		return LineNumber;
+		return GetIntObjectField<int32>(Cache->StackframeGetLineNumber);
 	}
 
 	void SetLineNumber(const TOptional<int32>& Line) override
 	{
-		jobject jLine = FAndroidPlatformJNI::ParseInteger(Env, Cache, Line.IsSet() ? Line.GetValue() : 0);
-		ReturnVoidOnException(Env);
-		(*Env).CallVoidMethod(JavaObject, Cache->StackframeSetLineNumber, jLine);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
+		SetIntObjectField(Cache->StackframeSetLineNumber, false, Line);
 	}
 
 	TOptional<FString> GetMethod() const override

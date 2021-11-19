@@ -387,7 +387,7 @@ public:
    * @param Cache A reference to a cache object to populate. Must not be null.
    * @param Value The value to convert
    */
-	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int64 Value);
+	static jobject ParseInteger(JNIEnv* Env, const JNIReferenceCache* Cache, int32 Value);
 
 	/**
      * Convert a Java Date into a FDateTime
