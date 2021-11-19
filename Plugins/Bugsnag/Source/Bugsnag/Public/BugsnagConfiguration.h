@@ -117,9 +117,9 @@ public:
 
 	// Max Breadcrumbs
 
-	uint64 GetMaxBreadcrumbs() const { return MaxBreadcrumbs; }
+	uint32 GetMaxBreadcrumbs() const { return MaxBreadcrumbs; }
 
-	void SetMaxBreadcrumbs(uint64 Value)
+	void SetMaxBreadcrumbs(uint32 Value)
 	{
 		if (Value > 100)
 		{
@@ -133,15 +133,15 @@ public:
 
 	// Max Persisted Events
 
-	uint64 GetMaxPersistedEvents() const { return MaxPersistedEvents; }
+	uint32 GetMaxPersistedEvents() const { return MaxPersistedEvents; }
 
-	void SetMaxPersistedEvents(uint64 Value) { MaxPersistedEvents = Value; };
+	void SetMaxPersistedEvents(uint32 Value) { MaxPersistedEvents = Value; };
 
 	// Max Persisted Sessions
 
-	uint64 GetMaxPersistedSessions() const { return MaxPersistedSessions; }
+	uint32 GetMaxPersistedSessions() const { return MaxPersistedSessions; }
 
-	void SetMaxPersistedSessions(uint64 Value) { MaxPersistedSessions = Value; };
+	void SetMaxPersistedSessions(uint32 Value) { MaxPersistedSessions = Value; };
 
 	// Persist User
 
@@ -261,9 +261,9 @@ private:
 	EBugsnagSendThreadsPolicy SendThreads = EBugsnagSendThreadsPolicy::All;
 	uint64 LaunchDurationMillis = 5000;
 	bool bSendLaunchCrashesSynchronously = true;
-	uint64 MaxBreadcrumbs = 50;
-	uint64 MaxPersistedEvents = 32;
-	uint64 MaxPersistedSessions = 128;
+	uint32 MaxBreadcrumbs = 50;
+	uint32 MaxPersistedEvents = 32;
+	uint32 MaxPersistedSessions = 128;
 	bool bPersistUser = true;
 	FBugsnagUser User;
 	TOptional<FString> ReleaseStage;

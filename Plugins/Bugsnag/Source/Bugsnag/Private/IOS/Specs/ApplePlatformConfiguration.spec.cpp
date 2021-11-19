@@ -158,7 +158,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetMaxBreadcrumbs(100);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
-					TEST_EQUAL((int64)CocoaConfig.maxBreadcrumbs, (int64)100);
+					TEST_EQUAL((int32)CocoaConfig.maxBreadcrumbs, (int32)100);
 				});
 
 			It("MaxPersistedEvents", [this]()
@@ -166,7 +166,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetMaxPersistedEvents(100);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
-					TEST_EQUAL((int64)CocoaConfig.maxPersistedEvents, (int64)100);
+					TEST_EQUAL((int32)CocoaConfig.maxPersistedEvents, (int32)100);
 				});
 
 			It("MaxPersistedSessions", [this]()
@@ -174,7 +174,7 @@ void FApplePlatformConfigurationSpec::Define()
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetMaxPersistedSessions(100);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
-					TEST_EQUAL((int64)CocoaConfig.maxPersistedSessions, (int64)100);
+					TEST_EQUAL((int32)CocoaConfig.maxPersistedSessions, (int32)100);
 				});
 
 			It("PersistUser", [this]()

@@ -163,15 +163,15 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 
 	// The maximum number of breadcrumbs to store before deleting the oldest.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMax = "100"))
-	uint64 MaxBreadcrumbs = 50;
+	uint32 MaxBreadcrumbs = 50;
 
 	// The maximum number of events to store before deleting the oldest.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMin = "1"))
-	uint64 MaxPersistedEvents = 32;
+	uint32 MaxPersistedEvents = 32;
 
 	// The maximum number of sessions to store before deleting the oldest.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMin = "1"))
-	uint64 MaxPersistedSessions = 128;
+	uint32 MaxPersistedSessions = 128;
 
 	// Whether User information should be persisted to disk between application runs.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
