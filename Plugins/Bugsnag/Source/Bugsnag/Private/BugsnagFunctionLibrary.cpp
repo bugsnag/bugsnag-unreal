@@ -13,7 +13,7 @@
 
 #define LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM()                                          \
 	UE_LOG(LogBugsnag, Log,                                                             \
-		TEXT("UBugsnagFunctionLibrary::%s() is not implemented on this platform (%s)"), \
+		TEXT("UBugsnagFunctionLibrary::%s(): Bugsnag is not supported on platform %s"), \
 		*FString(__func__), *FString(FPlatformProperties::PlatformName()))
 
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
