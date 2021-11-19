@@ -98,10 +98,13 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	//
 	///////////////////////////////////////////////////////////////////////////
 
-	// Provide your project's API key here to have Bugsnag start automatically.
-	// If more advanced configuration is required, start Bugsnag programatically instead.
+	// Your API key from your Bugsnag project dashboard
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Basic Configuration", DisplayName = "API Key")
 	FString ApiKey;
+
+	// Start capturing events and sessions when the game launches. (requires API key to be set)
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Basic Configuration", DisplayName = "Start Automatically (requires API key to be set)")
+	bool bStartAutomaticallyAtLaunch = true;
 
 	///////////////////////////////////////////////////////////////////////////
 	//
@@ -116,6 +119,10 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	// Whether app sessions should be tracked automatically.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bAutoTrackSessions = true;
+
+	// Whether symbol mapping files for showing file paths and line numbers in errors should be automatically uploaded. (Android only)
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Auto Upload Symbol Files (Android only)")
+	bool bAutoUploadSymbolFiles = true;
 
 	// A general summary of what was occuring in the application.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
@@ -210,4 +217,12 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	// Where sessions should be sent.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Endpoints", DisplayName = "Sessions")
 	FString SessionsEndpoint = TEXT("https://sessions.bugsnag.com");
+
+	// Where new release build information should be sent.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Endpoints", DisplayName = "Releases")
+	FString ReleasesEndpoint = TEXT("https://build.bugsnag.com");
+
+	// Where symbol mapping files should be sent.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Endpoints", DisplayName = "Symbol File Upload")
+	FString SymbolUploadEndpoint = TEXT("https://upload.bugsnag.com");
 };
