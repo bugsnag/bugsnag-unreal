@@ -55,7 +55,7 @@ endif
 	echo Bumping the version number to $(VERSION)
 	echo $(VERSION) > VERSION
 	sed -i '' "s/\"VersionName\": .*,/\"VersionName\": \"$(VERSION)\",/" Plugins/Bugsnag/Bugsnag.uplugin
-	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Public/Version.h
+	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Private/Version.h
 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
 	$(MAKE) -f make/Android.make bump
 
