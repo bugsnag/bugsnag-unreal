@@ -19,6 +19,7 @@ TEST_OUTDIR=features/fixtures/mobile/Binaries
 TEST_ANDROID_APP=$(TEST_OUTDIR)/Android/TestFixture-Android-Shipping-arm64.apk
 TEST_IOS_APP=$(TEST_OUTDIR)/IOS/TestFixture-IOS-Shipping.ipa
 TEST_MAC_LIB=$(TEST_OUTDIR)/Mac/UE4Editor-TestFixture.dylib
+ZIP_NAME=Bugsnag-$(shell git describe --always --dirty)-UE_$(UE_VERSION)
 
 # Change to run specific tests files
 TESTSCOPE?=Bugsnag
@@ -45,7 +46,7 @@ package: ## assemble library for release or testing
 	"$(UE_RUNUAT)" BuildPlugin \
 		-Plugin="$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin" \
 		-Package="$(PWD)/Build/Plugin/Bugsnag"
-	cd "$(PWD)/Build/Plugin" && zip -r Bugsnag-UE$(UE_VERSION).zip Bugsnag
+	cd "$(PWD)/Build/Plugin" && zip -r $(ZIP_NAME).zip Bugsnag
 
 .PHONY: bump
 bump: ## Bump the version numbers to $VERSION
@@ -55,7 +56,7 @@ endif
 	echo Bumping the version number to $(VERSION)
 	echo $(VERSION) > VERSION
 	sed -i '' "s/\"VersionName\": .*,/\"VersionName\": \"$(VERSION)\",/" Plugins/Bugsnag/Bugsnag.uplugin
-	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Public/Version.h
+	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Private/Version.h
 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
 	$(MAKE) -f make/Android.make bump
 
