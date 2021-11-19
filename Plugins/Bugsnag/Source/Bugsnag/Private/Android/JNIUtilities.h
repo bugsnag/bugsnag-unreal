@@ -125,6 +125,7 @@ typedef struct
 	jmethodID ConfigSetLaunchDurationMillis;
 	jmethodID ConfigSetMaxBreadcrumbs;
 	jmethodID ConfigSetMaxPersistedEvents;
+	jmethodID ConfigSetMaxPersistedSessions;
 	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
 	jmethodID ConfigSetProjectPackages;
