@@ -116,6 +116,12 @@ Feature: Reporting handled errors
     When I run "CancelNotifyFromCallback"
     Then I should receive no errors
 
+  @skip_android
+  Scenario: Discard handled error via DiscardClasses
+    When I run "DiscardClassesHandledErrorsScenario"
+    And I wait to receive an error
+    Then the exception "errorClass" equals "ImportantError"
+
   Scenario: Settings are honored when using Start(ApiKey)
     When I run "StartWithApiKeyScenario"
     And I wait to receive an error

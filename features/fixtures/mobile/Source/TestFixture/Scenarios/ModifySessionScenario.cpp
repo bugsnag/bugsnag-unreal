@@ -30,6 +30,13 @@ public:
 
 	void Run() override
 	{
+		UBugsnagFunctionLibrary::AddOnSession([](TSharedRef<IBugsnagSession> Session)
+			{
+				TSharedPtr<TMap<FString, FString>> Versions = Session->GetDevice()->GetRuntimeVersions();
+				Versions->Add("libsauce", "1.0-beta_1");
+				Session->GetDevice()->SetRuntimeVersions(Versions);
+				return true;
+			});
 		UBugsnagFunctionLibrary::StartSession();
 		UBugsnagFunctionLibrary::Notify("Incorrect", "Missing token");
 	}

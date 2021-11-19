@@ -17,6 +17,19 @@ When('I configure Bugsnag for {string}') do |scenario_name|
   tap_button 11
 end
 
+When('I run {string} and restart the crashed app') do |scenario_name|
+  steps %(
+    Given I run "#{scenario_name}"
+    And the app is not running
+    And I relaunch the app
+    And I configure Bugsnag for "#{scenario_name}"
+  )
+end
+
+When('I background the app for {int} seconds') do |duration|
+  Maze.driver.background_app(duration)
+end
+
 def dial_number_for(scenario_name)
   number = $scenario_names.index scenario_name
   raise "Scenario name #{scenario_name} is not in the list; try running update-scenario-names.sh" if number.nil?

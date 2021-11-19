@@ -24,6 +24,14 @@ public:
 
 	void Run() override
 	{
+		UBugsnagFunctionLibrary::AddOnBreadcrumb([](TSharedRef<IBugsnagBreadcrumb> Breadcrumb)
+			{
+				TSharedPtr<FJsonObject> Metadata = Breadcrumb->GetMetadata();
+				Metadata->SetStringField(TEXT("functionLibrary"), TEXT("ok"));
+				Breadcrumb->SetMetadata(Metadata);
+				return true;
+			});
+
 		TSharedPtr<FJsonObject> Metadata = MakeShared<FJsonObject>();
 		Metadata->SetBoolField("cronut", false);
 		Metadata->SetNumberField("macaron", 3);
@@ -31,7 +39,6 @@ public:
 
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("Crash time"),
 			Metadata, EBugsnagBreadcrumbType::User);
-		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb I/O
 
 		UBugsnagFunctionLibrary::Notify("Incorrect", "Missing token");
 	}
