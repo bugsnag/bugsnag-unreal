@@ -7,31 +7,41 @@
 #include "BugsnagErrorType.h"
 #include "BugsnagStackframe.h"
 
+/**
+ * Information about a thread.
+ */
 class BUGSNAG_API IBugsnagThread
 {
 public:
-	// id: string;
-
+	/**
+	 * The unique ID of the thread.
+	 */
 	virtual FString GetId() const = 0;
 
 	virtual void SetId(const FString&) = 0;
 
-	// name: string;
-
+	/**
+	 * The name of the thread.
+	 *
+	 * This is not automatically captured for all error types or platforms.
+	 */
 	virtual FString GetName() const = 0;
 
 	virtual void SetName(const FString&) = 0;
 
-	// readonly errorReportingThread: boolean;
-
+	/**
+	 * True is this was the thread that caused the error.
+	 */
 	virtual bool GetErrorReportingThread() const = 0;
 
-	// type: ErrorType;
-
+	/**
+	 * The type of thread based on the originating platform (intended for internal use only.)
+	 */
 	virtual EBugsnagErrorType GetErrorType() const = 0;
 
-	// stacktrace: Stacktrace;
-
+	/**
+	 * This thread's stack trace.
+	 */
 	virtual TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const = 0;
 
 	virtual void SetStacktrace(const TArray<TSharedRef<IBugsnagStackframe>>&) = 0;
