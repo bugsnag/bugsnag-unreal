@@ -74,11 +74,25 @@ struct FBugsnagErrorTypes
 	bool bUnhandledExceptions = true;
 };
 
+/**
+ * Controls whether Bugsnag events should include the state of all threads at the time of an error.
+ */
 UENUM()
 enum class EBugsnagSendThreadsPolicy : uint8
 {
+	/**
+	 * Threads should be included in all events.
+	 */
 	All,
+
+	/**
+	 * Threads should be included in unhandled events only.
+	 */
 	UnhandledOnly,
+
+	/**
+	 * Threads should not be included in any events.
+	 */
 	Never
 };
 
