@@ -3,6 +3,7 @@
 #include "BugsnagFunctionLibrary.h"
 
 #include "BugsnagConstants.h"
+#include "LogBugsnag.h"
 #include "PlatformBugsnag.h"
 
 #include "Engine/Engine.h"

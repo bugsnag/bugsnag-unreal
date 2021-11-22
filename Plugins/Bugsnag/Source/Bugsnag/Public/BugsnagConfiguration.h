@@ -9,7 +9,6 @@
 #include "BugsnagSession.h"
 #include "BugsnagSettings.h"
 #include "BugsnagUser.h"
-#include "LogBugsnag.h"
 
 #include "Dom/JsonObject.h"
 
@@ -184,18 +183,7 @@ public:
 	 * @param Value The minimum number of milliseconds of main thread unresponsiveness that should trigger the detection
 	 *              and reporting of an app hang on iOS. The minimum supported value is 250.
 	 */
-	void SetAppHangThresholdMillis(uint64 Value)
-	{
-		if (Value < 250)
-		{
-			UE_LOG(LogBugsnag, Warning,
-				TEXT("Invalid configuration. AppHangThresholdMillis should be a number greater than or equal to 250, got %lu"), Value);
-		}
-		else
-		{
-			AppHangThresholdMillis = Value;
-		}
-	}
+	void SetAppHangThresholdMillis(uint64 Value);
 
 	static uint64 const AppHangThresholdFatalOnly;
 
@@ -253,17 +241,7 @@ public:
 	 * @param Value The maximum number of breadcrumbs to store.
 	 *              The maximum supported value is 100.
 	 */
-	void SetMaxBreadcrumbs(uint32 Value)
-	{
-		if (Value > 100)
-		{
-			UE_LOG(LogBugsnag, Warning, TEXT("Invalid configuration. MaxBreadcrumbs should be a number between 0-100, got %lu"), Value);
-		}
-		else
-		{
-			MaxBreadcrumbs = Value;
-		}
-	}
+	void SetMaxBreadcrumbs(uint32 Value);
 
 	/**
 	 * The maximum number of events which will be stored.

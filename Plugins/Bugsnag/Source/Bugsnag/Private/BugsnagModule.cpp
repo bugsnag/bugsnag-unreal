@@ -2,6 +2,7 @@
 
 #include "BugsnagModule.h"
 #include "BugsnagFunctionLibrary.h"
+#include "LogBugsnag.h"
 
 #include "Modules/ModuleManager.h"
 
