@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 
+/**
+ * Information about the user of your app.
+ */
 class BUGSNAG_API FBugsnagUser
 {
 public:
