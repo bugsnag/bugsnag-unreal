@@ -199,7 +199,7 @@ public:
 	}
 
 	/**
-	 * Retrieve cached diagnostics associated with a specific section
+	 * Retrieves cached diagnostics associated with a specific section
 	 *
 	 * @param Section The section to retrieve
 	 *
@@ -208,7 +208,7 @@ public:
 	virtual TSharedPtr<FJsonObject> GetMetadata(const FString& Section) = 0;
 
 	/**
-	 * Retrieve cached diagnostics associated with a specific section and key
+	 * Retrieves cached diagnostics associated with a specific section and key
 	 *
 	 * @param Section The section containing key
 	 * @param Key     The value's identifier
