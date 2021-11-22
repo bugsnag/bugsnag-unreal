@@ -35,7 +35,7 @@ public:
 	virtual bool GetErrorReportingThread() const = 0;
 
 	/**
-	 * The type of thread based on the originating platform (intended for internal use only.)
+	 * The type of thread based on the originating platform.
 	 */
 	virtual EBugsnagErrorType GetErrorType() const = 0;
 
