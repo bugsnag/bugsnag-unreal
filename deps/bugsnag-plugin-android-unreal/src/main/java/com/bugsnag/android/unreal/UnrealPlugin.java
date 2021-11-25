@@ -16,18 +16,28 @@ import com.bugsnag.android.Event;
 import com.bugsnag.android.OnBreadcrumbCallback;
 import com.bugsnag.android.OnErrorCallback;
 import com.bugsnag.android.OnSessionCallback;
+import com.bugsnag.android.OnSendCallback;
 import com.bugsnag.android.Plugin;
 import com.bugsnag.android.Session;
 import com.bugsnag.android.Severity;
 
 public class UnrealPlugin implements Plugin {
   static final String DEFAULT_HANDLED_REASON = "handledError";
+  static boolean loaded = false;
   static Client client = null;
 
   OnBreadcrumbCallback onBreadcrumbRunner = new OnBreadcrumbCallback() {
     @Override
     public boolean onBreadcrumb(Breadcrumb crumb) {
       return runBreadcrumbCallbacks(crumb);
+    }
+  };
+
+  OnSendCallback onSendRunner = new OnSendCallback() {
+    @Override
+    public boolean onSend(Event event) {
+      // if for some reason the plugin is unloaded when a callback is invoked, skip processing
+      return loaded ? runEventCallbacks(event) : true;
     }
   };
 
@@ -52,9 +62,17 @@ public class UnrealPlugin implements Plugin {
    * Run all registered onSession callbacks
    *
    * @param session The session
-   * @return true if the sessioncrumb should be kept
+   * @return true if the session should be kept
    */
   static native boolean runSessionCallbacks(Session session);
+
+  /**
+   * Run all registered onSend callbacks
+   *
+   * @param event The event
+   * @return true if the event should be kept
+   */
+  static native boolean runEventCallbacks(Event event);
 
   /**
    * Run native notify callback
@@ -73,10 +91,15 @@ public class UnrealPlugin implements Plugin {
    */
   static native void setSeverityReason(Event event, String reasonType);
 
+  public UnrealPlugin(Configuration config) {
+    config.addOnBreadcrumb(onBreadcrumbRunner);
+    config.addOnSession(onSessionRunner);
+    config.addOnSend(onSendRunner);
+  }
+
   public void load(Client client) {
     this.client = client;
-    this.client.addOnBreadcrumb(onBreadcrumbRunner);
-    this.client.addOnSession(onSessionRunner);
+    loaded = true;
   }
 
   public void unload() {
@@ -85,6 +108,7 @@ public class UnrealPlugin implements Plugin {
       this.client.removeOnSession(onSessionRunner);
       this.client = null;
     }
+    loaded = false;
   }
 
   static void notify(String name, String message, StackTraceElement[] stacktrace, ByteBuffer userdata) {

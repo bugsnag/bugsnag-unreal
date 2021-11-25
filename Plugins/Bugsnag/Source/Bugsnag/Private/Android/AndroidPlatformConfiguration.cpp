@@ -159,7 +159,7 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
-	jobject jPlugin = (*Env).NewObject(Cache->BugsnagUnrealPluginClass, Cache->BugsnagUnrealPluginConstructor);
+	jobject jPlugin = (*Env).NewObject(Cache->BugsnagUnrealPluginClass, Cache->BugsnagUnrealPluginConstructor, jConfig);
 	ReturnNullOnException(Env);
 	jniCallWithObjects(Env, jConfig, Cache->ConfigAddPlugin, jPlugin);
 
