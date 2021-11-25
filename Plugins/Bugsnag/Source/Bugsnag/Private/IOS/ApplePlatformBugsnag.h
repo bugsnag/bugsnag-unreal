@@ -37,8 +37,6 @@ public:
 
 	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) override;
 
-	void AddOnSendError(FBugsnagOnErrorCallback Callback) override;
-
 	void AddOnSession(FBugsnagOnSessionCallback Callback) override;
 };
 

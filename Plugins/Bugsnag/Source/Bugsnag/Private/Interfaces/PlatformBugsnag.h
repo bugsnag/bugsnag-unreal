@@ -42,8 +42,6 @@ public:
 
 	virtual void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) = 0;
 
-	virtual void AddOnSendError(FBugsnagOnErrorCallback Callback) = 0;
-
 	virtual void AddOnSession(FBugsnagOnSessionCallback Callback) = 0;
 };
 

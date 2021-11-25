@@ -45,11 +45,6 @@ public:
 				return true;
 			});
 
-		UBugsnagFunctionLibrary::AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
-			{
-				return true;
-			});
-
 		UBugsnagFunctionLibrary::AddOnSession([](TSharedRef<IBugsnagSession> Session)
 			{
 				return true;
