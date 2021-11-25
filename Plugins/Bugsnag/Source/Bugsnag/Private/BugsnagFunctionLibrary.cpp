@@ -299,15 +299,6 @@ void UBugsnagFunctionLibrary::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callb
 #endif
 }
 
-void UBugsnagFunctionLibrary::AddOnSendError(FBugsnagOnErrorCallback Callback)
-{
-#if PLATFORM_IMPLEMENTS_BUGSNAG
-	GPlatformBugsnag.AddOnSendError(Callback);
-#else
-	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
-#endif
-}
-
 void UBugsnagFunctionLibrary::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG

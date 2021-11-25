@@ -463,15 +463,6 @@ public:
 	static void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback);
 
 	/**
-	 * Add a callback which will be executed before an event is sent. Within the
-	 * callback, the event can be modified or discarded altogether by returning
-	 * false.
-	 *
-	 * @param Callback The callback to add
-	 */
-	static void AddOnSendError(FBugsnagOnErrorCallback Callback);
-
-	/**
 	 * Add a callback which will be executed before a session is sent or
 	 * persisted. Within the callback, the session can be modified or discarded
 	 * altogether by returning false.

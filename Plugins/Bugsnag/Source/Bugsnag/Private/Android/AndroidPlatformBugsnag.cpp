@@ -344,10 +344,6 @@ bool FAndroidPlatformBugsnag::ResumeSession()
 	return false;
 }
 
-void FAndroidPlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
-{
-}
-
 #ifdef __cplusplus
 extern "C"
 {

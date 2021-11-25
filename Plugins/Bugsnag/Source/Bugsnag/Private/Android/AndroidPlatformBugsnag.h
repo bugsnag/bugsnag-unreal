@@ -51,8 +51,6 @@ public:
 		OnBreadcrumbCallbacks.Add(Callback);
 	};
 
-	void AddOnSendError(FBugsnagOnErrorCallback Callback) override;
-
 	void AddOnSession(FBugsnagOnSessionCallback Callback) override
 	{
 		OnSessionCallbacks.Add(Callback);
