@@ -547,7 +547,6 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIRefere
 	}
 	if (addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Error), Cache, Cache->BreadcrumbTypeError) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Log), Cache, Cache->BreadcrumbTypeLog) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Manual), Cache, Cache->BreadcrumbTypeManual) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Navigation), Cache, Cache->BreadcrumbTypeNavigation) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Process), Cache, Cache->BreadcrumbTypeProcess) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Request), Cache, Cache->BreadcrumbTypeRequest) &&

@@ -24,8 +24,7 @@ static TOptional<T> UnsetIfZero(const T Value)
 
 static EBugsnagEnabledBreadcrumbTypes Convert(FBugsnagEnabledBreadcrumbTypes Value)
 {
-	return (Value.bManual ? EBugsnagEnabledBreadcrumbTypes::Manual : EBugsnagEnabledBreadcrumbTypes::None) |
-		   (Value.bError ? EBugsnagEnabledBreadcrumbTypes::Error : EBugsnagEnabledBreadcrumbTypes::None) |
+	return (Value.bError ? EBugsnagEnabledBreadcrumbTypes::Error : EBugsnagEnabledBreadcrumbTypes::None) |
 		   (Value.bLog ? EBugsnagEnabledBreadcrumbTypes::Log : EBugsnagEnabledBreadcrumbTypes::None) |
 		   (Value.bNavigation ? EBugsnagEnabledBreadcrumbTypes::Navigation : EBugsnagEnabledBreadcrumbTypes::None) |
 		   (Value.bProcess ? EBugsnagEnabledBreadcrumbTypes::Process : EBugsnagEnabledBreadcrumbTypes::None) |

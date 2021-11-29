@@ -21,10 +21,6 @@ struct FBugsnagEnabledBreadcrumbTypes
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bLog = true;
 
-	// A breadcrumb left via LeaveBreadcrumb()
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
-	bool bManual = true;
-
 	// A navigation event, such as a window opening or closing
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bNavigation = true;
