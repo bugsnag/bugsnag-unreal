@@ -1,5 +1,8 @@
+// Copyright 2021 Bugsnag. All Rights Reserved.
+
 using UnrealBuildTool;
 using System.IO;
+using System;
 
 public class BugsnagCocoa : ModuleRules
 {
@@ -7,8 +10,21 @@ public class BugsnagCocoa : ModuleRules
 	{
 		Type = ModuleType.External; // prevents UBT from building all sources it find in the module
 
-		PublicSystemIncludePaths.Add(Path.Combine(ModuleDirectory, "include"));
+		string IncludePath = Path.Combine(ModuleDirectory, "include");
+		CheckFileExists(Path.Combine(IncludePath, "Bugsnag", "Bugsnag.h"));
+		CheckFileExists(Path.Combine(IncludePath, "BugsnagPrivate", "Bugsnag+Private.h"));
+		PublicSystemIncludePaths.Add(IncludePath);
 
-		PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, Target.Platform.ToString(), "Release", "libBugsnagStatic.a"));
+		string LibraryPath = Path.Combine(ModuleDirectory, Target.Platform.ToString(), "Release", "libBugsnagStatic.a");
+		CheckFileExists(LibraryPath);
+		PublicAdditionalLibraries.Add(LibraryPath);
+	}
+
+	private void CheckFileExists(string Path)
+	{
+		if (!File.Exists(Path))
+		{
+			throw new BuildException("Missing file: " + Path);
+		}
 	}
 }
