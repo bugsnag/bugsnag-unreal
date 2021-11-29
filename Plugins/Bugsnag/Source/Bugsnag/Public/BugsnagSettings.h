@@ -57,21 +57,17 @@ struct FBugsnagErrorTypes
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "App Hangs (iOS only)")
 	bool bAppHangs = true;
 
+	// Crashes such as failed assertions, invalid memory accesses, invalid instructions, uncaught exceptions, etc.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
+	bool bCrashes = true;
+
 	// Terminations due to excessive memory usage.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Out Of Memory errors (iOS only)")
 	bool bOOMs = true;
 
-	// Low-level crashes such as failed assertions, invalid memory accesses, invalid instructions, uncaught C++ exceptions, etc.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
-	bool bNativeCrashes = true;
-
 	// Terminations due to the device being in a critical thermal state.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Thermal Kills (iOS only)")
 	bool bThermalKills = true;
-
-	// Unhandled exceptions from higher-level languages such as Objective-C or Java.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
-	bool bUnhandledExceptions = true;
 };
 
 /**
