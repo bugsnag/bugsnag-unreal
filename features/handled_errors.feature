@@ -115,7 +115,6 @@ Feature: Reporting handled errors
     When I run "CancelNotifyFromCallback"
     Then I should receive no errors
 
-  @skip_android
   Scenario: Discard handled error via DiscardClasses
     When I run "DiscardClassesHandledErrorsScenario"
     And I wait to receive an error

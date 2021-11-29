@@ -70,3 +70,7 @@ Feature: Unhandled errors
   Scenario: Crash with auto detect errors disabled
     Given I run "CrashWithoutAutoDetectionScenario" and restart the crashed app
     Then I should receive no errors
+
+  Scenario: Ignore crash by error class
+    Given I run "IgnoreErrorClassScenario" and restart the crashed app
+    Then I should receive no errors

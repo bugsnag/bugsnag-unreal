@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.bugsnag.android.Bugsnag;
 import com.bugsnag.android.Client;
@@ -36,6 +37,16 @@ public class UnrealPlugin implements Plugin {
   OnSendCallback onSendRunner = new OnSendCallback() {
     @Override
     public boolean onSend(Event event) {
+      // discard if the error class is in (the currently configured) discardClasses
+      if (discardClasses != null && discardClasses.size() > 0) {
+        for (Error err : event.getErrors()) {
+          String errorClass = err.getErrorClass();
+          if (errorClass != null && discardClasses.contains(errorClass)) {
+            return false;
+          }
+        }
+      }
+
       // if for some reason the plugin is unloaded when a callback is invoked, skip processing
       return loaded ? runEventCallbacks(event) : true;
     }
@@ -91,10 +102,14 @@ public class UnrealPlugin implements Plugin {
    */
   static native void setSeverityReason(Event event, String reasonType);
 
+  private Set<String> discardClasses;
+
   public UnrealPlugin(Configuration config) {
     config.addOnBreadcrumb(onBreadcrumbRunner);
     config.addOnSession(onSessionRunner);
     config.addOnSend(onSendRunner);
+
+    discardClasses = config.getDiscardClasses();
   }
 
   public void load(Client client) {
@@ -112,7 +127,7 @@ public class UnrealPlugin implements Plugin {
   }
 
   static void notify(String name, String message, StackTraceElement[] stacktrace, ByteBuffer userdata) {
-    if (client == null) {
+    if (client == null || name == null) {
       return;
     }
     Throwable exc = new RuntimeException();
