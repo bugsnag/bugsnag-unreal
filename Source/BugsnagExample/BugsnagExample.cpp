@@ -57,8 +57,7 @@ void StartWithConfiguration()
 	//
 	FBugsnagErrorTypes EnabledErrorTypes;
 	EnabledErrorTypes.bOOMs = false;
-	EnabledErrorTypes.bNativeCrashes = true;
-	EnabledErrorTypes.bUnhandledExceptions = true;
+	EnabledErrorTypes.bCrashes = true;
 	Configuration->SetEnabledErrorTypes(EnabledErrorTypes);
 
 	//

@@ -47,10 +47,10 @@ static BugsnagErrorTypes* GetEnabledErrorTypes(FBugsnagErrorTypes EnabledErrorTy
 	BugsnagErrorTypes* Types = [[BugsnagErrorTypes alloc] init];
 	Types.appHangs = EnabledErrorTypes.bAppHangs;
 	Types.ooms = EnabledErrorTypes.bOOMs;
-	Types.unhandledExceptions = EnabledErrorTypes.bUnhandledExceptions;
-	Types.signals = EnabledErrorTypes.bNativeCrashes;
-	Types.cppExceptions = EnabledErrorTypes.bNativeCrashes;
-	Types.machExceptions = EnabledErrorTypes.bNativeCrashes;
+	Types.unhandledExceptions = EnabledErrorTypes.bCrashes;
+	Types.signals = EnabledErrorTypes.bCrashes;
+	Types.cppExceptions = EnabledErrorTypes.bCrashes;
+	Types.machExceptions = EnabledErrorTypes.bCrashes;
 	Types.thermalKills = EnabledErrorTypes.bThermalKills;
 	Types.unhandledRejections = NO;
 	return Types;
