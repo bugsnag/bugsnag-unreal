@@ -19,14 +19,24 @@
 			"Name": "Bugsnag",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
-			"BlacklistPlatforms": [
+			"WhitelistPlatforms": [
+				"Android",
+				"IOS",
+				"Mac",
+				"Win32",
+				"Win64"
 			]
 		},
 		{
 			"Name": "BugsnagEditor",
 			"Type": "Editor",
 			"LoadingPhase": "PostEngineInit",
-			"BlacklistPlatforms": [
+			"WhitelistPlatforms": [
+				"Android",
+				"IOS",
+				"Mac",
+				"Win32",
+				"Win64"
 			]
 		}
 	]
