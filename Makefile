@@ -14,12 +14,17 @@ UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib
 EXAMPLE_IOS_APP=Binaries/IOS/BugsnagExample-IOS-Shipping.ipa
+
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 TEST_OUTDIR=features/fixtures/mobile/Binaries
 TEST_ANDROID_APP=$(TEST_OUTDIR)/Android/TestFixture-Android-Shipping-arm64.apk
 TEST_IOS_APP=$(TEST_OUTDIR)/IOS/TestFixture-IOS-Shipping.ipa
 TEST_MAC_LIB=$(TEST_OUTDIR)/Mac/UE4Editor-TestFixture.dylib
-ZIP_NAME=Bugsnag-$(shell git describe --always --dirty)-UE_$(UE_VERSION)
+
+GIT_COMMIT=$(shell git rev-parse --short=7 HEAD)
+PLUGIN_PACKAGE=$(PWD)/Build/Plugin/Bugsnag
+UPLUGIN=$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin
+ZIP_NAME=Bugsnag-$(shell cat VERSION)-$(GIT_COMMIT)-UE_$(UE_VERSION)
 
 # Change to run specific tests files
 TESTSCOPE?=Bugsnag
@@ -40,13 +45,15 @@ endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 .PHONY: package
-package: ## assemble library for release or testing
+package: ## Build plugin for release or testing
 	$(MAKE) -f make/Android.make package
 	$(MAKE) -f make/Cocoa.make package
-	"$(UE_RUNUAT)" BuildPlugin \
-		-Plugin="$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin" \
-		-Package="$(PWD)/Build/Plugin/Bugsnag"
-	cd "$(PWD)/Build/Plugin" && zip -r $(ZIP_NAME).zip Bugsnag
+	"$(UE_RUNUAT)" BuildPlugin -Plugin="$(UPLUGIN)" -Package="$(PLUGIN_PACKAGE)" -Rocket
+	cd "$(PLUGIN_PACKAGE)/.." && zip -r "$(ZIP_NAME)-macOS.zip" Bugsnag
+# Binaries, Build and Intermediate folders should not be included in the Marketplace submission.
+# https://marketplacehelp.epicgames.com/s/article/Marketplace-Plugin-Guide
+# https://www.unrealengine.com/en-US/marketplace-guidelines#273
+	cd "$(PLUGIN_PACKAGE)/.." && zip -r "$(ZIP_NAME)-src.zip" Bugsnag/Bugsnag.uplugin Bugsnag/Config Bugsnag/Resources Bugsnag/Source
 
 .PHONY: bump
 bump: ## Bump the version numbers to $VERSION
