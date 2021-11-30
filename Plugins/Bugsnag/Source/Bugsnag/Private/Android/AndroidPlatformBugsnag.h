@@ -66,6 +66,11 @@ public:
 		return RunCallbacks(OnSessionCallbacks, Session);
 	}
 
+	bool RunOnSendCallbacks(TSharedRef<IBugsnagEvent> Event)
+	{
+		return RunCallbacks(OnSendErrorCallbacks, Event);
+	}
+
 private:
 	template <typename T>
 	bool RunCallbacks(TArray<TFunction<bool(TSharedRef<T>)>> Callbacks, TSharedRef<T> CallbackArg)
@@ -82,6 +87,7 @@ private:
 
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
 	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
+	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
 };
 
 DECLARE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag)

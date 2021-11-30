@@ -32,6 +32,7 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 	{
 		OnBreadcrumbCallbacks += Config->GetOnBreadcrumbCallbacks();
 		OnSessionCallbacks += Config->GetOnSessionCallbacks();
+		OnSendErrorCallbacks += Config->GetOnSendErrorCallbacks();
 		jobject jActivity = AndroidJavaEnv::GetGameActivityThis();
 		jobject jApp = (*Env).CallObjectMethod(jActivity, JNICache.ContextGetApplication);
 		ReturnVoidOnException(Env);
@@ -300,7 +301,7 @@ void FAndroidPlatformBugsnag::MarkLaunchCompleted()
 TSharedPtr<FBugsnagLastRunInfo> FAndroidPlatformBugsnag::GetLastRunInfo()
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
-	ReturnNullOnFail(Env && JNICache.initialized);
+	ReturnNullOnFail(Env && JNICache.loaded);
 	jobject jLastRunInfo = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetLastRunInfo);
 	ReturnNullOnException(Env);
 	ReturnNullOnFail(jLastRunInfo);
@@ -379,6 +380,17 @@ extern "C"
 		{
 			auto Session = MakeShared<FAndroidSession>(Env, &JNICache, jSession);
 			return GPlatformBugsnag.RunOnSessionCallbacks(Session) ? JNI_TRUE : JNI_FALSE;
+		}
+		return JNI_TRUE;
+	}
+
+	JNIEXPORT jboolean JNICALL Java_com_bugsnag_android_unreal_UnrealPlugin_runEventCallbacks(
+		JNIEnv* Env, jobject _this, jobject jEvent)
+	{
+		if (JNICache.loaded)
+		{
+			auto Event = MakeShared<FAndroidEvent>(Env, &JNICache, jEvent);
+			return GPlatformBugsnag.RunOnSendCallbacks(Event) ? JNI_TRUE : JNI_FALSE;
 		}
 		return JNI_TRUE;
 	}
