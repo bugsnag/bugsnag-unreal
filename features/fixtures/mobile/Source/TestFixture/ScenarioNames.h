@@ -9,6 +9,7 @@ static TArray<FString> ScenarioNames = {
 	TEXT("CrashWithoutAutoDetectionScenario"),
 	TEXT("DiscardClassesHandledErrorsScenario"),
 	TEXT("GetCrumbScenario"),
+	TEXT("IgnoreErrorClassScenario"),
 	TEXT("MaxConfigCrashScenario"),
 	TEXT("ModifyCrumbsScenario"),
 	TEXT("ModifySessionScenario"),
