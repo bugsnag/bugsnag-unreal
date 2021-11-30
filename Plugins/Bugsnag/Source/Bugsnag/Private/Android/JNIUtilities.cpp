@@ -142,6 +142,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataToSection, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataValue, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagGetBreadcrumbs, cache->BugsnagClass, "getBreadcrumbs", "()Ljava/util/List;");
+	CacheStaticJavaMethod(env, cache->BugsnagGetContext, cache->BugsnagClass, "getContext", "()Ljava/lang/String;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetLastRunInfo, cache->BugsnagClass, "getLastRunInfo", "()Lcom/bugsnag/android/LastRunInfo;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");

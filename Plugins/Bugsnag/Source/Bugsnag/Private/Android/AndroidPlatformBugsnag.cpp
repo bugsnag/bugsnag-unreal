@@ -129,7 +129,11 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 
 const TOptional<FString> FAndroidPlatformBugsnag::GetContext()
 {
-	return TOptional<FString>();
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	ReturnValueOnFail(Env && JNICache.initialized, TOptional<FString>());
+	jobject jContext = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagGetContext);
+	ReturnValueOnException(Env, TOptional<FString>());
+	return FAndroidPlatformJNI::ParseJavaString(Env, &JNICache, jContext);
 }
 
 void FAndroidPlatformBugsnag::SetContext(const TOptional<FString>& Context)
@@ -138,6 +142,7 @@ void FAndroidPlatformBugsnag::SetContext(const TOptional<FString>& Context)
 	ReturnVoidIf(!Env || !JNICache.initialized);
 	jstring jContext = FAndroidPlatformJNI::ParseFStringOptional(Env, Context);
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetContext, jContext);
+	ReturnVoidOnException(Env);
 }
 
 const FBugsnagUser FAndroidPlatformBugsnag::GetUser()
