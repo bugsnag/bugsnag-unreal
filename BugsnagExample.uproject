@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.26",
-	"Category": "",
+	"EngineAssociation": "4.27",
+	"Category": "x",
 	"Description": "Bugsnag Unreal Example Project",
 	"Modules": [
 		{

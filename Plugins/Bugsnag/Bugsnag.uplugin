@@ -10,6 +10,7 @@
 	"DocsURL": "https://docs.bugsnag.com",
 	"MarketplaceURL": "",
 	"SupportURL": "https://docs.bugsnag.com",
+	"EngineVersion": "4.27.0",
 	"CanContainContent": true,
 	"IsBetaVersion": true,
 	"IsExperimentalVersion": true,
@@ -19,16 +20,16 @@
 			"Name": "Bugsnag",
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
-			"WhitelistPlatforms" : [
+			"WhitelistPlatforms": [
 				"IOS",
 				"Mac",
 				"Android"
 			]
 		},
 		{
-			"Name" : "BugsnagEditor",
-			"Type" : "Editor",
-			"LoadingPhase" : "PostEngineInit"
+			"Name": "BugsnagEditor",
+			"Type": "Editor",
+			"LoadingPhase": "PostEngineInit"
 		}
 	]
 }

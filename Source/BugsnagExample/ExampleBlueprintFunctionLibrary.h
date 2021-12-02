@@ -13,6 +13,9 @@ class UExampleBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
+	static void StartFromCode(const FString& ApiKey);
+
+	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
 	static void InvalidMemoryAccess();
 
 	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
@@ -22,5 +25,11 @@ class UExampleBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 	static void Notify();
 
 	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
-	const FString GetApiKeyFromConfig();
+	static const FString GetApiKeyFromConfig();
+
+	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
+	static void OneThousandBreadcrumbs();
+
+	UFUNCTION(BlueprintCallable, Category = "BugsnagExample")
+	static void iOSException();
 };
