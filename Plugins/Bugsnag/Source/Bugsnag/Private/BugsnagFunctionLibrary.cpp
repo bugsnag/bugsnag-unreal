@@ -7,6 +7,7 @@
 #include "PlatformBugsnag.h"
 
 #include "Engine/Engine.h"
+#include "GameFramework/GameStateBase.h"
 #include "HAL/PlatformProperties.h"
 #include "Misc/CoreDelegates.h"
 
@@ -32,12 +33,29 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 	Start(Configuration.ToSharedRef());
 }
 
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+
 static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString& Value)
 {
 	TSharedRef<FJsonObject> JsonObject = MakeShared<FJsonObject>();
 	JsonObject->SetStringField(Key, Value);
 	return JsonObject;
 }
+
+static void GameStateChanged(const FString& InGameStateName)
+{
+	TSharedPtr<FJsonValue> MetadataValue = GPlatformBugsnag.GetMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName);
+	if (MetadataValue.IsValid() && MetadataValue->AsString() == InGameStateName)
+	{
+		return;
+	}
+	GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::GameStateChanged,
+		MakeJsonObject(BugsnagConstants::Name, InGameStateName), EBugsnagBreadcrumbType::State);
+	GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName,
+		MakeShared<FJsonValueString>(InGameStateName));
+};
+
+#endif
 
 void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
@@ -59,15 +77,24 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PostLoadMapWithWorld %s"), *MapUrl);
 			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoaded,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
+
+			if (World->GetGameState())
+			{
+				GameStateChanged(World->GetGameState()->GetClass()->GetName());
+			}
+
+			World->GameStateSetEvent.AddLambda([](AGameStateBase* GameState)
+				{
+					FString GameStateName = GameState->GetClass()->GetName();
+					UE_LOG(LogBugsnag, Log, TEXT("UWorld::GameStateSetEvent %s"), *GameStateName);
+					GameStateChanged(GameStateName);
+				});
 		});
 
 	FCoreDelegates::GameStateClassChanged.AddLambda([](const FString& InGameStateName)
 		{
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreDelegates::GameStateClassChanged %s"), *InGameStateName);
-			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::GameStateChanged,
-				MakeJsonObject(BugsnagConstants::Name, InGameStateName), EBugsnagBreadcrumbType::State);
-			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName,
-				MakeShared<FJsonValueString>(InGameStateName));
+			GameStateChanged(InGameStateName);
 		});
 
 	FCoreDelegates::UserActivityStringChanged.AddLambda([](const FString& InUserActivity)
