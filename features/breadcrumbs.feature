@@ -37,6 +37,10 @@ Feature: Breadcrumbs and modifying with callbacks
     And the event "breadcrumbs.1.name" equals "Map Loaded"
     And the event "breadcrumbs.1.type" equals "navigation"
     And the event "breadcrumbs.1.metaData.url" equals "/Game/AnotherWorld"
+    And the event "breadcrumbs.2.name" equals "Game state changed"
+    And the event "breadcrumbs.2.type" equals "state"
+    And the event "breadcrumbs.2.metaData.name" matches "AnotherGameState"
+    And the event "metaData.unrealEngine.gameStateName" matches "AnotherGameState"
     And the event "metaData.unrealEngine.mapUrl" equals "/Game/AnotherWorld"
 
   Scenario: Automatic breadcrumbs for Unreal Engine user activity
