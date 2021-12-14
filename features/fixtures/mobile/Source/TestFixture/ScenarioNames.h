@@ -16,6 +16,7 @@ static TArray<FString> ScenarioNames = {
 	TEXT("NotifyChangingEverythingInCallback"),
 	TEXT("NotifyScenario"),
 	TEXT("NotifyWithLaunchInfoScenario"),
+	TEXT("OpenBadLevelScenario"),
 	TEXT("OpenLevelBreadcrumbsScenario"),
 	TEXT("PauseSessionScenario"),
 	TEXT("RedactedKeysScenario"),

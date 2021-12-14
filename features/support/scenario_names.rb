@@ -16,6 +16,7 @@ $scenario_names = [
   'NotifyChangingEverythingInCallback',
   'NotifyScenario',
   'NotifyWithLaunchInfoScenario',
+  'OpenBadLevelScenario',
   'OpenLevelBreadcrumbsScenario',
   'PauseSessionScenario',
   'RedactedKeysScenario',
