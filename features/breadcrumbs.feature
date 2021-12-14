@@ -43,6 +43,18 @@ Feature: Breadcrumbs and modifying with callbacks
     And the event "metaData.unrealEngine.gameStateName" matches "AnotherGameState"
     And the event "metaData.unrealEngine.mapUrl" equals "/Game/AnotherWorld"
 
+  Scenario: Automatic breadcrumbs for Unreal Engine map change failures
+    When I run "OpenBadLevelScenario"
+    And I wait to receive an error
+    And the event "breadcrumbs.0.name" equals "Map Loading"
+    And the event "breadcrumbs.0.type" equals "navigation"
+    And the event "breadcrumbs.0.metaData.url" equals "/Game/NonExistant"
+    And the event "breadcrumbs.1.name" equals "Map Load Failed"
+    And the event "breadcrumbs.1.type" equals "navigation"
+    And the event "breadcrumbs.1.metaData.url" equals "/Game/NonExistant"
+    And the event "metaData.unrealEngine.mapUrl" matches "/Game/MainLevel"
+    And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
+
   Scenario: Automatic breadcrumbs for Unreal Engine user activity
     When I run "UserActivityBreadcrumbsScenario"
     And I wait to receive an error

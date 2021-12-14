@@ -22,6 +22,7 @@ extern const TCHAR* const Version;
 namespace BugsnagBreadcrumbMessages
 {
 extern const TCHAR* const GameStateChanged;
+extern const TCHAR* const MapLoadFailed;
 extern const TCHAR* const MapLoaded;
 extern const TCHAR* const MapLoading;
 extern const TCHAR* const UserActivityChanged;

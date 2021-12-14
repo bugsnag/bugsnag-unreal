@@ -62,21 +62,31 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.Start(Configuration);
 
-	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& MapUrl)
+	static FString MapUrl;
+
+	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& InMapUrl)
 		{
+			MapUrl = InMapUrl;
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PreLoadMap %s"), *MapUrl);
 			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoading,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
-			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
-				MakeShared<FJsonValueString>(MapUrl));
 		});
 
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddLambda([](UWorld* World)
 		{
-			FString MapUrl = World->URL.Map;
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PostLoadMapWithWorld %s"), *MapUrl);
+			if (!World)
+			{
+				GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoadFailed,
+					MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
+				return;
+			}
+
 			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoaded,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
+
+			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
+				MakeShared<FJsonValueString>(MapUrl));
 
 			if (World->GetGameState())
 			{

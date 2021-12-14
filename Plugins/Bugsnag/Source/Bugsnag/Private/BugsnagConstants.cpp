@@ -21,6 +21,7 @@ namespace BugsnagBreadcrumbMessages
 {
 const TCHAR* const GameStateChanged = TEXT("Game state changed");
 const TCHAR* const MapLoaded = TEXT("Map Loaded");
+const TCHAR* const MapLoadFailed = TEXT("Map Load Failed");
 const TCHAR* const MapLoading = TEXT("Map Loading");
 const TCHAR* const UserActivityChanged = TEXT("User activity changed");
 }; // namespace BugsnagBreadcrumbMessages
