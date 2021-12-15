@@ -3,9 +3,11 @@
 #include "BugsnagFunctionLibrary.h"
 
 #include "BugsnagConstants.h"
+#include "LogBugsnag.h"
 #include "PlatformBugsnag.h"
 
 #include "Engine/Engine.h"
+#include "GameFramework/GameStateBase.h"
 #include "HAL/PlatformProperties.h"
 #include "Misc/CoreDelegates.h"
 
@@ -31,6 +33,8 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 	Start(Configuration.ToSharedRef());
 }
 
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+
 static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString& Value)
 {
 	TSharedRef<FJsonObject> JsonObject = MakeShared<FJsonObject>();
@@ -38,35 +42,69 @@ static TSharedRef<FJsonObject> MakeJsonObject(const FString& Key, const FString&
 	return JsonObject;
 }
 
+static void GameStateChanged(const FString& InGameStateName)
+{
+	TSharedPtr<FJsonValue> MetadataValue = GPlatformBugsnag.GetMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName);
+	if (MetadataValue.IsValid() && MetadataValue->AsString() == InGameStateName)
+	{
+		return;
+	}
+	GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::GameStateChanged,
+		MakeJsonObject(BugsnagConstants::Name, InGameStateName), EBugsnagBreadcrumbType::State);
+	GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName,
+		MakeShared<FJsonValueString>(InGameStateName));
+};
+
+#endif
+
 void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.Start(Configuration);
 
-	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& MapUrl)
+	static FString MapUrl;
+
+	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& InMapUrl)
 		{
+			MapUrl = InMapUrl;
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PreLoadMap %s"), *MapUrl);
 			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoading,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
-			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
-				MakeShared<FJsonValueString>(MapUrl));
 		});
 
 	FCoreUObjectDelegates::PostLoadMapWithWorld.AddLambda([](UWorld* World)
 		{
-			FString MapUrl = World->URL.Map;
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreUObjectDelegates::PostLoadMapWithWorld %s"), *MapUrl);
+			if (!World)
+			{
+				GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoadFailed,
+					MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
+				return;
+			}
+
 			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoaded,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
+
+			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
+				MakeShared<FJsonValueString>(MapUrl));
+
+			if (World->GetGameState())
+			{
+				GameStateChanged(World->GetGameState()->GetClass()->GetName());
+			}
+
+			World->GameStateSetEvent.AddLambda([](AGameStateBase* GameState)
+				{
+					FString GameStateName = GameState->GetClass()->GetName();
+					UE_LOG(LogBugsnag, Log, TEXT("UWorld::GameStateSetEvent %s"), *GameStateName);
+					GameStateChanged(GameStateName);
+				});
 		});
 
 	FCoreDelegates::GameStateClassChanged.AddLambda([](const FString& InGameStateName)
 		{
 			UE_LOG(LogBugsnag, Log, TEXT("FCoreDelegates::GameStateClassChanged %s"), *InGameStateName);
-			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::GameStateChanged,
-				MakeJsonObject(BugsnagConstants::Name, InGameStateName), EBugsnagBreadcrumbType::State);
-			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::GameStateName,
-				MakeShared<FJsonValueString>(InGameStateName));
+			GameStateChanged(InGameStateName);
 		});
 
 	FCoreDelegates::UserActivityStringChanged.AddLambda([](const FString& InUserActivity)
@@ -293,15 +331,6 @@ void UBugsnagFunctionLibrary::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callb
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
 	GPlatformBugsnag.AddOnBreadcrumb(Callback);
-#else
-	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
-#endif
-}
-
-void UBugsnagFunctionLibrary::AddOnSendError(FBugsnagOnErrorCallback Callback)
-{
-#if PLATFORM_IMPLEMENTS_BUGSNAG
-	GPlatformBugsnag.AddOnSendError(Callback);
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif

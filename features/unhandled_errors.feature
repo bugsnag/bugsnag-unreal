@@ -21,8 +21,7 @@ Feature: Unhandled errors
     And the event "user.id" equals "5402"
     And the event "user.email" equals "usr@example.com"
     And the event "user.name" is null
-    # TODO: pending on Android (PLAT-7363, other android changes)
-    And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
+    And the event "metaData.custom.configOnSendError" equals "hello"
     And the event "metaData.custom.someOtherValue" equals "foobar"
     And the event "metaData.custom.someValue" is null
     And the event "metaData.device.gpuAdapterName" is not null
@@ -31,10 +30,6 @@ Feature: Unhandled errors
     And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
     And the event "metaData.unrealEngine.userActivity" is not null
     And the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
-    # TODO: pending on Android (addition of onSend)
-    And on iOS, the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 1
-    And on iOS, the event "metaData.lastRunInfo.crashed" is true
-    And on iOS, the event "metaData.lastRunInfo.crashedDuringLaunch" is true
     And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
     And the exception "errorClass" equals the platform-dependent string:
       | android | SIGSEGV |
@@ -61,14 +56,21 @@ Feature: Unhandled errors
     And the event "user.email" equals "j@example.com"
     And on iOS, the event "app.bundleVersion" equals "2.61.0.1"
     And on Android, the event "app.versionCode" equals 22
-    And the event "context" equals "Main Menu"
+    And the event "context" equals "Main Menu opened"
     And the method of stack frame 0 is equivalent to "MaxConfigCrashScenario::Run()"
 
   Scenario: Crash after marking launch as completed
     Given I run "CrashAfterLaunchedScenario" and restart the crashed app
     And I wait to receive an error
     Then the event "app.isLaunching" is false
+    And the event "metaData.lastRunInfo.consecutiveLaunchCrashes" equals 0
+    And the event "metaData.lastRunInfo.crashed" is true
+    And the event "metaData.lastRunInfo.crashedDuringLaunch" is false
 
   Scenario: Crash with auto detect errors disabled
     Given I run "CrashWithoutAutoDetectionScenario" and restart the crashed app
+    Then I should receive no errors
+
+  Scenario: Ignore crash by error class
+    Given I run "IgnoreErrorClassScenario" and restart the crashed app
     Then I should receive no errors

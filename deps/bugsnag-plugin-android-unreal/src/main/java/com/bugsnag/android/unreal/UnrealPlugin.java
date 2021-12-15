@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.bugsnag.android.Bugsnag;
 import com.bugsnag.android.Client;
@@ -16,18 +17,38 @@ import com.bugsnag.android.Event;
 import com.bugsnag.android.OnBreadcrumbCallback;
 import com.bugsnag.android.OnErrorCallback;
 import com.bugsnag.android.OnSessionCallback;
+import com.bugsnag.android.OnSendCallback;
 import com.bugsnag.android.Plugin;
 import com.bugsnag.android.Session;
 import com.bugsnag.android.Severity;
 
 public class UnrealPlugin implements Plugin {
   static final String DEFAULT_HANDLED_REASON = "handledError";
+  static boolean loaded = false;
   static Client client = null;
 
   OnBreadcrumbCallback onBreadcrumbRunner = new OnBreadcrumbCallback() {
     @Override
     public boolean onBreadcrumb(Breadcrumb crumb) {
       return runBreadcrumbCallbacks(crumb);
+    }
+  };
+
+  OnSendCallback onSendRunner = new OnSendCallback() {
+    @Override
+    public boolean onSend(Event event) {
+      // discard if the error class is in (the currently configured) discardClasses
+      if (discardClasses != null && discardClasses.size() > 0) {
+        for (Error err : event.getErrors()) {
+          String errorClass = err.getErrorClass();
+          if (errorClass != null && discardClasses.contains(errorClass)) {
+            return false;
+          }
+        }
+      }
+
+      // if for some reason the plugin is unloaded when a callback is invoked, skip processing
+      return loaded ? runEventCallbacks(event) : true;
     }
   };
 
@@ -52,9 +73,17 @@ public class UnrealPlugin implements Plugin {
    * Run all registered onSession callbacks
    *
    * @param session The session
-   * @return true if the sessioncrumb should be kept
+   * @return true if the session should be kept
    */
   static native boolean runSessionCallbacks(Session session);
+
+  /**
+   * Run all registered onSend callbacks
+   *
+   * @param event The event
+   * @return true if the event should be kept
+   */
+  static native boolean runEventCallbacks(Event event);
 
   /**
    * Run native notify callback
@@ -73,10 +102,19 @@ public class UnrealPlugin implements Plugin {
    */
   static native void setSeverityReason(Event event, String reasonType);
 
+  private Set<String> discardClasses;
+
+  public UnrealPlugin(Configuration config) {
+    config.addOnBreadcrumb(onBreadcrumbRunner);
+    config.addOnSession(onSessionRunner);
+    config.addOnSend(onSendRunner);
+
+    discardClasses = config.getDiscardClasses();
+  }
+
   public void load(Client client) {
     this.client = client;
-    this.client.addOnBreadcrumb(onBreadcrumbRunner);
-    this.client.addOnSession(onSessionRunner);
+    loaded = true;
   }
 
   public void unload() {
@@ -85,10 +123,11 @@ public class UnrealPlugin implements Plugin {
       this.client.removeOnSession(onSessionRunner);
       this.client = null;
     }
+    loaded = false;
   }
 
   static void notify(String name, String message, StackTraceElement[] stacktrace, ByteBuffer userdata) {
-    if (client == null) {
+    if (client == null || name == null) {
       return;
     }
     Throwable exc = new RuntimeException();

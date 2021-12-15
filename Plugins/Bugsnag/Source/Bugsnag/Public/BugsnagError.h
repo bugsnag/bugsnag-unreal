@@ -7,27 +7,36 @@
 #include "BugsnagErrorType.h"
 #include "BugsnagStackframe.h"
 
+/**
+ * Information about an error detected by Bugsnag or reported via Notify().
+ *
+ * Can be amended from an OnError callback if necessary.
+ */
 class BUGSNAG_API IBugsnagError
 {
 public:
-	// errorClass: string;
-
+	/**
+	 * The class of the error generating the report.
+	 */
 	virtual FString GetErrorClass() const = 0;
 
 	virtual void SetErrorClass(const FString&) = 0;
 
-	// errorMessage: string;
-
+	/**
+	 * The message of or reason for the error generating the report.
+	 */
 	virtual FString GetErrorMessage() const = 0;
 
 	virtual void SetErrorMessage(const FString&) = 0;
 
-	// type: ErrorType;
-
+	/**
+	 * The type of error based on the originating platform (intended for internal use only.)
+	 */
 	virtual EBugsnagErrorType GetErrorType() const = 0;
 
-	// stacktrace: Stacktrace;
-
+	/**
+	 * The stack trace at the time the error ocurred.
+	 */
 	virtual TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const = 0;
 
 	virtual void SetStacktrace(const TArray<TSharedRef<IBugsnagStackframe>>&) = 0;

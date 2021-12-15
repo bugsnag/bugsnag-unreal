@@ -5,7 +5,7 @@ class RestrictAllCrumbTypesScenario : public Scenario
 public:
 	void Configure() override
 	{
-		Configuration->SetEnabledBreadcrumbTypes(EBugsnagEnabledBreadcrumbTypes::Manual);
+		Configuration->SetEnabledBreadcrumbTypes(EBugsnagEnabledBreadcrumbTypes::None);
 	}
 
 	void Run() override

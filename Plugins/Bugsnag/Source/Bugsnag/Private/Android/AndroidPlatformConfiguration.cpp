@@ -62,8 +62,8 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	FBugsnagErrorTypes ErrorTypes = Config->GetEnabledErrorTypes();
 	jobject jErrorTypes = (*Env).NewObject(Cache->ErrorTypesClass, Cache->ErrorTypesConstructor,
 		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bANRs),
-		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bNativeCrashes),
-		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bUnhandledExceptions),
+		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bCrashes),
+		FAndroidPlatformJNI::ParseBoolean(ErrorTypes.bCrashes),
 		JNI_FALSE);
 	ReturnNullOnFail(jErrorTypes);
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetEnabledErrorTypes, jErrorTypes);
@@ -159,7 +159,7 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
-	jobject jPlugin = (*Env).NewObject(Cache->BugsnagUnrealPluginClass, Cache->BugsnagUnrealPluginConstructor);
+	jobject jPlugin = (*Env).NewObject(Cache->BugsnagUnrealPluginClass, Cache->BugsnagUnrealPluginConstructor, jConfig);
 	ReturnNullOnException(Env);
 	jniCallWithObjects(Env, jConfig, Cache->ConfigAddPlugin, jPlugin);
 

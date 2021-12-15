@@ -4,6 +4,7 @@
 
 #include "BugsnagConstants.h"
 #include "BugsnagUtils.h"
+#include "LogBugsnag.h"
 
 #include "Engine/Engine.h"
 #include "GameFramework/GameState.h"
@@ -23,8 +24,7 @@ static TOptional<T> UnsetIfZero(const T Value)
 
 static EBugsnagEnabledBreadcrumbTypes Convert(FBugsnagEnabledBreadcrumbTypes Value)
 {
-	return (Value.bManual ? EBugsnagEnabledBreadcrumbTypes::Manual : EBugsnagEnabledBreadcrumbTypes::None) |
-		   (Value.bError ? EBugsnagEnabledBreadcrumbTypes::Error : EBugsnagEnabledBreadcrumbTypes::None) |
+	return (Value.bError ? EBugsnagEnabledBreadcrumbTypes::Error : EBugsnagEnabledBreadcrumbTypes::None) |
 		   (Value.bLog ? EBugsnagEnabledBreadcrumbTypes::Log : EBugsnagEnabledBreadcrumbTypes::None) |
 		   (Value.bNavigation ? EBugsnagEnabledBreadcrumbTypes::Navigation : EBugsnagEnabledBreadcrumbTypes::None) |
 		   (Value.bProcess ? EBugsnagEnabledBreadcrumbTypes::Process : EBugsnagEnabledBreadcrumbTypes::None) |
@@ -114,6 +114,31 @@ void FBugsnagConfiguration::SetApiKey(const FString& Value)
 	}
 
 	ApiKey = Value;
+}
+
+void FBugsnagConfiguration::SetAppHangThresholdMillis(uint64 Value)
+{
+	if (Value < 250)
+	{
+		UE_LOG(LogBugsnag, Warning,
+			TEXT("Invalid configuration. AppHangThresholdMillis should be a number greater than or equal to 250, got %lu"), Value);
+	}
+	else
+	{
+		AppHangThresholdMillis = Value;
+	}
+}
+
+void FBugsnagConfiguration::SetMaxBreadcrumbs(uint32 Value)
+{
+	if (Value > 100)
+	{
+		UE_LOG(LogBugsnag, Warning, TEXT("Invalid configuration. MaxBreadcrumbs should be a number between 0-100, got %lu"), Value);
+	}
+	else
+	{
+		MaxBreadcrumbs = Value;
+	}
 }
 
 void FBugsnagConfiguration::SetUser(const TOptional<FString>& Id, const TOptional<FString>& Email, const TOptional<FString>& Name)

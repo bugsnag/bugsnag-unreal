@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 0,
-	"VersionName": "0.1.0",
+	"Version": 1,
+	"VersionName": "0.1.1",
 	"FriendlyName": "Bugsnag",
 	"Description": "Bugsnag is an error monitoring and application stability management solution.",
 	"Category": "Developer",
@@ -20,14 +20,24 @@
 			"Type": "Runtime",
 			"LoadingPhase": "PreDefault",
 			"WhitelistPlatforms": [
+				"Android",
 				"IOS",
-				"Android"
+				"Mac",
+				"Win32",
+				"Win64"
 			]
 		},
 		{
 			"Name": "BugsnagEditor",
 			"Type": "Editor",
-			"LoadingPhase": "PostEngineInit"
+			"LoadingPhase": "PostEngineInit",
+			"WhitelistPlatforms": [
+				"Android",
+				"IOS",
+				"Mac",
+				"Win32",
+				"Win64"
+			]
 		}
 	]
 }

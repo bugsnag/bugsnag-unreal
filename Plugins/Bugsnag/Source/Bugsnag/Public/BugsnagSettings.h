@@ -21,10 +21,6 @@ struct FBugsnagEnabledBreadcrumbTypes
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bLog = true;
 
-	// A breadcrumb left via LeaveBreadcrumb()
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
-	bool bManual = true;
-
 	// A navigation event, such as a window opening or closing
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bNavigation = true;
@@ -57,28 +53,38 @@ struct FBugsnagErrorTypes
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "App Hangs (iOS only)")
 	bool bAppHangs = true;
 
+	// Crashes such as failed assertions, invalid memory accesses, invalid instructions, uncaught exceptions, etc.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
+	bool bCrashes = true;
+
 	// Terminations due to excessive memory usage.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Out Of Memory errors (iOS only)")
 	bool bOOMs = true;
 
-	// Low-level crashes such as failed assertions, invalid memory accesses, invalid instructions, uncaught C++ exceptions, etc.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
-	bool bNativeCrashes = true;
-
 	// Terminations due to the device being in a critical thermal state.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Thermal Kills (iOS only)")
 	bool bThermalKills = true;
-
-	// Unhandled exceptions from higher-level languages such as Objective-C or Java.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
-	bool bUnhandledExceptions = true;
 };
 
+/**
+ * Controls whether Bugsnag events should include the state of all threads at the time of an error.
+ */
 UENUM()
 enum class EBugsnagSendThreadsPolicy : uint8
 {
+	/**
+	 * Threads should be included in all events.
+	 */
 	All,
+
+	/**
+	 * Threads should be included in unhandled events only.
+	 */
 	UnhandledOnly,
+
+	/**
+	 * Threads should not be included in any events.
+	 */
 	Never
 };
 

@@ -27,15 +27,6 @@ public:
 		Configuration->AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
 			{
 				Event->AddMetadata(TEXT("custom"), TEXT("configOnSendError"), TEXT("hello"));
-
-				TSharedPtr<FBugsnagLastRunInfo> LastRunInfo = UBugsnagFunctionLibrary::GetLastRunInfo();
-				if (LastRunInfo.IsValid())
-				{
-					Event->AddMetadata(TEXT("lastRunInfo"), TEXT("consecutiveLaunchCrashes"), LastRunInfo->GetConsecutiveLaunchCrashes());
-					Event->AddMetadata(TEXT("lastRunInfo"), TEXT("crashed"), LastRunInfo->GetCrashed());
-					Event->AddMetadata(TEXT("lastRunInfo"), TEXT("crashedDuringLaunch"), LastRunInfo->GetCrashedDuringLaunch());
-				}
-
 				return true;
 			});
 
@@ -48,11 +39,6 @@ public:
 	void Run() override
 	{
 		UBugsnagFunctionLibrary::AddOnBreadcrumb([](TSharedRef<IBugsnagBreadcrumb> Breadcrumb)
-			{
-				return true;
-			});
-
-		UBugsnagFunctionLibrary::AddOnSendError([](TSharedRef<IBugsnagEvent> Event)
 			{
 				return true;
 			});

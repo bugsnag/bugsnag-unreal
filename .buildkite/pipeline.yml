@@ -62,12 +62,13 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
-  - name: ':windows: Build Example - UE 4.27'
+  - name: ':windows: Build Plugin - UE 4.27'
     agents:
       queue: opensource-windows-unreal-4.27
     env:
       UE_VERSION: "4.27"
     command: build.bat
+    artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 30
 
   ##############################################################################

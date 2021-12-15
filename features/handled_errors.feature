@@ -46,8 +46,7 @@ Feature: Reporting handled errors
     And the event "user.id" equals "1118"
     And the event "user.email" equals "emilie@example.com"
     And the event "user.name" equals "Emilie"
-    # TODO: pending on Android (PLAT-7363, other android changes)
-    And on iOS, the event "metaData.custom.configOnSendError" equals "hello"
+    And the event "metaData.custom.configOnSendError" equals "hello"
     And the event "metaData.custom.someValue" equals "foobar"
     And the event "metaData.custom.lastValue" is true
     And the event "metaData.custom.notify" equals "testing"
@@ -116,7 +115,6 @@ Feature: Reporting handled errors
     When I run "CancelNotifyFromCallback"
     Then I should receive no errors
 
-  @skip_android
   Scenario: Discard handled error via DiscardClasses
     When I run "DiscardClassesHandledErrorsScenario"
     And I wait to receive an error

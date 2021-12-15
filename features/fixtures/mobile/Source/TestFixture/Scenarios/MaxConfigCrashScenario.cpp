@@ -20,6 +20,7 @@ public:
 
 	void Run() override
 	{
+		UBugsnagFunctionLibrary::SetContext(UBugsnagFunctionLibrary::GetContext() + TEXT(" opened"));
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
 		volatile int* Pointer = nullptr;
 		*Pointer = 42;

@@ -167,13 +167,6 @@ void FApplePlatformBugsnag::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callbac
 	}];
 }
 
-void FApplePlatformBugsnag::AddOnSendError(FBugsnagOnErrorCallback Callback)
-{
-	[Bugsnag.configuration addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
-		return Callback(FWrappedEvent::From(Event));
-	}];
-}
-
 void FApplePlatformBugsnag::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 	[Bugsnag addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {

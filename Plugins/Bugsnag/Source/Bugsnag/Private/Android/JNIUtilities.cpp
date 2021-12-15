@@ -142,6 +142,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataToSection, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataValue, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagGetBreadcrumbs, cache->BugsnagClass, "getBreadcrumbs", "()Ljava/util/List;");
+	CacheStaticJavaMethod(env, cache->BugsnagGetContext, cache->BugsnagClass, "getContext", "()Ljava/lang/String;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetLastRunInfo, cache->BugsnagClass, "getLastRunInfo", "()Lcom/bugsnag/android/LastRunInfo;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetUser, cache->BugsnagClass, "getUser", "()Lcom/bugsnag/android/User;");
 	CacheStaticJavaMethod(env, cache->BugsnagStartMethod, cache->BugsnagClass, "start", "(Landroid/content/Context;Lcom/bugsnag/android/Configuration;)Lcom/bugsnag/android/Client;");
@@ -158,7 +159,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginNotify, cache->BugsnagUnrealPluginClass, "notify", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/StackTraceElement;Ljava/nio/ByteBuffer;)V");
-	CacheInstanceJavaMethod(env, cache->BugsnagUnrealPluginConstructor, cache->BugsnagUnrealPluginClass, "<init>", "()V");
+	CacheInstanceJavaMethod(env, cache->BugsnagUnrealPluginConstructor, cache->BugsnagUnrealPluginClass, "<init>", "(Lcom/bugsnag/android/Configuration;)V");
 
 	CacheStaticJavaMethod(env, cache->MetadataParserParse, cache->MetadataParserClass, "parse", "([B)Ljava/util/Map;");
 
@@ -547,7 +548,6 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIRefere
 	}
 	if (addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Error), Cache, Cache->BreadcrumbTypeError) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Log), Cache, Cache->BreadcrumbTypeLog) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Manual), Cache, Cache->BreadcrumbTypeManual) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Navigation), Cache, Cache->BreadcrumbTypeNavigation) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Process), Cache, Cache->BreadcrumbTypeProcess) &&
 		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Request), Cache, Cache->BreadcrumbTypeRequest) &&

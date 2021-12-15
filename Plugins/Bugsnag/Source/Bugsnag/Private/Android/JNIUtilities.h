@@ -90,6 +90,7 @@ typedef struct
 	jmethodID BugsnagClearMetadataSection;
 	jmethodID BugsnagClearMetadataValue;
 	jmethodID BugsnagGetBreadcrumbs;
+	jmethodID BugsnagGetContext;
 	jmethodID BugsnagGetLastRunInfo;
 	jmethodID BugsnagGetUser;
 	jmethodID BugsnagStartMethod;

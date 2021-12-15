@@ -5,6 +5,7 @@
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
+#include "Misc/EngineVersion.h"
 #endif
 
 static void ClearPersistentData()
@@ -12,7 +13,10 @@ static void ClearPersistentData()
 	UE_LOG(LogTemp, Display, TEXT("Clearing persistent data"));
 #if PLATFORM_ANDROID
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
-	jclass ActivityClass = AndroidJavaEnv::FindJavaClass("com/epicgames/ue4/GameActivity");
+	jclass ActivityClass = AndroidJavaEnv::FindJavaClass(
+		FEngineVersion::Current().GetMajor() < 5
+			? "com/epicgames/ue4/GameActivity"
+			: "com/epicgames/unreal/GameActivity");
 	jmethodID ClearBugsnagCache = (*Env).GetMethodID(ActivityClass, "clearBugsnagCache", "()V");
 	jobject Activity = AndroidJavaEnv::GetGameActivityThis();
 	(*Env).CallVoidMethod(Activity, ClearBugsnagCache);

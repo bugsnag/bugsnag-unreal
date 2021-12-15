@@ -14,12 +14,18 @@ UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib
 EXAMPLE_IOS_APP=Binaries/IOS/BugsnagExample-IOS-Shipping.ipa
+
 TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
 TEST_OUTDIR=features/fixtures/mobile/Binaries
 TEST_ANDROID_APP=$(TEST_OUTDIR)/Android/TestFixture-Android-Shipping-arm64.apk
 TEST_IOS_APP=$(TEST_OUTDIR)/IOS/TestFixture-IOS-Shipping.ipa
 TEST_MAC_LIB=$(TEST_OUTDIR)/Mac/UE4Editor-TestFixture.dylib
-ZIP_NAME=Bugsnag-$(shell git describe --always --dirty)-UE_$(UE_VERSION)
+
+GIT_COMMIT=$(shell git rev-parse --short=7 HEAD)
+PLUGIN_PACKAGE=$(PWD)/Build/Plugin/Bugsnag
+UPLUGIN=$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin
+PRESET_VERSION=$(shell cat VERSION)
+ZIP_NAME=Bugsnag-$(PRESET_VERSION)-$(GIT_COMMIT)-UE_$(UE_VERSION)
 
 # Change to run specific tests files
 TESTSCOPE?=Bugsnag
@@ -40,25 +46,15 @@ endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 .PHONY: package
-package: ## assemble library for release or testing
+package: ## Build plugin for release or testing
 	$(MAKE) -f make/Android.make package
 	$(MAKE) -f make/Cocoa.make package
-	"$(UE_RUNUAT)" BuildPlugin \
-		-Plugin="$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin" \
-		-Package="$(PWD)/Build/Plugin/Bugsnag"
-	cd "$(PWD)/Build/Plugin" && zip -r $(ZIP_NAME).zip Bugsnag
-
-.PHONY: bump
-bump: ## Bump the version numbers to $VERSION
-ifeq ($(VERSION),)
-	$(error VERSION is not defined. Run with `make bump VERSION=number`)
-endif
-	echo Bumping the version number to $(VERSION)
-	echo $(VERSION) > VERSION
-	sed -i '' "s/\"VersionName\": .*,/\"VersionName\": \"$(VERSION)\",/" Plugins/Bugsnag/Bugsnag.uplugin
-	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Private/Version.h
-	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
-	$(MAKE) -f make/Android.make bump
+	"$(UE_RUNUAT)" BuildPlugin -Plugin="$(UPLUGIN)" -Package="$(PLUGIN_PACKAGE)" -Rocket
+	cd "$(PLUGIN_PACKAGE)/.." && zip -r "$(ZIP_NAME)-macOS.zip" Bugsnag
+# Binaries, Build and Intermediate folders should not be included in the Marketplace submission.
+# https://marketplacehelp.epicgames.com/s/article/Marketplace-Plugin-Guide
+# https://www.unrealengine.com/en-US/marketplace-guidelines#273
+	cd "$(PLUGIN_PACKAGE)/.." && zip -r "$(ZIP_NAME)-src.zip" Bugsnag/Bugsnag.uplugin Bugsnag/Config Bugsnag/Resources Bugsnag/Source
 
 .PHONY: clean
 clean: ## remove build artifacts
@@ -155,6 +151,56 @@ copy_package_to_fixture: package
 .PHONY: $(TEST_MAC_LIB)
 $(TEST_MAC_LIB): copy_package_to_fixture
 	"$(UE_BUILD)" TestFixture Mac Development -TargetType=Editor "$(TESTPROJ)"
+
+#--------------------------------------------------------------------------
+# Release
+#--------------------------------------------------------------------------
+
+.PHONY: bump
+bump: ## Bump the version numbers to $VERSION
+ifeq ($(VERSION),)
+	$(error VERSION is not defined. Run with `make bump VERSION=number`)
+endif
+	echo $(VERSION) > VERSION
+	ruby -rjson -e "f='$(UPLUGIN)'; j=JSON.parse(File.read(f)); j['Version']+=1; j['VersionName']='$(VERSION)'; File.write(f, JSON.pretty_generate(j).gsub('  ', '	'))"
+	echo >> $(UPLUGIN) # Preserve the trailing newline
+	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Private/Version.h
+# 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
+	$(MAKE) -f make/Android.make bump
+
+.PHONY: prerelease
+prerelease: bump ## Generates a PR for the $VERSION release
+ifeq ($(VERSION),)
+	$(error VERSION is not defined. Run with `make prerelease VERSION=number`)
+endif
+	git checkout -b release-v$(VERSION)
+	git add CHANGELOG.md Makefile Plugins/Bugsnag/Bugsnag.uplugin Plugins/Bugsnag/Source/Bugsnag/Bugsnag_UPL.xml Plugins/Bugsnag/Source/Bugsnag/Private/Version.h VERSION deps/bugsnag-plugin-android-unreal/build.gradle
+	git diff --exit-code || (echo "you have unstaged changes - Makefile may need updating to `git add` some more files"; exit 1)
+	git commit -m "Release v$(VERSION)"
+	git push origin release-v$(VERSION)
+	open "https://github.com/bugsnag/bugsnag-unreal/compare/main...release-v$(VERSION)?expand=1&title=Release%20v$(VERSION)"
+
+.PHONY: release
+release: ## Releases the current main branch as $VERSION
+	git fetch origin
+ifneq ($(shell git rev-parse --abbrev-ref HEAD),main) # Check the current branch name
+	git checkout main
+	git rebase origin/main
+endif
+ifneq ($(shell git diff origin/main..main),)
+	$(error you have unpushed commits on the main branch)
+endif
+	git tag v$(PRESET_VERSION)
+	git push origin v$(PRESET_VERSION)
+	git checkout next
+	git rebase origin/next
+	git merge main
+	git push origin next
+	open "https://github.com/bugsnag/bugsnag-unreal/releases/new?title=v$(PRESET_VERSION)&tag=v$(PRESET_VERSION)"
+
+#--------------------------------------------------------------------------
+# Miscellaneous
+#--------------------------------------------------------------------------
 
 .PHONY: help
 help: ## Show help text

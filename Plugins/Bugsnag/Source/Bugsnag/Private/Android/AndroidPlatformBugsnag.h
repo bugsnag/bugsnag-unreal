@@ -51,8 +51,6 @@ public:
 		OnBreadcrumbCallbacks.Add(Callback);
 	};
 
-	void AddOnSendError(FBugsnagOnErrorCallback Callback) override;
-
 	void AddOnSession(FBugsnagOnSessionCallback Callback) override
 	{
 		OnSessionCallbacks.Add(Callback);
@@ -66,6 +64,11 @@ public:
 	bool RunOnSessionCallbacks(TSharedRef<IBugsnagSession> Session)
 	{
 		return RunCallbacks(OnSessionCallbacks, Session);
+	}
+
+	bool RunOnSendCallbacks(TSharedRef<IBugsnagEvent> Event)
+	{
+		return RunCallbacks(OnSendErrorCallbacks, Event);
 	}
 
 private:
@@ -84,6 +87,7 @@ private:
 
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
 	TArray<FBugsnagOnSessionCallback> OnSessionCallbacks;
+	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;
 };
 
 DECLARE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag)
