@@ -39,7 +39,7 @@ task generatePom {
     pom {
       project {
         groupId 'com.bugsnag'
-        version '0.1.0'
+        version '0.1.1'
         packaging 'aar'
       }
     }.writeTo("$buildDir/outputs/aar/bugsnag-plugin-android-unreal-release.pom")
