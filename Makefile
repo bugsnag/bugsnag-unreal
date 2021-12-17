@@ -162,10 +162,10 @@ ifeq ($(VERSION),)
 	$(error VERSION is not defined. Run with `make bump VERSION=number`)
 endif
 	echo $(VERSION) > VERSION
-	ruby -rjson -e "f='$(UPLUGIN)'; j=JSON.parse(File.read(f)); j['Version']+=1; j['VersionName']='$(VERSION)'; File.write(f, JSON.pretty_generate(j).gsub('  ', '	'))"
+	ruby -rjson -e "f='$(UPLUGIN)'; j=JSON.parse(File.read(f)); if j['VersionName'] != '$(VERSION)' then j['VersionName']='$(VERSION)'; j['Version']+=1 end; File.write(f, JSON.pretty_generate(j).gsub('  ', '	'))"
 	echo >> $(UPLUGIN) # Preserve the trailing newline
 	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Private/Version.h
-# 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
+	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
 	$(MAKE) -f make/Android.make bump
 
 .PHONY: prerelease
