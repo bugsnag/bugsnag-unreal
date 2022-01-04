@@ -3,7 +3,7 @@
 
 Automatically detect crashes and fatal errors in your Unreal Engine games on Android and iOS, collecting diagnostic information and immediately notifying your development team to help you to understand and resolve issues as fast as possible.
 
-Supports Unreal Engine 4.24 and later.
+Supports Unreal Engine 4.23 and later.
 
 
 ## Features

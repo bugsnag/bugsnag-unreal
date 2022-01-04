@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 2,
-	"VersionName": "1.0.0",
+	"Version": 3,
+	"VersionName": "1.0.1",
 	"FriendlyName": "Bugsnag",
 	"Description": "Bugsnag is an error monitoring and application stability management solution.",
 	"Category": "Developer",
@@ -11,7 +11,7 @@
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/ffcc20ab75f24db2ad9fb44a973a871f",
 	"SupportURL": "https://www.bugsnag.com/contact",
 	"CanContainContent": true,
-	"IsBetaVersion": true,
+	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": true,
 	"Modules": [
