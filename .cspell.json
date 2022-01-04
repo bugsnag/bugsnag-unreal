@@ -4,6 +4,7 @@
     "words": [
         "Appium",
         "BSGJSON",
+        "Bugsnag",
         "Expojs",
         "GRHI",
         "JNICALL",
@@ -28,6 +29,7 @@
         "jobject",
         "jsize",
         "ooms",
+        "uproject",
     ],
     "ignorePaths": [
         "**/Intermediate/**",
