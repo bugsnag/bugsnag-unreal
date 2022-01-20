@@ -21,7 +21,8 @@ A clear and concise description of what the bug is.
 ### Environment
 * Bugsnag version:
 * Unreal Engine version:
-* Target platform & version:
+* iOS/Android version:
+* simulator/emulator or physical device:
 
 <!--
   Below are a few approaches you might take to communicate the issue, in
