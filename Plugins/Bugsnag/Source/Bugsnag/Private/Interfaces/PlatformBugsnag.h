@@ -10,7 +10,7 @@
 #include "BugsnagMetadataStore.h"
 #include "BugsnagUser.h"
 
-class IPlatformBugsnag : public virtual IBugsnagMetadataStore
+class IPlatformBugsnag : public virtual IBugsnagFeatureFlagStore, public virtual IBugsnagMetadataStore
 {
 public:
 	virtual void Start(const TSharedRef<FBugsnagConfiguration>& Configuration) = 0;

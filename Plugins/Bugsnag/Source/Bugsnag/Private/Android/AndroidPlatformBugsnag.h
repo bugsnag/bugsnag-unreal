@@ -20,6 +20,14 @@ public:
 
 	void SetUser(const FString& Id, const FString& Email, const FString& Name) override;
 
+	void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>()) override;
+
+	void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags) override;
+
+	void ClearFeatureFlag(const FString& Name) override;
+
+	void ClearFeatureFlags() override;
+
 	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override;
 
 	void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value) override;

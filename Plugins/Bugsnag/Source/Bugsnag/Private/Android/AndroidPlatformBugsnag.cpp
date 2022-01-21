@@ -169,6 +169,26 @@ void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, c
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
+void FAndroidPlatformBugsnag::AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant)
+{
+	// TODO
+}
+
+void FAndroidPlatformBugsnag::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FlagsToAdd)
+{
+	// TODO
+}
+
+void FAndroidPlatformBugsnag::ClearFeatureFlag(const FString& Name)
+{
+	// TODO
+}
+
+void FAndroidPlatformBugsnag::ClearFeatureFlags()
+{
+	// TODO
+}
+
 void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata)
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);

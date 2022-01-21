@@ -120,6 +120,35 @@ void FBugsnagConfigurationSpec::Define()
 				});
 		});
 
+	Describe("Feature Flags", [this]()
+		{
+			It("Should copy added flags and allow mutation", [this]()
+				{
+					FBugsnagConfiguration Configuration(ValidApiKey);
+					TEST_EQUAL(Configuration.FeatureFlags.Num(), 0);
+
+					Configuration.AddFeatureFlag(TEXT("Fizz"));
+					TEST_TRUE(Configuration.FeatureFlags.Contains(TEXT("Fizz")));
+					TEST_FALSE(Configuration.FeatureFlags[TEXT("Fizz")].IsSet());
+
+					Configuration.AddFeatureFlag(TEXT("Buzz"), FString(TEXT("Awesome")));
+					TEST_EQUAL(Configuration.FeatureFlags[TEXT("Buzz")].GetValue(), FString(TEXT("Awesome")));
+
+					Configuration.ClearFeatureFlag(TEXT("Fizz"));
+					Configuration.ClearFeatureFlag(TEXT("Buzz"));
+					TEST_EQUAL(Configuration.FeatureFlags.Num(), 0);
+
+					Configuration.AddFeatureFlags({FBugsnagFeatureFlag(TEXT("foo"), FString(TEXT("baz"))),
+						FBugsnagFeatureFlag(TEXT("bar"))});
+					Configuration.AddFeatureFlag(TEXT("bar"), FString(TEXT("testing")));
+					TEST_EQUAL(Configuration.FeatureFlags[TEXT("foo")].GetValue(), FString(TEXT("baz")));
+					TEST_EQUAL(Configuration.FeatureFlags[TEXT("bar")].GetValue(), FString(TEXT("testing")));
+
+					Configuration.ClearFeatureFlags();
+					TEST_EQUAL(Configuration.FeatureFlags.Num(), 0);
+				});
+		});
+
 	Describe("MaxBreadcrumbs", [this]()
 		{
 			It("Should be 50 by default", [this]()

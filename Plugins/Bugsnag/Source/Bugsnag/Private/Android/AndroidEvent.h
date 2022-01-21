@@ -18,6 +18,26 @@ class FAndroidEvent : public IBugsnagEvent, FJavaObjectWrapper
 public:
 	using FJavaObjectWrapper::FJavaObjectWrapper;
 
+	void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>()) override
+	{
+		// TODO
+	}
+
+	void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags) override
+	{
+		// TODO
+	}
+
+	void ClearFeatureFlag(const FString& Name) override
+	{
+		// TODO
+	}
+
+	void ClearFeatureFlags() override
+	{
+		// TODO
+	}
+
 	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override
 	{
 		jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Section);
