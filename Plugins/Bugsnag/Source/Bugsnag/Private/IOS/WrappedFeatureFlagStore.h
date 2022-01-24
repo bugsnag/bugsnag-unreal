@@ -5,33 +5,43 @@
 #include "AppleBugsnagUtils.h"
 #include "BugsnagFeatureFlagStore.h"
 
+#import <Bugsnag/BugsnagFeatureFlagStore.h>
+
 class FWrappedFeatureFlagStore : public virtual IBugsnagFeatureFlagStore
 {
 public:
-	FWrappedFeatureFlagStore(id CocoaStore = nil)
+	FWrappedFeatureFlagStore(id<BugsnagFeatureFlagStore> CocoaStore = nil)
 		: CocoaStore(CocoaStore)
 	{
 	}
 
 	void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>()) override
 	{
-		// TODO
+		[CocoaStore addFeatureFlagWithName:NSStringFromFString(Name) variant:NSStringFromOptional(Variant)];
 	}
 
 	void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags) override
 	{
-		// TODO
+		NSMutableArray* flags = [NSMutableArray array];
+
+		for (const FBugsnagFeatureFlag& FeatureFlag : FeatureFlags)
+		{
+			[flags addObject:[BugsnagFeatureFlag flagWithName:NSStringFromFString(FeatureFlag.GetName())
+													  variant:NSStringFromOptional(FeatureFlag.GetVariant())]];
+		}
+
+		[CocoaStore addFeatureFlags:flags];
 	}
 
 	void ClearFeatureFlag(const FString& Name) override
 	{
-		// TODO
+		[CocoaStore clearFeatureFlagWithName:NSStringFromFString(Name)];
 	}
 
 	void ClearFeatureFlags() override
 	{
-		// TODO
+		[CocoaStore clearFeatureFlags];
 	}
 
-	id CocoaStore;
+	id<BugsnagFeatureFlagStore> CocoaStore;
 };

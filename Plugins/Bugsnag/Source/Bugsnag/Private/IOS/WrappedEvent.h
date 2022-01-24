@@ -28,7 +28,8 @@ public:
 	}
 
 	FWrappedEvent(BugsnagEvent* CocoaEvent)
-		: FWrappedMetadataStore(CocoaEvent)
+		: FWrappedFeatureFlagStore(CocoaEvent)
+		, FWrappedMetadataStore(CocoaEvent)
 		, CocoaEvent(CocoaEvent)
 	{
 	}
