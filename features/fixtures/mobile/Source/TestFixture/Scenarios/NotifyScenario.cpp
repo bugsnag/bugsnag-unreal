@@ -13,6 +13,14 @@ public:
 		Section1->SetNumberField("macaron", 3);
 		Section2->SetStringField("forty", TEXT("40"));
 
+		Configuration->AddFeatureFlag(TEXT("Testing"));
+		Configuration->AddFeatureFlag(TEXT("fc1"), FString(TEXT("blue")));
+		TArray<FBugsnagFeatureFlag> MoreFlags = {
+			FBugsnagFeatureFlag(TEXT("fc1")),
+			FBugsnagFeatureFlag(TEXT("fc2"), FString(TEXT("teal"))),
+			FBugsnagFeatureFlag(TEXT("nope"))};
+		Configuration->AddFeatureFlags(MoreFlags);
+
 		Configuration->AddMetadata("pastries", Section1);
 		Configuration->AddMetadata("counters", Section2);
 		Configuration->AddMetadata("counters", "thirty-five", MakeShareable(Value));
@@ -52,6 +60,10 @@ public:
 
 		UBugsnagFunctionLibrary::SetContext("pause menu");
 
+		UBugsnagFunctionLibrary::AddFeatureFlag(TEXT("Bugsnag"));
+
+		UBugsnagFunctionLibrary::ClearFeatureFlag(TEXT("nope"));
+
 		TSharedRef<FJsonObject> AdditionalValues = MakeShared<FJsonObject>();
 		AdditionalValues->SetStringField("someValue", "foobar");
 		AdditionalValues->SetBoolField("lastValue", true);
@@ -66,6 +78,7 @@ public:
 				Event->GetApp()->SetDuration(37);
 				FString ErrorClass = Event->GetErrors()[0]->GetErrorClass();
 				Event->GetErrors()[0]->SetErrorClass(ErrorClass + TEXT(" happened"));
+				Event->AddFeatureFlag(TEXT("Notify"), ErrorClass);
 				return true;
 			});
 	}
