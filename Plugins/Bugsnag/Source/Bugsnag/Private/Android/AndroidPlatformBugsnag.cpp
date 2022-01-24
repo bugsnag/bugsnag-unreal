@@ -171,22 +171,38 @@ void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, c
 
 void FAndroidPlatformBugsnag::AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant)
 {
-	// TODO
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Variant);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddFeatureFlag, jName, jVariant);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
-void FAndroidPlatformBugsnag::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FlagsToAdd)
+void FAndroidPlatformBugsnag::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags)
 {
-	// TODO
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	for (const FBugsnagFeatureFlag& Flag : FeatureFlags)
+	{
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Flag.GetName());
+		jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Flag.GetVariant());
+		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddFeatureFlag, jName, jVariant);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 }
 
 void FAndroidPlatformBugsnag::ClearFeatureFlag(const FString& Name)
 {
-	// TODO
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearFeatureFlag, jName);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::ClearFeatureFlags()
 {
-	// TODO
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearFeatureFlags);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata)

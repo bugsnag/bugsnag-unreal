@@ -20,22 +20,34 @@ public:
 
 	void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>()) override
 	{
-		// TODO
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+		jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Variant);
+		(*Env).CallVoidMethod(JavaObject, Cache->EventAddFeatureFlag, jName, jVariant);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
 	void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags) override
 	{
-		// TODO
+		for (const FBugsnagFeatureFlag& Flag : FeatureFlags)
+		{
+			jstring jName = FAndroidPlatformJNI::ParseFString(Env, Flag.GetName());
+			jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Flag.GetVariant());
+			(*Env).CallVoidMethod(JavaObject, Cache->EventAddFeatureFlag, jName, jVariant);
+			FAndroidPlatformJNI::CheckAndClearException(Env);
+		}
 	}
 
 	void ClearFeatureFlag(const FString& Name) override
 	{
-		// TODO
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+		(*Env).CallVoidMethod(JavaObject, Cache->EventClearFeatureFlag, jName);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
 	void ClearFeatureFlags() override
 	{
-		// TODO
+		(*Env).CallVoidMethod(JavaObject, Cache->EventClearFeatureFlags);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
 	}
 
 	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override
