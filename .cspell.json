@@ -17,6 +17,7 @@
         "UFUNCTION",
         "UPROPERTY",
         "USTRUCT",
+        "checkf",
         "clazz",
         "cronut",
         "jboolean",
