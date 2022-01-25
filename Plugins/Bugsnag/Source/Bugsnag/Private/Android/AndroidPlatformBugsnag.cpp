@@ -15,6 +15,7 @@
 #include "BugsnagConstants.h"
 #include "BugsnagUtils.h"
 #include "JNIUtilities.h"
+#include "LogBugsnag.h"
 #include "Shorthand.h"
 
 DEFINE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag);
@@ -173,20 +174,22 @@ void FAndroidPlatformBugsnag::AddFeatureFlag(const FString& Name, const TOptiona
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	ReturnVoidIf(!jName);
 	jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Variant);
+	if (!jVariant && Variant.IsSet())
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to create Java string with \"%s\""), *Variant.GetValue());
+		return;
+	}
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddFeatureFlag, jName, jVariant);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 
 void FAndroidPlatformBugsnag::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags)
 {
-	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	for (const FBugsnagFeatureFlag& Flag : FeatureFlags)
 	{
-		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Flag.GetName());
-		jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Flag.GetVariant());
-		(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddFeatureFlag, jName, jVariant);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
+		FAndroidPlatformBugsnag::AddFeatureFlag(Flag.GetName(), Flag.GetVariant());
 	}
 }
 
@@ -194,6 +197,7 @@ void FAndroidPlatformBugsnag::ClearFeatureFlag(const FString& Name)
 {
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	ReturnVoidIf(!jName);
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearFeatureFlag, jName);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
