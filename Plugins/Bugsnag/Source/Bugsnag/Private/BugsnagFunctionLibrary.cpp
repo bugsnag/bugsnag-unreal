@@ -141,6 +141,8 @@ FORCENOINLINE TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 // Skip the correct number of frames to ensure Shipping builds group correctly
 #if PLATFORM_IOS
 	const uint32 IgnoreCount = 1;
+#elif PLATFORM_MAC
+	const uint32 IgnoreCount = 2;
 #elif PLATFORM_ANDROID
 	const uint32 IgnoreCount = 2;
 #else
