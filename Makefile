@@ -29,8 +29,8 @@ ZIP_NAME=Bugsnag-$(PRESET_VERSION)-$(GIT_COMMIT)-UE_$(UE_VERSION)
 
 # Change to run specific tests files
 TESTSCOPE?=Bugsnag
-# Default platform for commands - supported values: iOS, Android
-PLATFORM?=
+# Default platform for commands - supported values: Android, iOS, macOS
+PLATFORM?=macOS
 
 all: $(EXAMPLE_MAC_LIB)
 
@@ -120,9 +120,17 @@ build_example_ios: $(EXAMPLE_MAC_LIB)
 install_example_ios: build_example_ios
 	ideviceinstaller --install $(EXAMPLE_IOS_APP) --udid="$(shell idevice_id -l)"
 
+.PHONY: build_example_mac
+# Produces stand-alone example Mac app in ArchivedBuilds/MacNoEditor
+build_example_mac: $(EXAMPLE_MAC_LIB)
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Mac -archive
+
 .PHONY: build
 ifeq ($(PLATFORM),iOS)
 build: build_example_ios ## build example app for $PLATFORM
+endif
+ifeq ($(PLATFORM),macOS)
+build: build_example_mac
 endif
 ifeq ($(PLATFORM),Android)
 build: build_example_android
