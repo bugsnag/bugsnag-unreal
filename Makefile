@@ -2,7 +2,7 @@
 .SUFFIXES:        # remove default suffix rules
 MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
-UE_VERSION?=4.26
+UE_VERSION?=4.27
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
