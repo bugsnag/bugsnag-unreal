@@ -35,13 +35,17 @@ PLATFORM?=macOS
 all: $(EXAMPLE_MAC_LIB)
 
 .PHONY: test
-test: $(EXAMPLE_MAC_LIB) ## run unit tests
 ifeq ($(PLATFORM),Android)
+test: $(EXAMPLE_MAC_LIB) ## run unit tests
 	$(MAKE) -f make/Android.make test
-else
+else ifeq ($(PLATFORM),macOS)
+test: $(EXAMPLE_MAC_LIB)
 	"$(UE_EDITOR)" "$(UPROJECT)" \
 		-ExecCmds="Automation RunTests $(TESTSCOPE); Quit" -NoSplash \
 		-NullRHI -ReportOutputPath="$(PWD)/Saved/Automation/Reports"
+else
+test:
+	$(error Running unit tests on $(PLATFORM) is not yet supported)
 endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
