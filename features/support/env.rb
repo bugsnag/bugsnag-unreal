@@ -51,7 +51,7 @@ end
 
 def artifact_path
   if Maze.config.farm == :local
-    File.join(File.dirname(__FILE__), '..', 'fixtures', 'mobile', 'Binaries', platform_artifact_dir)
+    File.join(File.dirname(__FILE__), '..', 'fixtures', 'generic', 'Binaries', platform_artifact_dir)
   else
     '/app/build'
   end

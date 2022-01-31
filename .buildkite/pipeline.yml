@@ -79,9 +79,9 @@ steps:
     plugins:
       artifacts#v1.2.0:
         upload:
-          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
-    command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
+    command: make features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
     timeout_in_minutes: 60
     key: android_fixture
 
@@ -93,9 +93,9 @@ steps:
     plugins:
       artifacts#v1.2.0:
         upload:
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
+          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    command: make features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     timeout_in_minutes: 60
     key: ios_fixture
 
@@ -114,7 +114,7 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-        - from: "features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"
+        - from: "features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"
           to: "build/TestFixture-Android-Shipping-arm64.apk"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
@@ -142,7 +142,7 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-        - from: "features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-armv7.apk"
+        - from: "features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk"
           to: "build/TestFixture-Android-Shipping-armv7.apk"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
@@ -170,9 +170,9 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-        - from: "features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa"
+        - from: "features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa"
           to: "build/TestFixture-IOS-Shipping.ipa"
-        - from: "features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM"
+        - from: "features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM"
           to: "build/TestFixture-IOS-Shipping.dSYM"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:

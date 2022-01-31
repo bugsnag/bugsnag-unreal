@@ -15,11 +15,11 @@ UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib
 EXAMPLE_IOS_APP=Binaries/IOS/BugsnagExample-IOS-Shipping.ipa
 
-TESTPROJ=$(PWD)/features/fixtures/mobile/TestFixture.uproject
-TEST_OUTDIR=features/fixtures/mobile/Binaries
+TESTPROJ=$(PWD)/features/fixtures/generic/TestFixture.uproject
+TEST_OUTDIR=features/fixtures/generic/Binaries
 TEST_ANDROID_APP=$(TEST_OUTDIR)/Android/TestFixture-Android-Shipping-arm64.apk
 TEST_IOS_APP=$(TEST_OUTDIR)/IOS/TestFixture-IOS-Shipping.ipa
-TEST_MAC_APP=features/fixtures/mobile/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
+TEST_MAC_APP=features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
 TEST_MAC_LIB=$(TEST_OUTDIR)/Mac/UE4Editor-TestFixture.dylib
 
 GIT_COMMIT=$(shell git rev-parse --short=7 HEAD)
@@ -74,7 +74,7 @@ clean: ## remove build artifacts
 	$(MAKE) -f make/Cocoa.make clean
 	$(MAKE) -f make/Android.make clean
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
-	rm -rf Build features/fixtures/mobile/Plugins/Bugsnag
+	rm -rf Build features/fixtures/generic/Plugins/Bugsnag
 
 .PHONY: editor
 editor: $(EXAMPLE_MAC_LIB) ## Build the project and open in Unreal Editor
@@ -82,11 +82,11 @@ editor: $(EXAMPLE_MAC_LIB) ## Build the project and open in Unreal Editor
 
 .PHONY: format
 format: ## format all c/c++ source to match .clang-format
-	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/mobile/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
+	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
 
 .PHONY: lint
 lint: ## check the project for formatting or spelling issues
-	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/mobile/Source -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
+	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
 	cspell **/*.{cpp,h}
 
 #-------------------------------------------------------------------------------
@@ -183,7 +183,7 @@ $(TEST_MAC_APP): $(TEST_MAC_LIB)
 
 .PHONY: copy_package_to_fixture
 copy_package_to_fixture: package
-	rsync --exclude 'Binaries' --exclude 'Intermediate' --delete --recursive --times Plugins/Bugsnag features/fixtures/mobile/Plugins
+	rsync --exclude 'Binaries' --exclude 'Intermediate' --delete --recursive --times Plugins/Bugsnag features/fixtures/generic/Plugins
 
 # UE4Editor-TestFixture.dylib is required for BuildCookRun to succeed
 # Treating this target as PHONY since it does not verify when to rebuild from
