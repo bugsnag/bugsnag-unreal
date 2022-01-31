@@ -79,8 +79,8 @@ DerivedDataCache/*
 .DS_Store
 
 # Bugsnag specific
-Gemfile.lock
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include
 appium_server.log
 maze_output/*
 TestFixture-Mac-Shipping.log
+TestFixture-macOS.zip

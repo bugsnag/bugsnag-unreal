@@ -133,7 +133,9 @@ end
 def run_mac_fixture(action, scenario_name, wait: false)
   $fixture_pid = Process.spawn(
     'features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping',
-    '-windowed', '-resx=720', '-resy=1080', '-action', action.to_s, '-scenario_name', scenario_name,
+    '-action', action.to_s, '-scenario_name', scenario_name,
+    '-windowed', '-resx=720', '-resy=1080',
+    '-unattended', # Prevents "Please update to the latest version of macOS" alert on macOS < 10.15.5
     [:out, :err]=>'TestFixture-Mac-Shipping.log')
   if wait
     Process.wait $fixture_pid
