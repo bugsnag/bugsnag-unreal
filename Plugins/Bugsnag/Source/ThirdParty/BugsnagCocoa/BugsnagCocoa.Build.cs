@@ -15,7 +15,7 @@ public class BugsnagCocoa : ModuleRules
 		CheckFileExists(Path.Combine(IncludePath, "BugsnagPrivate", "Bugsnag+Private.h"));
 		PublicSystemIncludePaths.Add(IncludePath);
 
-		string LibraryPath = Path.Combine(ModuleDirectory, Target.Platform.ToString(), "Release", "libBugsnagStatic.a");
+		string LibraryPath = Path.Combine(ModuleDirectory, Target.Platform.ToString(), "libBugsnagStatic.a");
 		CheckFileExists(LibraryPath);
 		PublicAdditionalLibraries.Add(LibraryPath);
 	}

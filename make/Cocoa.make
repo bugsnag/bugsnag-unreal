@@ -6,14 +6,14 @@ SUBMODULE=deps/bugsnag-cocoa
 SRCDIR=$(SUBMODULE)/Bugsnag
 OUTDIR=Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
 HEADERS=$(OUTDIR)/include
-IOS_LIB=$(OUTDIR)/IOS/Release/libBugsnagStatic.a
-MAC_LIB=$(OUTDIR)/Mac/Release/libBugsnagStatic.a
+IOS_LIB=$(OUTDIR)/IOS/libBugsnagStatic.a
+MAC_LIB=$(OUTDIR)/Mac/libBugsnagStatic.a
 DERIVED_DATA=Intermediate/Build/DerivedData
 XCWORKSPACE=$(SUBMODULE)/Bugsnag.xcworkspace
 XCODEBUILD=xcodebuild -workspace $(XCWORKSPACE) -scheme BugsnagStatic -derivedDataPath $(DERIVED_DATA) -configuration Release -quiet build
 
 .PHONY: package
-package: $(HEADERS) $(IOS_LIB)
+package: $(HEADERS) $(IOS_LIB) $(MAC_LIB)
 
 .PHONY: clean
 clean:
@@ -25,11 +25,11 @@ $(HEADERS): $(shell find $(SRCDIR) -type f -name '*.h')
 	touch $@
 
 $(IOS_LIB): $(shell find $(SRCDIR) -type f)
-	$(XCODEBUILD) SDKROOT=iphoneos IOS_DEPLOYMENT_TARGET=11.0
+	$(XCODEBUILD) -destination generic/platform=iOS SDKROOT=iphoneos IOS_DEPLOYMENT_TARGET=11.0
 	mkdir -p $(@D)
 	ln -f $(DERIVED_DATA)/Build/Products/Release-iphoneos/$(@F) $@
 
 $(MAC_LIB): $(shell find $(SRCDIR) -type f)
-	$(XCODEBUILD) SDKROOT=macosx MACOSX_DEPLOYMENT_TARGET=10.11
+	$(XCODEBUILD) -destination generic/platform=macOS SDKROOT=macosx MACOSX_DEPLOYMENT_TARGET=10.11
 	mkdir -p $(@D)
 	ln -f $(DERIVED_DATA)/Build/Products/Release/$(@F) $@

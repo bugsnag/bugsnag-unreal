@@ -29,19 +29,23 @@ ZIP_NAME=Bugsnag-$(PRESET_VERSION)-$(GIT_COMMIT)-UE_$(UE_VERSION)
 
 # Change to run specific tests files
 TESTSCOPE?=Bugsnag
-# Default platform for commands - supported values: iOS, Android
-PLATFORM?=
+# Default platform for commands - supported values: Android, iOS, macOS
+PLATFORM?=macOS
 
 all: $(EXAMPLE_MAC_LIB)
 
 .PHONY: test
-test: $(EXAMPLE_MAC_LIB) ## run unit tests
 ifeq ($(PLATFORM),Android)
+test: $(EXAMPLE_MAC_LIB) ## run unit tests
 	$(MAKE) -f make/Android.make test
-else
+else ifeq ($(PLATFORM),macOS)
+test: $(EXAMPLE_MAC_LIB)
 	"$(UE_EDITOR)" "$(UPROJECT)" \
 		-ExecCmds="Automation RunTests $(TESTSCOPE); Quit" -NoSplash \
 		-NullRHI -ReportOutputPath="$(PWD)/Saved/Automation/Reports"
+else
+test:
+	$(error Running unit tests on $(PLATFORM) is not yet supported)
 endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
@@ -120,9 +124,17 @@ build_example_ios: $(EXAMPLE_MAC_LIB)
 install_example_ios: build_example_ios
 	ideviceinstaller --install $(EXAMPLE_IOS_APP) --udid="$(shell idevice_id -l)"
 
+.PHONY: build_example_mac
+# Produces stand-alone example Mac app in ArchivedBuilds/MacNoEditor
+build_example_mac: $(EXAMPLE_MAC_LIB)
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Mac -archive
+
 .PHONY: build
 ifeq ($(PLATFORM),iOS)
 build: build_example_ios ## build example app for $PLATFORM
+endif
+ifeq ($(PLATFORM),macOS)
+build: build_example_mac
 endif
 ifeq ($(PLATFORM),Android)
 build: build_example_android

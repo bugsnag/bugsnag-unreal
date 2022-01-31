@@ -22,6 +22,7 @@ void FWrappedStackframeSpec::Define()
 					[CocoaStackframe symbolicateIfNeeded];
 
 					CocoaStackframe.method = @"Test::SomeFunction()";
+					CocoaStackframe.type = BugsnagStackframeTypeCocoa;
 
 					TSharedPtr<IBugsnagStackframe> Stackframe = FWrappedStackframe::From(CocoaStackframe);
 
