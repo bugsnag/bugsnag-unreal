@@ -1,5 +1,6 @@
 Feature: Release stages
 
+  @slow
   Scenario: Disabled release stage
     Given I run "ReleaseStageDisabledScenario"
     Then I should receive no errors

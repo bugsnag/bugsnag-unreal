@@ -139,10 +139,8 @@ FORCENOINLINE TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 	const uint32 Depth = FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
 
 // Skip the correct number of frames to ensure Shipping builds group correctly
-#if PLATFORM_IOS
+#if PLATFORM_IOS || PLATFORM_MAC
 	const uint32 IgnoreCount = 1;
-#elif PLATFORM_MAC
-	const uint32 IgnoreCount = 2;
 #elif PLATFORM_ANDROID
 	const uint32 IgnoreCount = 2;
 #else

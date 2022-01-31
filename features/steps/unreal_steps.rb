@@ -2,32 +2,55 @@ require 'rbconfig'
 
 HOST_OS = RbConfig::CONFIG['host_os']
 
-When('I relaunch the app') do
+When('I relaunch the mobile app') do
   Maze.driver.launch_app
   sleep 3
 end
 
 When('I run {string}') do |scenario_name|
-  dial_number_for scenario_name
-  tap_button 10
+  if is_platform? :macos
+    run_mac_fixture(:run_scenario, scenario_name)
+  else
+    dial_number_for scenario_name
+    tap_button 10
+  end
 end
 
 When('I configure Bugsnag for {string}') do |scenario_name|
-  dial_number_for scenario_name
-  tap_button 11
+  if is_platform? :macos
+    run_mac_fixture(:start_bugsnag, scenario_name)
+  else
+    dial_number_for scenario_name
+    tap_button 11
+  end
 end
 
 When('I run {string} and restart the crashed app') do |scenario_name|
-  steps %(
-    Given I run "#{scenario_name}"
-    And the app is not running
-    And I relaunch the app
-    And I configure Bugsnag for "#{scenario_name}"
-  )
+  step %(I run "#{scenario_name}" and restart the crashed app for "#{scenario_name}")
+end
+
+When('I run {string} and restart the crashed app for {string}') do |scenario_1, scenario_2|
+  if is_platform? :macos
+    run_mac_fixture(:run_scenario, scenario_1, wait: true)
+    run_mac_fixture(:start_bugsnag, scenario_2)
+  else
+    steps %(
+      Given I run "#{scenario_1}"
+      And the mobile app is not running
+      And I relaunch the mobile app
+      And I configure Bugsnag for "#{scenario_2}"
+    )
+  end
 end
 
 When('I background the app for {int} seconds') do |duration|
-  Maze.driver.background_app(duration)
+  if is_platform? :macos
+    `osascript -e 'tell application "System Events" to tell process "TestFixture-Mac-Shipping" to set visible to false'`
+    sleep duration
+    `osascript -e 'tell application "TestFixture-Mac-Shipping" to activate'`
+  else
+    Maze.driver.background_app(duration)
+  end
 end
 
 def dial_number_for(scenario_name)
@@ -54,15 +77,7 @@ def window_height
   end
 end
 
-Then('the app is running') do
-  wait_for_true do
-    state = app_state()
-    $logger.info "app state: #{state}"
-    state == :running_in_foreground
-  end
-end
-
-Then('the app is not running') do
+Then('the mobile app is not running') do
   wait_for_true do
     state = app_state()
     # workaround for faulty app state detection in appium v1.23 and lower on
@@ -74,6 +89,10 @@ end
 
 Then(/^on (Android|iOS), (.+)/) do |platform, step_text|
   step(step_text) if is_platform? platform
+end
+
+Then(/^on mobile, (.+)/) do |step_text|
+  step(step_text) if is_platform?(:android) || is_platform?(:ios)
 end
 
 Then('the method of stack frame {int} is equivalent to {string}') do |frame_index, method|
@@ -109,4 +128,18 @@ def wait_for_true
     sleep 1
   end
   raise 'Assertion not passed within 5 seconds' unless assertion_passed
+end
+
+def run_mac_fixture(action, scenario_name, wait: false)
+  $fixture_pid = Process.spawn(
+    'features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping',
+    '-windowed', '-resx=720', '-resy=1080', '-action', action.to_s, '-scenario_name', scenario_name,
+    [:out, :err]=>'TestFixture-Mac-Shipping.log')
+  if wait
+    Process.wait $fixture_pid
+    $fixture_pid = nil
+  else
+    # Ideally we would wait until we know the Scenario::Run() method has been executed
+    sleep 1
+  end
 end

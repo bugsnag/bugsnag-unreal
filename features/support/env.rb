@@ -8,7 +8,7 @@ Before do |_scenario|
   # does its own loading on a background thread.
   # TODO: We could have the test fixture send a /log request on load,
   #   with a Background step to wait for the receipt of that.
-  sleep 5
+  sleep 5 if is_platform?(:android) || is_platform?(:ios)
 end
 
 Before('@skip_android') do |_scenario|
@@ -25,6 +25,8 @@ def current_platform
     Maze.driver.capabilities['os']
   when :sl, :local
     Maze.driver.capabilities['platformName']
+  when :none
+    Maze.config.os
   else
     Maze.driver.os
   end
@@ -57,4 +59,9 @@ end
 
 def app_state
   Maze.driver.app_state('com.bugsnag.TestFixture')
+end
+
+Maze.hooks.after do |scenario|
+  Process.kill('KILL', $fixture_pid) if $fixture_pid
+  $fixture_pid = nil
 end
