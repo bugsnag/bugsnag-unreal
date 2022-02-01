@@ -30,6 +30,7 @@ void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Confi
 	BugsnagClient* Client = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
 	[Client addRuntimeVersionInfo:NSStringFromFString(BugsnagUtils::GetUnrealEngineVersion())
 						  withKey:NSStringFromFString(BugsnagConstants::UnrealEngine)];
+	FWrappedFeatureFlagStore::CocoaStore = Client;
 	FWrappedMetadataStore::CocoaStore = Client;
 }
 

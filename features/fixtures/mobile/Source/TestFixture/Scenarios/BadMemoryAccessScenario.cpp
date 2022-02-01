@@ -15,6 +15,14 @@ public:
 		Section1->SetNumberField("macaron", 3);
 		Section2->SetStringField("forty", TEXT("40"));
 
+		Configuration->AddFeatureFlag(TEXT("Testing"));
+		Configuration->AddFeatureFlag(TEXT("fc1"), FString(TEXT("blue")));
+		TArray<FBugsnagFeatureFlag> MoreFlags = {
+			FBugsnagFeatureFlag(TEXT("fc1")),
+			FBugsnagFeatureFlag(TEXT("fc2"), FString(TEXT("teal"))),
+			FBugsnagFeatureFlag(TEXT("nope"))};
+		Configuration->AddFeatureFlags(MoreFlags);
+
 		Configuration->AddMetadata("pastries", Section1);
 		Configuration->AddMetadata("counters", Section2);
 		Configuration->AddMetadata("counters", "thirty-five", MakeShareable(Value));
@@ -49,6 +57,10 @@ public:
 			});
 
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
+
+		UBugsnagFunctionLibrary::AddFeatureFlag(TEXT("Bugsnag"));
+
+		UBugsnagFunctionLibrary::ClearFeatureFlag(TEXT("nope"));
 
 		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), TEXT("foobar"));
 		TSharedPtr<FJsonObject> CustomMetadata = UBugsnagFunctionLibrary::GetMetadata("custom");

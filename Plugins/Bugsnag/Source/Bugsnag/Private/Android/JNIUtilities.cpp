@@ -139,8 +139,11 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheStaticJavaMethod(env, cache->BugsnagClearMetadataSection, cache->BugsnagClass, "clearMetadata", "(Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagClearMetadataValue, cache->BugsnagClass, "clearMetadata", "(Ljava/lang/String;Ljava/lang/String;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagAddFeatureFlag, cache->BugsnagClass, "addFeatureFlag", "(Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataToSection, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagAddMetadataValue, cache->BugsnagClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagClearFeatureFlag, cache->BugsnagClass, "clearFeatureFlag", "(Ljava/lang/String;)V");
+	CacheStaticJavaMethod(env, cache->BugsnagClearFeatureFlags, cache->BugsnagClass, "clearFeatureFlags", "()V");
 	CacheStaticJavaMethod(env, cache->BugsnagGetBreadcrumbs, cache->BugsnagClass, "getBreadcrumbs", "()Ljava/util/List;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetContext, cache->BugsnagClass, "getContext", "()Ljava/lang/String;");
 	CacheStaticJavaMethod(env, cache->BugsnagGetLastRunInfo, cache->BugsnagClass, "getLastRunInfo", "()Lcom/bugsnag/android/LastRunInfo;");
@@ -169,9 +172,12 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheInstanceJavaMethod(env, cache->ConfigConstructor, cache->ConfigClass, "<init>", "(Ljava/lang/String;)V");
 
+	CacheInstanceJavaMethod(env, cache->ConfigAddFeatureFlag, cache->ConfigClass, "addFeatureFlag", "(Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigAddMetadata, cache->ConfigClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigGetNotifier, cache->ConfigClass, "getNotifier", "()Lcom/bugsnag/android/Notifier;");
 	CacheInstanceJavaMethod(env, cache->ConfigAddPlugin, cache->ConfigClass, "addPlugin", "(Lcom/bugsnag/android/Plugin;)V");
+	CacheInstanceJavaMethod(env, cache->ConfigClearFeatureFlag, cache->ConfigClass, "clearFeatureFlag", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->ConfigClearFeatureFlags, cache->ConfigClass, "clearFeatureFlags", "()V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetAppType, cache->ConfigClass, "setAppType", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetAppVersion, cache->ConfigClass, "setAppVersion", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetAutoDetectErrors, cache->ConfigClass, "setAutoDetectErrors", "(Z)V");
@@ -245,8 +251,11 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheInstanceJavaMethod(env, cache->ErrorTypesConstructor, cache->ErrorTypesClass, "<init>", "(ZZZZ)V");
 
+	CacheInstanceJavaMethod(env, cache->EventAddFeatureFlag, cache->EventClass, "addFeatureFlag", "(Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->EventAddMetadataToSection, cache->EventClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
 	CacheInstanceJavaMethod(env, cache->EventAddMetadataValue, cache->EventClass, "addMetadata", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V");
+	CacheInstanceJavaMethod(env, cache->EventClearFeatureFlag, cache->EventClass, "clearFeatureFlag", "(Ljava/lang/String;)V");
+	CacheInstanceJavaMethod(env, cache->EventClearFeatureFlags, cache->EventClass, "clearFeatureFlags", "()V");
 	CacheInstanceJavaMethod(env, cache->EventClearMetadataSection, cache->EventClass, "clearMetadata", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->EventClearMetadataValue, cache->EventClass, "clearMetadata", "(Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->EventGetApiKey, cache->EventClass, "getApiKey", "()Ljava/lang/String;");

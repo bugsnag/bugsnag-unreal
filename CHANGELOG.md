@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## TBD
+
+* New APIs to support forthcoming feature flag and experiment functionality.
+  For more information, please see https://docs.bugsnag.com/product/features-experiments
+  [#123](https://github.com/bugsnag/bugsnag-unreal/pull/123)
+
 ## 1.0.1 (2022-01-04)
 
 * Plugin is no longer flagged as "beta"

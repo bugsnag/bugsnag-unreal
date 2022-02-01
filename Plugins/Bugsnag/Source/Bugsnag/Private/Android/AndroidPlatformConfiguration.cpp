@@ -143,6 +143,17 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 		}
 	}
 
+	for (const TPair<FString, TOptional<FString>>& Elem : Config->FeatureFlags)
+	{
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Elem.Key);
+		if (!jName)
+		{
+			continue;
+		}
+		jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Elem.Value);
+		jniCallWithObjects(Env, jConfig, Cache->ConfigAddFeatureFlag, jName, jVariant);
+	}
+
 	for (auto& Item : Config->GetMetadataValues())
 	{
 		jstring jSection = FAndroidPlatformJNI::ParseFString(Env, Item.Key);

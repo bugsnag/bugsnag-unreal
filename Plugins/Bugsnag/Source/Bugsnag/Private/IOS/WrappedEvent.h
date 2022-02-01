@@ -12,13 +12,14 @@
 #include "WrappedBreadcrumb.h"
 #include "WrappedDeviceWithState.h"
 #include "WrappedError.h"
+#include "WrappedFeatureFlagStore.h"
 #include "WrappedMetadataStore.h"
 #include "WrappedThread.h"
 
 #import <Bugsnag/BugsnagEvent.h>
 #import <Bugsnag/BugsnagUser.h>
 
-class BUGSNAG_API FWrappedEvent : public IBugsnagEvent, public FWrappedMetadataStore
+class BUGSNAG_API FWrappedEvent : public IBugsnagEvent, public FWrappedFeatureFlagStore, public FWrappedMetadataStore
 {
 public:
 	static TSharedRef<FWrappedEvent> From(BugsnagEvent* CocoaEvent)
@@ -27,7 +28,8 @@ public:
 	}
 
 	FWrappedEvent(BugsnagEvent* CocoaEvent)
-		: FWrappedMetadataStore(CocoaEvent)
+		: FWrappedFeatureFlagStore(CocoaEvent)
+		, FWrappedMetadataStore(CocoaEvent)
 		, CocoaEvent(CocoaEvent)
 	{
 	}

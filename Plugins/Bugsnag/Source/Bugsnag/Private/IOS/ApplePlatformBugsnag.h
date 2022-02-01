@@ -3,9 +3,10 @@
 #pragma once
 
 #include "Interfaces/PlatformBugsnag.h"
+#include "WrappedFeatureFlagStore.h"
 #include "WrappedMetadataStore.h"
 
-class FApplePlatformBugsnag : public IPlatformBugsnag, public FWrappedMetadataStore
+class FApplePlatformBugsnag : public IPlatformBugsnag, public FWrappedFeatureFlagStore, public FWrappedMetadataStore
 {
 public:
 	void Start(const TSharedRef<FBugsnagConfiguration>& Configuration) override;

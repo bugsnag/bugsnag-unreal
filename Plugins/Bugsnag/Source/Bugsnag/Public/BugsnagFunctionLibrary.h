@@ -148,6 +148,37 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
 	static void SetUser(const FString& Id = TEXT(""), const FString& Email = TEXT(""), const FString& Name = TEXT(""));
 
+	// Feature flags and experiments
+
+	/**
+	 * Add a single feature flag with optional experiment membership/variant.
+	 * Any existing flag with the same name will be replaced with the newer value.
+	 *
+	 * @param Name    The name of the feature flag to add.
+	 * @param Variant The variant to set the feature flag to.
+	 */
+	static void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>());
+
+	/**
+	 * Add multiple feature flags and any associated experiment membership.
+	 * Existing flags with matching names will be replaced with the newer values.
+	 *
+	 * @param FeatureFlags An array of feature flag objects to add.
+	 */
+	static void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags);
+
+	/**
+	 * Remove a single feature flag and any associated experiment membership.
+	 *
+	 * @param Name The name of the feature flag to remove.
+	 */
+	static void ClearFeatureFlag(const FString& Name);
+
+	/**
+	 * Remove all feature flag and experiment membership data.
+	 */
+	static void ClearFeatureFlags();
+
 	// Metadata
 
 	/**
