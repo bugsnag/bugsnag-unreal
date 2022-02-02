@@ -12,11 +12,48 @@
 #include "BugsnagEvent.h"
 #include "BugsnagUser.h"
 #include "JavaObjectWrapper.h"
+#include "LogBugsnag.h"
 
 class FAndroidEvent : public IBugsnagEvent, FJavaObjectWrapper
 {
 public:
 	using FJavaObjectWrapper::FJavaObjectWrapper;
+
+	void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>()) override
+	{
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+		ReturnVoidIf(!jName);
+		jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Variant);
+		if (!jVariant && Variant.IsSet())
+		{
+			UE_LOG(LogBugsnag, Error, TEXT("Failed to create Java string with \"%s\""), *Variant.GetValue());
+			return;
+		}
+		(*Env).CallVoidMethod(JavaObject, Cache->EventAddFeatureFlag, jName, jVariant);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
+
+	void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags) override
+	{
+		for (const FBugsnagFeatureFlag& Flag : FeatureFlags)
+		{
+			AddFeatureFlag(Flag.GetName(), Flag.GetVariant());
+		}
+	}
+
+	void ClearFeatureFlag(const FString& Name) override
+	{
+		jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+		ReturnVoidIf(!jName);
+		(*Env).CallVoidMethod(JavaObject, Cache->EventClearFeatureFlag, jName);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
+
+	void ClearFeatureFlags() override
+	{
+		(*Env).CallVoidMethod(JavaObject, Cache->EventClearFeatureFlags);
+		FAndroidPlatformJNI::CheckAndClearException(Env);
+	}
 
 	void AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata) override
 	{

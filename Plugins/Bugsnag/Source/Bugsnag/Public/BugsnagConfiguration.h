@@ -5,6 +5,7 @@
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagEndpointConfiguration.h"
 #include "BugsnagEvent.h"
+#include "BugsnagFeatureFlagStore.h"
 #include "BugsnagMetadataStore.h"
 #include "BugsnagSession.h"
 #include "BugsnagSettings.h"
@@ -36,7 +37,7 @@ typedef TFunction<bool(TSharedRef<IBugsnagSession>)> FBugsnagOnSessionCallback;
 /**
  * Configures the behaviour of Bugsnag.
  */
-class BUGSNAG_API FBugsnagConfiguration final : public IBugsnagMetadataStore
+class BUGSNAG_API FBugsnagConfiguration final : public IBugsnagFeatureFlagStore, public IBugsnagMetadataStore
 {
 public:
 	/**
@@ -413,6 +414,37 @@ public:
 		const TOptional<FString>& Email = TOptional<FString>(),
 		const TOptional<FString>& Name = TOptional<FString>());
 
+	// Feature Flags
+
+	/**
+	 * Add a single feature flag with optional experiment membership/variant.
+	 * Any existing flag with the same name will be replaced with the newer value.
+	 *
+	 * @param Name    The name of the feature flag to add.
+	 * @param Variant The variant to set the feature flag to.
+	 */
+	void AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant = TOptional<FString>()) override;
+
+	/**
+	 * Add multiple feature flags and any associated experiment membership.
+	 * Existing flags with matching names will be replaced with the newer values.
+	 *
+	 * @param FeatureFlags An array of feature flag objects to add.
+	 */
+	void AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags) override;
+
+	/**
+	 * Remove a single feature flag and any associated experiment membership.
+	 *
+	 * @param Name The name of the feature flag to remove.
+	 */
+	void ClearFeatureFlag(const FString& Name) override;
+
+	/**
+	 * Remove all feature flag and experiment membership data.
+	 */
+	void ClearFeatureFlags() override;
+
 	// Metadata
 
 	using IBugsnagMetadataStore::AddMetadata;
@@ -507,6 +539,7 @@ private:
 
 	friend class FApplePlatformConfiguration;
 	friend class FAndroidPlatformConfiguration;
+	friend class FBugsnagConfigurationSpec;
 
 	FString ApiKey;
 	bool bAutoDetectErrors = true;
@@ -534,6 +567,7 @@ private:
 	TArray<FString> ProjectPackages;
 	TOptional<int32> VersionCode;
 	FBugsnagEndpointConfiguration Endpoints;
+	TMap<FString, TOptional<FString>> FeatureFlags;
 	TMap<FString, TSharedRef<FJsonObject>> MetadataValues;
 	TArray<FBugsnagOnBreadcrumbCallback> OnBreadcrumbCallbacks;
 	TArray<FBugsnagOnErrorCallback> OnSendErrorCallbacks;

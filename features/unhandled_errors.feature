@@ -30,6 +30,12 @@ Feature: Unhandled errors
     And the event "metaData.unrealEngine.gameStateName" equals "GameStateBase"
     And the event "metaData.unrealEngine.userActivity" is not null
     And the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
+    And the event contains the following feature flags:
+      | featureFlag | variant        |
+      | Testing     |                |
+      | fc1         |                |
+      | fc2         | teal           |
+      | Bugsnag     |                |
     And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
     And the exception "errorClass" equals the platform-dependent string:
       | android | SIGSEGV |

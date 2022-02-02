@@ -4,12 +4,6 @@ env:
 
 steps:
 
-  - name: 'Lint'
-    agents:
-      queue: opensource-mac-cocoa-11
-    command: make lint
-    timeout_in_minutes: 10
-
   ##############################################################################
   #
   # Build Plugin
@@ -22,7 +16,13 @@ steps:
     env:
       UE_VERSION: "4.23"
       NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -31,7 +31,13 @@ steps:
       queue: opensource-mac-unreal-4.25
     env:
       UE_VERSION: "4.25"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -40,7 +46,13 @@ steps:
       queue: opensource-mac-unreal-4.26
     env:
       UE_VERSION: "4.26"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -49,7 +61,13 @@ steps:
       queue: opensource-mac-unreal-4.27
     env:
       UE_VERSION: "4.27"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -58,7 +76,13 @@ steps:
       queue: opensource-mac-unreal-5
     env:
       UE_VERSION: "5.0EA"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -87,7 +111,10 @@ steps:
         upload:
           - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
           - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
-    command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
     timeout_in_minutes: 60
     key: android_fixture
 
@@ -101,7 +128,10 @@ steps:
         upload:
           - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
           - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     timeout_in_minutes: 60
     key: ios_fixture
 
@@ -118,7 +148,7 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.5.0:
         download:
         - from: "features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"
           to: "build/TestFixture-Android-Shipping-arm64.apk"
@@ -146,7 +176,7 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.5.0:
         download:
         - from: "features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-armv7.apk"
           to: "build/TestFixture-Android-Shipping-armv7.apk"
@@ -174,7 +204,7 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.5.0:
         download:
         - from: "features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa"
           to: "build/TestFixture-IOS-Shipping.ipa"
