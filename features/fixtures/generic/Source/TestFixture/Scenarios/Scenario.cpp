@@ -1,16 +1,15 @@
-#include "TestFixtureBlueprintFunctionLibrary.h"
-
-#include "ScenarioNames.h"
-#include "Scenarios/Scenario.h"
+#include "Scenario.h"
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
 #include "Misc/EngineVersion.h"
 #endif
 
-static void ClearPersistentData()
+Scenario* Scenario::CurrentScenario = nullptr;
+
+void Scenario::ClearPersistentData()
 {
-	UE_LOG(LogTemp, Display, TEXT("Clearing persistent data"));
+	UE_LOG(LogTestFixture, Display, TEXT("Clearing persistent data"));
 #if PLATFORM_ANDROID
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	jclass ActivityClass = AndroidJavaEnv::FindJavaClass(
@@ -29,43 +28,23 @@ static void ClearPersistentData()
 	{
 		if (![Error.domain isEqual:NSCocoaErrorDomain] && Error.code != NSFileNoSuchFileError)
 		{
-			UE_LOG(LogTemp, Error, TEXT("%@"), UTF8_TO_TCHAR(Error.description.UTF8String));
+			UE_LOG(LogTestFixture, Error, TEXT("%@"), UTF8_TO_TCHAR(Error.description.UTF8String));
 		}
 	}
 #endif
 }
 
-static FString DisplayText;
-
-static FString GetScenarioName()
+UWorld* Scenario::GetCurrentPlayWorld()
 {
-	int32 ScenarioIndex = -1;
-	LexFromString(ScenarioIndex, *DisplayText);
-	UE_LOG(LogTemp, Display, TEXT("ScenarioIndex = %d"), ScenarioIndex);
-	return ScenarioNames[ScenarioIndex];
-}
-
-void UTestFixtureBlueprintFunctionLibrary::AppendText(const FString& Text)
-{
-	DisplayText += Text;
-}
-
-FString UTestFixtureBlueprintFunctionLibrary::GetDisplayText()
-{
-	return DisplayText;
-}
-
-void UTestFixtureBlueprintFunctionLibrary::Run()
-{
-	FString ScenarioName = GetScenarioName();
-	ClearPersistentData();
-	Scenario::Run(ScenarioName);
-	DisplayText.Reset();
-}
-
-void UTestFixtureBlueprintFunctionLibrary::Start()
-{
-	FString ScenarioName = GetScenarioName();
-	Scenario::Start(ScenarioName);
-	DisplayText.Reset();
+	if (GEngine)
+	{
+		for (const FWorldContext& Context : GEngine->GetWorldContexts())
+		{
+			if (Context.WorldType == EWorldType::Game)
+			{
+				return Context.World();
+			}
+		}
+	}
+	return nullptr;
 }

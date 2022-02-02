@@ -46,6 +46,7 @@ steps:
     command: make package
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
+    key: plugin_4_27
 
   - name: 'Build Plugin - UE 5 EA'
     agents:
@@ -79,9 +80,9 @@ steps:
     plugins:
       artifacts#v1.2.0:
         upload:
-          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-          - features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
-    command: make features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
+    command: make features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
     timeout_in_minutes: 60
     key: android_fixture
 
@@ -93,11 +94,23 @@ steps:
     plugins:
       artifacts#v1.2.0:
         upload:
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
-          - features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: make features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
+          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    command: make features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
     timeout_in_minutes: 60
     key: ios_fixture
+
+  - name: 'Build macOS test fixture - UE 4.27'
+    depends_on: [plugin_4_27]
+    agents:
+      queue: opensource-mac-unreal-4.27
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        upload: TestFixture-macOS.zip
+    command: features/scripts/build-fixture-mac.sh
+    timeout_in_minutes: 90
+    key: mac_fixture
 
   ##############################################################################
   #
@@ -114,7 +127,7 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-        - from: "features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"
+        - from: "features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"
           to: "build/TestFixture-Android-Shipping-arm64.apk"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
@@ -142,7 +155,7 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-        - from: "features/fixtures/mobile/Binaries/Android/TestFixture-Android-Shipping-armv7.apk"
+        - from: "features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk"
           to: "build/TestFixture-Android-Shipping-armv7.apk"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
@@ -170,9 +183,9 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-        - from: "features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.ipa"
+        - from: "features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa"
           to: "build/TestFixture-IOS-Shipping.ipa"
-        - from: "features/fixtures/mobile/Binaries/IOS/TestFixture-IOS-Shipping.dSYM"
+        - from: "features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM"
           to: "build/TestFixture-IOS-Shipping.dSYM"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
@@ -190,3 +203,20 @@ steps:
       automatic:
         - exit_status: -1  # Agent was lost
           limit: 2
+
+  - label: 'E2E Tests - macOS 10.14'
+    depends_on: [mac_fixture]
+    timeout_in_minutes: 10
+    agents:
+      queue: opensource-mac-cocoa-10.14
+    plugins:
+      artifacts#v1.5.0:
+        download: TestFixture-macOS.zip
+        upload: ["maze_output/failed/**/*"]
+    commands:
+      - echo '--- Extracting test fixture'
+      - unzip TestFixture-macOS.zip
+      - echo '--- Installing dependencies'
+      - bundle install
+      - echo '--- Running tests'
+      - bundle exec maze-runner --os=macos

@@ -32,14 +32,17 @@ Feature: Unhandled errors
     And the event "metaData.unrealEngine.version" matches "\d\.\d+\.\d+-\d+"
     And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
     And the exception "errorClass" equals the platform-dependent string:
-      | android | SIGSEGV |
-      | ios | EXC_BAD_ACCESS |
+      | android | SIGSEGV        |
+      | ios     | EXC_BAD_ACCESS |
+      | macos   | EXC_BAD_ACCESS |
     And the exception "message" equals the platform-dependent string:
       | android | Segmentation violation (invalid memory reference) |
-      | ios | Attempted to dereference null pointer. |
+      | ios     | Attempted to dereference null pointer.            |
+      | macos   | Attempted to dereference null pointer.            |
     And the exception "type" equals the platform-dependent string:
-      | android | c |
-      | ios | cocoa |
+      | android | c     |
+      | ios     | cocoa |
+      | macos   | cocoa |
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
@@ -67,10 +70,12 @@ Feature: Unhandled errors
     And the event "metaData.lastRunInfo.crashed" is true
     And the event "metaData.lastRunInfo.crashedDuringLaunch" is false
 
+  @slow
   Scenario: Crash with auto detect errors disabled
     Given I run "CrashWithoutAutoDetectionScenario" and restart the crashed app
     Then I should receive no errors
 
+  @slow
   Scenario: Ignore crash by error class
     Given I run "IgnoreErrorClassScenario" and restart the crashed app
     Then I should receive no errors

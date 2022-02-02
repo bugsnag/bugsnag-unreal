@@ -18,6 +18,7 @@ Feature: Reporting handled errors
     And the event "app.type" equals the platform-dependent string:
       | android | android |
       | ios     | iOS     |
+      | macos   | macOS   |
     And the event "app.version" equals "1.0"
     And the event "device.freeDisk" is not null
     And the event "device.freeMemory" is not null
@@ -27,18 +28,19 @@ Feature: Reporting handled errors
     And the event "device.manufacturer" is not null
     And the event "device.model" is not null
     And on iOS, the event "device.modelNumber" is not null
-    And the event "device.orientation" matches "(face(down|up)|landscape(left|right)|portrait(upsidedown)?)"
+    And on mobile, the event "device.orientation" matches "(face(down|up)|landscape(left|right)|portrait(upsidedown)?)"
     And the event "device.osName" equals the platform-dependent string:
       | android | android |
       | ios     | iOS     |
+      | macos   | Mac OS  |
     And the event "device.osVersion" is not null
     And the event "device.runtimeVersions" is not null
     And on Android, the event "device.runtimeVersions.androidApiLevel" is not null
     And the event "device.runtimeVersions.unrealEngine" is not null
     And the event "device.time" is not null
     And the event "device.totalMemory" is not null
-    And the event "metaData.device.batteryLevel" is not null
-    And the event "metaData.device.charging" is not null
+    And on mobile, the event "metaData.device.batteryLevel" is not null
+    And on mobile, the event "metaData.device.charging" is not null
     And the event "metaData.pastries.cronut" is false
     And the event "metaData.pastries.macaron" equals 3
     And the event "metaData.counters.forty" equals "40"
@@ -68,14 +70,12 @@ Feature: Reporting handled errors
     And the exception "type" equals the platform-dependent string:
       | android | c     |
       | ios     | cocoa |
+      | macos   | cocoa |
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
   Scenario: Notify after crash
-    When I run "CrashAfterLaunchedScenario"
-    Then the app is not running
-    When I relaunch the app
-    And I configure Bugsnag for "NotifyWithLaunchInfoScenario"
+    Given I run "CrashAfterLaunchedScenario" and restart the crashed app for "NotifyWithLaunchInfoScenario"
     And I wait to receive 2 errors
     Then the event "metaData.lastRunInfo" is null
     And the event "app.isLaunching" is false
@@ -111,6 +111,7 @@ Feature: Reporting handled errors
     And on iOS, the error payload field "events.0.threads.0.id" equals "9000"
     And on Android, the error payload field "events.0.threads.0.id" equals 9000
 
+  @slow
   Scenario: Cancel notify from callback
     When I run "CancelNotifyFromCallback"
     Then I should receive no errors
