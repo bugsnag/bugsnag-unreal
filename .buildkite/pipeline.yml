@@ -10,6 +10,16 @@ steps:
   #
   ##############################################################################
 
+  - name: 'Build Plugin - UE 4.27'
+    agents:
+      queue: opensource-mac-unreal-4.27
+    env:
+      UE_VERSION: "4.27"
+    command: make package
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 30
+    key: plugin_4_27
+
   - name: 'Build Plugin - UE 4.23'
     agents:
       queue: opensource-mac-unreal-4.23
@@ -38,16 +48,6 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
-  - name: 'Build Plugin - UE 4.27'
-    agents:
-      queue: opensource-mac-unreal-4.27
-    env:
-      UE_VERSION: "4.27"
-    command: make package
-    artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
-    key: plugin_4_27
-
   - name: 'Build Plugin - UE 5 EA'
     agents:
       queue: opensource-mac-unreal-5
@@ -73,30 +73,34 @@ steps:
   ##############################################################################
 
   - name: 'Build Android test fixtures - UE 4.27'
+    depends_on: [plugin_4_27]
     agents:
       queue: opensource-mac-unreal-4.27
     env:
       UE_VERSION: "4.27"
     plugins:
-      artifacts#v1.2.0:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
           - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
           - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
-    command: make features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+    command: features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
     key: android_fixture
 
   - name: 'Build iOS test fixture - UE 4.27'
+    depends_on: [plugin_4_27]
     agents:
       queue: opensource-mac-unreal-4.27
     env:
       UE_VERSION: "4.27"
     plugins:
-      artifacts#v1.2.0:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
           - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
           - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: make features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+    command: features/scripts/build-fixture.sh IOS
     timeout_in_minutes: 60
     key: ios_fixture
 
@@ -104,11 +108,13 @@ steps:
     depends_on: [plugin_4_27]
     agents:
       queue: opensource-mac-unreal-4.27
+    env:
+      UE_VERSION: "4.27"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload: TestFixture-macOS.zip
-    command: features/scripts/build-fixture-mac.sh
+    command: features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
     key: mac_fixture
 
