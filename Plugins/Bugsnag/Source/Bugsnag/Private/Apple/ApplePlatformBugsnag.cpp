@@ -27,7 +27,19 @@ DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
 void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
-	BugsnagClient* Client = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
+	BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+#if UE_EDITOR
+	if (!FApp::IsGame())
+	{
+		UE_LOG(LogBugsnag, Log, TEXT("App hang detection is disabled in the Editor"));
+		CocoaConfig.enabledErrorTypes.appHangs = NO;
+	}
+	else
+	{
+		// The Editor may have been launched in game mode, e.g. `UE4Editor <uproject> -game`
+	}
+#endif
+	BugsnagClient* Client = [Bugsnag startWithConfiguration:CocoaConfig];
 	[Client addRuntimeVersionInfo:NSStringFromFString(BugsnagUtils::GetUnrealEngineVersion())
 						  withKey:NSStringFromFString(BugsnagConstants::UnrealEngine)];
 	FWrappedMetadataStore::CocoaStore = Client;
