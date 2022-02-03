@@ -1,7 +1,3 @@
-env:
-  ANDROID_SDK_ROOT: "/usr/local/share/android-sdk"
-  ANDROID_NDK_ROOT: "/usr/local/share/android-ndk"
-
 steps:
 
   ##############################################################################
@@ -31,6 +27,7 @@ steps:
     timeout_in_minutes: 30
 
   - name: 'Build Plugin - UE 4.25'
+    if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
       queue: opensource-mac-unreal-4.25
     env:
@@ -40,6 +37,7 @@ steps:
     timeout_in_minutes: 30
 
   - name: 'Build Plugin - UE 4.26'
+    if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
       queue: opensource-mac-unreal-4.26
     env:
@@ -49,6 +47,7 @@ steps:
     timeout_in_minutes: 30
 
   - name: 'Build Plugin - UE 5 EA'
+    if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
       queue: opensource-mac-unreal-5
     env:
