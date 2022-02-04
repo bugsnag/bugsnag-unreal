@@ -25,9 +25,51 @@
 
 DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
+#if UE_EDITOR
+
+#import <Bugsnag/BSG_KSCrashReportWriter.h>
+#import <BugsnagPrivate/BugsnagConfiguration+Private.h>
+
+#define IS_PIE_WORLD_KEY "isPlayInEditorWorld"
+#define UNREAL_ENGINE_KEY "unrealEngine"
+
+static void FApplePlatformBugsnag_OnCrashHandler(const BSG_KSCrashReportWriter* writer)
+{
+	writer->beginObject(writer, UNREAL_ENGINE_KEY);
+	writer->addBooleanElement(writer, IS_PIE_WORLD_KEY, GIsPlayInEditorWorld);
+	writer->endContainer(writer);
+}
+
+#endif
+
 void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
-	BugsnagClient* Client = [Bugsnag startWithConfiguration:FApplePlatformConfiguration::Configuration(Configuration)];
+	BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+#if UE_EDITOR
+	if (!FApp::IsGame())
+	{
+		UE_LOG(LogBugsnag, Log, TEXT("App hang detection is disabled in the Editor"));
+		CocoaConfig.enabledErrorTypes.appHangs = NO;
+
+		UE_LOG(LogBugsnag, Log, TEXT("Crashes in the Editor outside of a PIE session will not be reported"));
+		CocoaConfig.onCrashHandler = &FApplePlatformBugsnag_OnCrashHandler;
+		BugsnagOnSendErrorBlock OnSend = ^BOOL(BugsnagEvent* _Nonnull event) {
+			if ([[event getMetadataFromSection:@UNREAL_ENGINE_KEY withKey:@IS_PIE_WORLD_KEY] isEqual:@NO])
+			{
+				UE_LOG(LogBugsnag, Log, TEXT("Discarding crash in Editor outside of PIE session"));
+				return NO;
+			}
+			return YES;
+		};
+		// Directly accessing `onSendBlocks` because we need this block to run first
+		[CocoaConfig.onSendBlocks insertObject:OnSend atIndex:0];
+	}
+	else
+	{
+		// The Editor may have been launched in game mode, e.g. `UE4Editor <uproject> -game`
+	}
+#endif
+	BugsnagClient* Client = [Bugsnag startWithConfiguration:CocoaConfig];
 	[Client addRuntimeVersionInfo:NSStringFromFString(BugsnagUtils::GetUnrealEngineVersion())
 						  withKey:NSStringFromFString(BugsnagConstants::UnrealEngine)];
 	FWrappedMetadataStore::CocoaStore = Client;

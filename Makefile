@@ -80,6 +80,10 @@ clean: ## remove build artifacts
 editor: $(EXAMPLE_MAC_LIB) ## Build the project and open in Unreal Editor
 	"$(UE_EDITOR)" "$(UPROJECT)"
 
+.PHONY: run
+run: $(EXAMPLE_MAC_LIB) ## Build the example project and run in Unreal Editor's -game mode
+	"$(UE_EDITOR)" "$(UPROJECT)" -game
+
 .PHONY: format
 format: ## format all c/c++ source to match .clang-format
 	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i

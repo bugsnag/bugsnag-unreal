@@ -60,6 +60,19 @@ static void GameStateChanged(const FString& InGameStateName)
 void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
+
+#if UE_EDITOR
+	if (!FApp::IsGame())
+	{
+		UE_LOG(LogBugsnag, Log, TEXT("Automatic session tracking is disabled in the Editor"));
+		Configuration->SetAutoTrackSessions(false);
+	}
+	else
+	{
+		// The Editor may have been launched in game mode, e.g. `UE4Editor <uproject> -game`
+	}
+#endif
+
 	GPlatformBugsnag.Start(Configuration);
 
 	static FString MapUrl;
