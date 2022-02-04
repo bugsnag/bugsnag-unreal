@@ -38,7 +38,7 @@ uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;
 FBugsnagConfiguration::FBugsnagConfiguration(const FString& ApiKey)
 {
 	SetApiKey(ApiKey);
-	AddDefaultMetadata();
+	AddDefaults();
 }
 
 FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
@@ -68,7 +68,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 		SetApiKey(Settings.ApiKey);
 	}
 	SetMaxBreadcrumbs(Settings.MaxBreadcrumbs);
-	AddDefaultMetadata();
+	AddDefaults();
 }
 
 TSharedPtr<FBugsnagConfiguration> FBugsnagConfiguration::Load()
@@ -235,8 +235,17 @@ static UWorld* GetCurrentPlayWorld()
 	return nullptr;
 }
 
-void FBugsnagConfiguration::AddDefaultMetadata()
+void FBugsnagConfiguration::AddDefaults()
 {
+	if (!ReleaseStage.IsSet())
+	{
+#if UE_BUILD_SHIPPING
+		ReleaseStage = TEXT("production");
+#else
+		ReleaseStage = TEXT("development");
+#endif
+	}
+
 	TSharedRef<FJsonObject> DeviceMetadata = MakeShared<FJsonObject>();
 
 	if (!GRHIAdapterName.IsEmpty())
