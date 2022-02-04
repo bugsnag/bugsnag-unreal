@@ -169,7 +169,7 @@ public:
 
 	/**
 	 * The minimum number of milliseconds of main thread unresponsiveness that will trigger the detection and reporting
-	 * of an app hang on iOS.
+	 * of an app hang on iOS & macOS.
 	 *
 	 * Hangs that occur on Unreal Engine's game thread are not detected.
 	 *
@@ -181,7 +181,7 @@ public:
 
 	/**
 	 * @param Value The minimum number of milliseconds of main thread unresponsiveness that should trigger the detection
-	 *              and reporting of an app hang on iOS. The minimum supported value is 250.
+	 *              and reporting of an app hang on iOS & macOS. The minimum supported value is 250.
 	 */
 	void SetAppHangThresholdMillis(uint64 Value);
 
@@ -294,14 +294,14 @@ public:
 	void SetReleaseStage(const TOptional<FString>& Value) { ReleaseStage = Value; }
 
 	/**
-	 * The application type, e.g. `"android"` or `"iOS"`.
+	 * The application type, e.g. `"android"`, `"iOS"` or `"macOS"`.
 	 */
 	const TOptional<FString>& GetAppType() const { return AppType; }
 
 	/**
 	 * Sets the application type.
 	 *
-	 * By default Bugsnag will send `"android"` on Android and `"iOS"` on iOS.
+	 * By default Bugsnag will send `"android"` on Android, `"iOS"` on iOS and `"macOS"` on macOS.
 	 *
 	 * If your app's codebase contains different entry-points or processes, but reports to a single Bugsnag project,
 	 * you might want to add information denoting the type of process the error came from.
@@ -323,14 +323,14 @@ public:
 	void SetAppVersion(const TOptional<FString>& Value) { AppVersion = Value; }
 
 	/**
-	 * The app's bundle version (iOS only.)
+	 * The app's bundle version (iOS & macOS only.)
 	 *
 	 * By default Bugsnag uses the value of `CFBundleVersion` in your app's `Info.plist`.
 	 */
 	const TOptional<FString>& GetBundleVersion() const { return BundleVersion; }
 
 	/**
-	 * @param Value the app's bundle version to include in events and sessions (iOS only.)
+	 * @param Value the app's bundle version to include in events and sessions (iOS & macOS only.)
 	 */
 	void SetBundleVersion(const TOptional<FString>& Value) { BundleVersion = Value; }
 
@@ -476,7 +476,7 @@ public:
 	void AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback) { OnBreadcrumbCallbacks.Add(Callback); }
 
 	/**
-	 * Adds a callback to modify or discard events before they are sent (iOS only.)
+	 * Adds a callback to modify or discard events before they are sent.
 	 *
 	 * The callback should return `true` to allow or `false` to prevent the event being sent.
 	 *
