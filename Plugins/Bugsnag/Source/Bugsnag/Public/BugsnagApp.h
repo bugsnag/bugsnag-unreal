@@ -27,14 +27,14 @@ public:
 	virtual void SetBuildUuid(const TOptional<FString>&) = 0;
 
 	/**
-	 * The bundle version used by the application (iOS only.)
+	 * The bundle version used by the application (iOS & macOS only.)
 	 */
 	virtual const TOptional<FString> GetBundleVersion() const = 0;
 
 	virtual void SetBundleVersion(const TOptional<FString>&) = 0;
 
 	/**
-	 * The UUID of the debug symbols file corresponding to this application, if any (iOS only.)
+	 * The UUID of the debug symbols file corresponding to this application, if any (iOS & macOS only.)
 	 */
 	virtual const TOptional<FString> GetDsymUuid() const = 0;
 
