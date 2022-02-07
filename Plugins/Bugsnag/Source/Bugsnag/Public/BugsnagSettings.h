@@ -193,7 +193,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	///////////////////////////////////////////////////////////////////////////
 
 	// The release stage of the application, such as production, development, beta et cetera.
-	// Defaults to "development" for debug builds and "production" otherwise.
+	// If empty, "production" will be used for shipping and "development" for other builds.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "App Information")
 	FString ReleaseStage;
 

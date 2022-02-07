@@ -503,7 +503,7 @@ public:
 private:
 	FBugsnagConfiguration(const UBugsnagSettings& Settings);
 
-	void AddDefaultMetadata();
+	void AddDefaults();
 
 	friend class FApplePlatformConfiguration;
 	friend class FAndroidPlatformConfiguration;
