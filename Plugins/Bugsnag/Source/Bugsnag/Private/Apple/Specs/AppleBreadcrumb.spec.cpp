@@ -2,14 +2,14 @@
 
 #include "AutomationTest.h"
 
-#include "../WrappedBreadcrumb.h"
+#include "../AppleBreadcrumb.h"
 
-BEGIN_DEFINE_SPEC(FWrappedBreadcrumbSpec, "Bugsnag.FWrappedBreadcrumbSpec",
+BEGIN_DEFINE_SPEC(FAppleBreadcrumbSpec, "Bugsnag.FAppleBreadcrumbSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
-END_DEFINE_SPEC(FWrappedBreadcrumbSpec)
-void FWrappedBreadcrumbSpec::Define()
+END_DEFINE_SPEC(FAppleBreadcrumbSpec)
+void FAppleBreadcrumbSpec::Define()
 {
-	Describe("FWrappedBreadcrumb", [this]()
+	Describe("FAppleBreadcrumb", [this]()
 		{
 			It("Gets values from the Cocoa object", [this]()
 				{
@@ -18,7 +18,7 @@ void FWrappedBreadcrumbSpec::Define()
 					CocoaBreadcrumb.type = BSGBreadcrumbTypeLog;
 					CocoaBreadcrumb.metadata = @{@"foo": @"bar"};
 
-					TSharedPtr<IBugsnagBreadcrumb> Breadcrumb = FWrappedBreadcrumb::From(CocoaBreadcrumb);
+					TSharedPtr<IBugsnagBreadcrumb> Breadcrumb = FAppleBreadcrumb::From(CocoaBreadcrumb);
 					TEST_EQUAL(Breadcrumb->GetMessage(), TEXT("Hello, Unreal Engine!"));
 					TEST_EQUAL(Breadcrumb->GetType(), EBugsnagBreadcrumbType::Log);
 					TEST_EQUAL(Breadcrumb->GetMetadata()->GetStringField(TEXT("foo")), TEXT("bar"));
@@ -28,7 +28,7 @@ void FWrappedBreadcrumbSpec::Define()
 				{
 					BugsnagBreadcrumb* CocoaBreadcrumb = [[BugsnagBreadcrumb alloc] init];
 
-					TSharedPtr<IBugsnagBreadcrumb> Breadcrumb = FWrappedBreadcrumb::From(CocoaBreadcrumb);
+					TSharedPtr<IBugsnagBreadcrumb> Breadcrumb = FAppleBreadcrumb::From(CocoaBreadcrumb);
 					Breadcrumb->SetMessage(TEXT("Hello, Cocoa!"));
 					Breadcrumb->SetType(EBugsnagBreadcrumbType::User);
 					TEST_EQUAL_OBJC(CocoaBreadcrumb.message, @"Hello, Cocoa!");

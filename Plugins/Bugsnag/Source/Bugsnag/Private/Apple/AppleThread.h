@@ -5,21 +5,21 @@
 #include "CoreMinimal.h"
 
 #include "AppleBugsnagUtils.h"
+#include "AppleStackframe.h"
 #include "BugsnagThread.h"
 #include "LogBugsnag.h"
-#include "WrappedStackframe.h"
 
 #import <Bugsnag/BugsnagThread.h>
 
-class BUGSNAG_API FWrappedThread : public IBugsnagThread
+class BUGSNAG_API FAppleThread : public IBugsnagThread
 {
 public:
-	static TSharedRef<FWrappedThread> From(BugsnagThread* CocoaThread)
+	static TSharedRef<FAppleThread> From(BugsnagThread* CocoaThread)
 	{
-		return MakeShared<FWrappedThread>(CocoaThread);
+		return MakeShared<FAppleThread>(CocoaThread);
 	}
 
-	FWrappedThread(BugsnagThread* CocoaThread)
+	FAppleThread(BugsnagThread* CocoaThread)
 		: CocoaThread(CocoaThread)
 	{
 	}
@@ -76,7 +76,7 @@ public:
 		TArray<TSharedRef<IBugsnagStackframe>> Stacktrace;
 		for (BugsnagStackframe* Stackframe in CocoaThread.stacktrace)
 		{
-			Stacktrace.Add(FWrappedStackframe::From(Stackframe));
+			Stacktrace.Add(FAppleStackframe::From(Stackframe));
 		}
 		return Stacktrace;
 	}
@@ -86,8 +86,8 @@ public:
 		NSMutableArray<BugsnagStackframe*>* Stacktrace = [NSMutableArray arrayWithCapacity:Value.Num()];
 		for (const auto& Elem : Value)
 		{
-			TSharedRef<FWrappedStackframe> WrappedStackframe = StaticCastSharedRef<FWrappedStackframe>(Elem);
-			[Stacktrace addObject:WrappedStackframe->CocoaStackframe];
+			TSharedRef<FAppleStackframe> AppleStackframe = StaticCastSharedRef<FAppleStackframe>(Elem);
+			[Stacktrace addObject:AppleStackframe->CocoaStackframe];
 		}
 		CocoaThread.stacktrace = Stacktrace;
 	}

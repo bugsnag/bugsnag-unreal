@@ -2,13 +2,13 @@
 
 #include "ApplePlatformBugsnag.h"
 
+#include "AppleBreadcrumb.h"
 #include "AppleBugsnagUtils.h"
+#include "AppleEvent.h"
 #include "ApplePlatformConfiguration.h"
+#include "AppleSession.h"
 #include "BugsnagConstants.h"
 #include "BugsnagUtils.h"
-#include "WrappedBreadcrumb.h"
-#include "WrappedEvent.h"
-#include "WrappedSession.h"
 
 #include "HAL/PlatformStackWalk.h"
 
@@ -72,7 +72,7 @@ void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Confi
 	BugsnagClient* Client = [Bugsnag startWithConfiguration:CocoaConfig];
 	[Client addRuntimeVersionInfo:NSStringFromFString(BugsnagUtils::GetUnrealEngineVersion())
 						  withKey:NSStringFromFString(BugsnagConstants::UnrealEngine)];
-	FWrappedMetadataStore::CocoaStore = Client;
+	FAppleMetadataStore::CocoaStore = Client;
 }
 
 void FApplePlatformBugsnag::Notify(
@@ -119,7 +119,7 @@ void FApplePlatformBugsnag::Notify(
 	if (Callback)
 	{
 		Block = ^BOOL(BugsnagEvent* _Nonnull CocoaEvent) {
-			return Callback(FWrappedEvent::From(CocoaEvent));
+			return Callback(FAppleEvent::From(CocoaEvent));
 		};
 	}
 
@@ -156,7 +156,7 @@ void FApplePlatformBugsnag::LeaveBreadcrumb(const FString& Message, const TShare
 {
 	[Bugsnag leaveBreadcrumbWithMessage:NSStringFromFString(Message)
 							   metadata:NSDictionaryFromFJsonObject(Metadata)
-								andType:FWrappedBreadcrumb::ConvertType(Type)];
+								andType:FAppleBreadcrumb::ConvertType(Type)];
 }
 
 TArray<TSharedRef<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrumbs()
@@ -164,7 +164,7 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> FApplePlatformBugsnag::GetBreadcrum
 	TArray<TSharedRef<const IBugsnagBreadcrumb>> Result;
 	for (BugsnagBreadcrumb* Breadcrumb in Bugsnag.breadcrumbs)
 	{
-		Result.Add(FWrappedBreadcrumb::From(Breadcrumb));
+		Result.Add(FAppleBreadcrumb::From(Breadcrumb));
 	}
 	return Result;
 }
@@ -205,13 +205,13 @@ bool FApplePlatformBugsnag::ResumeSession()
 void FApplePlatformBugsnag::AddOnBreadcrumb(FBugsnagOnBreadcrumbCallback Callback)
 {
 	[Bugsnag addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
-		return Callback(FWrappedBreadcrumb::From(Breadcrumb));
+		return Callback(FAppleBreadcrumb::From(Breadcrumb));
 	}];
 }
 
 void FApplePlatformBugsnag::AddOnSession(FBugsnagOnSessionCallback Callback)
 {
 	[Bugsnag addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
-		return Callback(FWrappedSession::From(Session));
+		return Callback(FAppleSession::From(Session));
 	}];
 }

@@ -2,11 +2,11 @@
 
 #include "ApplePlatformConfiguration.h"
 
+#include "AppleBreadcrumb.h"
 #include "AppleBugsnagUtils.h"
+#include "AppleEvent.h"
+#include "AppleSession.h"
 #include "Version.h"
-#include "WrappedBreadcrumb.h"
-#include "WrappedEvent.h"
-#include "WrappedSession.h"
 
 #import <Bugsnag/BugsnagConfiguration.h>
 #import <Bugsnag/BugsnagEndpointConfiguration.h>
@@ -160,21 +160,21 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedRe
 	for (auto Callback : Configuration->GetOnBreadcrumbCallbacks())
 	{
 		[CocoaConfig addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb* _Nonnull Breadcrumb) {
-			return Callback(FWrappedBreadcrumb::From(Breadcrumb));
+			return Callback(FAppleBreadcrumb::From(Breadcrumb));
 		}];
 	}
 
 	for (auto Callback : Configuration->GetOnSendErrorCallbacks())
 	{
 		[CocoaConfig addOnSendErrorBlock:^BOOL(BugsnagEvent* _Nonnull Event) {
-			return Callback(FWrappedEvent::From(Event));
+			return Callback(FAppleEvent::From(Event));
 		}];
 	}
 
 	for (auto Callback : Configuration->GetOnSessionCallbacks())
 	{
 		[CocoaConfig addOnSessionBlock:^BOOL(BugsnagSession* _Nonnull Session) {
-			return Callback(FWrappedSession::From(Session));
+			return Callback(FAppleSession::From(Session));
 		}];
 	}
 

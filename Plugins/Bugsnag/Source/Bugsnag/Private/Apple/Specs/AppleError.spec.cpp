@@ -2,17 +2,17 @@
 
 #include "AutomationTest.h"
 
-#include "../WrappedError.h"
+#include "../AppleError.h"
 
 #import <BugsnagPrivate/BugsnagError+Private.h>
 #import <BugsnagPrivate/BugsnagStackframe+Private.h>
 
-BEGIN_DEFINE_SPEC(FWrappedErrorSpec, "Bugsnag.FWrappedErrorSpec",
+BEGIN_DEFINE_SPEC(FAppleErrorSpec, "Bugsnag.FAppleErrorSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
-END_DEFINE_SPEC(FWrappedErrorSpec)
-void FWrappedErrorSpec::Define()
+END_DEFINE_SPEC(FAppleErrorSpec)
+void FAppleErrorSpec::Define()
 {
-	Describe("FWrappedError", [this]()
+	Describe("FAppleError", [this]()
 		{
 			It("Gets values from the Cocoa object", [this]()
 				{
@@ -24,7 +24,7 @@ void FWrappedErrorSpec::Define()
 								 errorType:BSGErrorTypeCocoa
 								stacktrace:[BugsnagStackframe stackframesWithCallStackReturnAddresses:ReturnAddresses]];
 
-					TSharedPtr<IBugsnagError> Error = FWrappedError::From(CocoaError);
+					TSharedPtr<IBugsnagError> Error = FAppleError::From(CocoaError);
 					TEST_EQUAL(Error->GetErrorClass(), TEXT("NSUnrealException"));
 					TEST_EQUAL(Error->GetErrorMessage(), "Hello, Unreal Engine!");
 					TEST_EQUAL(Error->GetErrorType(), EBugsnagErrorType::Cocoa);
@@ -41,7 +41,7 @@ void FWrappedErrorSpec::Define()
 								 errorType:BSGErrorTypeCocoa
 								stacktrace:[BugsnagStackframe stackframesWithCallStackReturnAddresses:ReturnAddresses]];
 
-					TSharedPtr<IBugsnagError> Error = FWrappedError::From(CocoaError);
+					TSharedPtr<IBugsnagError> Error = FAppleError::From(CocoaError);
 					Error->SetErrorClass(TEXT("Unreal Error"));
 					Error->SetErrorMessage(TEXT("Hello, Cocoa!"));
 					Error->SetStacktrace({});

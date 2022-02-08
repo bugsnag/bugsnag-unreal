@@ -2,17 +2,17 @@
 
 #include "AutomationTest.h"
 
-#include "../WrappedStackframe.h"
+#include "../AppleStackframe.h"
 
 #import <Bugsnag/Bugsnag.h>
 #import <BugsnagPrivate/BugsnagStackframe+Private.h>
 
-BEGIN_DEFINE_SPEC(FWrappedStackframeSpec, "Bugsnag.FWrappedStackframeSpec",
+BEGIN_DEFINE_SPEC(FAppleStackframeSpec, "Bugsnag.FAppleStackframeSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
-END_DEFINE_SPEC(FWrappedStackframeSpec)
-void FWrappedStackframeSpec::Define()
+END_DEFINE_SPEC(FAppleStackframeSpec)
+void FAppleStackframeSpec::Define()
 {
-	Describe("FWrappedStackframe", [this]()
+	Describe("FAppleStackframe", [this]()
 		{
 			It("Gets values from the Cocoa object", [this]()
 				{
@@ -24,7 +24,7 @@ void FWrappedStackframeSpec::Define()
 					CocoaStackframe.method = @"Test::SomeFunction()";
 					CocoaStackframe.type = BugsnagStackframeTypeCocoa;
 
-					TSharedPtr<IBugsnagStackframe> Stackframe = FWrappedStackframe::From(CocoaStackframe);
+					TSharedPtr<IBugsnagStackframe> Stackframe = FAppleStackframe::From(CocoaStackframe);
 
 					TEST_FALSE(Stackframe->GetFile().IsSet());
 					TEST_FALSE(Stackframe->GetLineNumber().IsSet());
@@ -46,7 +46,7 @@ void FWrappedStackframeSpec::Define()
 				{
 					BugsnagStackframe* CocoaStackframe = [[BugsnagStackframe alloc] init];
 
-					TSharedPtr<IBugsnagStackframe> Stackframe = FWrappedStackframe::From(CocoaStackframe);
+					TSharedPtr<IBugsnagStackframe> Stackframe = FAppleStackframe::From(CocoaStackframe);
 
 					Stackframe->SetMethod(FString(TEXT("Test::Test()")));
 					TEST_EQUAL_OBJC(CocoaStackframe.method, @"Test::Test()");

@@ -5,21 +5,21 @@
 #include "CoreMinimal.h"
 
 #include "AppleBugsnagUtils.h"
+#include "AppleDevice.h"
 #include "BugsnagDeviceWithState.h"
-#include "WrappedDevice.h"
 
 #import <Bugsnag/BugsnagDeviceWithState.h>
 
-class BUGSNAG_API FWrappedDeviceWithState : public IBugsnagDeviceWithState, FWrappedDevice
+class BUGSNAG_API FAppleDeviceWithState : public IBugsnagDeviceWithState, FAppleDevice
 {
 public:
-	static TSharedRef<FWrappedDeviceWithState> From(BugsnagDeviceWithState* CocoaDeviceWithState)
+	static TSharedRef<FAppleDeviceWithState> From(BugsnagDeviceWithState* CocoaDeviceWithState)
 	{
-		return MakeShared<FWrappedDeviceWithState>(CocoaDeviceWithState);
+		return MakeShared<FAppleDeviceWithState>(CocoaDeviceWithState);
 	}
 
-	FWrappedDeviceWithState(BugsnagDeviceWithState* CocoaDeviceWithState)
-		: FWrappedDevice(CocoaDeviceWithState)
+	FAppleDeviceWithState(BugsnagDeviceWithState* CocoaDeviceWithState)
+		: FAppleDevice(CocoaDeviceWithState)
 		, CocoaDeviceWithState(CocoaDeviceWithState)
 	{
 	}

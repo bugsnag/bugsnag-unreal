@@ -2,14 +2,14 @@
 
 #include "AutomationTest.h"
 
-#include "../WrappedDevice.h"
+#include "../AppleDevice.h"
 
-BEGIN_DEFINE_SPEC(FWrappedDeviceSpec, "Bugsnag.FWrappedDeviceSpec",
+BEGIN_DEFINE_SPEC(FAppleDeviceSpec, "Bugsnag.FAppleDeviceSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
-END_DEFINE_SPEC(FWrappedDeviceSpec)
-void FWrappedDeviceSpec::Define()
+END_DEFINE_SPEC(FAppleDeviceSpec)
+void FAppleDeviceSpec::Define()
 {
-	Describe("FWrappedDevice", [this]()
+	Describe("FAppleDevice", [this]()
 		{
 			It("Gets values from the Cocoa object", [this]()
 				{
@@ -28,7 +28,7 @@ void FWrappedDeviceSpec::Define()
 					};
 					CocoaDevice.totalMemory = @(100 * 1024 * 1024);
 
-					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
+					TSharedRef<IBugsnagDevice> Device = FAppleDevice::From(CocoaDevice);
 					TEST_EQUAL(Device->GetJailbroken().GetValue(), true);
 					TEST_EQUAL(Device->GetId().GetValue(), TEXT("uniqueId"));
 					TEST_EQUAL(Device->GetLocale().GetValue(), TEXT("en_EN"));
@@ -48,7 +48,7 @@ void FWrappedDeviceSpec::Define()
 				{
 					BugsnagDevice* CocoaDevice = [[BugsnagDevice alloc] init];
 
-					TSharedRef<IBugsnagDevice> Device = FWrappedDevice::From(CocoaDevice);
+					TSharedRef<IBugsnagDevice> Device = FAppleDevice::From(CocoaDevice);
 					Device->SetJailbroken(true);
 					Device->SetId(FString(TEXT("uniqueId")));
 					Device->SetLocale(FString(TEXT("en_EN")));

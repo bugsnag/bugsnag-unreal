@@ -2,22 +2,22 @@
 
 #pragma once
 
+#include "AppleApp.h"
 #include "AppleBugsnagUtils.h"
+#include "AppleDevice.h"
 #include "BugsnagSession.h"
-#include "WrappedApp.h"
-#include "WrappedDevice.h"
 
 #import <Bugsnag/BugsnagSession.h>
 
-class FWrappedSession : public IBugsnagSession
+class FAppleSession : public IBugsnagSession
 {
 public:
-	static TSharedRef<FWrappedSession> From(BugsnagSession* CocoaSession)
+	static TSharedRef<FAppleSession> From(BugsnagSession* CocoaSession)
 	{
-		return MakeShared<FWrappedSession>(CocoaSession);
+		return MakeShared<FAppleSession>(CocoaSession);
 	}
 
-	FWrappedSession(BugsnagSession* CocoaSession)
+	FAppleSession(BugsnagSession* CocoaSession)
 		: CocoaSession(CocoaSession)
 	{
 	}
@@ -44,12 +44,12 @@ public:
 
 	TSharedRef<IBugsnagApp> GetApp()
 	{
-		return FWrappedApp::From(CocoaSession.app);
+		return FAppleApp::From(CocoaSession.app);
 	}
 
 	TSharedRef<IBugsnagDevice> GetDevice()
 	{
-		return FWrappedDevice::From(CocoaSession.device);
+		return FAppleDevice::From(CocoaSession.device);
 	}
 
 	const FBugsnagUser GetUser() const
