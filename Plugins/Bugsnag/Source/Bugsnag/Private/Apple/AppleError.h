@@ -5,20 +5,20 @@
 #include "CoreMinimal.h"
 
 #include "AppleBugsnagUtils.h"
+#include "AppleStackframe.h"
 #include "BugsnagError.h"
-#include "WrappedStackframe.h"
 
 #import <Bugsnag/BugsnagError.h>
 
-class BUGSNAG_API FWrappedError : public IBugsnagError
+class BUGSNAG_API FAppleError : public IBugsnagError
 {
 public:
-	static TSharedRef<FWrappedError> From(BugsnagError* CocoaError)
+	static TSharedRef<FAppleError> From(BugsnagError* CocoaError)
 	{
-		return MakeShared<FWrappedError>(CocoaError);
+		return MakeShared<FAppleError>(CocoaError);
 	}
 
-	FWrappedError(BugsnagError* CocoaError)
+	FAppleError(BugsnagError* CocoaError)
 		: CocoaError(CocoaError)
 	{
 	}
@@ -70,7 +70,7 @@ public:
 		TArray<TSharedRef<IBugsnagStackframe>> Stacktrace;
 		for (BugsnagStackframe* Stackframe in CocoaError.stacktrace)
 		{
-			Stacktrace.Add(FWrappedStackframe::From(Stackframe));
+			Stacktrace.Add(FAppleStackframe::From(Stackframe));
 		}
 		return Stacktrace;
 	}
@@ -80,8 +80,8 @@ public:
 		NSMutableArray<BugsnagStackframe*>* Stacktrace = [NSMutableArray arrayWithCapacity:Value.Num()];
 		for (const auto& Elem : Value)
 		{
-			TSharedRef<FWrappedStackframe> WrappedStackframe = StaticCastSharedRef<FWrappedStackframe>(Elem);
-			[Stacktrace addObject:WrappedStackframe->CocoaStackframe];
+			TSharedRef<FAppleStackframe> AppleStackframe = StaticCastSharedRef<FAppleStackframe>(Elem);
+			[Stacktrace addObject:AppleStackframe->CocoaStackframe];
 		}
 		CocoaError.stacktrace = Stacktrace;
 	}

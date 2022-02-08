@@ -2,17 +2,17 @@
 
 #include "AutomationTest.h"
 
-#include "../WrappedThread.h"
+#include "../AppleThread.h"
 
 #import <Bugsnag/Bugsnag.h>
 #import <BugsnagPrivate/BugsnagThread+Private.h>
 
-BEGIN_DEFINE_SPEC(FWrappedThreadSpec, "Bugsnag.FWrappedThreadSpec",
+BEGIN_DEFINE_SPEC(FAppleThreadSpec, "Bugsnag.FAppleThreadSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
-END_DEFINE_SPEC(FWrappedThreadSpec)
-void FWrappedThreadSpec::Define()
+END_DEFINE_SPEC(FAppleThreadSpec)
+void FAppleThreadSpec::Define()
 {
-	Describe("FWrappedThread", [this]()
+	Describe("FAppleThread", [this]()
 		{
 			It("Gets values from the Cocoa object", [this]()
 				{
@@ -20,7 +20,7 @@ void FWrappedThreadSpec::Define()
 
 					BugsnagThread* CocoaThread = [BugsnagThread allThreads:NO callStackReturnAddresses:ReturnAddresses][0];
 
-					TSharedPtr<IBugsnagThread> Thread = FWrappedThread::From(CocoaThread);
+					TSharedPtr<IBugsnagThread> Thread = FAppleThread::From(CocoaThread);
 
 					CocoaThread.id = @"123";
 					TEST_EQUAL(Thread->GetId(), TEXT("123"));
@@ -42,7 +42,7 @@ void FWrappedThreadSpec::Define()
 
 					BugsnagThread* CocoaThread = [BugsnagThread allThreads:NO callStackReturnAddresses:ReturnAddresses][0];
 
-					TSharedPtr<IBugsnagThread> Thread = FWrappedThread::From(CocoaThread);
+					TSharedPtr<IBugsnagThread> Thread = FAppleThread::From(CocoaThread);
 
 					Thread->SetId(TEXT("234"));
 					TEST_EQUAL_OBJC(CocoaThread.id, @"234");

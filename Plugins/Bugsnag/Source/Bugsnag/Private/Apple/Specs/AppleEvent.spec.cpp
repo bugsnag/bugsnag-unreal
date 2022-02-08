@@ -2,18 +2,18 @@
 
 #include "AutomationTest.h"
 
-#include "../WrappedEvent.h"
+#include "../AppleEvent.h"
 
 #import <Bugsnag/Bugsnag.h>
 #import <BugsnagPrivate/BugsnagEvent+Private.h>
 #import <BugsnagPrivate/BugsnagHandledState.h>
 
-BEGIN_DEFINE_SPEC(FWrappedEventSpec, "Bugsnag.FWrappedEventSpec",
+BEGIN_DEFINE_SPEC(FAppleEventSpec, "Bugsnag.FAppleEventSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
-END_DEFINE_SPEC(FWrappedEventSpec)
-void FWrappedEventSpec::Define()
+END_DEFINE_SPEC(FAppleEventSpec)
+void FAppleEventSpec::Define()
 {
-	Describe("FWrappedEvent", [this]()
+	Describe("FAppleEvent", [this]()
 		{
 			It("Gets values from the Cocoa object", [this]()
 				{
@@ -33,7 +33,7 @@ void FWrappedEventSpec::Define()
 							 threads:@[]
 							 session:nil];
 
-					TSharedPtr<IBugsnagEvent> Event = FWrappedEvent::From(CocoaEvent);
+					TSharedPtr<IBugsnagEvent> Event = FAppleEvent::From(CocoaEvent);
 					TEST_FALSE(Event->GetApiKey().IsSet());
 					TEST_FALSE(Event->GetContext().IsSet());
 					TEST_FALSE(Event->GetGroupingHash().IsSet());
@@ -86,7 +86,7 @@ void FWrappedEventSpec::Define()
 							 threads:@[]
 							 session:nil];
 
-					TSharedPtr<IBugsnagEvent> Event = FWrappedEvent::From(CocoaEvent);
+					TSharedPtr<IBugsnagEvent> Event = FAppleEvent::From(CocoaEvent);
 
 					Event->SetApiKey(FString(TEXT("0192837465afbecd0192837465afbecd")));
 					TEST_EQUAL_OBJC(CocoaEvent.apiKey, @"0192837465afbecd0192837465afbecd");

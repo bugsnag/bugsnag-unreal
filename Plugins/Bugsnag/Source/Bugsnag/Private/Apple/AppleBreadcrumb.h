@@ -7,15 +7,15 @@
 
 #import <Bugsnag/BugsnagBreadcrumb.h>
 
-class FWrappedBreadcrumb : public IBugsnagBreadcrumb
+class FAppleBreadcrumb : public IBugsnagBreadcrumb
 {
 public:
-	static TSharedRef<FWrappedBreadcrumb> From(BugsnagBreadcrumb* CocoaBreadcrumb)
+	static TSharedRef<FAppleBreadcrumb> From(BugsnagBreadcrumb* CocoaBreadcrumb)
 	{
-		return MakeShared<FWrappedBreadcrumb>(CocoaBreadcrumb);
+		return MakeShared<FAppleBreadcrumb>(CocoaBreadcrumb);
 	}
 
-	FWrappedBreadcrumb(BugsnagBreadcrumb* CocoaBreadcrumb)
+	FAppleBreadcrumb(BugsnagBreadcrumb* CocoaBreadcrumb)
 		: CocoaBreadcrumb(CocoaBreadcrumb)
 	{
 	}

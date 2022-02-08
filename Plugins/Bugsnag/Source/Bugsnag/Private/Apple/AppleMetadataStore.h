@@ -7,10 +7,10 @@
 
 #import <Bugsnag/BugsnagMetadataStore.h>
 
-class FWrappedMetadataStore : public virtual IBugsnagMetadataStore
+class FAppleMetadataStore : public virtual IBugsnagMetadataStore
 {
 public:
-	FWrappedMetadataStore(id<BugsnagMetadataStore> CocoaStore = nil)
+	FAppleMetadataStore(id<BugsnagMetadataStore> CocoaStore = nil)
 		: CocoaStore(CocoaStore)
 	{
 	}

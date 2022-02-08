@@ -9,15 +9,15 @@
 
 #import <Bugsnag/BugsnagStackframe.h>
 
-class BUGSNAG_API FWrappedStackframe : public IBugsnagStackframe
+class BUGSNAG_API FAppleStackframe : public IBugsnagStackframe
 {
 public:
-	static TSharedRef<FWrappedStackframe> From(BugsnagStackframe* CocoaStackframe)
+	static TSharedRef<FAppleStackframe> From(BugsnagStackframe* CocoaStackframe)
 	{
-		return MakeShared<FWrappedStackframe>(CocoaStackframe);
+		return MakeShared<FAppleStackframe>(CocoaStackframe);
 	}
 
-	FWrappedStackframe(BugsnagStackframe* CocoaStackframe)
+	FAppleStackframe(BugsnagStackframe* CocoaStackframe)
 		: CocoaStackframe(CocoaStackframe)
 	{
 	}
@@ -194,6 +194,6 @@ public:
 private:
 	BugsnagStackframe* CocoaStackframe;
 
-	friend class FWrappedError;
-	friend class FWrappedThread;
+	friend class FAppleError;
+	friend class FAppleThread;
 };

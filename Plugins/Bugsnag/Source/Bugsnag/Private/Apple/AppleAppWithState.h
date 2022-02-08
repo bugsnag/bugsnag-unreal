@@ -4,21 +4,21 @@
 
 #include "CoreMinimal.h"
 
+#include "AppleApp.h"
 #include "BugsnagAppWithState.h"
-#include "WrappedApp.h"
 
 #import <Bugsnag/BugsnagAppWithState.h>
 
-class BUGSNAG_API FWrappedAppWithState : public IBugsnagAppWithState, FWrappedApp
+class BUGSNAG_API FAppleAppWithState : public IBugsnagAppWithState, FAppleApp
 {
 public:
-	static TSharedRef<FWrappedAppWithState> From(BugsnagAppWithState* CocoaAppWithState)
+	static TSharedRef<FAppleAppWithState> From(BugsnagAppWithState* CocoaAppWithState)
 	{
-		return MakeShared<FWrappedAppWithState>(CocoaAppWithState);
+		return MakeShared<FAppleAppWithState>(CocoaAppWithState);
 	}
 
-	FWrappedAppWithState(BugsnagAppWithState* CocoaAppWithState)
-		: FWrappedApp(CocoaAppWithState)
+	FAppleAppWithState(BugsnagAppWithState* CocoaAppWithState)
+		: FAppleApp(CocoaAppWithState)
 		, CocoaAppWithState(CocoaAppWithState)
 	{
 	}

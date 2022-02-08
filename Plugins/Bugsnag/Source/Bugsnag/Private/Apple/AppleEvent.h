@@ -4,30 +4,30 @@
 
 #include "CoreMinimal.h"
 
+#include "AppleAppWithState.h"
+#include "AppleBreadcrumb.h"
 #include "AppleBugsnagUtils.h"
+#include "AppleDeviceWithState.h"
+#include "AppleError.h"
+#include "AppleMetadataStore.h"
+#include "AppleThread.h"
 #include "BugsnagConfiguration.h"
 #include "BugsnagEvent.h"
 #include "BugsnagUser.h"
-#include "WrappedAppWithState.h"
-#include "WrappedBreadcrumb.h"
-#include "WrappedDeviceWithState.h"
-#include "WrappedError.h"
-#include "WrappedMetadataStore.h"
-#include "WrappedThread.h"
 
 #import <Bugsnag/BugsnagEvent.h>
 #import <Bugsnag/BugsnagUser.h>
 
-class BUGSNAG_API FWrappedEvent : public IBugsnagEvent, public FWrappedMetadataStore
+class BUGSNAG_API FAppleEvent : public IBugsnagEvent, public FAppleMetadataStore
 {
 public:
-	static TSharedRef<FWrappedEvent> From(BugsnagEvent* CocoaEvent)
+	static TSharedRef<FAppleEvent> From(BugsnagEvent* CocoaEvent)
 	{
-		return MakeShared<FWrappedEvent>(CocoaEvent);
+		return MakeShared<FAppleEvent>(CocoaEvent);
 	}
 
-	FWrappedEvent(BugsnagEvent* CocoaEvent)
-		: FWrappedMetadataStore(CocoaEvent)
+	FAppleEvent(BugsnagEvent* CocoaEvent)
+		: FAppleMetadataStore(CocoaEvent)
 		, CocoaEvent(CocoaEvent)
 	{
 	}
@@ -72,14 +72,14 @@ public:
 
 	const TSharedRef<IBugsnagAppWithState> GetApp() const override
 	{
-		return FWrappedAppWithState::From(CocoaEvent.app);
+		return FAppleAppWithState::From(CocoaEvent.app);
 	}
 
 	// readonly device: DeviceWithState;
 
 	const TSharedRef<IBugsnagDeviceWithState> GetDevice() const override
 	{
-		return FWrappedDeviceWithState::From(CocoaEvent.device);
+		return FAppleDeviceWithState::From(CocoaEvent.device);
 	}
 
 	// readonly breadcrumbs: Breadcrumb[];
@@ -89,7 +89,7 @@ public:
 		TArray<TSharedRef<IBugsnagBreadcrumb>> Breadcrumbs;
 		for (BugsnagBreadcrumb* Breadcrumb in CocoaEvent.breadcrumbs)
 		{
-			Breadcrumbs.Add(FWrappedBreadcrumb::From(Breadcrumb));
+			Breadcrumbs.Add(FAppleBreadcrumb::From(Breadcrumb));
 		}
 		return Breadcrumbs;
 	}
@@ -101,7 +101,7 @@ public:
 		TArray<TSharedRef<IBugsnagError>> Errors;
 		for (BugsnagError* CocoaError in CocoaEvent.errors)
 		{
-			Errors.Add(FWrappedError::From(CocoaError));
+			Errors.Add(FAppleError::From(CocoaError));
 		}
 		return Errors;
 	}
@@ -113,7 +113,7 @@ public:
 		TArray<TSharedRef<IBugsnagThread>> Threads;
 		for (BugsnagThread* Thread in CocoaEvent.threads)
 		{
-			Threads.Add(FWrappedThread::From(Thread));
+			Threads.Add(FAppleThread::From(Thread));
 		}
 		return Threads;
 	}

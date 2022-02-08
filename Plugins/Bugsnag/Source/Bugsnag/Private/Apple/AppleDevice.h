@@ -7,15 +7,15 @@
 
 #import <Bugsnag/BugsnagDevice.h>
 
-class FWrappedDevice : virtual public IBugsnagDevice
+class FAppleDevice : virtual public IBugsnagDevice
 {
 public:
-	static TSharedRef<FWrappedDevice> From(BugsnagDevice* CocoaDevice)
+	static TSharedRef<FAppleDevice> From(BugsnagDevice* CocoaDevice)
 	{
-		return MakeShared<FWrappedDevice>(CocoaDevice);
+		return MakeShared<FAppleDevice>(CocoaDevice);
 	}
 
-	FWrappedDevice(BugsnagDevice* CocoaDevice)
+	FAppleDevice(BugsnagDevice* CocoaDevice)
 		: CocoaDevice(CocoaDevice)
 	{
 	}
