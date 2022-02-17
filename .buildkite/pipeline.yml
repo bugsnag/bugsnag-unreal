@@ -11,7 +11,13 @@ steps:
       queue: opensource-mac-unreal-4.27
     env:
       UE_VERSION: "4.27"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_4_27
@@ -22,7 +28,13 @@ steps:
     env:
       UE_VERSION: "4.23"
       NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -32,7 +44,13 @@ steps:
       queue: opensource-mac-unreal-4.25
     env:
       UE_VERSION: "4.25"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -42,7 +60,13 @@ steps:
       queue: opensource-mac-unreal-4.26
     env:
       UE_VERSION: "4.26"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -52,7 +76,13 @@ steps:
       queue: opensource-mac-unreal-5
     env:
       UE_VERSION: "5.0EA"
-    command: make package
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
 
@@ -83,7 +113,10 @@ steps:
         upload:
           - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
           - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
-    command: features/scripts/build-fixture.sh Android
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
     key: android_fixture
 
@@ -99,7 +132,10 @@ steps:
         upload:
           - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
           - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
-    command: features/scripts/build-fixture.sh IOS
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh IOS
     timeout_in_minutes: 60
     key: ios_fixture
 
@@ -112,8 +148,12 @@ steps:
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
-        upload: TestFixture-macOS.zip
-    command: features/scripts/build-fixture.sh Mac
+        upload:
+          - TestFixture-macOS.zip
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
     key: mac_fixture
 

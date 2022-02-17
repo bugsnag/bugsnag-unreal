@@ -85,8 +85,11 @@ typedef struct
 	jmethodID BreadcrumbSetMessage;
 	jmethodID BreadcrumbSetMetadata;
 	jmethodID BreadcrumbSetType;
+	jmethodID BugsnagAddFeatureFlag;
 	jmethodID BugsnagAddMetadataToSection;
 	jmethodID BugsnagAddMetadataValue;
+	jmethodID BugsnagClearFeatureFlag;
+	jmethodID BugsnagClearFeatureFlags;
 	jmethodID BugsnagClearMetadataSection;
 	jmethodID BugsnagClearMetadataValue;
 	jmethodID BugsnagGetBreadcrumbs;
@@ -109,8 +112,11 @@ typedef struct
 	jmethodID BugsnagUnrealPluginGetMetadataValue;
 	jmethodID BugsnagUnrealPluginNotify;
 	jmethodID ClientAddRuntimeVersionInfo;
+	jmethodID ConfigAddFeatureFlag;
 	jmethodID ConfigAddMetadata;
 	jmethodID ConfigAddPlugin;
+	jmethodID ConfigClearFeatureFlag;
+	jmethodID ConfigClearFeatureFlags;
 	jmethodID ConfigConstructor;
 	jmethodID ConfigGetNotifier;
 	jmethodID ConfigSetAppType;
@@ -177,8 +183,11 @@ typedef struct
 	jmethodID ErrorSetErrorClass;
 	jmethodID ErrorSetErrorMessage;
 	jmethodID ErrorSetType;
+	jmethodID EventAddFeatureFlag;
 	jmethodID EventAddMetadataToSection;
 	jmethodID EventAddMetadataValue;
+	jmethodID EventClearFeatureFlag;
+	jmethodID EventClearFeatureFlags;
 	jmethodID EventClearMetadataSection;
 	jmethodID EventClearMetadataValue;
 	jmethodID EventGetApiKey;

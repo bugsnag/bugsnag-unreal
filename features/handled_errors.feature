@@ -63,6 +63,13 @@ Feature: Reporting handled errors
     And the event "severity" equals "warning"
     And the event "severityReason.type" equals "handledError"
     And the event "unhandled" is false
+    And the event contains the following feature flags:
+      | featureFlag | variant        |
+      | Testing     |                |
+      | fc1         |                |
+      | fc2         | teal           |
+      | Bugsnag     |                |
+      | Notify      | Internal Error |
     And the event has a "state" breadcrumb named "Bugsnag loaded"
     And the exception "errorClass" equals "Internal Error happened"
     And the exception "message" equals "Does not compute"

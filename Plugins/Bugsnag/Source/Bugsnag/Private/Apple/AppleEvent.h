@@ -9,6 +9,7 @@
 #include "AppleBugsnagUtils.h"
 #include "AppleDeviceWithState.h"
 #include "AppleError.h"
+#include "AppleFeatureFlagStore.h"
 #include "AppleMetadataStore.h"
 #include "AppleThread.h"
 #include "BugsnagConfiguration.h"
@@ -18,7 +19,7 @@
 #import <Bugsnag/BugsnagEvent.h>
 #import <Bugsnag/BugsnagUser.h>
 
-class BUGSNAG_API FAppleEvent : public IBugsnagEvent, public FAppleMetadataStore
+class BUGSNAG_API FAppleEvent : public IBugsnagEvent, public FAppleFeatureFlagStore, public FAppleMetadataStore
 {
 public:
 	static TSharedRef<FAppleEvent> From(BugsnagEvent* CocoaEvent)
@@ -27,7 +28,8 @@ public:
 	}
 
 	FAppleEvent(BugsnagEvent* CocoaEvent)
-		: FAppleMetadataStore(CocoaEvent)
+		: FAppleFeatureFlagStore(CocoaEvent)
+		, FAppleMetadataStore(CocoaEvent)
 		, CocoaEvent(CocoaEvent)
 	{
 	}

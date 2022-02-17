@@ -2,10 +2,11 @@
 
 #pragma once
 
+#include "AppleFeatureFlagStore.h"
 #include "AppleMetadataStore.h"
 #include "Interfaces/PlatformBugsnag.h"
 
-class FApplePlatformBugsnag : public IPlatformBugsnag, public FAppleMetadataStore
+class FApplePlatformBugsnag : public IPlatformBugsnag, public FAppleFeatureFlagStore, public FAppleMetadataStore
 {
 public:
 	void Start(const TSharedRef<FBugsnagConfiguration>& Configuration) override;

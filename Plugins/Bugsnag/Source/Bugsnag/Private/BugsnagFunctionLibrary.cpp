@@ -209,6 +209,42 @@ void UBugsnagFunctionLibrary::SetUser(const FString& Id, const FString& Email, c
 #endif
 }
 
+void UBugsnagFunctionLibrary::AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant)
+{
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+	GPlatformBugsnag.AddFeatureFlag(Name, Variant);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
+#endif
+}
+
+void UBugsnagFunctionLibrary::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags)
+{
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+	GPlatformBugsnag.AddFeatureFlags(FeatureFlags);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
+#endif
+}
+
+void UBugsnagFunctionLibrary::ClearFeatureFlag(const FString& Name)
+{
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+	GPlatformBugsnag.ClearFeatureFlag(Name);
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
+#endif
+}
+
+void UBugsnagFunctionLibrary::ClearFeatureFlags()
+{
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+	GPlatformBugsnag.ClearFeatureFlags();
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
+#endif
+}
+
 void UBugsnagFunctionLibrary::AddMetadata(const FString& Section, const TSharedRef<FJsonObject>& Metadata)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG

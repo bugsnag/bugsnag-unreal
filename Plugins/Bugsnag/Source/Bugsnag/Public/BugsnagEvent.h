@@ -8,6 +8,7 @@
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagDeviceWithState.h"
 #include "BugsnagError.h"
+#include "BugsnagFeatureFlagStore.h"
 #include "BugsnagMetadataStore.h"
 #include "BugsnagThread.h"
 #include "BugsnagUser.h"
@@ -25,7 +26,7 @@ enum class EBugsnagSeverity : uint8
  *
  * Can be amended from an OnError callback if necessary.
  */
-class BUGSNAG_API IBugsnagEvent : public virtual IBugsnagMetadataStore
+class BUGSNAG_API IBugsnagEvent : public virtual IBugsnagFeatureFlagStore, public virtual IBugsnagMetadataStore
 {
 public:
 	/**

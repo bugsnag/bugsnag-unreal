@@ -15,6 +15,7 @@
 #include "BugsnagConstants.h"
 #include "BugsnagUtils.h"
 #include "JNIUtilities.h"
+#include "LogBugsnag.h"
 #include "Shorthand.h"
 
 DEFINE_PLATFORM_BUGSNAG(FAndroidPlatformBugsnag);
@@ -166,6 +167,45 @@ void FAndroidPlatformBugsnag::SetUser(const FString& Id, const FString& Email, c
 	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
 	jstring jEmail = FAndroidPlatformJNI::ParseFString(Env, Email);
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagSetUser, jId, jEmail, jName);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+}
+
+void FAndroidPlatformBugsnag::AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant)
+{
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	ReturnVoidIf(!jName);
+	jstring jVariant = FAndroidPlatformJNI::ParseFStringOptional(Env, Variant);
+	if (!jVariant && Variant.IsSet())
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to create Java string with \"%s\""), *Variant.GetValue());
+		return;
+	}
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagAddFeatureFlag, jName, jVariant);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+}
+
+void FAndroidPlatformBugsnag::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FeatureFlags)
+{
+	for (const FBugsnagFeatureFlag& Flag : FeatureFlags)
+	{
+		FAndroidPlatformBugsnag::AddFeatureFlag(Flag.GetName(), Flag.GetVariant());
+	}
+}
+
+void FAndroidPlatformBugsnag::ClearFeatureFlag(const FString& Name)
+{
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	jstring jName = FAndroidPlatformJNI::ParseFString(Env, Name);
+	ReturnVoidIf(!jName);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearFeatureFlag, jName);
+	FAndroidPlatformJNI::CheckAndClearException(Env);
+}
+
+void FAndroidPlatformBugsnag::ClearFeatureFlags()
+{
+	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
+	(*Env).CallStaticVoidMethod(JNICache.BugsnagClass, JNICache.BugsnagClearFeatureFlags);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
 }
 

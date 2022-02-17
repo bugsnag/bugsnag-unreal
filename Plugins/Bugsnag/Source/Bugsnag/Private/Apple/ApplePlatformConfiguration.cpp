@@ -142,6 +142,17 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedRe
 					 andName:NSStringFromOptional(Configuration->GetUser().GetName())];
 	}
 
+	if (Configuration->FeatureFlags.Num() > 0)
+	{
+		NSMutableArray* CocoaFeatureFlags = [NSMutableArray array];
+		for (const TPair<FString, TOptional<FString>>& Elem : Configuration->FeatureFlags)
+		{
+			[CocoaFeatureFlags addObject:[BugsnagFeatureFlag flagWithName:NSStringFromFString(Elem.Key)
+																  variant:NSStringFromOptional(Elem.Value)]];
+		}
+		[CocoaConfig addFeatureFlags:CocoaFeatureFlags];
+	}
+
 	for (auto& Item : Configuration->GetMetadataValues())
 	{
 		NSError* Error = nil;

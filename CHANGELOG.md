@@ -1,6 +1,15 @@
 Changelog
 =========
 
+## 1.1.0 (2022-02-02)
+
+* New APIs to support forthcoming feature flag and experiment functionality.
+  For more information, please see https://docs.bugsnag.com/product/features-experiments
+  [#123](https://github.com/bugsnag/bugsnag-unreal/pull/123)
+
+* Updates the bugsnag-android dependency from v5.16.0 to [v5.19.2](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5192-2022-01-31)
+* Updates the bugsnag-cocoa dependency from v6.14.3 to [v6.16.1](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6161-2022-01-19)
+
 ## 1.0.1 (2022-01-04)
 
 * Plugin is no longer flagged as "beta"

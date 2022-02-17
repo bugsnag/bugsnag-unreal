@@ -148,6 +148,35 @@ void FBugsnagConfiguration::SetUser(const TOptional<FString>& Id, const TOptiona
 
 ///////////////////////////////////////////////////////////////////////////
 //
+//	Feature Flags
+//
+///////////////////////////////////////////////////////////////////////////
+
+void FBugsnagConfiguration::AddFeatureFlag(const FString& Name, const TOptional<FString>& Variant)
+{
+	FeatureFlags.Add(Name, Variant);
+}
+
+void FBugsnagConfiguration::AddFeatureFlags(const TArray<FBugsnagFeatureFlag>& FlagsToAdd)
+{
+	for (const FBugsnagFeatureFlag& FeatureFlag : FlagsToAdd)
+	{
+		FeatureFlags.Add(FeatureFlag.GetName(), FeatureFlag.GetVariant());
+	}
+}
+
+void FBugsnagConfiguration::ClearFeatureFlag(const FString& Name)
+{
+	FeatureFlags.Remove(Name);
+}
+
+void FBugsnagConfiguration::ClearFeatureFlags()
+{
+	FeatureFlags.Reset();
+}
+
+///////////////////////////////////////////////////////////////////////////
+//
 //	Metadata
 //
 ///////////////////////////////////////////////////////////////////////////
