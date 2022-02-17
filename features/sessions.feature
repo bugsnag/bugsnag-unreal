@@ -1,23 +1,16 @@
 Feature: Session tracking
 
   Scenario: Starting and pausing a session before a crash
-    When I run "PauseSessionScenario"
-    Then the app is not running
-
-    When I relaunch the app
-    And I configure Bugsnag for "PauseSessionScenario"
+    Given I run "PauseSessionScenario" and restart the crashed app
     And I wait to receive an error
     Then the event "session" is null
 
   Scenario: Resuming a session before a crash
-    When I run "ResumeSessionScenario"
-    Then the app is not running
-
-    When I relaunch the app
-    And I configure Bugsnag for "ResumeSessionScenario"
+    Given I run "ResumeSessionScenario" and restart the crashed app
     And I wait to receive an error
     Then the event "session.id" is not null
 
+  @slow
   Scenario: Cancel session from a callback
     When I run "CancelSessionScenario"
     And I wait to receive an error
@@ -50,6 +43,7 @@ Feature: Session tracking
     And I wait to receive a session
     Then the session is valid for the session reporting API version "1.0" for the "Unreal Bugsnag Notifier" notifier
 
+  @slow
   Scenario: Automatic session tracking disabled
     When I run "AutoTrackSessionsDisabledScenario"
     And I background the app for 3 seconds

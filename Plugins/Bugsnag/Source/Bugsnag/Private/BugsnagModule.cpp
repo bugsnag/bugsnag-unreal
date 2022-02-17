@@ -1,29 +1,47 @@
 // Copyright 2021 Bugsnag. All Rights Reserved.
 
-#include "BugsnagModule.h"
 #include "BugsnagFunctionLibrary.h"
 #include "LogBugsnag.h"
 
 #include "Modules/ModuleManager.h"
 
-void FBugsnagModule::StartupModule()
+class BUGSNAG_API FBugsnagModule : public IModuleInterface
 {
-	const UBugsnagSettings* Settings = GetDefault<UBugsnagSettings>();
-	if (!Settings || !Settings->bStartAutomaticallyAtLaunch)
+public:
+	void StartupModule() override
 	{
-		return;
+		const UBugsnagSettings* Settings = GetDefault<UBugsnagSettings>();
+		if (!Settings)
+		{
+			UE_LOG(LogBugsnag, Error, TEXT("Cannot get default UBugsnagSettings object"));
+			return;
+		}
+		if (Settings->bStartAutomaticallyAtLaunch)
+		{
+			StartBugsnagAutomatically();
+		}
 	}
-	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
-	if (Configuration.IsValid() && !Configuration->GetApiKey().IsEmpty())
+
+	void StartBugsnagAutomatically()
 	{
+		TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
+		if (!Configuration.IsValid())
+		{
+			UE_LOG(LogBugsnag, Error, TEXT("Cannot create FBugsnagConfiguration object"));
+			return;
+		}
+		if (Configuration->GetApiKey().IsEmpty())
+		{
+			UE_LOG(LogBugsnag, Error, TEXT("Cannot start Bugsnag automatically because no ApiKey has been configured"));
+			return;
+		}
 		UBugsnagFunctionLibrary::Start(Configuration.ToSharedRef());
 	}
-	else
-	{
-		UE_LOG(LogBugsnag, Error, TEXT("Cannot start Bugsnag - ApiKey is not specified in DefaultEngine.ini"));
-	}
-}
 
-void FBugsnagModule::ShutdownModule() {}
+	bool SupportsDynamicReloading() override
+	{
+		return false;
+	}
+};
 
 IMPLEMENT_MODULE(FBugsnagModule, Bugsnag)

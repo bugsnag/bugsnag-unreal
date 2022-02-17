@@ -50,19 +50,21 @@ struct FBugsnagErrorTypes
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Application Not Responding errors (Android only)")
 	bool bANRs = true;
 
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "App Hangs (iOS only)")
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "App Hangs (iOS & macOS only)")
+	// Note: always disabled when running in the Editor unless in `-game` mode.
 	bool bAppHangs = true;
 
 	// Crashes such as failed assertions, invalid memory accesses, invalid instructions, uncaught exceptions, etc.
+	// Note: crashes that occur when running in the Editor outside of a PIE sessions are not reported.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bCrashes = true;
 
 	// Terminations due to excessive memory usage.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Out Of Memory errors (iOS only)")
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Out Of Memory errors (iOS & macOS only)")
 	bool bOOMs = true;
 
 	// Terminations due to the device being in a critical thermal state.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Thermal Kills (iOS only)")
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Thermal Kills (iOS & macOS only)")
 	bool bThermalKills = true;
 };
 
@@ -123,6 +125,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	bool bAutoDetectErrors = true;
 
 	// Whether app sessions should be tracked automatically.
+	// Note: always disabled when running in the Editor unless in `-game` mode.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bAutoTrackSessions = true;
 
@@ -190,7 +193,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	///////////////////////////////////////////////////////////////////////////
 
 	// The release stage of the application, such as production, development, beta et cetera.
-	// Defaults to "development" for debug builds and "production" otherwise.
+	// If empty, "production" will be used for shipping and "development" for other builds.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "App Information")
 	FString ReleaseStage;
 
@@ -202,8 +205,8 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "App Information")
 	FString AppVersion;
 
-	// Overrides `app.bundleVersion` if not empty (iOS only.)
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "App Information", DisplayName = "Bundle Version (iOS only)")
+	// Overrides `app.bundleVersion` if not empty (iOS & macOS only.)
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "App Information", DisplayName = "Bundle Version (iOS & macOS only)")
 	FString BundleVersion;
 
 	// Overrides `app.versionCode` if not empty (Android only.)
