@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.2.0 (2022-02-17)
+
+* Adds support for macOS as a target platform.
+  [#136](https://github.com/bugsnag/bugsnag-unreal/pull/136)
+
 ## 1.1.0 (2022-02-02)
 
 * New APIs to support forthcoming feature flag and experiment functionality.

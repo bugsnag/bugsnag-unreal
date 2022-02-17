@@ -29,15 +29,9 @@ Supports Unreal Engine 4.23 and later.
 * [Report a bug or request a feature](https://github.com/bugsnag/bugsnag-unreal/issues/new)
 
 
-## Repository organization
+## Contributing
 
-The Bugsnag plugin is located in [`Plugins/Bugsnag`](Plugins/Bugsnag).
-
-The top level of this repository contains an example project which uses the Bugsnag plugin - [`BugsnagExample.uproject`](BugsnagExample.uproject).
-
-To build the example project for Android or iOS, you must first run `make` in the top level directory to prepare the dependencies.
-This step requires macOS with the Android NDK & SDK and Xcode.
-
+All contributors are welcome! For information on how to build, test and release `bugsnag-unreal`, see our [contributing guide](CONTRIBUTING.md).
 
 ## License
 
