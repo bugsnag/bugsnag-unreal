@@ -73,7 +73,7 @@ steps:
   - name: 'Build Plugin - UE 5 EA'
     if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
-      queue: opensource-mac-unreal-5
+      queue: ms-mac-10-15-6
     env:
       UE_VERSION: "5.0EA"
     commands:
