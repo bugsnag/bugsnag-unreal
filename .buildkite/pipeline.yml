@@ -8,7 +8,7 @@ steps:
 
   - name: 'Build Plugin - UE 4.27'
     agents:
-      queue: ms-arm-12-6
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
     commands:
@@ -57,7 +57,7 @@ steps:
   - name: 'Build Plugin - UE 4.26'
     if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
-      queue: ms-arm-12-6
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.26"
     commands:
@@ -104,7 +104,7 @@ steps:
   - name: 'Build Android test fixtures - UE 4.27'
     depends_on: [plugin_4_27]
     agents:
-      queue: ms-arm-12-6
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
     plugins:
@@ -123,7 +123,7 @@ steps:
   - name: 'Build iOS test fixture - UE 4.27'
     depends_on: [plugin_4_27]
     agents:
-      queue: ms-arm-12-6
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
     plugins:
@@ -142,7 +142,7 @@ steps:
   - name: 'Build macOS test fixture - UE 4.27'
     depends_on: [plugin_4_27]
     agents:
-      queue: ms-arm-12-6
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
     plugins:
