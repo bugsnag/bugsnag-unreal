@@ -25,7 +25,7 @@ steps:
 
   - name: 'Build Plugin - UE 4.23'
     agents:
-      queue: ms-mac-10-15-6
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.23"
       NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
@@ -43,7 +43,7 @@ steps:
   - name: 'Build Plugin - UE 4.25'
     if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
-      queue: ms-mac-10-15-6
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.25"
       DEVELOPER_DIR: "/Applications/Xcode12.app"
@@ -77,7 +77,7 @@ steps:
   - name: 'Build Plugin - UE 5 EA'
     if: build.branch =~ /main|next|^release|^integration/ || build.message =~ /\[full ci\]/
     agents:
-      queue: ms-mac-10-15-6
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "5.0EA"
       DEVELOPER_DIR: "/Applications/Xcode12.app"
