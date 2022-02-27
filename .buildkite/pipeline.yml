@@ -11,6 +11,7 @@ steps:
       queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -45,6 +46,7 @@ steps:
       queue: ms-mac-10-15-6
     env:
       UE_VERSION: "4.25"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -61,6 +63,7 @@ steps:
       queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.26"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -77,6 +80,7 @@ steps:
       queue: ms-mac-10-15-6
     env:
       UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -108,6 +112,7 @@ steps:
       queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -127,6 +132,7 @@ steps:
       queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -146,6 +152,7 @@ steps:
       queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
