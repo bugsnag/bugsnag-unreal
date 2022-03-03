@@ -4,7 +4,7 @@ steps:
   #
 
   # UE 4.23
-  - label: 'Build Plugin - UE 4.23 - Mac'
+  - label: 'Build Plugin - 4.23 Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
     env:
@@ -23,7 +23,7 @@ steps:
     key: plugin_4_23
 
   # UE 4.27
-  - label: 'Build Plugin - UE 4.27 - Mac'
+  - label: 'Build Plugin - 4.27 Mac'
     agents:
       queue: opensource-arm-mac-cocoa-12
     env:
@@ -40,7 +40,7 @@ steps:
     timeout_in_minutes: 30
     key: plugin_4_27
 
-  - label: 'Build Plugin - UE 4.27 - Windows'
+  - label: 'Build Plugin - 4.27 Win'
     agents:
       queue: opensource-windows-unreal-4.27
     env:
@@ -54,7 +54,7 @@ steps:
   #
 
   # UE 4.27
-  - name: ':android: Build Test Fixtures - UE 4.27 - Android'
+  - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
       queue: opensource-arm-mac-cocoa-12
@@ -74,7 +74,7 @@ steps:
     timeout_in_minutes: 60
     key: android_fixture_4_27
 
-  - name: ':ios: Build Test Fixtures - UE 4.27 - iOS'
+  - name: ':ios: Build E2E - 4.27 iOS'
     depends_on: plugin_4_27
     agents:
       queue: opensource-arm-mac-cocoa-12
@@ -94,7 +94,7 @@ steps:
     timeout_in_minutes: 60
     key: ios_fixture_4_27
 
-  - name: ':mac: Build Test Fixtures - UE 4.27 - Mac'
+  - name: ':mac: Build E2E - 4.27 Mac'
     depends_on: plugin_4_27
     agents:
       queue: opensource-arm-mac-cocoa-12
@@ -118,7 +118,7 @@ steps:
   #
 
   # UE 4.27
-  - label: 'E2E Tests - UE 4.27 - Android 11'
+  - label: 'E2E Tests - 4.27 Android 11'
     depends_on: android_fixture_4_27
     timeout_in_minutes: 30
     agents:
@@ -145,7 +145,7 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  - label: 'E2E Tests - UE 4.27 - iOS 12'
+  - label: 'E2E Tests - 4.27 iOS 12'
     depends_on: ios_fixture_4_27
     timeout_in_minutes: 30
     agents:
@@ -174,7 +174,7 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  - label: 'E2E Tests - UE 4.27 - macOS ARM 12'
+  - label: 'E2E Tests - 4.27 macOS 12'
     depends_on: mac_fixture_4_27
     timeout_in_minutes: 10
     agents:

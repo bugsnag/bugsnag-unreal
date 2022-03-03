@@ -4,7 +4,7 @@ steps:
   #
 
   # UE 4.25
-  - label: 'Build Plugin - UE 4.25 - Mac'
+  - label: 'Build Plugin - 4.25 Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
     env:
@@ -22,7 +22,7 @@ steps:
     key: plugin_4_25
 
   # UE 4.26
-  - label: 'Build Plugin - UE 4.26 - Mac'
+  - label: 'Build Plugin - 4.26 Mac'
     agents:
       queue: opensource-arm-mac-cocoa-12
     env:
@@ -40,7 +40,7 @@ steps:
     key: plugin_4_26
 
   # UE 5.0EA
-  - label: 'Build Plugin - UE 5.0EA - Mac'
+  - label: 'Build Plugin - 5.0EA Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
     env:
@@ -63,7 +63,7 @@ steps:
 
   # UE 5.0EA
   # Android
-  - name: ':android: Build Test Fixtures - UE 5.0EA - Android'
+  - name: ':android: Build E2E - 5.0EA Android'
     depends_on: plugin_5_0ea
     agents:
       queue: opensource-mac-cocoa-10.15
@@ -84,7 +84,7 @@ steps:
     key: android_fixture_5_0ea
 
   # iOS
-  - name: ':ios: Build Test Fixtures - UE 5.0EA - iOS'
+  - name: ':ios: Build E2E - 5.0EA iOS'
     depends_on: plugin_5_0ea
     agents:
       queue: opensource-mac-cocoa-10.15
@@ -105,7 +105,7 @@ steps:
     key: ios_fixture_5_0ea
 
   # macOS
-  - name: ':mac: Build Test Fixtures - UE 5.0EA - Mac'
+  - name: ':mac: Build E2E - 5.0EA Mac'
     depends_on: plugin_5_0ea
     agents:
       queue: opensource-mac-cocoa-10.15
