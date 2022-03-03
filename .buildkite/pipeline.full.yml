@@ -4,7 +4,7 @@ steps:
   #
 
   # UE 4.25
-  - label: ':mac: Build Plugin - UE 4.25'
+  - label: 'Build Plugin - UE 4.25 - Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
     env:
@@ -22,7 +22,7 @@ steps:
     key: plugin_4_25
 
   # UE 4.26
-  - label: ':mac: Build Plugin - UE 4.26'
+  - label: 'Build Plugin - UE 4.26 - Mac'
     agents:
       queue: opensource-arm-mac-cocoa-12
     env:
@@ -40,7 +40,7 @@ steps:
     key: plugin_4_26
 
   # UE 5.0EA
-  - label: ':mac: Build Plugin - UE 5.0EA'
+  - label: 'Build Plugin - UE 5.0EA - Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
     env:
@@ -56,3 +56,70 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_5_0ea
+
+  #
+  # Build Test Fixtures
+  #
+
+  # UE 5.0EA
+  # Android
+  - name: ':android: Build Test Fixtures - UE 5.0EA - Android'
+    depends_on: plugin_5_0ea
+    agents:
+      queue: opensource-mac-cocoa-10.15
+    env:
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
+        upload:
+          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
+          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_5_0ea
+
+  # iOS
+  - name: ':ios: Build Test Fixtures - UE 5.0EA - iOS'
+    depends_on: plugin_5_0ea
+    agents:
+      queue: opensource-mac-cocoa-10.15
+    env:
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
+        upload:
+          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
+          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh IOS
+    timeout_in_minutes: 60
+    key: ios_fixture_5_0ea
+
+  # macOS
+  - name: ':mac: Build Test Fixtures - UE 5.0EA - Mac'
+    depends_on: plugin_5_0ea
+    agents:
+      queue: opensource-mac-cocoa-10.15
+    env:
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
+        upload:
+          - TestFixture-macOS.zip
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Mac
+    timeout_in_minutes: 90
+    key: mac_fixture_5_0ea
