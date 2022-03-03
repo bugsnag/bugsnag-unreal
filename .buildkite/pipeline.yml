@@ -65,8 +65,8 @@ steps:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
-          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk
-          - features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk
+          - Build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - Build/TestFixture-Android-Shipping-4.27-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -85,8 +85,8 @@ steps:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
-          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM
-          - features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa
+          - Build/TestFixture-IOS-Shipping-4.27.dSYM
+          - Build/TestFixture-IOS-Shipping-4.27.ipa
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -105,7 +105,7 @@ steps:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
-          - TestFixture-macOS.zip
+          - TestFixture-macOS-4.27.zip
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -126,13 +126,12 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-          - from: "features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk"
-            to: "build/TestFixture-Android-Shipping-arm64.apk"
+            - Build/TestFixture-Android-Shipping-4.27-arm64.apk
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
         command:
-          - "--app=/app/build/TestFixture-Android-Shipping-arm64.apk"
+          - "--app=/app/Build/TestFixture-Android-Shipping-4.27-arm64.apk"
           - "--appium-version=1.17.0"
           - "--device=ANDROID_11_0"
           - "--farm=bs"
@@ -153,15 +152,13 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-          - from: "features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa"
-            to: "build/TestFixture-IOS-Shipping.ipa"
-          - from: "features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM"
-            to: "build/TestFixture-IOS-Shipping.dSYM"
+            - Build/TestFixture-IOS-Shipping-4.27.ipa
+            - Build/TestFixture-IOS-Shipping-4.27.dSYM
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
         command:
-          - "--app=/app/build/TestFixture-IOS-Shipping.ipa"
+          - "--app=/app/Build/TestFixture-IOS-Shipping-4.27.ipa"
           - "--appium-version=1.17.0"
           - "--device=IOS_12"
           - "--farm=bs"
@@ -182,12 +179,11 @@ steps:
     plugins:
       artifacts#v1.5.0:
         download:
-          - from: TestFixture-macOS.zip
-            to: TestFixture-macOS.zip
+          -  TestFixture-macOS-4.27.zip
         upload: ["maze_output/failed/**/*"]
     commands:
       - echo '--- Extracting test fixture'
-      - unzip TestFixture-macOS.zip
+      - unzip TestFixture-macOS-4.27.zip
       - echo '--- Installing dependencies'
       - bundle install
       - echo '--- Running tests'
