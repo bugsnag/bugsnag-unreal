@@ -116,7 +116,7 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  - label: 'E2E Tests - 5.0EA iOS 12'
+  - label: 'E2E Tests - 5.0EA iOS 13'
     depends_on: ios_fixture_5_0ea
     timeout_in_minutes: 30
     agents:
@@ -132,7 +132,7 @@ steps:
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.0EA.ipa"
           - "--appium-version=1.17.0"
-          - "--device=IOS_12"
+          - "--device=IOS_13"
           - "--farm=bs"
           - "--order=random"
     concurrency: 9
