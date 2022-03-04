@@ -50,10 +50,10 @@ if [ "${PLATFORM}" == "Mac" ]; then
 	zip -r TestFixture-macOS-"$UE_VERSION".zip features/fixtures/generic/ArchivedBuilds
 elif [[ "$PLATFORM" == "Android" ]]; then
   echo "--- Renaming Android test fixture"
-  mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk Build/TestFixture-Android-Shipping-"$UE_VERSION"-arm64.apk
-  mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk Build/TestFixture-Android-Shipping-"$UE_VERSION"-armv7.apk
+  mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk build/TestFixture-Android-Shipping-"$UE_VERSION"-arm64.apk
+  mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk build/TestFixture-Android-Shipping-"$UE_VERSION"-armv7.apk
 elif [[ "$PLATFORM" == "IOS" ]]; then
   echo "--- Renaming iOS test fixture"
-  mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM Build/TestFixture-IOS-Shipping-"$UE_VERSION".dSYM
-  mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa Build/TestFixture-IOS-Shipping-"$UE_VERSION".ipa
+  mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM build/TestFixture-IOS-Shipping-"$UE_VERSION".dSYM
+  mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa build/TestFixture-IOS-Shipping-"$UE_VERSION".ipa
 fi
