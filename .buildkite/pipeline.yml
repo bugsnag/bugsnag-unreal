@@ -66,7 +66,7 @@ steps:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
           - build/TestFixture-Android-Shipping-4.27-arm64.apk
-          - build/TestFixture-Android-Shipping-4.27-armv7.apk
+          - build/TestFixture-Android-Shipping-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
