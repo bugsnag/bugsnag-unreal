@@ -134,8 +134,7 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-          - from: "features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk"
-            to: "build/TestFixture-Android-Shipping-armv7.apk"
+          - "build/TestFixture-Android-Shipping-4.27-armv7.apk"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
