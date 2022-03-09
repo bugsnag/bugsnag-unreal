@@ -139,7 +139,7 @@ steps:
       docker-compose#v3.3.0:
         run: maze-runner
         command:
-          - "--app=/app/build/TestFixture-Android-Shipping-armv7.apk"
+          - "--app=/app/build/TestFixture-Android-Shipping-4.27-armv7.apk"
           - "--appium-version=1.17.0"
           - "--device=ANDROID_11_0"
           - "--farm=bs"
