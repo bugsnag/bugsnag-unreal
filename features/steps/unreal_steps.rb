@@ -106,7 +106,7 @@ def parse_method frame_index
     stackframe = Maze::Helper.read_key_path(
       Maze::Server.errors.current[:body],
       "events.0.exceptions.0.stacktrace.#{frame_index}")
-    dsym_path = File.join(artifact_path, 'TestFixture-IOS-Shipping.dSYM')
+    dsym_path = File.join(artifact_path, 'TestFixture-IOS-Shipping*.dSYM')
     stop_addr = Integer(stackframe["frameAddress"]) - Integer(stackframe["machoLoadAddress"]) + Integer(stackframe["machoVMAddress"])
     start_addr = stop_addr - 4096
     cmd = HOST_OS.start_with?('darwin') ? 'xcrun objdump' : 'llvm-objdump-11'
