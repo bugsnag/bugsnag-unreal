@@ -3,6 +3,42 @@ steps:
   # Build Plugins
   #
 
+  # UE 4.25
+  - label: 'Build Plugin - 4.25 Mac'
+    agents:
+      queue: opensource-mac-cocoa-10.15
+    env:
+      UE_VERSION: "4.25"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 30
+    key: plugin_4_25
+
+  # UE 4.26
+  - label: 'Build Plugin - 4.26 Mac'
+    agents:
+      queue: opensource-arm-mac-cocoa-12
+    env:
+      UE_VERSION: "4.26"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 30
+    key: plugin_4_26
+
   # UE 5.0EA
   - label: 'Build Plugin - 5.0EA Mac'
     agents:
@@ -88,6 +124,33 @@ steps:
   #
   # E2E Tests
   #
+
+  # UE 4.27
+  - label: 'E2E Tests - 4.27 Android 11 (32-bit)'
+    depends_on: android_fixture_4_27
+    timeout_in_minutes: 30
+    agents:
+      queue: opensource
+    plugins:
+      artifacts#v1.3.0:
+        download:
+          - "build/TestFixture-Android-Shipping-4.27-armv7.apk"
+        upload: ["maze_output/failed/**/*"]
+      docker-compose#v3.3.0:
+        run: maze-runner
+        command:
+          - "--app=/app/build/TestFixture-Android-Shipping-4.27-armv7.apk"
+          - "--appium-version=1.17.0"
+          - "--device=ANDROID_11_0"
+          - "--farm=bs"
+          - "--order=random"
+    concurrency: 9
+    concurrency_group: browserstack-app
+    concurrency_method: eager
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
 
   # UE 5.0EA
   - label: 'E2E Tests - 5.0EA Android 11'
