@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## TBD
+
+* Updates the bugsnag-android dependency from v5.19.2 to [v5.22.0](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5220-2022-03-31)
+
 ## 1.2.0 (2022-02-17)
 
 * Adds support for macOS as a target platform.
