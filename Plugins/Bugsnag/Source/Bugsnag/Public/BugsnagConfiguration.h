@@ -273,6 +273,20 @@ public:
 	void SetMaxPersistedSessions(uint32 Value) { MaxPersistedSessions = Value; };
 
 	/**
+	 * The maximum number of Android JVM threads that will be reported with an event.
+	 *
+	 * Once the threshold is reached, all remaining threads will be omitted.
+	 *
+	 * By default, up to 200 threads are reported.
+	 */
+	uint32 GetMaxReportedThreads() const { return MaxReportedThreads; }
+
+	/**
+	 * @param Value The maximum number of threads.
+	 */
+	void SetMaxReportedThreads(uint32 Value) { MaxReportedThreads = Value; }
+
+	/**
 	 * Whether User information should be persisted to disk between application runs.
 	 *
 	 * Defaults to true.
@@ -557,6 +571,7 @@ private:
 	uint32 MaxBreadcrumbs = 50;
 	uint32 MaxPersistedEvents = 32;
 	uint32 MaxPersistedSessions = 128;
+	uint32 MaxReportedThreads = 200;
 	bool bPersistUser = true;
 	FBugsnagUser User;
 	TOptional<FString> ReleaseStage;

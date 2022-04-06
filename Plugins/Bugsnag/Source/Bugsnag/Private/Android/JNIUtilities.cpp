@@ -192,6 +192,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ConfigSetMaxBreadcrumbs, cache->ConfigClass, "setMaxBreadcrumbs", "(I)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetMaxPersistedEvents, cache->ConfigClass, "setMaxPersistedEvents", "(I)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetMaxPersistedSessions, cache->ConfigClass, "setMaxPersistedSessions", "(I)V");
+	CacheInstanceJavaMethod(env, cache->ConfigSetMaxReportedThreads, cache->ConfigClass, "setMaxReportedThreads", "(I)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetPersistenceDirectory, cache->ConfigClass, "setPersistenceDirectory", "(Ljava/io/File;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetPersistUser, cache->ConfigClass, "setPersistUser", "(Z)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetProjectPackages, cache->ConfigClass, "setProjectPackages", "(Ljava/util/Set;)V");
