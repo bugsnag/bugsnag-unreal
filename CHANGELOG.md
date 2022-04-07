@@ -3,6 +3,8 @@ Changelog
 
 ## TBD
 
+* Adds the `MaxReportedThreads` configuration property (Android only.)
+  [#144](https://github.com/bugsnag/bugsnag-unreal/pull/144)
 * Updates the bugsnag-android dependency from v5.19.2 to [v5.22.0](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5220-2022-03-31)
 * Updates the bugsnag-cocoa dependency from v6.16.1 to [v6.16.6](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6166-2022-04-06)
 
