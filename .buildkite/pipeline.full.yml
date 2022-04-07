@@ -180,32 +180,32 @@ steps:
           limit: 2
 
 # TODO: PLAT-8147
-#  - label: 'E2E Tests - 5.0 iOS 13'
-#    depends_on: ios_fixture_5_0
-#    timeout_in_minutes: 30
-#    agents:
-#      queue: opensource
-#    plugins:
-#      artifacts#v1.3.0:
-#        download:
-#          - build/TestFixture-IOS-Shipping-5.0.ipa
-#          - build/TestFixture-IOS-Shipping-5.0.dSYM
-#        upload: ["maze_output/failed/**/*"]
-#      docker-compose#v3.3.0:
-#        run: maze-runner
-#        command:
-#          - "--app=/app/build/TestFixture-IOS-Shipping-5.0.ipa"
-#          - "--appium-version=1.17.0"
-#          - "--device=IOS_13"
-#          - "--farm=bs"
-#          - "--order=random"
-#    concurrency: 9
-#    concurrency_group: browserstack-app
-#    concurrency_method: eager
-#    retry:
-#      automatic:
-#        - exit_status: -1  # Agent was lost
-#          limit: 2
+  - label: 'E2E Tests - 5.0 iOS 13'
+    depends_on: ios_fixture_5_0
+    timeout_in_minutes: 30
+    agents:
+      queue: opensource
+    plugins:
+      artifacts#v1.3.0:
+        download:
+          - build/TestFixture-IOS-Shipping-5.0.ipa
+          - build/TestFixture-IOS-Shipping-5.0.dSYM
+        upload: ["maze_output/failed/**/*"]
+      docker-compose#v3.3.0:
+        run: maze-runner
+        command:
+          - "--app=/app/build/TestFixture-IOS-Shipping-5.0.ipa"
+          - "--appium-version=1.17.0"
+          - "--device=IOS_13"
+          - "--farm=bs"
+          - "--order=random"
+    concurrency: 9
+    concurrency_group: browserstack-app
+    concurrency_method: eager
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
 
   - label: 'E2E Tests - 5.0 macOS 10.15'
     depends_on: mac_fixture_5_0

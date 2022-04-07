@@ -25,7 +25,7 @@ steps:
   # UE 4.27
   - label: 'Build Plugin - 4.27 Mac'
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: ms-arm-12-8
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -57,7 +57,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: ms-arm-12-8
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -77,7 +77,7 @@ steps:
   - name: ':ios: Build E2E - 4.27 iOS'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: ms-arm-12-8
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -97,7 +97,7 @@ steps:
   - name: ':mac: Build E2E - 4.27 Mac'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: ms-arm-12-8
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -175,7 +175,7 @@ steps:
     depends_on: mac_fixture_4_27
     timeout_in_minutes: 10
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: ms-arm-12-8
     plugins:
       artifacts#v1.5.0:
         download:
