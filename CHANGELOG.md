@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## TBD
+## 1.3.0 (2022-04-11)
 
 * Adds the `MaxReportedThreads` configuration property (Android only.)
   [#144](https://github.com/bugsnag/bugsnag-unreal/pull/144)
