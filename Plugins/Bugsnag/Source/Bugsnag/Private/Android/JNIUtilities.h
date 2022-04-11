@@ -133,6 +133,7 @@ typedef struct
 	jmethodID ConfigSetMaxBreadcrumbs;
 	jmethodID ConfigSetMaxPersistedEvents;
 	jmethodID ConfigSetMaxPersistedSessions;
+	jmethodID ConfigSetMaxReportedThreads;
 	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
 	jmethodID ConfigSetProjectPackages;

@@ -3,14 +3,13 @@ steps:
   # Build Plugins
   #
 
-  # UE 4.23
-  - label: 'Build Plugin - 4.23 Mac'
+  # UE 4.25
+  - label: 'Build Plugin - 4.25 Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
     env:
-      UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode11.app"
-      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
+      UE_VERSION: "4.25"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -20,14 +19,14 @@ steps:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
-    key: plugin_4_23
+    key: plugin_4_25
 
-  # UE 4.27
-  - label: 'Build Plugin - 4.27 Mac'
+  # UE 4.26
+  - label: 'Build Plugin - 4.26 Mac'
     agents:
       queue: opensource-arm-mac-cocoa-12
     env:
-      UE_VERSION: "4.27"
+      UE_VERSION: "4.26"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -38,87 +37,96 @@ steps:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
-    key: plugin_4_27
+    key: plugin_4_26
 
-  - label: 'Build Plugin - 4.27 Win'
+  # UE 5.0EA
+  - label: 'Build Plugin - 5.0EA Mac'
     agents:
-      queue: opensource-windows-unreal-4.27
+      queue: opensource-mac-cocoa-10.15
     env:
-      UE_VERSION: "4.27"
-    command: build.bat
-    artifact_paths: [Bugsnag-*.zip]
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
+    key: plugin_5_0ea
 
   #
   # Build Test Fixtures
   #
 
-  # UE 4.27
-  - name: ':android: Build E2E - 4.27 Android'
-    depends_on: plugin_4_27
+  # UE 5.0EA
+  - name: ':android: Build E2E - 5.0EA Android'
+    depends_on: plugin_5_0ea
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
-      UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
         upload:
-          - build/TestFixture-Android-Shipping-4.27-arm64.apk
-          - build/TestFixture-Android-Shipping-4.27-armv7.apk
+          - build/TestFixture-Android-Shipping-5.0EA-arm64.apk
+          - build/TestFixture-Android-Shipping-5.0EA-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
-    key: android_fixture_4_27
+    key: android_fixture_5_0ea
 
-  - name: ':ios: Build E2E - 4.27 iOS'
-    depends_on: plugin_4_27
+  - name: ':ios: Build E2E - 5.0EA iOS'
+    depends_on: plugin_5_0ea
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
-      UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
         upload:
-          - build/TestFixture-IOS-Shipping-4.27.dSYM
-          - build/TestFixture-IOS-Shipping-4.27.ipa
+          - build/TestFixture-IOS-Shipping-5.0EA.dSYM
+          - build/TestFixture-IOS-Shipping-5.0EA.ipa
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh IOS
     timeout_in_minutes: 60
-    key: ios_fixture_4_27
+    key: ios_fixture_5_0ea
 
-  - name: ':mac: Build E2E - 4.27 Mac'
-    depends_on: plugin_4_27
+  - name: ':mac: Build E2E - 5.0EA Mac'
+    depends_on: plugin_5_0ea
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
-      UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      UE_VERSION: "5.0EA"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
         upload:
-          - TestFixture-macOS-4.27.zip
+          - TestFixture-macOS-5.0EA.zip
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
-    key: mac_fixture_4_27
+    key: mac_fixture_5_0ea
 
   #
   # E2E Tests
   #
 
   # UE 4.27
-  - label: 'E2E Tests - 4.27 Android 11'
+  - label: 'E2E Tests - 4.27 Android 11 (32-bit)'
     depends_on: android_fixture_4_27
     timeout_in_minutes: 30
     agents:
@@ -126,12 +134,12 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-            - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - "build/TestFixture-Android-Shipping-4.27-armv7.apk"
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
         command:
-          - "--app=/app/build/TestFixture-Android-Shipping-4.27-arm64.apk"
+          - "--app=/app/build/TestFixture-Android-Shipping-4.27-armv7.apk"
           - "--appium-version=1.17.0"
           - "--device=ANDROID_11_0"
           - "--farm=bs"
@@ -144,23 +152,23 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  - label: 'E2E Tests - 4.27 iOS 12'
-    depends_on: ios_fixture_4_27
+  # UE 5.0EA
+  - label: 'E2E Tests - 5.0EA Android 11'
+    depends_on: android_fixture_5_0ea
     timeout_in_minutes: 30
     agents:
       queue: opensource
     plugins:
       artifacts#v1.3.0:
         download:
-            - build/TestFixture-IOS-Shipping-4.27.ipa
-            - build/TestFixture-IOS-Shipping-4.27.dSYM
+          - build/TestFixture-Android-Shipping-5.0EA-arm64.apk
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
         command:
-          - "--app=/app/build/TestFixture-IOS-Shipping-4.27.ipa"
+          - "--app=/app/build/TestFixture-Android-Shipping-5.0EA-arm64.apk"
           - "--appium-version=1.17.0"
-          - "--device=IOS_12"
+          - "--device=ANDROID_11_0"
           - "--farm=bs"
           - "--order=random"
     concurrency: 9
@@ -171,26 +179,48 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  - label: 'E2E Tests - 4.27 macOS 12'
-    depends_on: mac_fixture_4_27
+# TODO: PLAT-8147
+#  - label: 'E2E Tests - 5.0EA iOS 13'
+#    depends_on: ios_fixture_5_0ea
+#    timeout_in_minutes: 30
+#    agents:
+#      queue: opensource
+#    plugins:
+#      artifacts#v1.3.0:
+#        download:
+#          - build/TestFixture-IOS-Shipping-5.0EA.ipa
+#          - build/TestFixture-IOS-Shipping-5.0EA.dSYM
+#        upload: ["maze_output/failed/**/*"]
+#      docker-compose#v3.3.0:
+#        run: maze-runner
+#        command:
+#          - "--app=/app/build/TestFixture-IOS-Shipping-5.0EA.ipa"
+#          - "--appium-version=1.17.0"
+#          - "--device=IOS_13"
+#          - "--farm=bs"
+#          - "--order=random"
+#    concurrency: 9
+#    concurrency_group: browserstack-app
+#    concurrency_method: eager
+#    retry:
+#      automatic:
+#        - exit_status: -1  # Agent was lost
+#          limit: 2
+
+  - label: 'E2E Tests - 5.0EA macOS 10.15'
+    depends_on: mac_fixture_5_0ea
     timeout_in_minutes: 10
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     plugins:
       artifacts#v1.5.0:
         download:
-          -  TestFixture-macOS-4.27.zip
+          -  TestFixture-macOS-5.0EA.zip
         upload: ["maze_output/failed/**/*"]
     commands:
       - echo '--- Extracting test fixture'
-      - unzip TestFixture-macOS-4.27.zip
+      - unzip TestFixture-macOS-5.0EA.zip
       - echo '--- Installing dependencies'
       - bundle install
       - echo '--- Running tests'
       - bundle exec maze-runner --os=macos
-
-  #
-  # Conditionally trigger full pipeline
-  #
-  - label: 'Conditionally trigger full set of tests'
-    command: sh -c .buildkite/pipeline_trigger.sh
