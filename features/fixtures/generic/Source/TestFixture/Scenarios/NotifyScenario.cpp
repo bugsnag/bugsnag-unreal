@@ -42,6 +42,8 @@ public:
 				return true;
 			});
 
+		Configuration->SetMaxReportedThreads(3);
+
 		// sent in event payload
 		Configuration->SetProjectPackages({TEXT("com.example.package")});
 	}

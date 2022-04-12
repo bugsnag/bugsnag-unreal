@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    api "com.bugsnag:bugsnag-android-core:5.19.1"
+    api "com.bugsnag:bugsnag-android-core:5.22.0"
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
     androidTestImplementation 'junit:junit:4.12'
@@ -40,7 +40,7 @@ task generatePom {
     pom {
       project {
         groupId 'com.bugsnag'
-        version '1.2.0'
+        version '1.3.0'
         packaging 'aar'
       }
     }.writeTo("$buildDir/outputs/aar/bugsnag-plugin-android-unreal-release.pom")
