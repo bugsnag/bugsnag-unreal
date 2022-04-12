@@ -40,7 +40,7 @@ fi
 
 if [ "${PLATFORM}" == "Mac" ]; then
   echo "--- Renaming Mac test fixture"
-  if [ "$UE_VERSION" == "5.0EA" ]; then
+  if [ "$UE_VERSION" == "5.0" ]; then
   	mv features/fixtures/generic/ArchivedBuilds/Mac/ features/fixtures/generic/ArchivedBuilds/MacNoEditor/
   elif [ "$UE_VERSION" == "4.23" ]; then
   	mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
