@@ -197,8 +197,7 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-# TODO: PLAT-8147
-  - label: 'E2E Tests - 5.0 iOS 13'
+  - label: 'E2E Tests - 5.0 iOS 14'
     depends_on: ios_fixture_5_0
     timeout_in_minutes: 30
     agents:
