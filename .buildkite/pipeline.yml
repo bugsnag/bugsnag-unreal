@@ -159,3 +159,87 @@ steps:
       - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
     key: android_fixture_4_27_6
+
+  # UE 4.27
+  - name: ':android: Build E2E - 4.27 Android'
+    depends_on: plugin_4_27
+    agents:
+      queue: ms-arm-12-8
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - build/TestFixture-Android-Shipping-4.27-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_4_27_7
+
+  # UE 4.27
+  - name: ':android: Build E2E - 4.27 Android'
+    depends_on: plugin_4_27
+    agents:
+      queue: ms-arm-12-8
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - build/TestFixture-Android-Shipping-4.27-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_4_27_8
+
+  # UE 4.27
+  - name: ':android: Build E2E - 4.27 Android'
+    depends_on: plugin_4_27
+    agents:
+      queue: ms-arm-12-8
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - build/TestFixture-Android-Shipping-4.27-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_4_27_9
+
+  # UE 4.27
+  - name: ':android: Build E2E - 4.27 Android'
+    depends_on: plugin_4_27
+    agents:
+      queue: ms-arm-12-8
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - build/TestFixture-Android-Shipping-4.27-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_4_27
