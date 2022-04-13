@@ -224,7 +224,7 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  - label: 'E2E Tests - 5.0 macOS 10.15'
+  - label: 'E2E Tests - 5.0 macOS 12'
     depends_on: mac_fixture_5_0
     timeout_in_minutes: 10
     agents:
