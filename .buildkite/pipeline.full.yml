@@ -20,6 +20,10 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_4_25
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   # UE 4.26
   - label: 'Build Plugin - 4.26 Mac'
@@ -38,6 +42,10 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_4_26
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   # UE 5.0EA
   - label: 'Build Plugin - 5.0EA Mac'
@@ -56,6 +64,10 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_5_0ea
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   #
   # Build Test Fixtures
@@ -81,6 +93,10 @@ steps:
       - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
     key: android_fixture_5_0ea
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   - name: ':ios: Build E2E - 5.0EA iOS'
     depends_on: plugin_5_0ea
@@ -101,6 +117,10 @@ steps:
       - features/scripts/build-fixture.sh IOS
     timeout_in_minutes: 60
     key: ios_fixture_5_0ea
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   - name: ':mac: Build E2E - 5.0EA Mac'
     depends_on: plugin_5_0ea
@@ -120,6 +140,10 @@ steps:
       - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
     key: mac_fixture_5_0ea
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   #
   # E2E Tests

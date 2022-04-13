@@ -21,6 +21,10 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_4_23
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   # UE 4.27
   - label: 'Build Plugin - 4.27 Mac'
@@ -39,6 +43,10 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 30
     key: plugin_4_27
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   - label: 'Build Plugin - 4.27 Win'
     agents:
@@ -48,6 +56,10 @@ steps:
     command: build.bat
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 30
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   #
   # Build Test Fixtures
@@ -73,6 +85,10 @@ steps:
       - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
     key: android_fixture_4_27
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   - name: ':ios: Build E2E - 4.27 iOS'
     depends_on: plugin_4_27
@@ -93,6 +109,10 @@ steps:
       - features/scripts/build-fixture.sh IOS
     timeout_in_minutes: 60
     key: ios_fixture_4_27
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   - name: ':mac: Build E2E - 4.27 Mac'
     depends_on: plugin_4_27
@@ -112,6 +132,10 @@ steps:
       - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
     key: mac_fixture_4_27
+    retry:
+      automatic:
+        - exit_status: "*"
+          limit: 2
 
   #
   # E2E Tests
