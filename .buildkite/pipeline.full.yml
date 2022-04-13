@@ -60,7 +60,7 @@ steps:
   # UE 5.0
   - label: 'Build Plugin - 5.0 Mac'
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "5.0"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -103,7 +103,7 @@ steps:
   - name: ':ios: Build E2E - 5.0 iOS'
     depends_on: plugin_5_0
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "5.0"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -123,7 +123,7 @@ steps:
   - name: ':mac: Build E2E - 5.0 Mac'
     depends_on: plugin_5_0
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "5.0"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -229,7 +229,7 @@ steps:
     depends_on: mac_fixture_5_0
     timeout_in_minutes: 10
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     plugins:
       artifacts#v1.5.0:
         download:
