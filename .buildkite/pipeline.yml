@@ -29,10 +29,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -50,10 +50,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -71,10 +71,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -92,10 +92,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -113,10 +113,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -134,10 +134,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -155,10 +155,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -176,10 +176,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -197,10 +197,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -218,10 +218,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -240,10 +240,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -261,10 +261,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -282,10 +282,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -303,10 +303,10 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: opensource-arm-mac-cocoa-12
+      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode12.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
