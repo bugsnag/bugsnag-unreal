@@ -6,7 +6,7 @@ steps:
   # UE 4.27
   - label: 'Build Plugin - 4.27 Mac'
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -29,7 +29,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -50,7 +50,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -71,7 +71,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -92,7 +92,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -113,7 +113,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -134,7 +134,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -155,7 +155,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -176,7 +176,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -197,7 +197,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -218,7 +218,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -240,7 +240,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -261,7 +261,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -282,7 +282,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -303,7 +303,7 @@ steps:
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
     agents:
-      queue: ms-arm-12-8
+      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
