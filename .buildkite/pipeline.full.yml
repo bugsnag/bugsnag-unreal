@@ -39,24 +39,6 @@ steps:
     timeout_in_minutes: 30
     key: plugin_4_26
 
-  # UE 5.0EA
-  - label: 'Build Plugin - 5.0EA Mac'
-    agents:
-      queue: opensource-mac-cocoa-10.15
-    env:
-      UE_VERSION: "5.0EA"
-      DEVELOPER_DIR: "/Applications/Xcode12.app"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
-    key: plugin_5_0ea
-
   # UE 5.0
   - label: 'Build Plugin - 5.0 Mac'
     agents:
@@ -80,25 +62,25 @@ steps:
   #
 
   # UE 5.0EA
-  - name: ':android: Build E2E - 5.0EA Android'
-    depends_on: plugin_5_0ea
+  - name: ':android: Build E2E - 5.0 Android'
+    depends_on: plugin_5_0
     agents:
-      queue: opensource-mac-cocoa-10.15
+      queue: opensource-arm-mac-cocoa-12
     env:
-      UE_VERSION: "5.0EA"
-      DEVELOPER_DIR: "/Applications/Xcode12.app"
+      UE_VERSION: "5.0"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
     plugins:
       artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_5.0EA-macOS.zip
+        download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
         upload:
-          - build/TestFixture-Android-Shipping-5.0EA-arm64.apk
-          - build/TestFixture-Android-Shipping-5.0EA-armv7.apk
+          - build/TestFixture-Android-Shipping-5.0-arm64.apk
+          - build/TestFixture-Android-Shipping-5.0-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
-    key: android_fixture_5_0ea
+    key: android_fixture_5_0
 
   - name: ':ios: Build E2E - 5.0 iOS'
     depends_on: plugin_5_0
@@ -170,21 +152,21 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  # UE 5.0EA
-  - label: 'E2E Tests - 5.0EA Android 11'
-    depends_on: android_fixture_5_0ea
+  # UE 5.0
+  - label: 'E2E Tests - 5.0 Android 11'
+    depends_on: android_fixture_5_0
     timeout_in_minutes: 30
     agents:
       queue: opensource
     plugins:
       artifacts#v1.3.0:
         download:
-          - build/TestFixture-Android-Shipping-5.0EA-arm64.apk
+          - build/TestFixture-Android-Shipping-5.0-arm64.apk
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
         command:
-          - "--app=/app/build/TestFixture-Android-Shipping-5.0EA-arm64.apk"
+          - "--app=/app/build/TestFixture-Android-Shipping-5.0-arm64.apk"
           - "--appium-version=1.17.0"
           - "--device=ANDROID_11_0"
           - "--farm=bs"
