@@ -50,12 +50,12 @@ Binaries/*
 Plugins/*/Binaries/*
 
 # Builds
-Build/*
-
-# Whitelist PakBlacklist-<BuildConfiguration>.txt files
-!Build/*/
-Build/*/**
+ArchivedBuilds/
+!Build/
+Build/*/*
 !Build/*/PakBlacklist*.txt
+!Build/Android/keystore.jks
+!Build/Android/project.properties
 
 # Don't ignore icon files in Build
 !Build/**/*.ico
