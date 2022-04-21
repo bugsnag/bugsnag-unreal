@@ -132,6 +132,13 @@ bugsnag {
         </insert>
     </gradleProperties>
 
+    <proguardAdditions>
+        <insert>
+            <!-- Bugsnag needs to be able to find its Java classes by name from JNI -->
+            -keep class com.bugsnag.** { *; }
+        </insert>
+    </proguardAdditions>
+
     <!-- optional libraries to load in GameActivity.java before libUE4.so -->
     <soLoadLibrary>
         <!-- need this if plugin enabled and supported architecture, even if not packaged for GearVR -->
