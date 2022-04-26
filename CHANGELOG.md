@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.3.1 (2022-04-26)
+
+* Fixes `java.lang.ClassNotFoundException` in minified Android builds.
+  [#151](https://github.com/bugsnag/bugsnag-unreal/pull/151)
+
 ## 1.3.0 (2022-04-11)
 
 * Adds the `MaxReportedThreads` configuration property (Android only.)

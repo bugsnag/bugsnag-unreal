@@ -9,7 +9,7 @@ UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
 UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
 UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 				  -clientconfig=Shipping -compressed -pak -prereqs \
-				  -build -utf8output -cook
+				  -build -utf8output -cook -distribution
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib

@@ -73,7 +73,7 @@
         <insertValue value="repository $S(PluginDir)/../ThirdParty/Android/lib"/>
         <insertNewline/>
         <insert>
-            com.bugsnag,bugsnag-plugin-android-unreal,1.3.0
+            com.bugsnag,bugsnag-plugin-android-unreal,1.3.1
             com.bugsnag,bugsnag-android,5.22.0
         </insert>
         <insertNewline/>
@@ -131,6 +131,13 @@ bugsnag {
             android.useAndroidX=true
         </insert>
     </gradleProperties>
+
+    <proguardAdditions>
+        <insert>
+            <!-- Bugsnag needs to be able to find its Java classes by name from JNI -->
+            -keep class com.bugsnag.** { *; }
+        </insert>
+    </proguardAdditions>
 
     <!-- optional libraries to load in GameActivity.java before libUE4.so -->
     <soLoadLibrary>
