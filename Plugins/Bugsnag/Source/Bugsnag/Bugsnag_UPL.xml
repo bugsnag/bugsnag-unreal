@@ -73,7 +73,7 @@
         <insertValue value="repository $S(PluginDir)/../ThirdParty/Android/lib"/>
         <insertNewline/>
         <insert>
-            com.bugsnag,bugsnag-plugin-android-unreal,1.3.0
+            com.bugsnag,bugsnag-plugin-android-unreal,1.3.1
             com.bugsnag,bugsnag-android,5.22.0
         </insert>
         <insertNewline/>
