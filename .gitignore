@@ -52,13 +52,12 @@ Binaries/*
 Plugins/*/Binaries/*
 
 # Builds
-[Bb]uild/
 ArchivedBuilds/
-
-# Whitelist PakBlacklist-<BuildConfiguration>.txt files
-!Build/*/
-Build/*/**
+!Build/
+Build/*/*
 !Build/*/PakBlacklist*.txt
+!Build/Android/keystore.jks
+!Build/Android/project.properties
 
 # Don't ignore icon files in Build
 !Build/**/*.ico
@@ -80,7 +79,7 @@ DerivedDataCache/*
 
 # Bugsnag specific
 Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include
-appium_server.log
+deps/bugsnag-plugin-android-unreal/build
 maze_output/*
-TestFixture-Mac-Shipping.log
-TestFixture-macOS.zip
+*.log
+*.zip
