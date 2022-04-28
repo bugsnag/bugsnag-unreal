@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## TBD
+
+* Updates the bugsnag-android dependency from v5.22.0 to [v5.22.1](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5221-2022-04-28)
+
 ## 1.3.1 (2022-04-26)
 
 * Fixes `java.lang.ClassNotFoundException` in minified Android builds.

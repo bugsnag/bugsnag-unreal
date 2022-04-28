@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    api "com.bugsnag:bugsnag-android-core:5.22.0"
+    api "com.bugsnag:bugsnag-android-core:5.22.1"
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
     androidTestImplementation 'junit:junit:4.12'
