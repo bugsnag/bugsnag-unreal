@@ -1,28 +1,15 @@
+# frozen_string_literal: true
+
 require 'rbconfig'
 
 HOST_OS = RbConfig::CONFIG['host_os']
 
-When('I relaunch the mobile app') do
-  Maze.driver.launch_app
-  sleep 3
-end
-
 When('I run {string}') do |scenario_name|
-  if is_platform? :macos
-    run_mac_fixture(:run_scenario, scenario_name)
-  else
-    dial_number_for scenario_name
-    tap_button 10
-  end
+  run_fixture(:run_scenario, scenario_name)
 end
 
 When('I configure Bugsnag for {string}') do |scenario_name|
-  if is_platform? :macos
-    run_mac_fixture(:start_bugsnag, scenario_name)
-  else
-    dial_number_for scenario_name
-    tap_button 11
-  end
+  run_fixture(:start_bugsnag, scenario_name)
 end
 
 When('I run {string} and restart the crashed app') do |scenario_name|
@@ -30,17 +17,8 @@ When('I run {string} and restart the crashed app') do |scenario_name|
 end
 
 When('I run {string} and restart the crashed app for {string}') do |scenario_1, scenario_2|
-  if is_platform? :macos
-    run_mac_fixture(:run_scenario, scenario_1, wait: true)
-    run_mac_fixture(:start_bugsnag, scenario_2)
-  else
-    steps %(
-      Given I run "#{scenario_1}"
-      And the mobile app is not running
-      And I relaunch the mobile app
-      And I configure Bugsnag for "#{scenario_2}"
-    )
-  end
+  run_fixture(:run_scenario, scenario_1, wait_for_crash: true)
+  run_fixture(:start_bugsnag, scenario_2)
 end
 
 When('I background the app for {int} seconds') do |duration|
@@ -50,30 +28,6 @@ When('I background the app for {int} seconds') do |duration|
     `osascript -e 'tell application "TestFixture-Mac-Shipping" to activate'`
   else
     Maze.driver.background_app(duration)
-  end
-end
-
-def dial_number_for(scenario_name)
-  number = $scenario_names.index scenario_name
-  raise "Scenario name #{scenario_name} is not in the list; try running update-scenario-names.sh" if number.nil?
-  "#{number}".each_char do |button_number|
-    tap_button button_number.to_i
-  end
-end
-
-def tap_button(button_number)
-  row_count = 13 # 0-9, run, start, text box
-  button_height = window_height / row_count
-  y = (button_height * button_number) + (button_height / 2)
-  Appium::TouchAction.new.tap({:x => 50, :y => y}).perform
-  sleep 0.5
-end
-
-def window_height
-  if is_platform? 'Android'
-    Maze.driver.window_size['height'] + Maze.driver.get_system_bars['navigationBar']['height']
-  else
-    Maze.driver.window_size['height']
   end
 end
 
@@ -130,18 +84,40 @@ def wait_for_true
   raise 'Assertion not passed within 5 seconds' unless assertion_passed
 end
 
-def run_mac_fixture(action, scenario_name, wait: false)
+def run_fixture(action, scenario_name, wait_for_crash: false)
+  Maze::Server.commands.add({ action: action, scenario_name: scenario_name })
+  case Maze::Helper.get_current_platform
+  when 'android', 'ios'
+    Appium::TouchAction.new.tap({ x: 200, y: 200 }).perform
+    wait_for_get_command
+    if wait_for_crash
+      step 'the mobile app is not running'
+      Maze.driver.launch_app
+      sleep 3
+    end
+  when 'macos'
+    run_mac_fixture(wait_for_crash)
+  else
+    raise 'Unsupported platform'
+  end
+end
+
+def run_mac_fixture(wait_for_crash)
   $fixture_pid = Process.spawn(
     'features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping',
-    '-action', action.to_s, '-scenario_name', scenario_name,
     '-windowed', '-resx=720', '-resy=1080',
     '-unattended', # Prevents "Please update to the latest version of macOS" alert on macOS < 10.15.5
-    [:out, :err]=>'TestFixture-Mac-Shipping.log')
-  if wait
+    %i[out err] => 'TestFixture-Mac-Shipping.log'
+  )
+  wait_for_get_command
+  if wait_for_crash
     Process.wait $fixture_pid
     $fixture_pid = nil
-  else
-    # Ideally we would wait until we know the Scenario::Run() method has been executed
-    sleep 1
   end
+end
+
+def wait_for_get_command
+  count = 100
+  sleep 0.1 until Maze::Server.commands.remaining.empty? || (count -= 1) < 1
+  raise 'Test fixture did not GET /command' unless Maze::Server.commands.remaining.empty?
 end

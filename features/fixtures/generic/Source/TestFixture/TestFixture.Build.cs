@@ -6,7 +6,7 @@ public class TestFixture : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "SlateCore", "Json" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "Http", "SlateCore", "Json" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "Bugsnag" });
 	}
