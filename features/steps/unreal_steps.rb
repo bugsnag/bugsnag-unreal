@@ -107,7 +107,7 @@ def run_mac_fixture(wait_for_crash)
     'features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping',
     '-windowed', '-resx=720', '-resy=1080',
     '-unattended', # Prevents "Please update to the latest version of macOS" alert on macOS < 10.15.5
-    %i[out err] => 'TestFixture-Mac-Shipping.log'
+    %i[out err] => :close
   )
   wait_for_get_command
   if wait_for_crash
