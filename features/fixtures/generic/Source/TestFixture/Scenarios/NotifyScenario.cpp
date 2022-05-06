@@ -60,7 +60,18 @@ public:
 				return true;
 			});
 
-		UBugsnagFunctionLibrary::SetContext("pause menu");
+		// Check that a large (> 128 byte) string can be safely handled without crashing
+		UBugsnagFunctionLibrary::SetContext(TEXT(/* spell-checker: disable */
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque gravida sodales"
+			" nisl, at scelerisque lectus ullamcorper vitae. Integer congue nunc sed gravida "
+			"ultricies. Donec posuere erat tellus, vel tempus nisl sodales at. Sed nibh turpi"
+			"s, mollis nec turpis a, cursus tincidunt ipsum. Donec nec sagittis magna. Aliqua"
+			"m sit amet tellus maximus, vehicula enim ac, tincidunt tortor. Sed eu enim et ma"
+			"ssa volutpat auctor. Praesent facilisis diam ultricies pharetra dapibus. Pellent"
+			"esque sit amet ex congue, pharetra felis eu, mollis ligula. Etiam non turpis a t"
+			"urpis maximus facilisis sed vitae nisi. Curabitur scelerisque ultrices scelerisq"
+			"ue. Integer semper leo volutpat, venenatis orci ac, facilisis mauris. Curabitur "
+			"luctus urna a orci lacinia ornare."));
 
 		UBugsnagFunctionLibrary::AddFeatureFlag(TEXT("Bugsnag"));
 
