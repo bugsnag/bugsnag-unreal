@@ -61,7 +61,29 @@ def app_state
   Maze.driver.app_state('com.bugsnag.TestFixture')
 end
 
+Maze.hooks.before do
+  $started_at = Time.now
+end
+
 Maze.hooks.after do |scenario|
-  Process.kill('KILL', $fixture_pid) if $fixture_pid
-  $fixture_pid = nil
+  folder1 = File.join(Dir.pwd, 'maze_output')
+  folder2 = scenario.failed? ? 'failed' : 'passed'
+  folder3 = scenario.name.gsub(/[:"& ]/, '_').gsub(/_+/, '_')
+
+  path = File.join(folder1, folder2, folder3)
+
+  FileUtils.makedirs(path)
+
+  case Maze::Helper.get_current_platform
+  when 'macos'
+    Process.kill('KILL', $fixture_pid) if $fixture_pid
+    $fixture_pid = nil
+    Process.wait(
+      Process.spawn(
+        '/usr/bin/log', 'show', '--predicate', 'process == "TestFixture-Mac-Shipping"',
+        '--style', 'syslog', '--start', $started_at.strftime('%Y-%m-%d %H:%M:%S%z'),
+        out: File.open(File.join(path, 'TestFixture-Mac-Shipping.log'), 'w')
+      )
+    )
+  end
 end

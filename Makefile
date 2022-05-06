@@ -9,7 +9,7 @@ UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
 UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
 UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 				  -clientconfig=Shipping -compressed -pak -prereqs \
-				  -build -utf8output -cook -distribution
+				  -build -utf8output -cook
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib
@@ -134,7 +134,7 @@ e2e_mac: $(TEST_MAC_APP)
 
 .PHONY: build_example_android
 build_example_android: $(EXAMPLE_MAC_LIB)
-	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Android
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Android -distribution
 
 .PHONY: install_example_android
 install_example_android: build_example_android
@@ -177,7 +177,7 @@ $(EXAMPLE_MAC_LIB): $(shell find Plugins/Bugsnag/Source Source -type f)
 #-------------------------------------------------------------------------------
 
 $(TEST_ANDROID_APP): $(TEST_MAC_LIB)
-	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=Android
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=Android -distribution
 
 $(TEST_IOS_APP): $(TEST_MAC_LIB)
 	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=IOS
