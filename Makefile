@@ -6,7 +6,11 @@ UE_VERSION?=4.27
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
+ifeq ($(findstring 5.,$(UE_VERSION)),5.)
+UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor
+else
 UE_EDITOR=$(UE_HOME)/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor
+endif
 UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 				  -clientconfig=Shipping -compressed -pak -prereqs \
 				  -build -utf8output -cook
