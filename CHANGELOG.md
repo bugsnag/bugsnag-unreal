@@ -1,6 +1,14 @@
 Changelog
 =========
 
+## 1.4.0 (2022-05-11)
+
+* Adds official support for Unreal Engine 5.0 🚀
+* Fixes improper use of `TCHAR_TO_UTF8()` that could result in use-after-free on Android.
+  [#157](https://github.com/bugsnag/bugsnag-unreal/pull/157)
+* Updates the bugsnag-android dependency from v5.22.0 to [v5.22.1](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5221-2022-04-28)
+* Updates the bugsnag-cocoa dependency from v6.16.6 to [v6.16.8](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6168-2022-05-04)
+
 ## 1.3.1 (2022-04-26)
 
 * Fixes `java.lang.ClassNotFoundException` in minified Android builds.

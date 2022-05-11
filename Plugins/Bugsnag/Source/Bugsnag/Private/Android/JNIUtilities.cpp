@@ -376,17 +376,12 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 jstring FAndroidPlatformJNI::ParseFString(JNIEnv* Env, const FString& Text)
 {
-	const char* rawText = TCHAR_TO_UTF8(*Text);
-	if (rawText)
+	jstring jText = (*Env).NewStringUTF(TCHAR_TO_UTF8(*Text));
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
 	{
-		jstring jText = (*Env).NewStringUTF(rawText);
-		if (FAndroidPlatformJNI::CheckAndClearException(Env))
-		{
-			return NULL;
-		}
-		return jText;
+		return NULL;
 	}
-	return NULL;
+	return jText;
 }
 
 FString FAndroidPlatformJNI::ParseJavaString(JNIEnv* Env, const JNIReferenceCache* Cache, jobject Value)

@@ -1,3 +1,6 @@
+agents:
+  queue: macos-12-arm
+
 steps:
   #
   # Build Plugins
@@ -24,8 +27,6 @@ steps:
 
   # UE 4.27
   - label: 'Build Plugin - 4.27 Mac'
-    agents:
-      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -56,11 +57,9 @@ steps:
   # UE 4.27
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
-    agents:
-      queue: opensource-mac-cocoa-10.15
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode12.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -76,8 +75,6 @@ steps:
 
   - name: ':ios: Build E2E - 4.27 iOS'
     depends_on: plugin_4_27
-    agents:
-      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -96,8 +93,6 @@ steps:
 
   - name: ':mac: Build E2E - 4.27 Mac'
     depends_on: plugin_4_27
-    agents:
-      queue: opensource-arm-mac-cocoa-12
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.app"
@@ -174,8 +169,6 @@ steps:
   - label: 'E2E Tests - 4.27 macOS 12'
     depends_on: mac_fixture_4_27
     timeout_in_minutes: 10
-    agents:
-      queue: opensource-arm-mac-cocoa-12
     plugins:
       artifacts#v1.5.0:
         download:
