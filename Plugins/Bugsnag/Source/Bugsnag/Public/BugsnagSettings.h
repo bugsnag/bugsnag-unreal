@@ -133,7 +133,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Auto Upload Symbol Files (Android only)")
 	bool bAutoUploadSymbolFiles = true;
 
-	// A general summary of what was occuring in the application.
+	// A general summary of what was occurring in the application.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	FString Context;
 
