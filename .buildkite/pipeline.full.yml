@@ -28,7 +28,7 @@ steps:
   - label: 'Build Plugin - 4.26 Mac'
     env:
       UE_VERSION: "4.26"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -60,7 +60,7 @@ steps:
   # Build Test Fixtures
   #
 
-  # UE 5.0EA
+  # UE 5.0
   - name: ':android: Build E2E - 5.0 Android'
     depends_on: plugin_5_0
     env:
