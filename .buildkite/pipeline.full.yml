@@ -21,7 +21,7 @@ steps:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     key: plugin_4_25
 
   # UE 4.26
@@ -37,14 +37,14 @@ steps:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     key: plugin_4_26
 
   # UE 5.0
   - label: 'Build Plugin - 5.0 Mac'
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -53,7 +53,7 @@ steps:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     key: plugin_5_0
 
   #
@@ -65,7 +65,7 @@ steps:
     depends_on: plugin_5_0
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
@@ -83,7 +83,7 @@ steps:
     depends_on: plugin_5_0
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
@@ -101,7 +101,7 @@ steps:
     depends_on: plugin_5_0
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
