@@ -21,7 +21,7 @@ steps:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     key: plugin_4_25
 
   # UE 4.26
@@ -37,7 +37,7 @@ steps:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     key: plugin_4_26
 
   # UE 5.0
@@ -53,7 +53,7 @@ steps:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 30
+    timeout_in_minutes: 60
     key: plugin_5_0
 
   #
