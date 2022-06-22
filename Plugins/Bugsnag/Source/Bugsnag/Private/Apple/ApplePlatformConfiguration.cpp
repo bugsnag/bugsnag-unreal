@@ -12,7 +12,6 @@
 #import <Bugsnag/BugsnagEndpointConfiguration.h>
 #import <Bugsnag/BugsnagErrorTypes.h>
 
-#import <BugsnagPrivate/BSGJSONSerialization.h>
 #import <BugsnagPrivate/BugsnagConfiguration+Private.h>
 #import <BugsnagPrivate/BugsnagNotifier.h>
 

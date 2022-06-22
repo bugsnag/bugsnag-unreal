@@ -17,6 +17,7 @@
         "Ljava",
         "Memzero",
         "Millis",
+        "NSJSON",
         "Reactnativejs",
         "Timespan",
         "UCLASS",
