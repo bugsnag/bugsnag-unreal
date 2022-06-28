@@ -23,7 +23,12 @@ public:
 	void Run() override
 	{
 		UBugsnagFunctionLibrary::MarkLaunchCompleted();
-		abort();
+		check(IsValid());
+	}
+
+	bool IsValid()
+	{
+		return false;
 	}
 };
 

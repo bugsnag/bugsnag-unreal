@@ -11,6 +11,9 @@ public class TestFixtureTarget : TargetRules
 		bEnforceIWYU = true;
 		bUseUnityBuild = false;
 
+		bOverrideBuildEnvironment = true;
+		bUseChecksInShipping = true;
+
 		ExtraModuleNames.AddRange( new string[] { "TestFixture" } );
 	}
 }

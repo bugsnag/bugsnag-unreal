@@ -37,6 +37,8 @@ static void FApplePlatformBugsnag_OnCrashHandler(const BSG_KSCrashReportWriter* 
 {
 	writer->beginObject(writer, UNREAL_ENGINE_KEY);
 	writer->addBooleanElement(writer, IS_PIE_WORLD_KEY, GIsPlayInEditorWorld);
+	writer->addStringElement(writer, "GErrorExceptionDescription", TCHAR_TO_ANSI(GErrorExceptionDescription));
+	writer->addStringElement(writer, "GErrorHist", TCHAR_TO_ANSI(GErrorHist));
 	writer->endContainer(writer);
 }
 
