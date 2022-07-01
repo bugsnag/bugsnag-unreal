@@ -9,6 +9,7 @@
 #include "BugsnagMetadataStore.h"
 #include "BugsnagSession.h"
 #include "BugsnagSettings.h"
+#include "BugsnagTelemetryTypes.h"
 #include "BugsnagUser.h"
 
 #include "Dom/JsonObject.h"
@@ -299,6 +300,18 @@ public:
 	void SetPersistUser(bool Value) { bPersistUser = Value; }
 
 	/**
+	 * The types of telemetry that may be sent to Bugsnag for product improvement purposes.
+	 *
+	  * By default all types of telemetry are enabled.
+	 */
+	EBugsnagTelemetryTypes GetTelemetry() const { return Telemetry; }
+
+	/**
+	 * @param Value The types of telemetry that may be sent to Bugsnag for product improvement purposes.
+	 */
+	void SetTelemetry(EBugsnagTelemetryTypes Value) { Telemetry = Value; }
+
+	/**
 	 * The release stage of the application, such as `"production"`, `"development"`, `"beta"` etc.
 	 */
 	const TOptional<FString>& GetReleaseStage() const { return ReleaseStage; }
@@ -573,6 +586,7 @@ private:
 	uint32 MaxPersistedSessions = 128;
 	uint32 MaxReportedThreads = 200;
 	bool bPersistUser = true;
+	EBugsnagTelemetryTypes Telemetry = EBugsnagTelemetryTypes::All;
 	FBugsnagUser User;
 	TOptional<FString> ReleaseStage;
 	TOptional<FString> AppType;

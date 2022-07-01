@@ -91,6 +91,11 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxPersistedSessions, Config->GetMaxPersistedSessions());
 	jniCallWithObjects(Env, jConfig, Cache->ConfigSetMaxReportedThreads, Config->GetMaxReportedThreads());
 	jniCallWithBool(Env, jConfig, Cache->ConfigSetPersistUser, Config->GetPersistUser());
+
+	jobject jTelemetry = FAndroidPlatformJNI::ParseTelemetryTypeSet(Env, Cache, Config->GetTelemetry());
+	ReturnNullOnFail(jTelemetry);
+	jniCallWithObjects(Env, jConfig, Cache->ConfigSetTelemetry, jTelemetry);
+
 	if (Config->GetRedactedKeys().Num())
 	{
 		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());

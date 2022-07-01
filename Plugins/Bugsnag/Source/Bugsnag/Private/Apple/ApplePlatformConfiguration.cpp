@@ -15,6 +15,11 @@
 #import <BugsnagPrivate/BugsnagConfiguration+Private.h>
 #import <BugsnagPrivate/BugsnagNotifier.h>
 
+static BSGTelemetryOptions GetTelemetryTypes(EBugsnagTelemetryTypes Value)
+{
+	return (EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors) ? BSGTelemetryInternalErrors : 0);
+}
+
 static BSGThreadSendPolicy GetThreadSendPolicy(EBugsnagSendThreadsPolicy Policy)
 {
 	switch (Policy)
@@ -109,6 +114,8 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedRe
 	CocoaConfig.maxPersistedSessions = Configuration->GetMaxPersistedSessions();
 
 	CocoaConfig.persistUser = Configuration->GetPersistUser();
+
+	CocoaConfig.telemetry = GetTelemetryTypes(Configuration->GetTelemetry());
 
 	if (Configuration->GetReleaseStage().IsSet())
 	{

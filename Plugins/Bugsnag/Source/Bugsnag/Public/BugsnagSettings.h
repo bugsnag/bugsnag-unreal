@@ -69,6 +69,19 @@ struct FBugsnagErrorTypes
 };
 
 /**
+  * Types of telemetry that may be sent to Bugsnag for product improvement purposes.
+  */
+USTRUCT()
+struct FBugsnagTelemetryTypes
+{
+	GENERATED_BODY()
+
+	// Errors within the Bugsnag SDK.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
+	bool bInternalErrors = true;
+};
+
+/**
  * Controls whether Bugsnag events should include the state of all threads at the time of an error.
  */
 UENUM()
@@ -185,6 +198,10 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	// Whether User information should be persisted to disk between application runs.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bPersistUser = true;
+
+	// The types of telemetry that may be sent to Bugsnag for product improvement purposes.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
+	FBugsnagTelemetryTypes Telemetry;
 
 	///////////////////////////////////////////////////////////////////////////
 	//
