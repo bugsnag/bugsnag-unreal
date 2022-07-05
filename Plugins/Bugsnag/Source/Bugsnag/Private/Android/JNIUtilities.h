@@ -7,6 +7,7 @@
 #include "BugsnagBreadcrumb.h"
 #include "BugsnagEvent.h"
 #include "BugsnagSettings.h"
+#include "BugsnagTelemetryTypes.h"
 
 typedef struct
 {
@@ -31,6 +32,7 @@ typedef struct
 	jclass MetadataParserClass;
 	jclass MetadataSerializerClass;
 	jclass NotifierClass;
+	jclass TelemetryClass;
 	jclass ThreadClass;
 	jclass ThreadSendPolicyClass;
 	jclass ThreadTypeClass;
@@ -141,6 +143,7 @@ typedef struct
 	jmethodID ConfigSetReleaseStage;
 	jmethodID ConfigSetSendLaunchCrashesSynchronously;
 	jmethodID ConfigSetSendThreads;
+	jmethodID ConfigSetTelemetry;
 	jmethodID ConfigSetUser;
 	jmethodID ConfigSetVersionCode;
 	jmethodID ContextGetApplication;
@@ -283,6 +286,7 @@ typedef struct
 	jfieldID BreadcrumbTypeUser;
 	jfieldID ErrorTypeAndroid;
 	jfieldID ErrorTypeC;
+	jfieldID TelemetryInternalErrors;
 	jfieldID ThreadSendPolicyAlways;
 	jfieldID ThreadSendPolicyUnhandledOnly;
 	jfieldID ThreadSendPolicyNever;
@@ -367,6 +371,8 @@ public:
    * @return A Java object reference or null on failure
    */
 	static jobject ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagEnabledBreadcrumbTypes Value);
+
+	static jobject ParseTelemetryTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagTelemetryTypes Value);
 
 	/**
    * Convert a value into a Java Severity

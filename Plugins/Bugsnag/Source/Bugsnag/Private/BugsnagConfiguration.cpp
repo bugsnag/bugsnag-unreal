@@ -33,6 +33,11 @@ static EBugsnagEnabledBreadcrumbTypes Convert(FBugsnagEnabledBreadcrumbTypes Val
 		   (Value.bUser ? EBugsnagEnabledBreadcrumbTypes::User : EBugsnagEnabledBreadcrumbTypes::None);
 }
 
+static EBugsnagTelemetryTypes Convert(const FBugsnagTelemetryTypes& Value)
+{
+	return (Value.bInternalErrors ? EBugsnagTelemetryTypes::InternalErrors : EBugsnagTelemetryTypes::None);
+}
+
 uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;
 
 FBugsnagConfiguration::FBugsnagConfiguration(const FString& ApiKey)
@@ -56,6 +61,7 @@ FBugsnagConfiguration::FBugsnagConfiguration(const UBugsnagSettings& Settings)
 	, MaxPersistedEvents(Settings.MaxPersistedEvents)
 	, MaxPersistedSessions(Settings.MaxPersistedSessions)
 	, bPersistUser(Settings.bPersistUser)
+	, Telemetry(Convert(Settings.Telemetry))
 	, ReleaseStage(UnsetIfEmpty(Settings.ReleaseStage))
 	, AppType(UnsetIfEmpty(Settings.AppType))
 	, AppVersion(UnsetIfEmpty(Settings.AppVersion))
