@@ -1,26 +1,24 @@
 package com.bugsnag.android.unreal;
 
+import com.bugsnag.android.Breadcrumb;
+import com.bugsnag.android.Client;
+import com.bugsnag.android.Configuration;
+import com.bugsnag.android.Error;
+import com.bugsnag.android.ErrorType;
+import com.bugsnag.android.Event;
+import com.bugsnag.android.OnBreadcrumbCallback;
+import com.bugsnag.android.OnErrorCallback;
+import com.bugsnag.android.OnSendCallback;
+import com.bugsnag.android.OnSessionCallback;
+import com.bugsnag.android.Plugin;
+import com.bugsnag.android.Session;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.bugsnag.android.Bugsnag;
-import com.bugsnag.android.Client;
-import com.bugsnag.android.Configuration;
-import com.bugsnag.android.Breadcrumb;
-import com.bugsnag.android.Error;
-import com.bugsnag.android.ErrorType;
-import com.bugsnag.android.Event;
-import com.bugsnag.android.OnBreadcrumbCallback;
-import com.bugsnag.android.OnErrorCallback;
-import com.bugsnag.android.OnSessionCallback;
-import com.bugsnag.android.OnSendCallback;
-import com.bugsnag.android.Plugin;
-import com.bugsnag.android.Session;
-import com.bugsnag.android.Severity;
 
 public class UnrealPlugin implements Plugin {
   static final String DEFAULT_HANDLED_REASON = "handledError";
@@ -37,16 +35,6 @@ public class UnrealPlugin implements Plugin {
   OnSendCallback onSendRunner = new OnSendCallback() {
     @Override
     public boolean onSend(Event event) {
-      // discard if the error class is in (the currently configured) discardClasses
-      if (discardClasses != null && discardClasses.size() > 0) {
-        for (Error err : event.getErrors()) {
-          String errorClass = err.getErrorClass();
-          if (errorClass != null && discardClasses.contains(errorClass)) {
-            return false;
-          }
-        }
-      }
-
       // if for some reason the plugin is unloaded when a callback is invoked, skip processing
       return loaded ? runEventCallbacks(event) : true;
     }
@@ -102,7 +90,7 @@ public class UnrealPlugin implements Plugin {
    */
   static native void setSeverityReason(Event event, String reasonType);
 
-  private Set<String> discardClasses;
+  static private Set<String> discardClasses;
 
   public UnrealPlugin(Configuration config) {
     config.addOnBreadcrumb(onBreadcrumbRunner);
@@ -130,6 +118,10 @@ public class UnrealPlugin implements Plugin {
     if (client == null || name == null) {
       return;
     }
+    if (discardClasses != null && discardClasses.contains(name)) {
+      return;
+    }
+
     Throwable exc = new RuntimeException();
     exc.setStackTrace(stacktrace);
 
