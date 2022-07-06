@@ -1,6 +1,12 @@
 Changelog
 =========
 
+## 1.5.0 (2022-07-06)
+
+* Adds the `Telemetry` configuration property.
+* Updates the bugsnag-android dependency from v5.22.1 to [v5.24.0](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5240-2022-06-30)
+* Updates the bugsnag-cocoa dependency from v6.16.8 to [v6.19.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6190-2022-06-29)
+
 ## 1.4.0 (2022-05-11)
 
 * Adds official support for Unreal Engine 5.0 🚀

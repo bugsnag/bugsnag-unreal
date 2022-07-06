@@ -81,6 +81,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheExternalJavaClass(env, cache->SessionClass, "com.bugsnag.android.Session");
 	CacheExternalJavaClass(env, cache->SeverityClass, "com.bugsnag.android.Severity");
 	CacheExternalJavaClass(env, cache->StackframeClass, "com.bugsnag.android.Stackframe");
+	CacheExternalJavaClass(env, cache->TelemetryClass, "com.bugsnag.android.Telemetry");
 	CacheExternalJavaClass(env, cache->ThreadClass, "com.bugsnag.android.Thread");
 	CacheExternalJavaClass(env, cache->UserClass, "com.bugsnag.android.User");
 	CacheExternalJavaClass(env, cache->EndpointConfigurationClass, "com.bugsnag.android.EndpointConfiguration");
@@ -200,6 +201,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ConfigSetReleaseStage, cache->ConfigClass, "setReleaseStage", "(Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetSendLaunchCrashesSynchronously, cache->ConfigClass, "setSendLaunchCrashesSynchronously", "(Z)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetSendThreads, cache->ConfigClass, "setSendThreads", "(Lcom/bugsnag/android/ThreadSendPolicy;)V");
+	CacheInstanceJavaMethod(env, cache->ConfigSetTelemetry, cache->ConfigClass, "setTelemetry", "(Ljava/util/Set;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetUser, cache->ConfigClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigSetVersionCode, cache->ConfigClass, "setVersionCode", "(Ljava/lang/Integer;)V");
 
@@ -365,6 +367,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaField(env, cache->BreadcrumbTypeUser, cache->BreadcrumbTypeClass, "USER", "Lcom/bugsnag/android/BreadcrumbType;");
 	CacheStaticJavaField(env, cache->ErrorTypeAndroid, cache->ErrorTypeClass, "ANDROID", "Lcom/bugsnag/android/ErrorType;");
 	CacheStaticJavaField(env, cache->ErrorTypeC, cache->ErrorTypeClass, "C", "Lcom/bugsnag/android/ErrorType;");
+	CacheStaticJavaField(env, cache->TelemetryInternalErrors, cache->TelemetryClass, "INTERNAL_ERRORS", "Lcom/bugsnag/android/Telemetry;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyAlways, cache->ThreadSendPolicyClass, "ALWAYS", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyUnhandledOnly, cache->ThreadSendPolicyClass, "UNHANDLED_ONLY", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyNever, cache->ThreadSendPolicyClass, "NEVER", "Lcom/bugsnag/android/ThreadSendPolicy;");
@@ -489,17 +492,18 @@ jobject FAndroidPlatformJNI::ParseJsonObject(JNIEnv* Env, const JNIReferenceCach
  * Adds a value to a set if enabled
  *
  * @param Env       A JNI environment for the current thread
+ * @param Cache     the JNI reference cache
  * @param ShouldAdd true if the value should be added
  * @param TypeClass the enum class
  * @param FieldName the name of the field to add to the set
  *
  * @return true if operation completed without error
  */
-static bool addTypeToSet(JNIEnv* Env, jobject jSet, bool ShouldAdd, const JNIReferenceCache* Cache, jfieldID FieldName)
+static bool addTypeToSet(JNIEnv* Env, const JNIReferenceCache* Cache, jobject jSet, bool ShouldAdd, jclass TypeClass, jfieldID FieldName)
 {
 	if (ShouldAdd)
 	{
-		jobject jType = (*Env).GetStaticObjectField(Cache->BreadcrumbTypeClass, FieldName);
+		jobject jType = (*Env).GetStaticObjectField(TypeClass, FieldName);
 		if (FAndroidPlatformJNI::CheckAndClearException(Env))
 		{
 			return false;
@@ -551,13 +555,29 @@ jobject FAndroidPlatformJNI::ParseBreadcrumbTypeSet(JNIEnv* Env, const JNIRefere
 	{
 		return nullptr;
 	}
-	if (addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Error), Cache, Cache->BreadcrumbTypeError) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Log), Cache, Cache->BreadcrumbTypeLog) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Navigation), Cache, Cache->BreadcrumbTypeNavigation) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Process), Cache, Cache->BreadcrumbTypeProcess) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Request), Cache, Cache->BreadcrumbTypeRequest) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::State), Cache, Cache->BreadcrumbTypeState) &&
-		addTypeToSet(Env, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::User), Cache, Cache->BreadcrumbTypeUser))
+	jclass TypeClass = Cache->BreadcrumbTypeClass;
+	if (addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Error), TypeClass, Cache->BreadcrumbTypeError) &&
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Log), TypeClass, Cache->BreadcrumbTypeLog) &&
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Navigation), TypeClass, Cache->BreadcrumbTypeNavigation) &&
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Process), TypeClass, Cache->BreadcrumbTypeProcess) &&
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::Request), TypeClass, Cache->BreadcrumbTypeRequest) &&
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::State), TypeClass, Cache->BreadcrumbTypeState) &&
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagEnabledBreadcrumbTypes::User), TypeClass, Cache->BreadcrumbTypeUser))
+	{
+		return jSet;
+	}
+	return nullptr;
+}
+
+jobject FAndroidPlatformJNI::ParseTelemetryTypeSet(JNIEnv* Env, const JNIReferenceCache* Cache, const EBugsnagTelemetryTypes Value)
+{
+	jobject jSet = Env->NewObject(Cache->HashSetClass, Cache->HashSetConstructor);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env))
+	{
+		return nullptr;
+	}
+	jclass TypeClass = Cache->TelemetryClass;
+	if (addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors), TypeClass, Cache->TelemetryInternalErrors))
 	{
 		return jSet;
 	}

@@ -46,7 +46,6 @@ void FApplePlatformConfigurationSpec::Define()
 					TEST_TRUE([CocoaConfig.appType isEqual:DefaultConfig.appType]);
 					TEST_TRUE([CocoaConfig.bundleVersion isEqual:DefaultConfig.bundleVersion]);
 					TEST_TRUE([CocoaConfig.redactedKeys isEqual:DefaultConfig.redactedKeys]);
-					TEST_TRUE([CocoaConfig.releaseStage isEqual:DefaultConfig.releaseStage]);
 				});
 
 			It("ApiKey", [this]()
@@ -183,6 +182,16 @@ void FApplePlatformConfigurationSpec::Define()
 					Configuration->SetPersistUser(false);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(CocoaConfig.persistUser, NO);
+				});
+
+			It("Telemetry", [this]()
+				{
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
+					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+					TEST_TRUE(CocoaConfig.telemetry == BSGTelemetryInternalErrors);
+					Configuration->SetTelemetry(EBugsnagTelemetryTypes::None);
+					CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+					TEST_TRUE(CocoaConfig.telemetry == 0);
 				});
 
 			It("ReleaseStage", [this]()

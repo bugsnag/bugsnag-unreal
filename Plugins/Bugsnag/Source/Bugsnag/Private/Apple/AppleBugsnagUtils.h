@@ -8,8 +8,6 @@
 #include "Serialization/LargeMemoryReader.h"
 #include "Serialization/LargeMemoryWriter.h"
 
-#import <BugsnagPrivate/BSGJSONSerialization.h>
-
 // String conversion
 
 static inline FString FStringFromNSString(NSString* _Nullable String)
@@ -61,7 +59,11 @@ static inline NSNumber* NSNumberFromOptional(const TOptional<T>& Value)
 
 static inline TSharedPtr<FJsonObject> FJsonObjectFromNSDictionary(NSDictionary* Dictionary, NSError** Error = nil)
 {
-	NSData* Data = [BSGJSONSerialization dataWithJSONObject:Dictionary options:0 error:Error];
+	if (!Dictionary || ![NSJSONSerialization isValidJSONObject:Dictionary])
+	{
+		return nullptr;
+	}
+	NSData* Data = [NSJSONSerialization dataWithJSONObject:Dictionary options:0 error:Error];
 	if (Data)
 	{
 		TSharedPtr<FJsonObject> JsonObject;
@@ -86,7 +88,7 @@ static inline NSDictionary* _Nullable NSDictionaryFromFJsonObject(const TSharedP
 	{
 		JsonWriter->Close();
 		NSData* Data = [NSData dataWithBytesNoCopy:Archive.GetData() length:Archive.TotalSize() freeWhenDone:NO];
-		return [BSGJSONSerialization JSONObjectWithData:Data options:0 error:Error];
+		return [NSJSONSerialization JSONObjectWithData:Data options:0 error:Error];
 	}
 	return nil;
 }

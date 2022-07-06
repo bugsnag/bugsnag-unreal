@@ -95,7 +95,7 @@ format: ## format all c/c++ source to match .clang-format
 .PHONY: lint
 lint: ## check the project for formatting or spelling issues
 	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
-	cspell **/*.{cpp,h}
+	cspell Plugins/Bugsnag/**/*.{cpp,h}
 
 #-------------------------------------------------------------------------------
 # E2E test run
