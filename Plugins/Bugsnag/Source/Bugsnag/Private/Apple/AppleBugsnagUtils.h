@@ -59,6 +59,10 @@ static inline NSNumber* NSNumberFromOptional(const TOptional<T>& Value)
 
 static inline TSharedPtr<FJsonObject> FJsonObjectFromNSDictionary(NSDictionary* Dictionary, NSError** Error = nil)
 {
+	if (!Dictionary || ![NSJSONSerialization isValidJSONObject:Dictionary])
+	{
+		return nullptr;
+	}
 	NSData* Data = [NSJSONSerialization dataWithJSONObject:Dictionary options:0 error:Error];
 	if (Data)
 	{
