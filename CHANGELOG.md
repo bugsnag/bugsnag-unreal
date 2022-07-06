@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## TBD
+## 1.5.0 (2022-07-06)
 
 * Adds the `Telemetry` configuration property.
 * Updates the bugsnag-android dependency from v5.22.1 to [v5.24.0](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5240-2022-06-30)
