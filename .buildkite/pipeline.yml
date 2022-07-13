@@ -46,6 +46,7 @@ steps:
       queue: opensource-windows-unreal-4.27
     env:
       UE_VERSION: "4.27"
+      UE_HOME: "F:\unreal\UE_4.27"
     command: build.bat
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
