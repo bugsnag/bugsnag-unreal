@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## TBD
+
+* Updates the bugsnag-cocoa dependency from v6.19.0 to [v6.20.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6200-2022-07-13)
+
 ## 1.5.0 (2022-07-06)
 
 * Adds the `Telemetry` configuration property.
