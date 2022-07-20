@@ -43,7 +43,7 @@ steps:
 
   - label: 'Build Plugin - 4.27 Win'
     agents:
-      queue: opensource-windows-unreal-4.27
+      queue: windows-general
     env:
       UE_VERSION: "4.27"
     command: build.bat
