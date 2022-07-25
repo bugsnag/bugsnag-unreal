@@ -108,7 +108,7 @@ void FApplePlatformBugsnag::Notify(
 													 device:[Client generateDeviceWithState:SystemInfo]
 											   handledState:HandledState
 													   user:Client.user
-												   metadata:[Client.metadata deepCopy]
+												   metadata:[Client.metadata copy]
 												breadcrumbs:Client.breadcrumbs.breadcrumbs ?: @[]
 													 errors:@[Error]
 													threads:Threads
