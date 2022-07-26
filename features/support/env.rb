@@ -3,6 +3,9 @@ BeforeAll do
 end
 
 Before do |_scenario|
+  # Reset to defaults in case previous scenario changed them
+  Maze.config.captured_invalid_requests = Set[:errors, :sessions, :builds, :uploads, :sourcemaps]
+
   # Wait long enough for Unreal Engine to finish loading the UI.
   # Appium appears to wait for the activity to be ready, but Unreal
   # does its own loading on a background thread.
