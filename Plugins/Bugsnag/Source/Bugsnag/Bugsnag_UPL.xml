@@ -74,7 +74,7 @@
         <insertNewline/>
         <insert>
             com.bugsnag,bugsnag-plugin-android-unreal,1.5.0
-            com.bugsnag,bugsnag-android,5.25.0
+            com.bugsnag,bugsnag-android,5.26.0
         </insert>
         <insertNewline/>
     </AARImports>
