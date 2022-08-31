@@ -76,14 +76,14 @@ package: ## Build plugin for release or testing
 endif
 ifeq ($(PLATFORM),wsl)
 package: ## Build plugin for windows under wsl
-	UE_HOME?="/mnt/c/Program\ Files/Epic\ Games/UE_$(UE_VERSION)"
-	UE_RUNUAT?="$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.bat"
-	$(UE_RUNUAT) BuildPlugin -Plugin="$(pwd)/plugins/Bugsnag/Bugsnag.uplugin" -Package="$(pwd)/Build/Plugin/Bugsnag" -TargetPlatforms=Win32+Win64
+	UE_HOME?="C:\Program Files\Epic Games\UE_$(UE_VERSION)"
+	UE_RUNUAT?="$(UE_HOME)\Engine\Build\BatchFiles\RunUAT.bat"
+	/mnt/c/windows/system32/cmd.exe /C "$(UE_RUNUAT)" BuildPlugin -Plugin="$(wslpath -w .)/plugins/Bugsnag/Bugsnag.uplugin" -Package="$(wslpath -w .)/Build/Plugin/Bugsnag" -TargetPlatforms=Win32+Win64
 endif
 
 .PHONY: clean
 clean: ## remove build artifacts
-	$(MAKE) -f make/Cocoa.make clean
+	$(MAKE) -f make/Cocoa.Emake clean
 	$(MAKE) -f make/Android.make clean
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
 	rm -rf Build features/fixtures/generic/Plugins/Bugsnag
