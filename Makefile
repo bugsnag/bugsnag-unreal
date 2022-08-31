@@ -37,6 +37,11 @@ TESTSCOPE?=Bugsnag
 # Default platform for commands - supported values: Android, iOS, macOS
 PLATFORM?=macOS
 
+ifeq ($(PLATFORM), wsl)
+	UE_HOME?="/mnt/c/Program Files/Epic Games/$(UE_VERSION)"
+	UE_RUNUAT?="$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.bat"
+endif
+
 all: $(EXAMPLE_MAC_LIB)
 
 #-------------------------------------------------------------------------------
@@ -76,8 +81,6 @@ package: ## Build plugin for release or testing
 endif
 ifeq ($(PLATFORM),wsl)
 package: ## Build plugin for windows under wsl
-	UE_HOME?="/mnt/c/Program\ Files/Epic\ Games/$(UE_VERSION)"
-	UE_RUNUAT?="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.bat"
 	/mnt/c/windows/system32/cmd.exe /C "$(wslpath -w UE_RUNUAT)" BuildPlugin -Plugin="$(wslpath -w .)/plugins/Bugsnag/Bugsnag.uplugin" -Package="$(wslpath -w .)/Build/Plugin/Bugsnag" -TargetPlatforms=Win32+Win64
 endif
 
