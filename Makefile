@@ -76,9 +76,9 @@ package: ## Build plugin for release or testing
 endif
 ifeq ($(PLATFORM),wsl)
 package: ## Build plugin for windows under wsl
-	UE_HOME?="C:\Program Files\Epic Games\UE_$(UE_VERSION)"
-	UE_RUNUAT?="$(UE_HOME)\Engine\Build\BatchFiles\RunUAT.bat"
-	/mnt/c/windows/system32/cmd.exe /C "$(UE_RUNUAT)" BuildPlugin -Plugin="$(wslpath -w .)/plugins/Bugsnag/Bugsnag.uplugin" -Package="$(wslpath -w .)/Build/Plugin/Bugsnag" -TargetPlatforms=Win32+Win64
+	UE_HOME?="/mnt/c/Program\ Files/Epic\ Games/$(UE_VERSION)"
+	UE_RUNUAT?="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.bat"
+	/mnt/c/windows/system32/cmd.exe /C "$(wslpath -w UE_RUNUAT)" BuildPlugin -Plugin="$(wslpath -w .)/plugins/Bugsnag/Bugsnag.uplugin" -Package="$(wslpath -w .)/Build/Plugin/Bugsnag" -TargetPlatforms=Win32+Win64
 endif
 
 .PHONY: clean
