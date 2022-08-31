@@ -12,4 +12,4 @@ SCRIPT_DIR=$(pwd)
 
 cd "$SCRIPT_DIR/Build/Plugin"
 
-zip -r" $SCRIPT_DIR/Bugsnag-UE$UE_VERSION-Windows.zip" Bugsnag
+zip -r "$SCRIPT_DIR/Bugsnag-UE$UE_VERSION-Windows.zip" Bugsnag
