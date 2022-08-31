@@ -46,7 +46,7 @@ steps:
       queue: win-general-1-wsl
     env:
       UE_VERSION: "4.27"
-    command: build.bat
+    command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
 
