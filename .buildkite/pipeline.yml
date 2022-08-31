@@ -43,7 +43,7 @@ steps:
 
   - label: 'Build Plugin - 4.27 Win'
     agents:
-      queue: windows-general
+      queue: win-general-1-wsl
     env:
       UE_VERSION: "4.27"
     command: build.bat

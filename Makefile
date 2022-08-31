@@ -63,6 +63,7 @@ endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 .PHONY: package
+ifeq ($(PLATFORM),macOS)
 package: ## Build plugin for release or testing
 	$(MAKE) -f make/Android.make package
 	$(MAKE) -f make/Cocoa.make package
@@ -72,6 +73,13 @@ package: ## Build plugin for release or testing
 # https://marketplacehelp.epicgames.com/s/article/Marketplace-Plugin-Guide
 # https://www.unrealengine.com/en-US/marketplace-guidelines#273
 	cd "$(PLUGIN_PACKAGE)/.." && zip -r "$(ZIP_NAME)-src.zip" Bugsnag/Bugsnag.uplugin Bugsnag/Config Bugsnag/Resources Bugsnag/Source
+endif
+ifeq ($(PLATFORM),wsl)
+package: ## Build plugin for windows under wsl
+    UE_HOME?=C:\Program Files\Epic Games\UE_$(UE_VERSION)
+    UE_RUN_UAT?=$(UE_HOME)\Engine\Build\BatchFiles\RunUAT.bat
+    "$(UE_RUN_UAT)" BuildPlugin -Plugin="$(pwd)\Plugins\Bugsnag\Bugsnag.uplugin" -Package="$(pwd)\Build\Plugin\Bugsnag" -TargetPlatforms=Win32+Win64
+endif
 
 .PHONY: clean
 clean: ## remove build artifacts
