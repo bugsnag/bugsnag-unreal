@@ -43,7 +43,7 @@ steps:
 
   - label: 'Build Plugin - 4.27 Win'
     agents:
-      queue: win-general-1-wsl
+      queue: windows-general-wsl
     env:
       UE_VERSION: "4.27"
     command: features/scripts/build-plugin-wsl.sh

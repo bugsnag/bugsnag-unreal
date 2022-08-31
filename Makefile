@@ -76,7 +76,7 @@ package: ## Build plugin for release or testing
 
 .PHONY: clean
 clean: ## remove build artifacts
-	$(MAKE) -f make/Cocoa.Emake clean
+	$(MAKE) -f make/Cocoa.make clean
 	$(MAKE) -f make/Android.make clean
 	find . -type d -name Binaries -or -name Intermediate | xargs rm -rf
 	rm -rf Build features/fixtures/generic/Plugins/Bugsnag
