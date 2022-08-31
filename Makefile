@@ -37,11 +37,6 @@ TESTSCOPE?=Bugsnag
 # Default platform for commands - supported values: Android, iOS, macOS
 PLATFORM?=macOS
 
-ifeq ($(PLATFORM), wsl)
-	UE_HOME?="/mnt/c/Program Files/Epic Games/$(UE_VERSION)"
-	UE_RUNUAT?="$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.bat"
-endif
-
 all: $(EXAMPLE_MAC_LIB)
 
 #-------------------------------------------------------------------------------
@@ -68,7 +63,7 @@ endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 .PHONY: package
-ifeq ($(PLATFORM),macOS)
+
 package: ## Build plugin for release or testing
 	$(MAKE) -f make/Android.make package
 	$(MAKE) -f make/Cocoa.make package
@@ -78,11 +73,6 @@ package: ## Build plugin for release or testing
 # https://marketplacehelp.epicgames.com/s/article/Marketplace-Plugin-Guide
 # https://www.unrealengine.com/en-US/marketplace-guidelines#273
 	cd "$(PLUGIN_PACKAGE)/.." && zip -r "$(ZIP_NAME)-src.zip" Bugsnag/Bugsnag.uplugin Bugsnag/Config Bugsnag/Resources Bugsnag/Source
-endif
-ifeq ($(PLATFORM),wsl)
-package: ## Build plugin for windows under wsl
-	/mnt/c/windows/system32/cmd.exe /C "$(wslpath -w UE_RUNUAT)" BuildPlugin -Plugin="$(wslpath -w .)/plugins/Bugsnag/Bugsnag.uplugin" -Package="$(wslpath -w .)/Build/Plugin/Bugsnag" -TargetPlatforms=Win32+Win64
-endif
 
 .PHONY: clean
 clean: ## remove build artifacts
