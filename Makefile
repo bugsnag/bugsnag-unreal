@@ -63,7 +63,6 @@ endif
 
 # https://www.unrealengine.com/en-US/marketplace-guidelines#263b
 .PHONY: package
-
 package: ## Build plugin for release or testing
 	$(MAKE) -f make/Android.make package
 	$(MAKE) -f make/Cocoa.make package
