@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o errexit
+set -o nounset
+
 UE_VERSION="${UE_VERSION:-4.27}"
 
 UE_HOME="C:\Program Files\Epic Games\UE_$UE_VERSION"
