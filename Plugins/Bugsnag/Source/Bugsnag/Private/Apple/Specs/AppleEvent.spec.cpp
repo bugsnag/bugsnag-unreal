@@ -4,9 +4,7 @@
 
 #include "../AppleEvent.h"
 
-#import <Bugsnag/Bugsnag.h>
-#import <BugsnagPrivate/BugsnagEvent+Private.h>
-#import <BugsnagPrivate/BugsnagHandledState.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 BEGIN_DEFINE_SPEC(FAppleEventSpec, "Bugsnag.FAppleEventSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)

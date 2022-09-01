@@ -4,8 +4,7 @@
 
 #include "../AppleStackframe.h"
 
-#import <Bugsnag/Bugsnag.h>
-#import <BugsnagPrivate/BugsnagStackframe+Private.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 BEGIN_DEFINE_SPEC(FAppleStackframeSpec, "Bugsnag.FAppleStackframeSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
