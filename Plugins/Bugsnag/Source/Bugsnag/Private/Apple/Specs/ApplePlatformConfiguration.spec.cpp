@@ -5,14 +5,7 @@
 #include "../ApplePlatformConfiguration.h"
 #include "BugsnagConfiguration.h"
 
-#import <Bugsnag/BugsnagConfiguration.h>
-#import <Bugsnag/BugsnagEndpointConfiguration.h>
-#import <Bugsnag/BugsnagErrorTypes.h>
-#import <Bugsnag/BugsnagEvent.h>
-#import <Bugsnag/BugsnagSession.h>
-#import <Bugsnag/BugsnagUser.h>
-
-#import <BugsnagPrivate/BugsnagConfiguration+Private.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 //
 // This is an example of an Automation Spec, a newer type of test that follows BDD methodology.
