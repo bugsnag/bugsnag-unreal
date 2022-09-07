@@ -1,11 +1,10 @@
-#!/bin/bash
-set -x
-set -o errexit
-set -o nounset
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
 
 UE_VERSION="${UE_VERSION:-4.27}"
 
-UE_HOME="C:\Program/ Files\Epic/ Games\UE_$UE_VERSION"
+UE_HOME="C:\Program Files\Epic Games\UE_$UE_VERSION"
 
 UE_RUNUAT="$UE_HOME\Engine\Build\BatchFiles\RunUAT.bat"
 
