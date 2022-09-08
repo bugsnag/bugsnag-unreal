@@ -43,10 +43,11 @@ steps:
 
   - label: 'Build Plugin - 4.27 Win'
     agents:
-      queue: windows-general
+      queue: windows-general-wsl
     env:
       UE_VERSION: "4.27"
-    command: build.bat
+      UE_HOME: F:\unreal
+    command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
 
