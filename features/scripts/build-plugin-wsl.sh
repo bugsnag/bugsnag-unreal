@@ -4,7 +4,7 @@ set -Eeuo pipefail
 
 UE_VERSION="${UE_VERSION:-4.27}"
 
-UE_HOME="C:\Program Files\Epic Games\UE_$UE_VERSION"
+UE_HOME="${UE_HOME:-C:\Program Files\Epic Games}"\\UE_$UE_VERSION
 
 UE_RUNUAT="$UE_HOME\Engine\Build\BatchFiles\RunUAT.bat"
 
