@@ -43,7 +43,7 @@ steps:
 
   - label: 'Build Plugin - 4.27 Win'
     agents:
-      queue: win-general-2-wsl
+      queue: windows-general-wsl
     env:
       UE_VERSION: "4.27"
       UE_HOME: F:\unreal
