@@ -12,12 +12,23 @@ public class BugsnagCocoa : ModuleRules
 
 		string IncludePath = Path.Combine(ModuleDirectory, "include");
 		CheckFileExists(Path.Combine(IncludePath, "Bugsnag", "Bugsnag.h"));
-		CheckFileExists(Path.Combine(IncludePath, "BugsnagPrivate", "Bugsnag+Private.h"));
+		CheckFileExists(Path.Combine(IncludePath, "BugsnagPrivate", "BugsnagInternals.h"));
+		CheckFileExists(Path.Combine(IncludePath, "BugsnagPrivate", "Bugsnag-Swift.h"));
 		PublicSystemIncludePaths.Add(IncludePath);
 
 		string LibraryPath = Path.Combine(ModuleDirectory, Target.Platform.ToString(), "libBugsnagStatic.a");
 		CheckFileExists(LibraryPath);
 		PublicAdditionalLibraries.Add(LibraryPath);
+
+		// For Swift: https://stackoverflow.com/a/55357351/61560
+		if (Target.Platform == UnrealTargetPlatform.IOS)
+		{
+			PublicSystemLibraryPaths.Add("/Applications/Xcode13.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos");
+		}
+		if (Target.Platform == UnrealTargetPlatform.Mac)
+		{
+			PublicSystemLibraryPaths.Add("/Applications/Xcode13.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx");
+		}
 	}
 
 	private void CheckFileExists(string Path)

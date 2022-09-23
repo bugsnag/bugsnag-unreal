@@ -33,3 +33,4 @@ $(MAC_LIB): $(shell find $(SRCDIR) -type f)
 	$(XCODEBUILD) -destination generic/platform=macOS SDKROOT=macosx MACOSX_DEPLOYMENT_TARGET=10.11
 	mkdir -p $(@D)
 	ln -f $(DERIVED_DATA)/Build/Products/Release/$(@F) $@
+	cp $(DERIVED_DATA)/Build/Products/Release/include/Bugsnag/Bugsnag-Swift.h $(HEADERS)/Bugsnag/

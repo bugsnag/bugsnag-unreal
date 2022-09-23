@@ -12,6 +12,7 @@
 
 #include "HAL/PlatformStackWalk.h"
 
+#import <Bugsnag/Bugsnag-Swift.h>
 #import <BugsnagPrivate/BugsnagInternals.h>
 
 DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
@@ -32,6 +33,7 @@ static void FApplePlatformBugsnag_OnCrashHandler(const BSG_KSCrashReportWriter* 
 
 void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Configuration)
 {
+	[BugsnagSwift start];
 	BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 #if UE_EDITOR
 	if (!FApp::IsGame())
