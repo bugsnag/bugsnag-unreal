@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## TBD
+## 1.5.1 (2022-10-27)
 
 * Updates the bugsnag-cocoa dependency from v6.19.0 to [v6.25.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6240-2022-10-05)
 * Updates the bugsnag-android dependency from v5.24.0 to [v5.28.1](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5281-2022-10-19)
