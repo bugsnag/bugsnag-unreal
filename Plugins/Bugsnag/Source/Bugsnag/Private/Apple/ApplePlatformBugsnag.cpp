@@ -12,23 +12,11 @@
 
 #include "HAL/PlatformStackWalk.h"
 
-#import <Bugsnag/Bugsnag.h>
-#import <BugsnagPrivate/BSG_KSSystemInfo.h>
-#import <BugsnagPrivate/Bugsnag+Private.h>
-#import <BugsnagPrivate/BugsnagBreadcrumbs.h>
-#import <BugsnagPrivate/BugsnagClient+Private.h>
-#import <BugsnagPrivate/BugsnagError+Private.h>
-#import <BugsnagPrivate/BugsnagEvent+Private.h>
-#import <BugsnagPrivate/BugsnagHandledState.h>
-#import <BugsnagPrivate/BugsnagStackframe+Private.h>
-#import <BugsnagPrivate/BugsnagThread+Private.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 DEFINE_PLATFORM_BUGSNAG(FApplePlatformBugsnag);
 
 #if UE_EDITOR
-
-#import <Bugsnag/BSG_KSCrashReportWriter.h>
-#import <BugsnagPrivate/BugsnagConfiguration+Private.h>
 
 #define IS_PIE_WORLD_KEY "isPlayInEditorWorld"
 #define UNREAL_ENGINE_KEY "unrealEngine"
@@ -84,7 +72,7 @@ void FApplePlatformBugsnag::Notify(
 {
 	BugsnagClient* Client = Bugsnag.client;
 
-	NSDictionary* SystemInfo = [BSG_KSSystemInfo systemInfo];
+	NSDictionary* SystemInfo = BSGGetSystemInfo();
 
 	NSMutableArray<NSNumber*>* Addresses = [NSMutableArray arrayWithCapacity:StackTrace.Num()];
 	for (uint64 Address : StackTrace)
@@ -108,8 +96,8 @@ void FApplePlatformBugsnag::Notify(
 													 device:[Client generateDeviceWithState:SystemInfo]
 											   handledState:HandledState
 													   user:Client.user
-												   metadata:[Client.metadata deepCopy]
-												breadcrumbs:Client.breadcrumbs.breadcrumbs ?: @[]
+												   metadata:[Client.metadata copy]
+												breadcrumbs:[Client breadcrumbs]
 													 errors:@[Error]
 													threads:Threads
 													session:nil /* set by -[BugsnagClient notifyInternal:block:] */];

@@ -4,8 +4,7 @@
 
 #include "../AppleThread.h"
 
-#import <Bugsnag/Bugsnag.h>
-#import <BugsnagPrivate/BugsnagThread+Private.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 BEGIN_DEFINE_SPEC(FAppleThreadSpec, "Bugsnag.FAppleThreadSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)

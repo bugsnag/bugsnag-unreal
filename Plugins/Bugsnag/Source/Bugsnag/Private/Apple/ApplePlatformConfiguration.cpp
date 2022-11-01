@@ -8,12 +8,7 @@
 #include "AppleSession.h"
 #include "Version.h"
 
-#import <Bugsnag/BugsnagConfiguration.h>
-#import <Bugsnag/BugsnagEndpointConfiguration.h>
-#import <Bugsnag/BugsnagErrorTypes.h>
-
-#import <BugsnagPrivate/BugsnagConfiguration+Private.h>
-#import <BugsnagPrivate/BugsnagNotifier.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 static BSGTelemetryOptions GetTelemetryTypes(EBugsnagTelemetryTypes Value)
 {

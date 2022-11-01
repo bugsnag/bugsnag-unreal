@@ -4,8 +4,7 @@
 
 #include "../AppleError.h"
 
-#import <BugsnagPrivate/BugsnagError+Private.h>
-#import <BugsnagPrivate/BugsnagStackframe+Private.h>
+#import <BugsnagPrivate/BugsnagInternals.h>
 
 BEGIN_DEFINE_SPEC(FAppleErrorSpec, "Bugsnag.FAppleErrorSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)

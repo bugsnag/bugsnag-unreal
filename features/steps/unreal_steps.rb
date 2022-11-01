@@ -17,6 +17,7 @@ When('I run {string} and restart the crashed app') do |scenario_name|
 end
 
 When('I run {string} and restart the crashed app for {string}') do |scenario_1, scenario_2|
+  Maze.config.captured_invalid_requests.delete(:sessions)
   run_fixture(:run_scenario, scenario_1, wait_for_crash: true)
   run_fixture(:start_bugsnag, scenario_2)
 end
