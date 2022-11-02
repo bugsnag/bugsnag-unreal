@@ -108,6 +108,8 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedRe
 
 	CocoaConfig.maxPersistedSessions = Configuration->GetMaxPersistedSessions();
 
+	CocoaConfig.maxStringValueLength = Configuration->GetMaxStringValueLength();
+
 	CocoaConfig.persistUser = Configuration->GetPersistUser();
 
 	CocoaConfig.telemetry = GetTelemetryTypes(Configuration->GetTelemetry());

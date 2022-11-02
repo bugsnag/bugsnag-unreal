@@ -138,6 +138,7 @@ e2e_mac: $(TEST_MAC_APP)
 
 .PHONY: build_example_android
 build_example_android: $(EXAMPLE_MAC_LIB)
+	$(MAKE) -f make/Android.make package
 	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(UPROJECT)" -targetplatform=Android -distribution
 
 .PHONY: install_example_android
