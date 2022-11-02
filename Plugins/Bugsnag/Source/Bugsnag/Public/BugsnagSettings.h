@@ -195,7 +195,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMin = "1"))
 	uint32 MaxPersistedSessions = 128;
 
-	// The maximum length of a string in metadata. 
+	// The maximum length of a string in metadata.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMin = "1"))
 	uint32 MaxStringValueLength = 10000;
 
