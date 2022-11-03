@@ -136,6 +136,7 @@ typedef struct
 	jmethodID ConfigSetMaxPersistedEvents;
 	jmethodID ConfigSetMaxPersistedSessions;
 	jmethodID ConfigSetMaxReportedThreads;
+	jmethodID ConfigSetMaxStringValueLength;
 	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
 	jmethodID ConfigSetProjectPackages;
