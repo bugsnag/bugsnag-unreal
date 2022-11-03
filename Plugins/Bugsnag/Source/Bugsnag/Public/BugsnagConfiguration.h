@@ -283,7 +283,7 @@ public:
 	uint32 GetMaxStringValueLength() const { return MaxStringValueLength; }
 
 	/**
-	 * @param Value The maximum number of sessions to store.
+	 * @param Value The maximum length of a string in metadata.
 	 */
 	void SetMaxStringValueLength(uint32 Value) { MaxStringValueLength = Value; };
 
