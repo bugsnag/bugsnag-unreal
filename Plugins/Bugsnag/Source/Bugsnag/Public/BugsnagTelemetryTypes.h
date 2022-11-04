@@ -11,6 +11,7 @@ enum class EBugsnagTelemetryTypes : uint8
 {
 	None = 0,
 	InternalErrors = 1 << 0,
-	All = InternalErrors
+	Usage = 1 << 1,
+	All = InternalErrors | Usage 
 };
 ENUM_CLASS_FLAGS(EBugsnagTelemetryTypes)

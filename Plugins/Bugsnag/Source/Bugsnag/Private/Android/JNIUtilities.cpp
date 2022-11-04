@@ -369,6 +369,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaField(env, cache->ErrorTypeAndroid, cache->ErrorTypeClass, "ANDROID", "Lcom/bugsnag/android/ErrorType;");
 	CacheStaticJavaField(env, cache->ErrorTypeC, cache->ErrorTypeClass, "C", "Lcom/bugsnag/android/ErrorType;");
 	CacheStaticJavaField(env, cache->TelemetryInternalErrors, cache->TelemetryClass, "INTERNAL_ERRORS", "Lcom/bugsnag/android/Telemetry;");
+	CacheStaticJavaField(env, cache->TelemetryUsage, cache->TelemetryClass, "USAGE", "Lcom/bugsnag/android/Telemetry;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyAlways, cache->ThreadSendPolicyClass, "ALWAYS", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyUnhandledOnly, cache->ThreadSendPolicyClass, "UNHANDLED_ONLY", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadSendPolicyNever, cache->ThreadSendPolicyClass, "NEVER", "Lcom/bugsnag/android/ThreadSendPolicy;");
@@ -578,7 +579,8 @@ jobject FAndroidPlatformJNI::ParseTelemetryTypeSet(JNIEnv* Env, const JNIReferen
 		return nullptr;
 	}
 	jclass TypeClass = Cache->TelemetryClass;
-	if (addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors), TypeClass, Cache->TelemetryInternalErrors))
+	if (addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors), TypeClass, Cache->TelemetryInternalErrors) && 
+		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::Usage), TypeClass, Cache->TelemetryUsage))
 	{
 		return jSet;
 	}
