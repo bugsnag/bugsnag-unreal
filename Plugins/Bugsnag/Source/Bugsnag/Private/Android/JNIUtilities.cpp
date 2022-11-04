@@ -579,7 +579,7 @@ jobject FAndroidPlatformJNI::ParseTelemetryTypeSet(JNIEnv* Env, const JNIReferen
 		return nullptr;
 	}
 	jclass TypeClass = Cache->TelemetryClass;
-	if (addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors), TypeClass, Cache->TelemetryInternalErrors) && 
+	if (addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors), TypeClass, Cache->TelemetryInternalErrors) &&
 		addTypeToSet(Env, Cache, jSet, EnumHasAllFlags(Value, EBugsnagTelemetryTypes::Usage), TypeClass, Cache->TelemetryUsage))
 	{
 		return jSet;
