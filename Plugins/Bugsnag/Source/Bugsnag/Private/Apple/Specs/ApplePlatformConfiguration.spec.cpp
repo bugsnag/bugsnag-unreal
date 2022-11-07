@@ -180,21 +180,13 @@ void FApplePlatformConfigurationSpec::Define()
 			It("Telemetry", [this]()
 				{
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
-
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
-
 					TEST_TRUE(CocoaConfig.telemetry == BSGTelemetryAll);
-
 					Configuration->SetTelemetry(EBugsnagTelemetryTypes::None);
-
 					CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
-
 					TEST_TRUE(CocoaConfig.telemetry == 0);
-
 					Configuration->SetTelemetry(EBugsnagTelemetryTypes::Usage);
-
 					CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
-
 					TEST_TRUE(CocoaConfig.telemetry == BSGTelemetryUsage);
 				});
 

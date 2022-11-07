@@ -8,13 +8,6 @@ public class BugsnagExampleEditorTarget : TargetRules
 	public BugsnagExampleEditorTarget(TargetInfo Target) : base(Target)
 	{
 
-
-		if (Target.Platform == UnrealTargetPlatform.IOS || Target.Platform == UnrealTargetPlatform.Mac)
-		{
-			bOverrideBuildEnvironment = true;
-			AdditionalCompilerArguments = "-Wno-unused-but-set-variable";
-		}
-
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
 
