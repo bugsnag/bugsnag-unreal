@@ -35,7 +35,8 @@ static EBugsnagEnabledBreadcrumbTypes Convert(FBugsnagEnabledBreadcrumbTypes Val
 
 static EBugsnagTelemetryTypes Convert(const FBugsnagTelemetryTypes& Value)
 {
-	return (Value.bInternalErrors ? EBugsnagTelemetryTypes::InternalErrors : EBugsnagTelemetryTypes::None);
+	return (Value.bInternalErrors ? EBugsnagTelemetryTypes::InternalErrors : EBugsnagTelemetryTypes::None) |
+		   (Value.bUsage ? EBugsnagTelemetryTypes::Usage : EBugsnagTelemetryTypes::None);
 }
 
 uint64 const FBugsnagConfiguration::AppHangThresholdFatalOnly = INT_MAX;

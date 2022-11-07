@@ -288,6 +288,7 @@ typedef struct
 	jfieldID ErrorTypeAndroid;
 	jfieldID ErrorTypeC;
 	jfieldID TelemetryInternalErrors;
+	jfieldID TelemetryUsage;
 	jfieldID ThreadSendPolicyAlways;
 	jfieldID ThreadSendPolicyUnhandledOnly;
 	jfieldID ThreadSendPolicyNever;

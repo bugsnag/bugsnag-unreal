@@ -79,6 +79,10 @@ struct FBugsnagTelemetryTypes
 	// Errors within the Bugsnag SDK.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bInternalErrors = true;
+
+	// Information about how Bugsnag has been configured.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
+	bool bUsage = true;
 };
 
 /**

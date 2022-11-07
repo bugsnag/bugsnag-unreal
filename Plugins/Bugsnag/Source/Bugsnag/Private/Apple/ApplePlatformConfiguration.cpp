@@ -12,7 +12,8 @@
 
 static BSGTelemetryOptions GetTelemetryTypes(EBugsnagTelemetryTypes Value)
 {
-	return (EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors) ? BSGTelemetryInternalErrors : 0);
+	return (EnumHasAllFlags(Value, EBugsnagTelemetryTypes::InternalErrors) ? BSGTelemetryInternalErrors : 0) |
+		   (EnumHasAllFlags(Value, EBugsnagTelemetryTypes::Usage) ? BSGTelemetryUsage : 0);
 }
 
 static BSGThreadSendPolicy GetThreadSendPolicy(EBugsnagSendThreadsPolicy Policy)
