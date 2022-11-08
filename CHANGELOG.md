@@ -7,6 +7,8 @@ Changelog
 
 * Adds the `MaxStringValueLength` configuration property. [#193](https://github.com/bugsnag/bugsnag-unreal/pull/193)
 
+* Updates the bugsnag-android dependency from v5.28.1 to [v5.28.2](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5282-2022-11-08)
+
 ## 1.5.1 (2022-10-27)
 
 * Updates the bugsnag-cocoa dependency from v6.19.0 to [v6.25.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6240-2022-10-05)
