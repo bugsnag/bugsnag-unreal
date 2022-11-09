@@ -1,6 +1,11 @@
 Changelog
 =========
 
+## 1.6.0 (2022-11-09)
+
+* Adds the `Telemetry.Usage` configuration property. [#194](https://github.com/bugsnag/bugsnag-unreal/pull/194)
+* Adds the `MaxStringValueLength` configuration property. [#193](https://github.com/bugsnag/bugsnag-unreal/pull/193)
+
 ## 1.5.1 (2022-10-27)
 
 * Updates the bugsnag-cocoa dependency from v6.19.0 to [v6.25.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6240-2022-10-05)

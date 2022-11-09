@@ -136,6 +136,7 @@ typedef struct
 	jmethodID ConfigSetMaxPersistedEvents;
 	jmethodID ConfigSetMaxPersistedSessions;
 	jmethodID ConfigSetMaxReportedThreads;
+	jmethodID ConfigSetMaxStringValueLength;
 	jmethodID ConfigSetPersistenceDirectory;
 	jmethodID ConfigSetPersistUser;
 	jmethodID ConfigSetProjectPackages;
@@ -287,6 +288,7 @@ typedef struct
 	jfieldID ErrorTypeAndroid;
 	jfieldID ErrorTypeC;
 	jfieldID TelemetryInternalErrors;
+	jfieldID TelemetryUsage;
 	jfieldID ThreadSendPolicyAlways;
 	jfieldID ThreadSendPolicyUnhandledOnly;
 	jfieldID ThreadSendPolicyNever;

@@ -274,6 +274,20 @@ public:
 	void SetMaxPersistedSessions(uint32 Value) { MaxPersistedSessions = Value; };
 
 	/**
+	 * The maximum length of a string in metadata. 
+	 *
+	 * To help avoid excessive event payload sizes, any strings exceeding this length will be truncated.
+	 *
+	 * This limit defaults to 10,000 characters.
+	 */
+	uint32 GetMaxStringValueLength() const { return MaxStringValueLength; }
+
+	/**
+	 * @param Value The maximum length of a string in metadata.
+	 */
+	void SetMaxStringValueLength(uint32 Value) { MaxStringValueLength = Value; };
+
+	/**
 	 * The maximum number of Android JVM threads that will be reported with an event.
 	 *
 	 * Once the threshold is reached, all remaining threads will be omitted.
@@ -585,6 +599,7 @@ private:
 	uint32 MaxPersistedEvents = 32;
 	uint32 MaxPersistedSessions = 128;
 	uint32 MaxReportedThreads = 200;
+	uint32 MaxStringValueLength = 10000;
 	bool bPersistUser = true;
 	EBugsnagTelemetryTypes Telemetry = EBugsnagTelemetryTypes::All;
 	FBugsnagUser User;

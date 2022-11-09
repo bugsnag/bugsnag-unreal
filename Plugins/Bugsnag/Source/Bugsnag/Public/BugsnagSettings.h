@@ -79,6 +79,10 @@ struct FBugsnagTelemetryTypes
 	// Errors within the Bugsnag SDK.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bInternalErrors = true;
+
+	// Information about how Bugsnag has been configured.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
+	bool bUsage = true;
 };
 
 /**
@@ -194,6 +198,10 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	// The maximum number of sessions to store before deleting the oldest.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMin = "1"))
 	uint32 MaxPersistedSessions = 128;
+
+	// The maximum length of a string in metadata.
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMin = "1"))
+	uint32 MaxStringValueLength = 10000;
 
 	// Whether User information should be persisted to disk between application runs.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
