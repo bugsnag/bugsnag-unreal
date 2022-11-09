@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 10,
-	"VersionName": "1.5.1",
+	"Version": 11,
+	"VersionName": "1.6.0",
 	"FriendlyName": "Bugsnag",
 	"Description": "Bugsnag is an error monitoring and application stability management solution.",
 	"Category": "Developer",

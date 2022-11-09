@@ -1,10 +1,9 @@
 Changelog
 =========
 
-## TBD
+## 1.6.0 (2022-11-09)
 
 * Adds the `Telemetry.Usage` configuration property. [#194](https://github.com/bugsnag/bugsnag-unreal/pull/194)
-
 * Adds the `MaxStringValueLength` configuration property. [#193](https://github.com/bugsnag/bugsnag-unreal/pull/193)
 
 ## 1.5.1 (2022-10-27)
