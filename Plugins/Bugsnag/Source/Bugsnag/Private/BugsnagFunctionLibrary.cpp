@@ -149,19 +149,28 @@ FORCENOINLINE TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 	uint64 Buffer[MAX_DEPTH];
 	FMemory::Memzero(Buffer);
 
-	const uint32 Depth = FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
+	// Note: Internally, CaptureStackBackTrace is calling functions that return int
+	// See Unreal source: Engine/Source/Runtime/Core/Private/Android/AndroidPlatformStackWalk.cpp
+	const int32 Depth = (int32)FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
 
 // Skip the correct number of frames to ensure Shipping builds group correctly
 #if PLATFORM_IOS || PLATFORM_MAC
-	const uint32 IgnoreCount = 1;
+	const int32 IgnoreCount = 1;
 #elif PLATFORM_ANDROID
-	const uint32 IgnoreCount = 2;
+	const int32 IgnoreCount = 2;
 #else
 	// Calibrate this function when adding a new platform
-	const uint32 IgnoreCount = 0;
+	const int32 IgnoreCount = 0;
 #endif
 
-	return TArray<uint64>(Buffer + IgnoreCount, Depth - IgnoreCount);
+	const auto AdjustedDepth = Depth - IgnoreCount;
+	// Don't trust CaptureStackBackTrace to behave properly.
+	if (AdjustedDepth <= 0 || AdjustedDepth > MAX_DEPTH)
+	{
+		return TArray<uint64>(nullptr, 0);
+	}
+
+	return TArray<uint64>(Buffer + IgnoreCount, AdjustedDepth);
 }
 
 const FString UBugsnagFunctionLibrary::GetContext()
