@@ -10,7 +10,7 @@ UE_RUNUAT="$UE_HOME\Engine\Build\BatchFiles\RunUAT.bat"
 
 UE_TARGET_PLATFROM="Win32+Win64"
 
-if [[ UE_VERSION == "5.1" ]]; then
+if [[ "$UE_VERSION" == "5.1" ]]; then
   UE_TARGET_PLATFROM="Win64"
 fi
 
