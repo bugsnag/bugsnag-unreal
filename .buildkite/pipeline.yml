@@ -46,7 +46,7 @@ steps:
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
-    key: plugin_4.27_mac
+    key: plugin_4_27_win
 
   - label: 'Build Plugin - 5.1 Win'
     agents:
@@ -56,7 +56,7 @@ steps:
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
-    key: plugin_5.1_mac
+    key: plugin_5_1_win
 
   #
   # Build Test Fixtures
