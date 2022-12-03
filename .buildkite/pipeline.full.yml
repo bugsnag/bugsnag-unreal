@@ -59,6 +59,24 @@ steps:
   #
   # Build Test Fixtures
   #
+  # UE 4.23
+  - label: 'Build Plugin - 4.23 Mac'
+    agents:
+      queue: opensource-mac-cocoa-10.15
+    env:
+      UE_VERSION: "4.23"
+      DEVELOPER_DIR: "/Applications/Xcode11.app"
+      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+    key: plugin_4_23
 
   # UE 5.0
   - name: ':android: Build E2E - 5.0 Android'
