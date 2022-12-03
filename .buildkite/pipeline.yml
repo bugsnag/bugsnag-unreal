@@ -43,7 +43,7 @@ steps:
       queue: win-general-1
     env:
       UE_VERSION: "4.27"
-      UE_HOME: "C:\Program/ Files\Epic/ Games"
+      UE_HOME: "C:/\Program/ Files/\Epic/ Games"
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
@@ -54,7 +54,7 @@ steps:
       queue: win-general-1
     env:
       UE_VERSION: "5.1"
-      UE_HOME: "C:\Program/ Files\Epic/ Games"
+      UE_HOME: "C:/\Program/ Files/\Epic/ Games"
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
