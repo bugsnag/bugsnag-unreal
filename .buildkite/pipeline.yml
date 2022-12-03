@@ -11,6 +11,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -27,6 +28,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -42,6 +44,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -56,6 +59,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -70,6 +74,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -84,6 +89,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -98,6 +104,7 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/21.4.7075529"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
