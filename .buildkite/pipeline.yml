@@ -1,5 +1,5 @@
 agents:
-  queue: macostest
+  queue: macos-12-arm
 
 steps:
 #
@@ -36,7 +36,107 @@ steps:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 60
-    key: plugin_4_27_mac2
+
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+
+  # UE 4.27 Mac
+  - label: 'Build Plugin - 4.27 Mac'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
 
   # UE 5.1 Mac
   - label: 'Build Plugin - 5.1 Mac'

@@ -6,60 +6,7 @@ steps:
   # Build Plugins
   #
 
-  # UE 4.25
-  - label: 'Build Plugin - 4.25 Mac'
-    agents:
-      queue: opensource-mac-cocoa-10.15
-    env:
-      UE_VERSION: "4.25"
-      DEVELOPER_DIR: "/Applications/Xcode12.app"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 60
-    key: plugin_4_25
-
-  # UE 4.26
-  - label: 'Build Plugin - 4.26 Mac'
-    env:
-      UE_VERSION: "4.26"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 60
-    key: plugin_4_26
-
-  # UE 5.0
-  - label: 'Build Plugin - 5.0 Mac'
-    env:
-      UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [Build/Plugin/*.zip]
-    timeout_in_minutes: 60
-    key: plugin_5_0
-
-  #
-  # Build Test Fixtures
-  #
-  # UE 4.23
+  # UE 4.23 - Mac
   - label: 'Build Plugin - 4.23 Mac'
     agents:
       queue: opensource-mac-cocoa-10.15
@@ -77,6 +24,42 @@ steps:
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 60
     key: plugin_4_23
+
+  # UE 5.0 - Mac
+  - label: 'Build Plugin - 5.0 Mac'
+    env:
+      UE_VERSION: "5.0"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+    key: plugin_5_0
+
+  - label: 'Build Plugin - 4.23 Mac'
+    agents:
+      queue: opensource-mac-cocoa-10.15
+    env:
+      UE_VERSION: "4.23"
+      DEVELOPER_DIR: "/Applications/Xcode11.app"
+      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-4.23-arm64.apk
+          - build/TestFixture-Android-Shipping-4.23-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_4_23
 
   # UE 5.0
   - name: ':android: Build E2E - 5.0 Android'
