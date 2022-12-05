@@ -41,12 +41,22 @@ steps:
     timeout_in_minutes: 60
     key: plugin_4_27
 
+  # Unreal Engine 4.27 - Windows
   - label: 'Build Plugin - 4.27 Win'
     agents:
       queue: windows-general-wsl
     env:
       UE_VERSION: "4.27"
-      UE_HOME: F:\unreal
+    command: features/scripts/build-plugin-wsl.sh
+    artifact_paths: [Bugsnag-*.zip]
+    timeout_in_minutes: 60
+
+  # Unreal Engine 5.1 - Windows
+  - label: 'Build Plugin - 5.1 Win'
+    agents:
+      queue: windows-general-wsl
+    env:
+      UE_VERSION: "4.27"
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
