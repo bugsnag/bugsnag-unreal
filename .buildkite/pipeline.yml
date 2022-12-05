@@ -1,4 +1,22 @@
+agents:
+  queue: ms-arm-12-4
+
 steps:
+  # UE 4.26
+  - label: 'Build Plugin - 4.26 Mac'
+    env:
+      UE_VERSION: "4.26"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - scripts/build-plugin.sh
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+    key: plugin_4_26
+
   # UE 4.27 Mac
   - label: 'Build Plugin - 4.27 Mac'
     env:
@@ -12,5 +30,18 @@ steps:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 60
-    agents:
-      queue: ms-arm-12-4
+
+  # UE 5.0
+  - label: 'Build Plugin - 5.0 Mac'
+    env:
+      UE_VERSION: "5.0"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    commands:
+      - scripts/build-plugin.sh
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+    key: plugin_5_0
