@@ -5,8 +5,7 @@ steps:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
+      - scripts/build-plugin.sh
     plugins:
       artifacts#v1.5.0:
         upload:
