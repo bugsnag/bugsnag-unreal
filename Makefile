@@ -3,6 +3,7 @@
 MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
 UE_VERSION?=4.27
+NDK_HOME?=2/Users/administrator/Library/Android/sdk/ndk/
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
@@ -14,6 +15,11 @@ endif
 UE_BUILDCOOK_ARGS=BuildCookRun -nocompileeditor -nop4 -stage -package \
 				  -clientconfig=Shipping -compressed -pak -prereqs \
 				  -build -utf8output -cook
+
+ifeq ($(findstring 4.27,$(UE_VERSION)),4.27)
+	NDKROOT=/Users/administrator/Library/Android/sdk/ndk/21.4.7075529
+endif
+
 
 UPROJECT=$(PWD)/BugsnagExample.uproject
 EXAMPLE_MAC_LIB=Binaries/Mac/UE4Editor-BugsnagExample.dylib
