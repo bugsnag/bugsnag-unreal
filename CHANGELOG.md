@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## TBD
+
+* Updates the bugsnag-android dependency from v5.28.1 to [v5.28.3](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5283-2022-11-16)
+
 ## 1.6.0 (2022-11-09)
 
 * Adds the `Telemetry.Usage` configuration property. [#194](https://github.com/bugsnag/bugsnag-unreal/pull/194)
