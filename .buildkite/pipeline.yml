@@ -56,7 +56,7 @@ steps:
     agents:
       queue: windows-general-wsl
     env:
-      UE_VERSION: "4.27"
+      UE_VERSION: "5.1"
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
