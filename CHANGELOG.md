@@ -3,7 +3,7 @@ Changelog
 
 ## TBD
 
-* Updates the bugsnag-android dependency from v5.28.1 to [v5.28.3](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5283-2022-11-16)
+* Updates the bugsnag-android dependency from v5.28.1 to [v5.28.4](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5284-2023-02-08)
 
 ## TBD
 
