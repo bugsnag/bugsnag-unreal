@@ -26,7 +26,7 @@ steps:
   - label: 'Build Plugin - 5.1 macOS'
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -125,7 +125,7 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.1-macOS.zip
@@ -144,7 +144,7 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.1-macOS.zip
@@ -163,7 +163,7 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-5.1-macOS.zip
