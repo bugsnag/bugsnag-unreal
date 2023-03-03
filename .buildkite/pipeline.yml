@@ -298,7 +298,7 @@ steps:
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.1.ipa"
           - "--appium-version=1.17.0"
-          - "--device=IOS_12"
+          - "--device=IOS_13"
           - "--farm=bs"
           - "--order=random"
     concurrency: 24
