@@ -1,5 +1,5 @@
 agents:
-  queue: ms-arm-12-5
+  queue: macos-12-arm
 
 steps:
   #
@@ -125,8 +125,6 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      NDKROOT: "/Users/administrator/Library/Android/sdk/ndk/25.1.8937393"
-      NDK_ROOT: "/Users/administrator/Library/Android/sdk/ndk/25.1.8937393"
       DEVELOPER_DIR: "/Applications/Xcode13.4.app"
     plugins:
       artifacts#v1.5.0:
@@ -329,5 +327,5 @@ steps:
   #
   # Conditionally trigger full pipeline
   #
-#  - label: 'Conditionally trigger full set of tests'
-#    command: sh -c .buildkite/pipeline_trigger.sh
+  - label: 'Conditionally trigger full set of tests'
+    command: sh -c .buildkite/pipeline_trigger.sh
