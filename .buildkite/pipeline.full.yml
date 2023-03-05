@@ -10,10 +10,12 @@ steps:
   - label: 'Build Plugin - 4.23 macOS'
     env:
       UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      DEVELOPER_DIR: "/Applications/Xcode11.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
+    agents:
+      queue: macos-10.15
     plugins:
       artifacts#v1.5.0:
         upload:
@@ -38,28 +40,6 @@ steps:
     timeout_in_minutes: 60
     key: plugin_5_0
 
-  # Unreal Engine 4.23 - Windows
-  - label: 'Build Plugin - 4.23 Windows'
-    agents:
-      queue: windows-general-wsl
-    env:
-      UE_VERSION: "4.23"
-    command: features/scripts/build-plugin-wsl.sh
-    artifact_paths: [Bugsnag-*.zip]
-    timeout_in_minutes: 60
-    key: plugin_win_4_23
-
-  # Unreal Engine 5.0 - Windows
-  - label: 'Build Plugin - 5.0 Windows'
-    agents:
-      queue: windows-general-wsl
-    env:
-      UE_VERSION: "5.0"
-    command: features/scripts/build-plugin-wsl.sh
-    artifact_paths: [Bugsnag-*.zip]
-    timeout_in_minutes: 60
-    key: plugin_win_5_0
-
   #
   # Build Test Fixtures
   #
@@ -69,7 +49,9 @@ steps:
     depends_on: plugin_4_23
     env:
       UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      DEVELOPER_DIR: "/Applications/Xcode11.app"
+    agents:
+      queue: macos-10.15
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
@@ -88,7 +70,9 @@ steps:
     depends_on: plugin_4_23
     env:
       UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      DEVELOPER_DIR: "/Applications/Xcode11.app"
+    agents:
+      queue: macos-10.15
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
@@ -107,7 +91,9 @@ steps:
     depends_on: plugin_4_23
     env:
       UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      DEVELOPER_DIR: "/Applications/Xcode11.app"
+    agents:
+      queue: macos-10.15
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
