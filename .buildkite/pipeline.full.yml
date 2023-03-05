@@ -11,6 +11,7 @@ steps:
     env:
       UE_VERSION: "4.23"
       DEVELOPER_DIR: "/Applications/Xcode11.app"
+      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -50,6 +51,7 @@ steps:
     env:
       UE_VERSION: "4.23"
       DEVELOPER_DIR: "/Applications/Xcode11.app"
+      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
     agents:
       queue: macos-10.15
     plugins:
