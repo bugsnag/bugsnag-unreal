@@ -5,6 +5,12 @@
         <addAttribute tag="application" name="android:usesCleartextTraffic" value="true"/>
     </androidManifestUpdates>
 
+    <buildGradleAdditions>
+        <insert>
+            android.compileSdkVersion 31
+        </insert>
+    </buildGradleAdditions>
+    
     <gameActivityImportAdditions>
         <insert>
             import android.content.Intent;

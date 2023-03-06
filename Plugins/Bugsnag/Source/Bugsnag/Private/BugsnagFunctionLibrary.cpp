@@ -11,6 +11,10 @@
 #include "HAL/PlatformProperties.h"
 #include "Misc/CoreDelegates.h"
 
+#if PLATFORM_ANDROID
+#import <mutex>
+#endif
+
 #include COMPILED_PLATFORM_HEADER(PlatformStackWalk.h)
 
 #define LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM()                                          \
@@ -149,9 +153,20 @@ FORCENOINLINE TArray<uint64> UBugsnagFunctionLibrary::CaptureStackTrace()
 	uint64 Buffer[MAX_DEPTH];
 	FMemory::Memzero(Buffer);
 
-	// Note: Internally, CaptureStackBackTrace is calling functions that return int
-	// See Unreal source: Engine/Source/Runtime/Core/Private/Android/AndroidPlatformStackWalk.cpp
-	const int32 Depth = (int32)FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
+	int32 Depth = 0;
+	{
+#if PLATFORM_ANDROID
+		// CaptureStackBackTrace is not concurrency-safe on Android.
+		// See BacktraceCallback in Engine/Source/Runtime/Core/Private/Android/AndroidPlatformStackWalk.cpp
+		static std::mutex mutex;
+		std::lock_guard<std::mutex> guard(mutex);
+#endif
+		// Internally, CaptureStackBackTrace is calling functions that return signed int
+		// See Unreal source:
+		//   - Engine/Source/Runtime/Core/Private/Android/AndroidPlatformStackWalk.cpp
+		//   - Engine/Source/Runtime/Core/Private/Apple/ApplePlatformStackWalk.cpp
+		Depth = (int32)FPlatformStackWalk::CaptureStackBackTrace(Buffer, MAX_DEPTH);
+	}
 
 // Skip the correct number of frames to ensure Shipping builds group correctly
 #if PLATFORM_IOS || PLATFORM_MAC
