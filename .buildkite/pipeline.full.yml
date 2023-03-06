@@ -6,25 +6,6 @@ steps:
   # Build Plugins
   #
 
-  # Unreal Engine 4.23 - macOS
-  - label: 'Build Plugin - 4.23 macOS'
-    env:
-      UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode11.app"
-      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    agents:
-      queue: macos-10.15
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [ Build/Plugin/*.zip ]
-    timeout_in_minutes: 60
-    key: plugin_4_23
-
   # Unreal Engine 5.0 - macOS
   - label: 'Build Plugin - 5.0 Mac'
     env:
@@ -44,69 +25,6 @@ steps:
   #
   # Build Test Fixtures
   #
-
-  # Unreal Engine 4.23 - Android
-  - name: ':android: Build E2E - 4.23 Android'
-    depends_on: plugin_4_23
-    env:
-      UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode11.app"
-      NDKROOT: /Users/administrator/Library/Android/sdk/ndk/16.1.4479499
-    agents:
-      queue: macos-10.15
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
-        upload:
-          - build/TestFixture-Android-Shipping-4.23-arm64.apk
-          - build/TestFixture-Android-Shipping-4.23-armv7.apk
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh Android
-    timeout_in_minutes: 60
-    key: android_fixture_4_23
-
-  # Unreal Engine 4.23 - iOS
-  - name: ':ios: Build E2E - 4.23 iOS'
-    depends_on: plugin_4_23
-    env:
-      UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode11.app"
-    agents:
-      queue: macos-10.15
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
-        upload:
-          - build/TestFixture-IOS-Shipping-4.23.dSYM
-          - build/TestFixture-IOS-Shipping-4.23.ipa
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh IOS
-    timeout_in_minutes: 60
-    key: ios_fixture_4_23
-
-  # Unreal Engine 4.23 - macOS
-  - name: ':mac: Build E2E - 4.23 macOS'
-    depends_on: plugin_4_23
-    env:
-      UE_VERSION: "4.23"
-      DEVELOPER_DIR: "/Applications/Xcode11.app"
-    agents:
-      queue: macos-10.15
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_4.23-macOS.zip
-        upload:
-          - TestFixture-macOS-4.23.zip
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh Mac
-    timeout_in_minutes: 90
-    key: mac_fixture_4_23
 
   # Unreal Engine 5.0 - Android
   - name: ':android: Build E2E - 5.0 Android'
