@@ -1,5 +1,5 @@
 agents:
-  queue: ms-arm-12-4
+  queue: macos-12-arm
 
 steps:
   #
@@ -12,13 +12,15 @@ steps:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
     commands:
-      - scripts/build-plugin.sh
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
     plugins:
       artifacts#v1.5.0:
         upload:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [ Build/Plugin/*.zip ]
     timeout_in_minutes: 60
+    key: plugin_4_27
 
   # Unreal Engine 5.1 - macOS
   - label: 'Build Plugin - 5.1 macOS'
@@ -70,13 +72,16 @@ steps:
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
-    commands:
-      - scripts/build-plugin.sh
     plugins:
       artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
         upload:
+          - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - build/TestFixture-Android-Shipping-4.27-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [Build/Plugin/*.zip]
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
     key: android_fixture_4_27
 
@@ -186,7 +191,7 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-            - build/TestFixture-Android-Shipping-4.27-arm64.apk
+          - build/TestFixture-Android-Shipping-4.27-arm64.apk
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
@@ -213,8 +218,8 @@ steps:
     plugins:
       artifacts#v1.3.0:
         download:
-            - build/TestFixture-IOS-Shipping-4.27.ipa
-            - build/TestFixture-IOS-Shipping-4.27.dSYM
+          - build/TestFixture-IOS-Shipping-4.27.ipa
+          - build/TestFixture-IOS-Shipping-4.27.dSYM
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
