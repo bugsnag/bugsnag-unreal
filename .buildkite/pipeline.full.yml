@@ -212,7 +212,7 @@ steps:
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.0.ipa"
           - "--appium-version=1.17.0"
-          - "--device=IOS_12"
+          - "--device=IOS_14"
           - "--farm=bs"
           - "--order=random"
     concurrency: 24
