@@ -1,5 +1,6 @@
 Feature: Reporting handled errors
 
+@skip_android #PLAT-9770
   Scenario: NotifyScenario
     When I run "NotifyScenario"
     And I wait to receive an error
