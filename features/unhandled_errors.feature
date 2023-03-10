@@ -1,5 +1,6 @@
 Feature: Unhandled errors
 
+  @skip_android #PLAT-9770
   Scenario: BadMemoryAccessScenario
     Given I run "BadMemoryAccessScenario" and restart the crashed app
     And I wait to receive an error
@@ -52,6 +53,7 @@ Feature: Unhandled errors
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
+  @skip_android #PLAT-9770
   Scenario: Crash after setting optional configuration options
     Given I run "MaxConfigCrashScenario" and restart the crashed app
     And I wait to receive an error

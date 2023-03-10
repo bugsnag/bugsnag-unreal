@@ -51,7 +51,7 @@ Then(/^on mobile, (.+)/) do |step_text|
 end
 
 Then('the method of stack frame {int} is equivalent to {string}') do |frame_index, method|
-  assert_equal(method, parse_method(frame_index))
+  Maze.check.equal(method, parse_method(frame_index))
 end
 
 def parse_method frame_index
