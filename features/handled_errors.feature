@@ -1,5 +1,6 @@
 Feature: Reporting handled errors
 
+@skip_android #PLAT-9770
   Scenario: NotifyScenario
     When I run "NotifyScenario"
     And I wait to receive an error
@@ -133,3 +134,8 @@ Feature: Reporting handled errors
     When I run "StartWithApiKeyScenario"
     And I wait to receive an error
     And the event "context" equals "FromSettings"
+
+  Scenario: Multithreaded notify
+    Given I run "NotifyMultithreadedScenario"
+    And I wait to receive a session
+    Then the session is valid for the session reporting API version "1.0" for the "Unreal Bugsnag Notifier" notifier
