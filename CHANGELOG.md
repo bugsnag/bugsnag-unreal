@@ -1,12 +1,10 @@
 Changelog
 =========
 
-## TBD
+## 1.7.0 (2022-03-13)
 
+* Add support for Unreal v5.1.1
 * Updates the bugsnag-android dependency from v5.28.1 to [v5.28.4](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5284-2023-02-08)
-
-## TBD
-
 * Updates the bugsnag-cocoa dependency from v6.25.0 to [v6.25.2](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6252-2023-01-18)
 
 ## 1.6.0 (2022-11-09)
