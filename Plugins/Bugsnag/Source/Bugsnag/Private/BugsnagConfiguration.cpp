@@ -139,9 +139,9 @@ void FBugsnagConfiguration::SetAppHangThresholdMillis(uint64 Value)
 
 void FBugsnagConfiguration::SetMaxBreadcrumbs(uint32 Value)
 {
-	if (Value > 100)
+	if (Value > 500)
 	{
-		UE_LOG(LogBugsnag, Warning, TEXT("Invalid configuration. MaxBreadcrumbs should be a number between 0-100, got %lu"), Value);
+		UE_LOG(LogBugsnag, Warning, TEXT("Invalid configuration. MaxBreadcrumbs should be a number between 0-500, got %lu"), Value);
 	}
 	else
 	{
