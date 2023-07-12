@@ -50,7 +50,7 @@ void UMainWidgetBase::NativeOnInitialized()
 FString UMainWidgetBase::LoadMazeRunnerUrl()
 {
 	FString RawConfig;
-	FFileHelper::LoadFileToString(RawConfig, *CONFIG_PATH);
+	FFileHelper::LoadFileToString(RawConfig, TEXT(CONFIG_PATH));
 	TSharedPtr<FJsonObject> JsonParsed;
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(RawConfig);
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
