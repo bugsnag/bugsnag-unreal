@@ -40,7 +40,7 @@ void UMainWidgetBase::NativeOnInitialized()
 				if (!once)
 				{
 					once = true;
-					ExecuteMazeRunnerCommand(MAZE_RUNNER_URL_BASE);
+					RunMazeRunnerCommand(MAZE_RUNNER_URL_BASE);
 				}
 			});
 	}
