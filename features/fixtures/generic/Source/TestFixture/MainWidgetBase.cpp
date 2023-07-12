@@ -18,6 +18,12 @@
 #define MAZE_RUNNER_URL_BASE "http://localhost:9339"
 #endif
 
+#if PLATFORM_ANDROID
+#define CONFIG_PATH "fixture_config.json"
+#elif PLATFORM_IOS
+#define CONFIG_PATH "fixture_config.json"
+#endif
+
 void UMainWidgetBase::NativeOnInitialized()
 {
 	UUserWidget::NativeOnInitialized();
@@ -34,18 +40,44 @@ void UMainWidgetBase::NativeOnInitialized()
 				if (!once)
 				{
 					once = true;
-					ExecuteMazeRunnerCommand();
+					ExecuteMazeRunnerCommand(MAZE_RUNNER_URL_BASE);
 				}
 			});
 	}
 #endif
 }
 
+FString UMainWidgetBase::LoadMazeRunnerUrl()
+{
+	FString& RawConfig = "";
+	FFileHelper::LoadFileToString(RawConfig, CONFIG_PATH);
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(RawConfig);
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
+	{
+		FString& MazeAddress = JsonParsed->GetStringField("maze_address");
+		UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"), MazeAddress);
+		return MazeAddress;
+	}
+	else
+	{
+		// Fail in some way, this fills in for now
+		UE_LOG(LogTestFixture, Error, TEXT("LoadMazeRunnerUrl: Couldn't load maze_url, got %s"), RawConfig);
+		return "";
+	}
+
+}
+
+// A temporary name as I can't get the test fixture to open locally to change the button call
 void UMainWidgetBase::ExecuteMazeRunnerCommand()
 {
+	RunMazeRunnerCommand(LoadMazeRunnerUrl());
+}
+
+void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
-	HttpRequest->SetURL(TEXT(MAZE_RUNNER_URL_BASE "/command"));
+	HttpRequest->SetURL(TEXT(MazeRunnerBaseUrl "/command"));
 	HttpRequest->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bConnectedSuccessfully)
 		{
 			if (!bConnectedSuccessfully || !HttpResponse.IsValid())

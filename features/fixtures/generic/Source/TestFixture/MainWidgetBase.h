@@ -14,4 +14,6 @@ class TESTFIXTURE_API UMainWidgetBase : public UUserWidget
 
 	UFUNCTION(BlueprintCallable)
 	void ExecuteMazeRunnerCommand();
+	FString LoadMazeRunnerUrl();
+	void RunMazeRunnerCommand();
 };
