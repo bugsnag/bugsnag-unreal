@@ -20,7 +20,7 @@
 
 #if PLATFORM_ANDROID
 #define CONFIG_PATH "fixture_config.json"
-#elif PLATFORM_IOS
+#else
 #define CONFIG_PATH "fixture_config.json"
 #endif
 
@@ -49,7 +49,7 @@ void UMainWidgetBase::NativeOnInitialized()
 
 FString UMainWidgetBase::LoadMazeRunnerUrl()
 {
-	FString& RawConfig = "";
+	FString RawConfig;
 	FFileHelper::LoadFileToString(RawConfig, CONFIG_PATH);
 	TSharedPtr<FJsonObject> JsonParsed;
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(RawConfig);
