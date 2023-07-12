@@ -55,7 +55,7 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(RawConfig);
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
 	{
-		FString& MazeAddress = JsonParsed->GetStringField("maze_address");
+		const FString& MazeAddress = JsonParsed->GetStringField("maze_address");
 		UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"), MazeAddress);
 		return MazeAddress;
 	}
@@ -75,6 +75,7 @@ void UMainWidgetBase::ExecuteMazeRunnerCommand()
 }
 
 void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
+{
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
 	HttpRequest->SetURL(TEXT(MazeRunnerBaseUrl "/command"));
