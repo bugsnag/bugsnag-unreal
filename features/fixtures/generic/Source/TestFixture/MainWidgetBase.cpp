@@ -78,7 +78,7 @@ void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
 {
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
-	HttpRequest->SetURL(TEXT(*MazeRunnerBaseUrl "/command"));
+	HttpRequest->SetURL(FString::Format(TEXT("{1}/command"), MazeRunnerBaseUrl));
 	HttpRequest->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bConnectedSuccessfully)
 		{
 			if (!bConnectedSuccessfully || !HttpResponse.IsValid())
