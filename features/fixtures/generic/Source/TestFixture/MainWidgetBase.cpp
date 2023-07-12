@@ -56,13 +56,13 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
 	{
 		const FString& MazeAddress = JsonParsed->GetStringField("maze_address");
-		UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"), TEXT(MazeAddress));
+		// UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"), TEXT(MazeAddress));
 		return MazeAddress;
 	}
 	else
 	{
 		// Fail in some way, this fills in for now
-		UE_LOG(LogTestFixture, Error, TEXT("LoadMazeRunnerUrl: Couldn't load maze_url, got %s"), TEXT(RawConfig));
+		// UE_LOG(LogTestFixture, Error, TEXT("LoadMazeRunnerUrl: Couldn't load maze_url, got %s"), TEXT(RawConfig));
 		return "";
 	}
 
