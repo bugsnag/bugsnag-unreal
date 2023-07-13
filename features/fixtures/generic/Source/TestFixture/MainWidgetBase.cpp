@@ -79,7 +79,7 @@ void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
 	const FString BaseUrl = MazeRunnerBaseUrl + TEXT("/command");
-	UE_LOG(LogTestFixture, Display, TEXT("Using Maze-runner url: %s"), BaseUrl);
+	UE_LOG(LogTestFixture, Display, TEXT("Using Maze-runner url: %s"), *BaseUrl);
 	HttpRequest->SetURL(BaseUrl);
 	HttpRequest->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bConnectedSuccessfully)
 		{
