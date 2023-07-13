@@ -23,16 +23,7 @@ Before('@skip_ios') do |_scenario|
 end
 
 def current_platform
-  case Maze.config.farm
-  when :bs
-    Maze.driver.capabilities['os']
-  when :sl, :local
-    Maze.driver.capabilities['platformName']
-  when :none
-    Maze.config.os
-  else
-    Maze.driver.os
-  end
+  Maze::Helper.get_current_platform
 end
 
 def is_platform? name
