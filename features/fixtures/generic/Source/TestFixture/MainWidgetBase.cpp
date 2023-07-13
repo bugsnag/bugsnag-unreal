@@ -71,6 +71,7 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 // A temporary name as I can't get the test fixture to open locally to change the button call
 void UMainWidgetBase::ExecuteMazeRunnerCommand()
 {
+	UE_LOG(LogTestFixture, Display, TEXT("ExecuteMazeRunnerCommand: Running"));
 	RunMazeRunnerCommand(LoadMazeRunnerUrl());
 }
 
