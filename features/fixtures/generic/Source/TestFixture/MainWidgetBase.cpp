@@ -56,13 +56,13 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
 	{
 		const FString& MazeAddress = JsonParsed->GetStringField("maze_address");
-		// UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"), TEXT(MazeAddress));
+		UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"));
 		return MazeAddress;
 	}
 	else
 	{
 		// Fail in some way, this fills in for now
-		// UE_LOG(LogTestFixture, Error, TEXT("LoadMazeRunnerUrl: Couldn't load maze_url, got %s"), TEXT(RawConfig));
+		UE_LOG(LogTestFixture, Error, TEXT("LoadMazeRunnerUrl: Couldn't load maze_url"));
 		return "";
 	}
 
@@ -79,6 +79,7 @@ void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
 	const FString BaseUrl = MazeRunnerBaseUrl + TEXT("/command");
+	UE_LOG(LogTestFixture, Display, TEXT("Using Maze-runner url: %s"), BaseUrl);
 	HttpRequest->SetURL(BaseUrl);
 	HttpRequest->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bConnectedSuccessfully)
 		{
