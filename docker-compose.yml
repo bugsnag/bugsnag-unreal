@@ -1,14 +1,19 @@
 version: '3.6'
 services:
   maze-runner:
-    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:latest-v6-cli
+    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:latest-v7-cli
     environment:
+      BITBAR_USERNAME:
+      BITBAR_ACCESS_KEY:
       DEBUG:
       BUILDKITE:
       BUILDKITE_PIPELINE_NAME:
       BROWSER_STACK_USERNAME:
       BROWSER_STACK_ACCESS_KEY:
+    ports:
+      - "9000-9499:9339"
     volumes:
       - ./build:/app/build
       - ./features/:/app/features/
       - ./maze_output:/app/maze_output
+      - /var/run/docker.sock:/var/run/docker.sock

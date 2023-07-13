@@ -189,20 +189,23 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.9.0:
         download:
           - build/TestFixture-Android-Shipping-4.27-arm64.apk
         upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
+      docker-compose#v4.7.0:
         run: maze-runner
+        service-ports: true
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-4.27-arm64.apk"
-          - "--appium-version=1.17.0"
-          - "--device=ANDROID_11_0"
-          - "--farm=bs"
+          - "--device=ANDROID_11"
+          - "--farm=bb"
+          - "--no-tunnel"
+          - "--aws-public-ip"
+          - "--fail-fast"
           - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
+    concurrency: 25
+    concurrency_group: 'bitbar-app'
     concurrency_method: eager
     retry:
       automatic:
@@ -216,21 +219,24 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.9.0:
         download:
           - build/TestFixture-IOS-Shipping-4.27.ipa
           - build/TestFixture-IOS-Shipping-4.27.dSYM
         upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
+      docker-compose#v4.7.0:
         run: maze-runner
+        service-ports: true
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-4.27.ipa"
-          - "--appium-version=1.17.0"
           - "--device=IOS_12"
-          - "--farm=bs"
+          - "--farm=bb"
+          - "--no-tunnel"
+          - "--aws-public-ip"
+          - "--fail-fast"
           - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
+    concurrency: 25
+    concurrency_group: 'bitbar-app'
     concurrency_method: eager
     retry:
       automatic:
@@ -261,20 +267,23 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.9.0:
         download:
           - build/TestFixture-Android-Shipping-5.1-arm64.apk
         upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
+      docker-compose#v4.7.0:
         run: maze-runner
+        service-ports: true
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-5.1-arm64.apk"
-          - "--appium-version=1.17.0"
-          - "--device=ANDROID_13_0"
-          - "--farm=bs"
+          - "--device=ANDROID_13"
+          - "--farm=bb"
+          - "--no-tunnel"
+          - "--aws-public-ip"
+          - "--fail-fast"
           - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
+    concurrency: 25
+    concurrency_group: 'bitbar-app'
     concurrency_method: eager
     retry:
       automatic:
@@ -288,21 +297,24 @@ steps:
     agents:
       queue: opensource
     plugins:
-      artifacts#v1.3.0:
+      artifacts#v1.9.0:
         download:
           - build/TestFixture-IOS-Shipping-5.1.ipa
           - build/TestFixture-IOS-Shipping-5.1.dSYM
         upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
+      docker-compose#v4.7.0:
         run: maze-runner
+        service-ports: true
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.1.ipa"
-          - "--appium-version=1.17.0"
           - "--device=IOS_16"
-          - "--farm=bs"
+          - "--farm=bb"
+          - "--no-tunnel"
+          - "--aws-public-ip"
+          - "--fail-fast"
           - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
+    concurrency: 25
+    concurrency_group: 'bitbar-app'
     concurrency_method: eager
     retry:
       automatic:
