@@ -44,7 +44,7 @@ steps:
       queue: ms-arm-12-8
     env:
       UE_VERSION: "5.2"
-      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
+      DEVELOPER_DIR: "/Applications/Xcode14git.app"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
