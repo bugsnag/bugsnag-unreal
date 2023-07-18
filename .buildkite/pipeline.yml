@@ -38,6 +38,22 @@ steps:
     timeout_in_minutes: 60
     key: plugin_5_1
 
+  # Unreal Engine 5.1 - macOS
+  - label: 'Build Plugin - 5.2 macOS'
+    env:
+      UE_VERSION: "5.2"
+      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [Build/Plugin/*.zip]
+    timeout_in_minutes: 60
+    key: plugin_5_2
+
   # Unreal Engine 4.27 - Windows
   - label: 'Build Plugin - 4.27 Windows'
     agents:
@@ -59,6 +75,17 @@ steps:
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
     key: plugin_win_5_1
+
+  # Unreal Engine 5.1 - Windows
+  - label: 'Build Plugin - 5.2 Windows'
+    agents:
+      queue: windows-general-wsl
+    env:
+      UE_VERSION: "5.2"
+    command: features/scripts/build-plugin-wsl.sh
+    artifact_paths: [Bugsnag-*.zip]
+    timeout_in_minutes: 60
+    key: plugin_win_5_2
 
   #
   # Build Test Fixtures
