@@ -40,6 +40,8 @@ steps:
 
   # Unreal Engine 5.1 - macOS
   - label: 'Build Plugin - 5.2 macOS'
+    agents:
+      queue: ms-arm-12-8
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode13.4.app"
@@ -79,7 +81,7 @@ steps:
   # Unreal Engine 5.1 - Windows
   - label: 'Build Plugin - 5.2 Windows'
     agents:
-      queue: windows-general-wsl
+      queue: win-general-2
     env:
       UE_VERSION: "5.2"
     command: features/scripts/build-plugin-wsl.sh
