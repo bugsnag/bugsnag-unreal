@@ -56,13 +56,13 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed))
 	{
 		const FString& MazeAddress = JsonParsed->GetStringField("maze_address");
-		UE_LOG(LogTestFixture, Display, TEXT("LoadMazeRunnerUrl: Loaded %s"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("LoadMazeRunnerUrl: Loaded %s")));
 		return MazeAddress;
 	}
 	else
 	{
 		// Fail in some way, this fills in for now
-		UE_LOG(LogTestFixture, Error, TEXT("LoadMazeRunnerUrl: Couldn't load maze_url"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("LoadMazeRunnerUrl: Couldn't load maze_url")));
 		return "";
 	}
 
@@ -71,7 +71,7 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 // A temporary name as I can't get the test fixture to open locally to change the button call
 void UMainWidgetBase::ExecuteMazeRunnerCommand()
 {
-	UE_LOG(LogTestFixture, Display, TEXT("ExecuteMazeRunnerCommand: Running"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: Running")));
 	RunMazeRunnerCommand(LoadMazeRunnerUrl());
 }
 
@@ -80,31 +80,31 @@ void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
 	const FString BaseUrl = MazeRunnerBaseUrl + TEXT("/command");
-	UE_LOG(LogTestFixture, Display, TEXT("Using Maze-runner url: %s"), *BaseUrl);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("Using Maze-runner url: %s"), *BaseUrl));
 	HttpRequest->SetURL(BaseUrl);
 	HttpRequest->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bConnectedSuccessfully)
 		{
 			if (!bConnectedSuccessfully || !HttpResponse.IsValid())
 			{
-				UE_LOG(LogTestFixture, Error, TEXT("ExecuteMazeRunnerCommand: no response"));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: no response")));
 				return;
 			}
 
 			int32 StatusCode = HttpResponse->GetResponseCode();
 			if (StatusCode != 200)
 			{
-				UE_LOG(LogTestFixture, Error, TEXT("ExecuteMazeRunnerCommand: status code %d"), StatusCode);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: status code %d"), StatusCode));
 				return;
 			}
 
-			UE_LOG(LogTestFixture, Display, TEXT("ExecuteMazeRunnerCommand: %s"), *(HttpResponse->GetContentAsString()));
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: %s"), *(HttpResponse->GetContentAsString())));
 
 			TSharedPtr<FJsonObject> JsonObject;
 			const TArray<uint8>& Content = HttpResponse->GetContent();
 			FLargeMemoryReader Archive((const uint8*)Content.GetData(), Content.Num());
 			if (!FJsonSerializer::Deserialize(TJsonReaderFactory<char>::Create(&Archive), JsonObject))
 			{
-				UE_LOG(LogTestFixture, Error, TEXT("ExecuteMazeRunnerCommand: Could not deserialize Maze Runner command"));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: Could not deserialize Maze Runner command")));
 				return;
 			}
 
@@ -121,7 +121,7 @@ void UMainWidgetBase::RunMazeRunnerCommand(FString MazeRunnerBaseUrl)
 			}
 			else
 			{
-				UE_LOG(LogTestFixture, Error, TEXT("ExecuteMazeRunnerCommand: bad action: \"%s\""), *Action);
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: bad action: \"%s\""), *Action));
 			}
 		});
 	HttpRequest->ProcessRequest();
