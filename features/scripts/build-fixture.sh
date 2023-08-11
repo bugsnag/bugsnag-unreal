@@ -43,22 +43,22 @@ echo "--- Preparing artifact(s) for upload"
 
 case "${PLATFORM}" in
   Android)
-    mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk build/TestFixture-Android-Shipping-"${UE_VERSION}"-arm64.apk
-    if [[ -f features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk ]]; then
-      mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk build/TestFixture-Android-Shipping-"${UE_VERSION}"-armv7.apk
+    mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Development-arm64.apk build/TestFixture-Android-Development-"${UE_VERSION}"-arm64.apk
+    if [[ -f features/fixtures/generic/Binaries/Android/TestFixture-Android-Development-armv7.apk ]]; then
+      mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Development-armv7.apk build/TestFixture-Android-Development-"${UE_VERSION}"-armv7.apk
     fi
     ;;
 
   IOS)
-    mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
-    mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa build/TestFixture-IOS-Shipping-"${UE_VERSION}".ipa
+    mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Development.dSYM build/TestFixture-IOS-Development-"${UE_VERSION}".dSYM
+    mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Development.ipa build/TestFixture-IOS-Development-"${UE_VERSION}".ipa
     ;;
 
   Mac)
     case "${UE_VERSION}" in
       4.23)
-        mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
-        mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping
+        mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Development.app
+        mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Development.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Development.app/Contents/MacOS/TestFixture-Mac-Development
         ;;
       5.*)
         mv features/fixtures/generic/ArchivedBuilds/Mac/ features/fixtures/generic/ArchivedBuilds/MacNoEditor/
