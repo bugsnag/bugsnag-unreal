@@ -71,7 +71,7 @@ FString UMainWidgetBase::LoadMazeRunnerUrl()
 // A temporary name as I can't get the test fixture to open locally to change the button call
 void UMainWidgetBase::ExecuteMazeRunnerCommand()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: Running")));
+	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Orange, FString::Printf(TEXT("ExecuteMazeRunnerCommand: Running")));
 	RunMazeRunnerCommand(LoadMazeRunnerUrl());
 }
 
