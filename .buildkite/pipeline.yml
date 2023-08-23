@@ -5,7 +5,7 @@ steps:
   # Unreal Engine 5.2 - macOS
   - label: 'Build Plugin - 5.2 macOS'
     agents:
-      queue: ms-arm-12-1
+      queue: ms-arm-12-4
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
@@ -22,7 +22,7 @@ steps:
   # Unreal Engine 5.2 - macOS
   - label: 'Build Plugin - 5.2 macOS'
     agents:
-      queue: ms-arm-12-2
+      queue: ms-arm-12-6
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
@@ -39,7 +39,7 @@ steps:
   # Unreal Engine 5.2 - macOS
   - label: 'Build Plugin - 5.2 macOS'
     agents:
-      queue: ms-arm-12-3
+      queue: ms-arm-12-7
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
