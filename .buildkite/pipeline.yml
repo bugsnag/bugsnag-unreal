@@ -38,7 +38,7 @@ steps:
     timeout_in_minutes: 60
     key: plugin_5_1
 
-  # Unreal Engine 5.1 - macOS
+  # Unreal Engine 5.2 - macOS
   - label: 'Build Plugin - 5.2 macOS'
     agents:
       queue: ms-arm-12-8
@@ -78,7 +78,7 @@ steps:
     timeout_in_minutes: 60
     key: plugin_win_5_1
 
-  # Unreal Engine 5.1 - Windows
+  # Unreal Engine 5.2 - Windows
   - label: 'Build Plugin - 5.2 Windows'
     agents:
       queue: win-general-2
