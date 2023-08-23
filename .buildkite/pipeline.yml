@@ -41,7 +41,7 @@ steps:
   # Unreal Engine 5.2 - macOS
   - label: 'Build Plugin - 5.2 macOS'
     agents:
-      queue: ms-arm-12-8
+      queue: ms-arm-12-5
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
@@ -96,8 +96,6 @@ steps:
   # Unreal Engine 4.27 - Android
   - name: ':android: Build E2E - 4.27 Android'
     depends_on: plugin_4_27
-    agents:
-      queue: ms-arm-12-4
     env:
       UE_VERSION: "4.27"
       DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
