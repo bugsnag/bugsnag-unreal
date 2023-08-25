@@ -1,5 +1,5 @@
 agents:
-  queue: ms-arm-12-8
+  queue: macos-arm-12
 
 steps:
   #
@@ -123,10 +123,11 @@ steps:
   # Unreal Engine 5.2 - Android
   - name: ':android: Build E2E - 5.2 Android'
     depends_on: plugin_5_1
+    queue:
+      agent: ms-arm-12-8
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
-      JAVA_VERSION: "17"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
@@ -135,6 +136,7 @@ steps:
           - build/TestFixture-Android-Shipping-5.2-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
+      - env
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh Android
     timeout_in_minutes: 60
