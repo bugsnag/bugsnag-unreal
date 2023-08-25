@@ -123,7 +123,7 @@ steps:
   # Unreal Engine 5.2 - Android
   - name: ':android: Build E2E - 5.2 Android'
     depends_on: plugin_5_1
-    agent:
+    agents:
       queue: ms-arm-12-8
     env:
       UE_VERSION: "5.2"
