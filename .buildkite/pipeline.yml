@@ -36,7 +36,7 @@ steps:
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     artifact_paths: [Build/Plugin/*.zip]
     timeout_in_minutes: 60
-    key: plugin_5_1
+    key: plugin_5_2
 
 #  # Unreal Engine 4.27 - Windows
   - label: 'Build Plugin - 4.27 Windows'
@@ -122,7 +122,7 @@ steps:
 
 #  # Unreal Engine 5.2 - Android
 #  - name: ':android: Build E2E - 5.2 Android'
-#    depends_on: plugin_5_1
+#    depends_on: plugin_5_2
 #    env:
 #      UE_VERSION: "5.2"
 #      DEVELOPER_DIR: "/Applications/Xcode14.app"
@@ -143,7 +143,7 @@ steps:
 
   # Unreal Engine 5.2 - iOS
   - name: ':ios: Build E2E - 5.2 iOS'
-    depends_on: plugin_5_1
+    depends_on: plugin_5_2
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
@@ -163,7 +163,7 @@ steps:
 
   # Unreal Engine 5.2 - macOS
   - name: ':mac: Build E2E - 5.2 macOS'
-    depends_on: plugin_5_1
+    depends_on: plugin_5_2
     env:
       UE_VERSION: "5.2"
       DEVELOPER_DIR: "/Applications/Xcode14.app"
