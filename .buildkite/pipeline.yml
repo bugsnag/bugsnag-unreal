@@ -58,7 +58,7 @@ steps:
     command: features/scripts/build-plugin-wsl.sh
     artifact_paths: [Bugsnag-*.zip]
     timeout_in_minutes: 60
-    key: plugin_win_5_1
+    key: plugin_win_5_2
 
   #
   # Build Test Fixtures
@@ -139,7 +139,7 @@ steps:
 #      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
 #      - features/scripts/build-fixture.sh Android
 #    timeout_in_minutes: 60
-#    key: android_fixture_5_1
+#    key: android_fixture_5_2
 
   # Unreal Engine 5.2 - iOS
   - name: ':ios: Build E2E - 5.2 iOS'
@@ -159,7 +159,7 @@ steps:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh IOS
     timeout_in_minutes: 60
-    key: ios_fixture_5_1
+    key: ios_fixture_5_2
 
   # Unreal Engine 5.2 - macOS
   - name: ':mac: Build E2E - 5.2 macOS'
@@ -178,7 +178,7 @@ steps:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
-    key: mac_fixture_5_1
+    key: mac_fixture_5_2
 
   #
   # E2E Tests
@@ -257,7 +257,7 @@ steps:
 
 #  # Unreal Engine 5.2 - Android
 #  - label: 'E2E Tests - 5.2 Android 11'
-#    depends_on: android_fixture_5_1
+#    depends_on: android_fixture_5_2
 #    timeout_in_minutes: 30
 #    agents:
 #      queue: opensource
@@ -284,7 +284,7 @@ steps:
 
   # Unreal Engine 5.2 - iOS
   - label: 'E2E Tests - 5.2 iOS 12'
-    depends_on: ios_fixture_5_1
+    depends_on: ios_fixture_5_2
     timeout_in_minutes: 30
     agents:
       queue: opensource
@@ -312,7 +312,7 @@ steps:
 
   # Unreal Engine 5.2 - macOS
   - label: 'E2E Tests - 5.2 macOS 12'
-    depends_on: mac_fixture_5_1
+    depends_on: mac_fixture_5_2
     timeout_in_minutes: 10
     plugins:
       artifacts#v1.5.0:
