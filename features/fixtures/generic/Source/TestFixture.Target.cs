@@ -9,7 +9,7 @@ public class TestFixtureTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 
 		bEnforceIWYU = true;
-		bUseUnityBuild = false;
+		bUseUnityBuild = true;
 
 		ExtraModuleNames.AddRange( new string[] { "TestFixture" } );
 	}

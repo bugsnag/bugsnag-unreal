@@ -8,7 +8,7 @@ UE_HOME="${UE_HOME:-C:\Program Files\Epic Games}"\\UE_$UE_VERSION
 
 UE_RUNUAT="$UE_HOME\Engine\Build\BatchFiles\RunUAT.bat"
 
-if [[ "$UE_VERSION" == "5.1" ]]; then
+if [[ "$UE_VERSION" == "5.1" ]] || [[ "$UE_VERSION" == "5.2" ]]; then
   TARGET_PLATFORMS="Win64"
 else
   TARGET_PLATFORMS="Win32+Win64"
