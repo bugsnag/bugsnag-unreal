@@ -188,7 +188,7 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	bool bSendLaunchCrashesSynchronously = true;
 
 	// The maximum number of breadcrumbs to store before deleting the oldest.
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMax = "100"))
+	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", Meta = (ClampMax = "500"))
 	uint32 MaxBreadcrumbs = 50;
 
 	// The maximum number of events to store before deleting the oldest.

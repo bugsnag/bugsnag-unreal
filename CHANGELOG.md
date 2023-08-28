@@ -1,6 +1,14 @@
 Changelog
 =========
 
+
+## 1.8.0 (2023-08-28)
+
+* Added support for Unreal Engine 5.2
+* Updates the bugsnag-cocoa dependency from v6.25.2 to [v6.26.2](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6262-2023-04-20)
+* Updates the bugsnag-android dependency from v5.28.4 to [v5.30.0](https://github.com/bugsnag/bugsnag-android/blob/master/CHANGELOG.md#5300-2023-05-11)
+* Increased MaxBreadcrumb limit from 100 to 500 [#212](https://github.com/bugsnag/bugsnag-unreal/pull/212)
+
 ## 1.7.0 (2022-03-13)
 
 * Add support for Unreal Engine v5.1.1
