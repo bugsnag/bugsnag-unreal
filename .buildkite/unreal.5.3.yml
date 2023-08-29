@@ -16,3 +16,42 @@ steps:
     artifact_paths: [ Build/Plugin/*.zip ]
     timeout_in_minutes: 60
     key: plugin_5_3
+
+
+  # Unreal Engine 5.3 - Android
+  - name: ':android: Build E2E - 5.3 Android'
+    depends_on: plugin_5_3
+    env:
+      UE_VERSION: "5.3"
+      DEVELOPER_DIR: "/Applications/Xcode14.1.app"
+      JAVA_VERSION: 17
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.3-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-5.3-arm64.apk
+          - build/TestFixture-Android-Shipping-5.3-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_5_3
+
+  # Unreal Engine 5.3 - macOS
+  - name: ':mac: Build E2E - 5.3 macOS'
+    depends_on: plugin_5_3
+    env:
+      UE_VERSION: "5.3"
+      DEVELOPER_DIR: "/Applications/Xcode14.1.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.3-macOS.zip
+        upload:
+          - TestFixture-macOS-5.3.zip
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Mac
+    timeout_in_minutes: 90
+    key: mac_fixture_5_3
