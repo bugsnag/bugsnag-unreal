@@ -1,0 +1,18 @@
+agents:
+  queue: macos-13-arm
+
+steps:
+  - label: 'Build Plugin - 5.3 Mac'
+    env:
+      UE_VERSION: "5.3"
+      DEVELOPER_DIR: "/Applications/Xcode14.1.app"
+    commands:
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [ Build/Plugin/*.zip ]
+    timeout_in_minutes: 60
+    key: plugin_5_3
