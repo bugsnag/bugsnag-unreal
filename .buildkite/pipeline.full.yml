@@ -100,7 +100,7 @@ steps:
 
   # Unreal Engine 5.1 - Android
   - name: ':android: Build E2E - 5.1 Android'
-    depends_on: plugin_5_0
+    depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
       DEVELOPER_DIR: "/Applications/Xcode13.4.app"
@@ -138,7 +138,7 @@ steps:
 
   # Unreal Engine 5.1 - macOS
   - name: ':mac: Build E2E - 5.1 macOS'
-    depends_on: plugin_5_0
+    depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
       DEVELOPER_DIR: "/Applications/Xcode13.4.app"
@@ -153,6 +153,7 @@ steps:
       - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
     key: mac_fixture_5_1
+
   #
   # E2E Tests
   #
@@ -300,3 +301,7 @@ steps:
       - bundle install
       - echo '--- Running tests'
       - bundle exec maze-runner --os=macos
+
+  - name: 'Append Unreal 5.3 Pipeline'
+    commands:
+      - buildkite-agent pipeline upload .buildkite/unreal.5.3.yml
