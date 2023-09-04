@@ -22,6 +22,24 @@ steps:
     artifact_paths: [ Build/Plugin/*.zip ]
     timeout_in_minutes: 60
     key: plugin_4_27
+
+  - label: 'Build Plugin - 4.27 macOS'
+    env:
+      UE_VERSION: "4.27"
+      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+    agents:
+      queue: ms-arm-12-5
+    commands:
+      - env
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - make package
+    plugins:
+      artifacts#v1.5.0:
+        upload:
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    artifact_paths: [ Build/Plugin/*.zip ]
+    timeout_in_minutes: 60
+    key: plugin_4_27_2
 #
 #  # Unreal Engine 5.2 - macOS
 #  - label: 'Build Plugin - 5.2 macOS'
