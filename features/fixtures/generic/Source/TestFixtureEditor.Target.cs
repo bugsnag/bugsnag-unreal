@@ -6,8 +6,6 @@ public class TestFixtureEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 
-		DefaultBuildSettings = BuildSettingsVersion.Latest;
-
 		bEnforceIWYU = true;
 		bUseUnityBuild = true;
 

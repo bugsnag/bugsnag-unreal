@@ -6,8 +6,6 @@ public class TestFixtureTarget : TargetRules
 	{
 		Type = TargetType.Game;
 
-		DefaultBuildSettings = BuildSettingsVersion.Latest;
-
 		bEnforceIWYU = true;
 		bUseUnityBuild = true;
 
