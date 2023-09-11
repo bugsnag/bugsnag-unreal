@@ -28,8 +28,13 @@ public class Bugsnag : ModuleRules
 		}
 		else if (Target.Platform == UnrealTargetPlatform.Android)
 		{
+
 			string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
-			AdditionalPropertiesForReceipt.Add("AndroidPlugin", System.IO.Path.Combine(PluginPath, "Bugsnag_UPL.xml"));
+			#if UE_5_1_OR_LATER
+				AdditionalPropertiesForReceipt.Add("AndroidPlugin", System.IO.Path.Combine(PluginPath, "Bugsnag_UPL_BAGP_V7.xml"));
+			#else
+				AdditionalPropertiesForReceipt.Add("AndroidPlugin", System.IO.Path.Combine(PluginPath, "Bugsnag_UPL.xml"));
+			#endif
 		}
 	}
 }
