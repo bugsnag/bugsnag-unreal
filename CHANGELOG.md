@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## TBD 
+
+* Removed the bugsnag android gradle plugin due to incompatibility with UE 5.1+[#220](https://github.com/bugsnag/bugsnag-unreal/pull/220)
 
 ## 1.8.0 (2023-08-28)
 
