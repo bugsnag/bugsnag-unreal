@@ -102,7 +102,7 @@ steps:
           limit: 2
 
   # Unreal Engine 5.3 - iOS
-  - label: 'E2E Tests - 5.3 iOS 12'
+  - label: 'E2E Tests - 5.3 iOS 16'
     depends_on: ios_fixture_5_3
     timeout_in_minutes: 30
     agents:
@@ -132,7 +132,7 @@ steps:
   # Unreal Engine 5.3 - macOS
   - label: 'E2E Tests - 5.3 macOS 13'
     depends_on: mac_fixture_5_3
-    timeout_in_minutes: 20
+    timeout_in_minutes: 30
     plugins:
       artifacts#v1.5.0:
         download:
@@ -145,3 +145,7 @@ steps:
       - bundle install
       - echo '--- Running tests'
       - bundle exec maze-runner --os=macos
+    retry:
+      automatic:
+        - exit_status: -1  # Agent was lost
+          limit: 2
