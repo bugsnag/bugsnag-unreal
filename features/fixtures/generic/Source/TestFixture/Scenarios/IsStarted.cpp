@@ -6,7 +6,7 @@ public:
 
 	void Run() override
 	{
-        if(Configuration.GetIsStarted())
+        if(Configuration->GetIsStarted())
         {
             UBugsnagFunctionLibrary::Notify(TEXT("isStarted"), TEXT("isStarted"));
         }
