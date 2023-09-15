@@ -64,6 +64,16 @@ public:
 	void SetApiKey(const FString& ApiKey);
 
 	/**
+	 * Returns whether client has started via Start()
+	*/
+	const bool GetIsStarted() const { return bIsStarted; }
+
+	/**
+	 * @param Value True when Start() is called or false otherwise.
+	*/
+	void SetIsStarted(bool Value) { bIsStarted = Value; }
+
+	/**
 	 * By default, Bugsnag will automatically detect and report errors from your application.
 	 *
 	 * Use this flag to disable all automatic detection.
@@ -583,6 +593,7 @@ private:
 	friend class FBugsnagConfigurationSpec;
 
 	FString ApiKey;
+	bool bIsStarted = false;
 	bool bAutoDetectErrors = true;
 	bool bAutoTrackSessions = true;
 	TOptional<FString> Context;

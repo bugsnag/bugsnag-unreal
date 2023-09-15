@@ -1,6 +1,8 @@
 Changelog
 =========
+## TBD
 
+* Added a method to check whether the Start() method has been called.
 
 ## 1.8.0 (2023-08-28)
 

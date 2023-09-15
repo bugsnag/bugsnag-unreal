@@ -35,6 +35,7 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 		Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 	}
 	Start(Configuration.ToSharedRef());
+	Configuration->SetIsStarted(true);
 }
 
 #if PLATFORM_IMPLEMENTS_BUGSNAG
@@ -78,6 +79,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 #endif
 
 	GPlatformBugsnag.Start(Configuration);
+	Configuration->SetIsStarted(true);
 
 	static FString MapUrl;
 
