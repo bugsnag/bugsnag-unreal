@@ -3,7 +3,6 @@
 class IsStarted : public Scenario
 {
 public:
-
 	void Run() override
 	{
         if(Configuration->GetIsStarted())
@@ -14,8 +13,7 @@ public:
         {
             UBugsnagFunctionLibrary::Notify(TEXT("isNotStarted"), TEXT("isNotStarted"));
         }
-		
 	}
 };
 
-REGISTER_SCENARIO(IsStarted)
+REGISTER_SCENARIO(IsStarted);
