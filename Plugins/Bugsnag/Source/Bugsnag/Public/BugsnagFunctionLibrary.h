@@ -441,6 +441,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
 	static void MarkLaunchCompleted();
 
+	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
+	static bool IsStarted();
+
 	/**
 	 * Information about the last launch of the application, if it has been run
 	 * before.

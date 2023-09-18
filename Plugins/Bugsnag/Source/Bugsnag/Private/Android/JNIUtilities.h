@@ -106,6 +106,7 @@ typedef struct
 	jmethodID BugsnagStartSession;
 	jmethodID BugsnagPauseSession;
 	jmethodID BugsnagResumeSession;
+	jmethodID BugsnagIsStarted;
 	jmethodID BugsnagSetUser;
 	jmethodID BugsnagUnrealPluginConstructor;
 	jmethodID BugsnagUnrealPluginGetEventMetadataSection;

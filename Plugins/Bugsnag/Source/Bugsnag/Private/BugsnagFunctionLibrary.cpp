@@ -35,7 +35,7 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 		Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 	}
 	Start(Configuration.ToSharedRef());
-	Configuration->SetIsStarted(true);
+	IsStarted();
 }
 
 #if PLATFORM_IMPLEMENTS_BUGSNAG
@@ -78,8 +78,9 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 	}
 #endif
 
+	
 	GPlatformBugsnag.Start(Configuration);
-	Configuration->SetIsStarted(true);
+	GPlatformBugsnag.IsStarted();
 
 	static FString MapUrl;
 
@@ -355,6 +356,18 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 #endif
 }
 
+bool UBugsnagFunctionLibrary::IsStarted()
+{
+#if PLATFORM_IMPLEMENTS_BUGSNAG
+	UE_LOG(LogBugsnag, Error, TEXT("isStarted() has been called"));
+	return true;
+#else
+	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
+	UE_LOG(LogBugsnag, Error, TEXT("isStarted() has not been called"));
+	return false
+#endif
+} 
+
 void UBugsnagFunctionLibrary::MarkLaunchCompleted()
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
@@ -362,7 +375,7 @@ void UBugsnagFunctionLibrary::MarkLaunchCompleted()
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
-}
+} 
 
 TSharedPtr<FBugsnagLastRunInfo> UBugsnagFunctionLibrary::GetLastRunInfo()
 {
