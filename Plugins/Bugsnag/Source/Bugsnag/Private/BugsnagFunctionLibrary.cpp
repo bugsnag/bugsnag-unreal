@@ -364,7 +364,7 @@ bool UBugsnagFunctionLibrary::IsStarted()
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	UE_LOG(LogBugsnag, Error, TEXT("isStarted() has not been called"));
-	return false
+	return false;
 #endif
 } 
 
