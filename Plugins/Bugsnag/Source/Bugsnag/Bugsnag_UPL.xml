@@ -1,74 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- API: https://docs.unrealengine.com/4.26/en-US/SharingAndReleasing/Mobile/UnrealPluginLanguage/ -->
 <root xmlns:android="http://schemas.android.com/apk/res/android">
-    <init>
-        <setStringFromProperty
-            result="sAPIKey"
-            ini="Engine"
-            section="/Script/Bugsnag.BugsnagSettings"
-            property="ApiKey"
-            default=""/>
-        <setBoolFromProperty
-            result="bShouldUploadBuildMetadata"
-            ini="Engine"
-            section="/Script/Bugsnag.BugsnagSettings"
-            property="bAutoUploadSymbolFiles"
-            default="true"/>
-        <setBoolIsEqual result="bIsShipping" arg1="$S(Configuration)" arg2="Shipping"/>
-        <setBoolIsEqual result="bMissingApiKey" arg1="$S(sAPIKey)" arg2=""/>
-        <setBoolNot result="bHasApiKey" source="$B(bMissingApiKey)"/>
-        <setBoolOr result="bIsShippingOrDist" arg1="$B(bIsShipping)" arg2="$B(Distribution)"/>
-        <setBoolAnd result="bShouldUploadBuildMetadata" arg1="$B(bShouldUploadBuildMetadata)" arg2="$B(bHasApiKey)"/>
-        <setBoolAnd result="bShouldUploadBuildMetadata" arg1="$B(bShouldUploadBuildMetadata)" arg2="$B(bIsShippingOrDist)"/>
-
-        <setStringFromProperty
-            result="sReleasesEndpoint"
-            ini="Engine"
-            section="/Script/Bugsnag.BugsnagSettings"
-            property="ReleasesEndpoint"
-            default=""/>
-        <setStringFromProperty
-            result="sSymbolUploadEndpoint"
-            ini="Engine"
-            section="/Script/Bugsnag.BugsnagSettings"
-            property="SymbolUploadEndpoint"
-            default=""/>
-        <setBoolIsEqual result="bMissingReleasesEndpoint" arg1="$S(sReleasesEndpoint)" arg2=""/>
-        <setBoolIsEqual result="bMissingSymbolUploadEndpoint" arg1="$S(sSymbolUploadEndpoint)" arg2=""/>
-        <setBoolNot result="bHasReleasesEndpoint" source="$B(bMissingReleasesEndpoint)"/>
-        <setBoolNot result="bHasSymbolUploadEndpoint" source="$B(bMissingSymbolUploadEndpoint)"/>
-        <!-- must be both set or neither -->
-        <setBoolIsEqual result="bHasValidEndpoints" arg1="$B(bHasSymbolUploadEndpoint)" arg2="$B(bHasReleasesEndpoint)"/>
-        <!-- disable mapping upload if endpoint configuration is invalid -->
-        <setBoolAnd result="bShouldUploadBuildMetadata" arg1="$B(bShouldUploadBuildMetadata)" arg2="$B(bHasValidEndpoints)"/>
-        <if condition="bHasValidEndpoints">
-            <false>
-                <log text="WARNING: Bugsnag endpoints configuration is invalid - all endpoints must be configured or none. ReleasesEndpoint='$S(sReleasesEndpoint)' SymbolUploadEndpoint='$S(sSymbolUploadEndpoint)'"/>
-            </false>
-        </if>
-        <setBoolAnd result="bShouldSetEndpoints" arg1="$B(bHasSymbolUploadEndpoint)" arg2="$B(bHasReleasesEndpoint)"/>
-    </init>
-
+    <init></init>
     <androidManifestUpdates>
         <addPermission android:name="android.permission.INTERNET" />
-        <if condition="bShouldUploadBuildMetadata">
-            <true>
-                <addElements tag="application">
-                    <meta-data android:name="com.bugsnag.android.API_KEY"/>
-                </addElements>
-                <loopElements tag="meta-data">
-                    <setStringFromAttribute result="metadataName" tag="$" name="android:name"/>
-                    <setBoolIsEqual result="bMatchingTag" arg1="$S(metadataName)" arg2="com.bugsnag.android.API_KEY"/>
-                    <if condition="bMatchingTag">
-                        <true>
-                            <addAttribute tag="$" name="android:value" value="$S(sAPIKey)"/>
-                        </true>
-                    </if>
-                </loopElements>
-            </true>
-        </if>
     </androidManifestUpdates>
-
     <AARImports>
         <insertValue value="repository $S(PluginDir)/../ThirdParty/Android/lib"/>
         <insertNewline/>
@@ -78,43 +14,10 @@
         </insert>
         <insertNewline/>
     </AARImports>
-
     <!--  optional base build.gradle buildscript additions -->
-    <buildscriptGradleAdditions>
-        <insert>
-            dependencies {
-                classpath "com.bugsnag:bugsnag-android-gradle-plugin:5.+"
-            }
-        </insert>
-    </buildscriptGradleAdditions>
+    <buildscriptGradleAdditions></buildscriptGradleAdditions>
     <!--  optional app build.gradle additions -->
-    <buildGradleAdditions>
-        <if condition="bShouldUploadBuildMetadata">
-            <true>
-                <insert>apply plugin: "com.bugsnag.android.gradle"
-bugsnag {
-    enabled = true
-    uploadJvmMappings = true
-    uploadNdkMappings = true
-    reportBuilds = true
-    sharedObjectPaths = [new File("</insert><insertValue value="$S(BuildDir)/jni/$S(Architecture)"/><insert>")]
-    variantFilter {}
-                </insert>
-                <if condition="bShouldSetEndpoints">
-                    <true>
-                        <insert>
-    endpoint = "</insert><insertValue value="$S(sSymbolUploadEndpoint)"/><insert>"
-    releasesEndpoint = "</insert><insertValue value="$S(sReleasesEndpoint)"/><insert>"
-                        </insert>
-                    </true>
-                </if>
-                <insert>
-}
-                </insert>
-            </true>
-        </if>
-    </buildGradleAdditions>
-
+    <buildGradleAdditions></buildGradleAdditions>
     <!-- optional additions to the GameActivity imports in GameActivity.java -->
     <gameActivityImportAdditions> </gameActivityImportAdditions>
     <!-- optional additions to the GameActivity class implements in GameActivity.java (end each line with a comma) -->

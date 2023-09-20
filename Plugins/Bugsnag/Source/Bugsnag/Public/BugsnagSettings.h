@@ -146,10 +146,6 @@ class BUGSNAG_API UBugsnagSettings : public UObject
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	bool bAutoTrackSessions = true;
 
-	// Whether symbol mapping files for showing file paths and line numbers in errors should be automatically uploaded. (Android only)
-	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration", DisplayName = "Auto Upload Symbol Files (Android only)")
-	bool bAutoUploadSymbolFiles = true;
-
 	// A general summary of what was occurring in the application.
 	UPROPERTY(GlobalConfig, EditAnywhere, Category = "Advanced Configuration")
 	FString Context;
