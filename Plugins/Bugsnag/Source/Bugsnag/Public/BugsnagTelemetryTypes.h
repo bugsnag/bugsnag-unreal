@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 
 /**
-  * Types of telemetry that may be sent to Bugsnag for product improvement purposes.
-  */
+ * Types of telemetry that may be sent to Bugsnag for product improvement purposes.
+ */
 enum class EBugsnagTelemetryTypes : uint8
 {
 	None = 0,
