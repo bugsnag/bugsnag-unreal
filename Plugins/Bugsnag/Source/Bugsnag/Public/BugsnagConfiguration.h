@@ -274,7 +274,7 @@ public:
 	void SetMaxPersistedSessions(uint32 Value) { MaxPersistedSessions = Value; };
 
 	/**
-	 * The maximum length of a string in metadata. 
+	 * The maximum length of a string in metadata.
 	 *
 	 * To help avoid excessive event payload sizes, any strings exceeding this length will be truncated.
 	 *
@@ -316,7 +316,7 @@ public:
 	/**
 	 * The types of telemetry that may be sent to Bugsnag for product improvement purposes.
 	 *
-	  * By default all types of telemetry are enabled.
+	 * By default all types of telemetry are enabled.
 	 */
 	EBugsnagTelemetryTypes GetTelemetry() const { return Telemetry; }
 

@@ -22,33 +22,20 @@ Before('@skip_ios') do |_scenario|
   skip_this_scenario("Not compatible with iOS") if is_platform? 'iOS'
 end
 
-def current_platform
-  case Maze.config.farm
-  when :bs
-    Maze.driver.capabilities['os']
-  when :sl, :local
-    Maze.driver.capabilities['platformName']
-  when :none
-    Maze.config.os
-  else
-    Maze.driver.os
-  end
-end
-
 def is_platform? name
   # case-insensitive string compare, also accepts symbols. examples:
   #
   # > is_platform? :android
   # > is_platform? 'iOS'
   # > is_platform? 'ios'
-  current_platform.casecmp(name.to_s) == 0
+  Maze::Helper.get_current_platform.casecmp(name.to_s) == 0
 end
 
 def platform_artifact_dir
   if is_platform? 'iOS'
     'IOS' # why did they do this to us lol
   else
-    current_platform.capitalize
+    Maze::Helper.get_current_platform.capitalize
   end
 end
 

@@ -7,7 +7,7 @@
 #include "ExampleBlueprintFunctionLibrary.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class UExampleBlueprintFunctionLibrary : public UBlueprintFunctionLibrary

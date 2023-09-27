@@ -8,6 +8,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: clang-format
-        run: find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs /usr/bin/clang-format-12 --dry-run --Werror
+        run: find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs /usr/bin/clang-format-14 --dry-run --Werror
       - name: cspell
         run: npm install -g cspell && cspell Plugins/Bugsnag/**/*.{cpp,h}
