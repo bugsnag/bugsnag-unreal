@@ -89,7 +89,6 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-5.3-arm64.apk"
-          - "--appium-version=1.17.0"
           - "--device=ANDROID_11"
           - "--farm=bs"
           - "--order=random"
@@ -117,7 +116,6 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.3.ipa"
-          - "--appium-version=1.17.0"
           - "--device=IOS_16"
           - "--farm=bs"
           - "--order=random"
