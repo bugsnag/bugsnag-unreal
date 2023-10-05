@@ -173,7 +173,6 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-5.0-arm64.apk"
-          - "--appium-version=1.17.0"
           - "--device=ANDROID_11"
           - "--farm=bs"
           - "--order=random"
@@ -201,7 +200,6 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.0.ipa"
-          - "--appium-version=1.17.0"
           - "--device=IOS_14"
           - "--farm=bs"
           - "--order=random"
@@ -245,7 +243,6 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-5.1-arm64.apk"
-          - "--appium-version=1.17.0"
           - "--device=ANDROID_11"
           - "--farm=bs"
           - "--order=random"
@@ -273,7 +270,6 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.1.ipa"
-          - "--appium-version=1.17.0"
           - "--device=IOS_16"
           - "--farm=bs"
           - "--order=random"
