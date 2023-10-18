@@ -390,16 +390,6 @@ bool FAndroidPlatformBugsnag::ResumeSession()
 	return false;
 }
 
-bool FAndroidPlatformBugsnag::IsStarted()
-{
-	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
-	if(Env && JNICache.initialized){
-		jboolean result = (*Env).CallStaticBooleanMethod(JNICache.BugsnagClass, JNICache.BugsnagIsStarted);
-		return result == JNI_TRUE;
-	}
-	return false;
-}
-
 #ifdef __cplusplus
 extern "C"
 {

@@ -155,7 +155,6 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagMarkLaunchCompleted, cache->BugsnagClass, "markLaunchCompleted", "()V");
 	CacheStaticJavaMethod(env, cache->BugsnagStartSession, cache->BugsnagClass, "startSession", "()V");
 	CacheStaticJavaMethod(env, cache->BugsnagResumeSession, cache->BugsnagClass, "resumeSession", "()Z");
-	CacheStaticJavaMethod(env, cache->BugsnagIsStarted, cache->BugsnagClass, "isStarted", "()Z");
 	CacheStaticJavaMethod(env, cache->BugsnagSetUser, cache->BugsnagClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagPauseSession, cache->BugsnagClass, "pauseSession", "()V");
 

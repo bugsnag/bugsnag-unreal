@@ -80,7 +80,6 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 
 	
 	GPlatformBugsnag.Start(Configuration);
-	GPlatformBugsnag.IsStarted();
 
 	static FString MapUrl;
 
@@ -366,7 +365,7 @@ bool UBugsnagFunctionLibrary::IsStarted()
 	UE_LOG(LogBugsnag, Error, TEXT("isStarted() has not been called"));
 	return false;
 #endif
-} 
+}
 
 void UBugsnagFunctionLibrary::MarkLaunchCompleted()
 {
@@ -375,7 +374,7 @@ void UBugsnagFunctionLibrary::MarkLaunchCompleted()
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
-} 
+}
 
 TSharedPtr<FBugsnagLastRunInfo> UBugsnagFunctionLibrary::GetLastRunInfo()
 {

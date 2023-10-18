@@ -62,7 +62,6 @@ void FApplePlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Confi
 						  withKey:NSStringFromFString(BugsnagConstants::UnrealEngine)];
 	FAppleFeatureFlagStore::CocoaStore = Client;
 	FAppleMetadataStore::CocoaStore = Client;
-	
 }
 
 void FApplePlatformBugsnag::Notify(
@@ -185,11 +184,6 @@ void FApplePlatformBugsnag::StartSession()
 void FApplePlatformBugsnag::PauseSession()
 {
 	[Bugsnag pauseSession];
-}
-
-bool FApplePlatformBugsnag::IsStarted()
-{
-	return [Bugsnag isStarted];
 }
 
 bool FApplePlatformBugsnag::ResumeSession()

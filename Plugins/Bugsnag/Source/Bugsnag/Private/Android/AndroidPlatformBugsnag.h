@@ -46,8 +46,6 @@ public:
 
 	void MarkLaunchCompleted() override;
 
-	bool IsStarted() override;
-
 	TSharedPtr<FBugsnagLastRunInfo> GetLastRunInfo() override;
 
 	void StartSession() override;
