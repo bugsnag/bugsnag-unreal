@@ -15,6 +15,8 @@
 #import <mutex>
 #endif
 
+bool Started = false;
+
 #include COMPILED_PLATFORM_HEADER(PlatformStackWalk.h)
 
 #define LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM()                                          \
@@ -35,7 +37,7 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 		Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 	}
 	Start(Configuration.ToSharedRef());
-	IsStarted();
+	Started = true;
 }
 
 #if PLATFORM_IMPLEMENTS_BUGSNAG
@@ -80,7 +82,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 
 	
 	GPlatformBugsnag.Start(Configuration);
-
+	Started = true;
 	static FString MapUrl;
 
 	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& InMapUrl)
@@ -357,14 +359,15 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 
 bool UBugsnagFunctionLibrary::IsStarted()
 {
-#if PLATFORM_IMPLEMENTS_BUGSNAG
-	UE_LOG(LogBugsnag, Error, TEXT("isStarted() has been called"));
-	return true;
-#else
-	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
-	UE_LOG(LogBugsnag, Error, TEXT("isStarted() has not been called"));
-	return false;
-#endif
+	if(Started){
+		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has started"));
+		return true;
+	}
+	else {
+		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has not started"));
+		return false;
+	}
+
 }
 
 void UBugsnagFunctionLibrary::MarkLaunchCompleted()

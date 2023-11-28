@@ -32,8 +32,6 @@ public:
 
 	virtual void MarkLaunchCompleted() = 0;
 
-	virtual bool IsStarted() = 0;
-
 	virtual TSharedPtr<FBugsnagLastRunInfo> GetLastRunInfo() = 0;
 
 	virtual void StartSession() = 0;
