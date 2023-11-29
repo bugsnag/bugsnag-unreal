@@ -22,6 +22,8 @@
 		TEXT("UBugsnagFunctionLibrary::%s(): Bugsnag is not supported on platform %s"), \
 		*FString(__func__), *FString(FPlatformProperties::PlatformName()))
 
+static bool Started = false;
+
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
 	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
@@ -79,6 +81,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 
 	GPlatformBugsnag.Start(Configuration);
 
+	Started = true;
 	static FString MapUrl;
 
 	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& InMapUrl)
@@ -351,6 +354,18 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return {};
 #endif
+}
+
+bool UBugsnagFunctionLibrary::IsStarted()
+{
+	if(Started){
+		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has started"));
+		return true;
+	}
+	else {
+		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has not started"));
+		return false;
+	}
 }
 
 void UBugsnagFunctionLibrary::MarkLaunchCompleted()
