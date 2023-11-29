@@ -358,11 +358,13 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 
 bool UBugsnagFunctionLibrary::IsStarted()
 {
-	if(Started){
+	if (Started)
+	{
 		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has started"));
 		return true;
 	}
-	else {
+	else
+	{
 		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has not started"));
 		return false;
 	}
