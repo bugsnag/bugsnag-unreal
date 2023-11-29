@@ -15,14 +15,14 @@
 #import <mutex>
 #endif
 
-bool Started = false;
-
 #include COMPILED_PLATFORM_HEADER(PlatformStackWalk.h)
 
 #define LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM()                                          \
 	UE_LOG(LogBugsnag, Log,                                                             \
 		TEXT("UBugsnagFunctionLibrary::%s(): Bugsnag is not supported on platform %s"), \
 		*FString(__func__), *FString(FPlatformProperties::PlatformName()))
+
+static bool Started = false;
 
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
@@ -37,7 +37,6 @@ void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 		Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 	}
 	Start(Configuration.ToSharedRef());
-	Started = true;
 }
 
 #if PLATFORM_IMPLEMENTS_BUGSNAG
