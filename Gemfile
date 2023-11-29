@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'bugsnag-maze-runner', '~>8.0'
+gem 'bugsnag-maze-runner', '~>8.13'
