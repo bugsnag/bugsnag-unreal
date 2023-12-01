@@ -81,7 +81,6 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 
 	GPlatformBugsnag.Start(Configuration);
 
-	Started = true;
 	static FString MapUrl;
 
 	FCoreUObjectDelegates::PreLoadMap.AddLambda([](const FString& InMapUrl)
@@ -102,7 +101,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 				return;
 			}
 
-			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoaded,
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcr	umbMessages::MapLoaded,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
 
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
@@ -135,6 +134,8 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::UserActivity,
 				MakeShared<FJsonValueString>(InUserActivity));
 		});
+
+		Started = true;
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
@@ -358,16 +359,7 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 
 bool UBugsnagFunctionLibrary::IsStarted()
 {
-	if (Started)
-	{
-		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has started"));
-		return true;
-	}
-	else
-	{
-		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag has not started"));
-		return false;
-	}
+	return Started;
 }
 
 void UBugsnagFunctionLibrary::MarkLaunchCompleted()
