@@ -101,7 +101,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 				return;
 			}
 
-			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcr umbMessages::MapLoaded,
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcrumbMessages::MapLoaded,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
 
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
