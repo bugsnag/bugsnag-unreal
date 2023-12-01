@@ -101,7 +101,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 				return;
 			}
 
-			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcr	umbMessages::MapLoaded,
+			GPlatformBugsnag.LeaveBreadcrumb(BugsnagBreadcr umbMessages::MapLoaded,
 				MakeJsonObject(BugsnagConstants::Url, MapUrl), EBugsnagBreadcrumbType::Navigation);
 
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::MapUrl,
@@ -135,7 +135,7 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 				MakeShared<FJsonValueString>(InUserActivity));
 		});
 
-		Started = true;
+	Started = true;
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
