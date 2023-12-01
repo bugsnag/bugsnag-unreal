@@ -22,6 +22,8 @@
 		TEXT("UBugsnagFunctionLibrary::%s(): Bugsnag is not supported on platform %s"), \
 		*FString(__func__), *FString(FPlatformProperties::PlatformName()))
 
+static bool Started = false;
+
 void UBugsnagFunctionLibrary::Start(const FString& ApiKey)
 {
 	TSharedPtr<FBugsnagConfiguration> Configuration = FBugsnagConfiguration::Load();
@@ -132,6 +134,8 @@ void UBugsnagFunctionLibrary::Start(const TSharedRef<FBugsnagConfiguration>& Con
 			GPlatformBugsnag.AddMetadata(BugsnagConstants::UnrealEngine, BugsnagConstants::UserActivity,
 				MakeShared<FJsonValueString>(InUserActivity));
 		});
+
+	Started = true;
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif
@@ -351,6 +355,11 @@ TArray<TSharedRef<const IBugsnagBreadcrumb>> UBugsnagFunctionLibrary::GetBreadcr
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 	return {};
 #endif
+}
+
+bool UBugsnagFunctionLibrary::IsStarted()
+{
+	return Started;
 }
 
 void UBugsnagFunctionLibrary::MarkLaunchCompleted()

@@ -4,6 +4,7 @@ Changelog
 ## TBD 
 
 * Removed the bugsnag android gradle plugin due to incompatibility with UE 5.1+. Symbols can now be uploaded via the [BugSnag CLI](https://docs.bugsnag.com/platforms/unreal-engine/showing-full-stacktraces/#android-proguard-and-ndk-mappings)[#220](https://github.com/bugsnag/bugsnag-unreal/pull/220)
+* Added a method to check whether the Start() method has been called.
 
 ## TBD
 
