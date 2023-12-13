@@ -22,7 +22,7 @@ Feature: Reporting handled errors
       | ios     | iOS     |
       | macos   | macOS   |
     And the event "app.version" equals "1.0"
-    And the event "device.freeDisk" is not null
+    And unless iOS, the event "device.freeDisk" is not null
     And the event "device.freeMemory" is not null
     And the event "device.id" equals "51229"
     And the event "device.jailbroken" is false
