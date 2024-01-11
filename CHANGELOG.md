@@ -7,7 +7,7 @@ Changelog
 
 ## TBD
 
-* Updates the bugsnag-cocoa dependency from v6.26.2 to [v6.27.3](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6273-2023-11-15)
+* Updates the bugsnag-cocoa dependency from v6.26.2 to [v6.28.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6280-2023-12-13)
 
 ## 1.8.0 (2023-08-28)
 
