@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## TBD 
+## 2.0.0 (2024-01-12) 
 
 * Removed the bugsnag android gradle plugin due to incompatibility with UE 5.1+. Symbols can now be uploaded via the [BugSnag CLI](https://docs.bugsnag.com/platforms/unreal-engine/showing-full-stacktraces/#android-proguard-and-ndk-mappings)[#220](https://github.com/bugsnag/bugsnag-unreal/pull/220)
 * Updates the bugsnag-cocoa dependency from v6.26.2 to [v6.28.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6280-2023-12-13)
