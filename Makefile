@@ -2,7 +2,7 @@
 .SUFFIXES:        # remove default suffix rules
 MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
-UE_VERSION?=4.27
+UE_VERSION?=5.3
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
@@ -188,7 +188,7 @@ $(TEST_IOS_APP): $(TEST_MAC_LIB)
 	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=IOS
 
 $(TEST_MAC_APP): $(TEST_MAC_LIB)
-	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=Mac -archive
+	"$(UE_RUNUAT)" $(UE_BUILDCOOK_ARGS) -project="$(TESTPROJ)" -targetplatform=Mac -architecture=arm64+x86_64 -archive
 
 .PHONY: copy_package_to_fixture
 copy_package_to_fixture: package
