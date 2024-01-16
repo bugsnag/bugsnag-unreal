@@ -34,7 +34,6 @@ RUNUAT_ARGS+=(-package)
 case "${PLATFORM}" in
   Android)  RUNUAT_ARGS+=(-distribution) ;;
   Mac)      RUNUAT_ARGS+=(-archive) ;;
-  IOS)      RUNUAT_ARGS+=(-archive) ;;
 esac
 
 "${UE_RUNUAT}" "${RUNUAT_ARGS[@]}" -unattended -utf8output
