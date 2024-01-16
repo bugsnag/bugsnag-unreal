@@ -15,8 +15,16 @@ UE_RUNUAT="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.sh"
 
 echo "--- Installing plugin"
 
-unzip -o "Build/Plugin/Bugsnag-$(cat VERSION)-$(git rev-parse --short=7 HEAD)-UE_${UE_VERSION}-macOS.zip" -d features/fixtures/generic/Plugins
+#unzip -o "Build/Plugin/Bugsnag-$(cat VERSION)-$(git rev-parse --short=7 HEAD)-UE_${UE_VERSION}-macOS.zip" -d features/fixtures/generic/Plugins
 
+case "${UE_VERSION}" in
+  5.3)
+    if [[ "$PLATFORM" == "Mac" ]]; then
+      echo "--- Enabling Modern Xcode Build"
+      sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
+    fi
+  ;;
+esac
 
 echo "--- Building Editor dependencies"
 
