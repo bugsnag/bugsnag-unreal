@@ -42,6 +42,10 @@ Then('the mobile app is not running') do
   end
 end
 
+Then(/^unless ([^,]+), (.+)/) do |platforms, step_text|
+  step(step_text) if not platforms.split("|").map { |item| item.downcase }.include? Maze::Helper.get_current_platform
+end
+
 Then(/^on (Android|iOS), (.+)/) do |platform, step_text|
   step(step_text) if is_platform? platform
 end

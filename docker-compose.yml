@@ -1,11 +1,22 @@
 version: '3.6'
 services:
   maze-runner:
-    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:latest-v6-cli
+    image: 855461928731.dkr.ecr.us-west-1.amazonaws.com/maze-runner-releases:latest-v8-cli
     environment:
       DEBUG:
       BUILDKITE:
       BUILDKITE_PIPELINE_NAME:
+      BUILDKITE_BRANCH:
+      BUILDKITE_BUILD_CREATOR:
+      BUILDKITE_BUILD_NUMBER:
+      BUILDKITE_BUILD_URL:
+      BUILDKITE_JOB_ID:
+      BUILDKITE_LABEL:
+      BUILDKITE_MESSAGE:
+      BUILDKITE_PIPELINE_SLUG:
+      BUILDKITE_REPO:
+      BUILDKITE_RETRY_COUNT:
+      BUILDKITE_STEP_KEY:
       BROWSER_STACK_USERNAME:
       BROWSER_STACK_ACCESS_KEY:
     volumes:
