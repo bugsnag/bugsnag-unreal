@@ -64,12 +64,12 @@ public:
 	virtual void SetGroupingHash(const TOptional<FString>&) = 0;
 
 	/**
-	 * Information about the app at the time the error ocurred.
+	 * Information about the app at the time the error occurred.
 	 */
 	virtual const TSharedRef<IBugsnagAppWithState> GetApp() const = 0;
 
 	/**
-	 * Information about the computer or device running the app at the time the error ocurred.
+	 * Information about the computer or device running the app at the time the error occurred.
 	 */
 	virtual const TSharedRef<IBugsnagDeviceWithState> GetDevice() const = 0;
 
