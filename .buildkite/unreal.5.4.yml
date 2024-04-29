@@ -1,5 +1,5 @@
 agents:
-  queue: macos-14-1
+  queue: ms-arm-13-1
 
 steps:
   - label: 'Build Plugin - 5.4 Mac'
