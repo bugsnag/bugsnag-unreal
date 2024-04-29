@@ -1,5 +1,8 @@
 agents:
   queue: ms-arm-13-1
+env:
+  XCODE_VERSION: 14.1.0
+  JAVA_VERSION: 11
 
 steps:
   - label: 'Build Plugin - 5.4 Mac'
@@ -21,7 +24,6 @@ steps:
     depends_on: plugin_5_4
     env:
       UE_VERSION: "5.4"
-      JAVA_VERSION: 17
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
