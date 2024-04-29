@@ -301,3 +301,7 @@ steps:
   - name: 'Append Unreal 5.3 Pipeline'
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.5.3.yml
+
+  - name: 'Append Unreal 5.4 Pipeline'
+    commands:
+      - buildkite-agent pipeline upload .buildkite/unreal.5.4.yml
