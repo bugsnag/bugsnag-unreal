@@ -125,7 +125,7 @@ e2e_ios: $(TEST_IOS_APP)
 
 .PHONY: e2e_ios_local
 e2e_ios_local: $(TEST_IOS_APP)
-	ideviceinstaller --uninstall com.bugsnag.examples.UnrealTestFixture
+	ideviceinstaller --uninstall com.bugsnag.fixtures.unreal
 	bundle exec maze-runner --app=$< --farm=local --os=ios --os-version=14 --apple-team-id=7W9PZ27Y5F --udid="$(shell idevice_id -l)" $(TESTS) --color
 
 .PHONY: e2e_mac
