@@ -75,7 +75,7 @@ steps:
   #   key: mac_fixture_5_3
 
   # Unreal Engine 5.3 - Android
-  - label: 'E2E Tests - 5.3 Android 11'
+  - label: 'E2E Tests - 5.3 Android 12'
     depends_on: android_fixture_5_3
     timeout_in_minutes: 30
     agents:
@@ -89,7 +89,7 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-5.3-arm64.apk"
-          - "--device=ANDROID_11"
+          - "--device=ANDROID_12"
           - "--farm=bs"
           - "--order=random"
     concurrency: 5

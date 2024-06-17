@@ -323,6 +323,10 @@ steps:
       - echo '--- Running tests'
       - bundle exec maze-runner --os=macos
 
+  - name: 'Append Unreal 5.3 Pipeline'
+    commands:
+      - buildkite-agent pipeline upload .buildkite/unreal.5.3.yml
+
   #
   # Conditionally trigger full pipeline
   #
