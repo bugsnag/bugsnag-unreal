@@ -56,24 +56,26 @@ steps:
     timeout_in_minutes: 60
     key: ios_fixture_5_3
 
-  # # Unreal Engine 5.3 - macOS
-  # - name: ':mac: Build E2E - 5.3 macOS'
-  #   depends_on: plugin_5_3
-  #   env:
-  #     UE_VERSION: "5.3"
-  #     DEVELOPER_DIR: "/Applications/Xcode14.1.app"
-  #   plugins:
-  #     artifacts#v1.5.0:
-  #       download: Build/Plugin/Bugsnag-*-UE_5.3-macOS.zip
-  #       upload:
-  #         - TestFixture-macOS-5.3.zip
-  #         - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-  #   commands:
-  #     - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-  #     - features/scripts/build-fixture.sh Mac
-  #   timeout_in_minutes: 90
-  #   key: mac_fixture_5_3
-
+  # TODO: skipped pending PLAT-12297
+  # Unreal Engine 5.3 - macOS
+  - name: ':mac: Build E2E - 5.3 macOS'
+    key: mac_fixture_5_3
+    skip: Skipped pending PLAT-PLAT-12297
+    depends_on: plugin_5_3
+    env:
+      UE_VERSION: "5.3"
+      DEVELOPER_DIR: "/Applications/Xcode14.1.app"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.3-macOS.zip
+        upload:
+          - TestFixture-macOS-5.3.zip
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+    commands:
+      - bundle install
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Mac
+    timeout_in_minutes: 90
 
   # Unreal Engine 5.3 - Android
   - label: 'E2E Tests - 5.3 Android'
@@ -128,19 +130,21 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
+  # TODO: skipped pending PLAT-12297
   # Unreal Engine 5.3 - macOS
-  # - label: 'E2E Tests - 5.3 macOS 12'
-  #   depends_on: mac_fixture_5_3
-  #   timeout_in_minutes: 10
-  #   plugins:
-  #     artifacts#v1.5.0:
-  #       download:
-  #         -  TestFixture-macOS-5.3.zip
-  #       upload: ["maze_output/failed/**/*"]
-  #   commands:
-  #     - echo '--- Extracting test fixture'
-  #     - unzip TestFixture-macOS-5.3.zip
-  #     - echo '--- Installing dependencies'
-  #     - bundle install
-  #     - echo '--- Running tests'
-  #     - bundle exec maze-runner --os=macos
+  - label: 'E2E Tests - 5.3 macOS'
+    skip: Skipped pending PLAT-PLAT-12297
+    depends_on: mac_fixture_5_3
+    timeout_in_minutes: 10
+    plugins:
+      artifacts#v1.5.0:
+        download:
+          -  TestFixture-macOS-5.3.zip
+        upload: ["maze_output/failed/**/*"]
+    commands:
+      - echo '--- Extracting test fixture'
+      - unzip TestFixture-macOS-5.3.zip
+      - echo '--- Installing dependencies'
+      - bundle install
+      - echo '--- Running tests'
+      - bundle exec maze-runner --os=macos
