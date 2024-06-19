@@ -4,6 +4,7 @@ Changelog
 ## TBD () 
 
 * Included apple privacy manifest in released package [2#34](https://github.com/bugsnag/bugsnag-unreal/pull/234)
+* Updates the bugsnag-cocoa dependency from v6.28.0 to [v6.29.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6290-2024-06-19)
 
 ## 2.0.0 (2024-01-12) 
 
