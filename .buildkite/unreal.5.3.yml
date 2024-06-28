@@ -56,8 +56,11 @@ steps:
     timeout_in_minutes: 60
     key: ios_fixture_5_3
 
+  # TODO: skipped pending PLAT-12297
   # Unreal Engine 5.3 - macOS
   - name: ':mac: Build E2E - 5.3 macOS'
+    key: mac_fixture_5_3
+    skip: Skipped pending PLAT-PLAT-12297
     depends_on: plugin_5_3
     env:
       UE_VERSION: "5.3"
@@ -69,13 +72,13 @@ steps:
           - TestFixture-macOS-5.3.zip
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
+      - bundle install
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - features/scripts/build-fixture.sh Mac
     timeout_in_minutes: 90
-    key: mac_fixture_5_3
 
   # Unreal Engine 5.3 - Android
-  - label: 'E2E Tests - 5.3 Android 11'
+  - label: 'E2E Tests - 5.3 Android'
     depends_on: android_fixture_5_3
     timeout_in_minutes: 30
     agents:
@@ -89,7 +92,7 @@ steps:
         run: maze-runner
         command:
           - "--app=/app/build/TestFixture-Android-Shipping-5.3-arm64.apk"
-          - "--device=ANDROID_11"
+          - "--device=ANDROID_12"
           - "--farm=bs"
           - "--order=random"
     concurrency: 5
@@ -101,7 +104,7 @@ steps:
           limit: 2
 
   # Unreal Engine 5.3 - iOS
-  - label: 'E2E Tests - 5.3 iOS 12'
+  - label: 'E2E Tests - 5.3 iOS'
     depends_on: ios_fixture_5_3
     timeout_in_minutes: 30
     agents:
@@ -127,8 +130,10 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
+  # TODO: skipped pending PLAT-12297
   # Unreal Engine 5.3 - macOS
-  - label: 'E2E Tests - 5.3 macOS 12'
+  - label: 'E2E Tests - 5.3 macOS'
+    skip: Skipped pending PLAT-PLAT-12297
     depends_on: mac_fixture_5_3
     timeout_in_minutes: 10
     plugins:

@@ -48,7 +48,7 @@ def artifact_path
 end
 
 def app_state
-  Maze.driver.app_state('com.bugsnag.examples.UnrealTestFixture')
+  Maze.driver.app_state('com.bugsnag.fixtures.unreal')
 end
 
 Maze.hooks.before do

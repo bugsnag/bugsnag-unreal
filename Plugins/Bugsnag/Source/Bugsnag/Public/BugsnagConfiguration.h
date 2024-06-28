@@ -553,7 +553,7 @@ public:
 	 *
 	 * The callback should return `true` to allow or `false` to prevent the event being sent.
 	 *
-	 * Note that the callback will not normally be invoked on the thread where the error ocurred,
+	 * Note that the callback will not normally be invoked on the thread where the error occurred,
 	 * and may run at a much later point in time or after the application has been relaunched.
 	 */
 	void AddOnSendError(FBugsnagOnErrorCallback Callback) { OnSendErrorCallbacks.Add(Callback); }

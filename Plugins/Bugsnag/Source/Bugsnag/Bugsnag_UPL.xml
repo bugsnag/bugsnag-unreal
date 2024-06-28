@@ -9,8 +9,8 @@
         <insertValue value="repository $S(PluginDir)/../ThirdParty/Android/lib"/>
         <insertNewline/>
         <insert>
-            com.bugsnag,bugsnag-plugin-android-unreal,1.8.0
-            com.bugsnag,bugsnag-android,5.30.0
+            com.bugsnag,bugsnag-plugin-android-unreal,2.0.0
+            com.bugsnag,bugsnag-android,5.31.3
         </insert>
         <insertNewline/>
     </AARImports>
