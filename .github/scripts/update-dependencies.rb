@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 
-# require 'bumpsnag'
+require 'bumpsnag'
 
 def update_version(file, from, to)
   initial_content = File.open(file).read
