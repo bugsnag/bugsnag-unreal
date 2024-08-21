@@ -2,7 +2,7 @@
 .SUFFIXES:        # remove default suffix rules
 MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
-UE_VERSION?=4.27
+UE_VERSION?=5
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
@@ -28,7 +28,7 @@ TEST_MAC_LIB=$(TEST_OUTDIR)/Mac/UE4Editor-TestFixture.dylib
 
 GIT_COMMIT=$(shell git rev-parse --short=7 HEAD)
 PLUGIN_PACKAGE=$(PWD)/Build/Plugin/Bugsnag
-UPLUGIN=$(PWD)/Plugins/Bugsnag/Bugsnag.uplugin
+UPLUGIN=$(PWD)/src/Bugsnag.uplugin
 PRESET_VERSION=$(shell cat VERSION)
 ZIP_NAME=Bugsnag-$(PRESET_VERSION)-$(GIT_COMMIT)-UE_$(UE_VERSION)
 

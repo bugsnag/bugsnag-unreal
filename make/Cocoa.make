@@ -4,7 +4,7 @@ MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
 SUBMODULE=deps/bugsnag-cocoa
 SRCDIR=$(SUBMODULE)/Bugsnag
-OUTDIR=Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa
+OUTDIR=src/Source/ThirdParty/BugsnagCocoa
 HEADERS=$(OUTDIR)/include
 IOS_LIB=$(OUTDIR)/IOS/libBugsnagStatic.a
 MAC_LIB=$(OUTDIR)/Mac/libBugsnagStatic.a
