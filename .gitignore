@@ -49,7 +49,7 @@ SourceArt/**/*.tga
 
 # Binary Files
 Binaries/*
-Plugins/*/Binaries/*
+src/*/Binaries/*
 
 # Builds
 ArchivedBuilds/
@@ -70,7 +70,7 @@ Saved/*
 
 # Compiled source files for the engine to use
 Intermediate/*
-Plugins/*/Intermediate/*
+src/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
@@ -78,7 +78,7 @@ DerivedDataCache/*
 .DS_Store
 
 # Bugsnag specific
-Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include
+src/Source/ThirdParty/BugsnagCocoa/include
 deps/bugsnag-plugin-android-unreal/build
 maze_output/*
 *.log

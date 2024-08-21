@@ -2,7 +2,7 @@
 .SUFFIXES:        # remove default suffix rules
 MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 
-UE_VERSION?=5
+UE_VERSION?=5.2
 UE_HOME?=/Users/Shared/Epic Games/UE_$(UE_VERSION)
 UE_BUILD=$(UE_HOME)/Engine/Build/BatchFiles/Mac/Build.sh
 UE_RUNUAT=$(UE_HOME)/Engine/Build/BatchFiles/RunUAT.sh
@@ -90,11 +90,11 @@ run: $(EXAMPLE_MAC_LIB) ## Build the example project and run in Unreal Editor's 
 
 .PHONY: format
 format: ## format all c/c++ source to match .clang-format
-	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
+	find Source src/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format -i
 
 .PHONY: lint
 lint: ## check the project for formatting or spelling issues
-	find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
+	find Source src/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs clang-format --dry-run --Werror
 	cspell Plugins/Bugsnag/**/*.{cpp,h}
 
 #-------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ endif
 # UE4Editor-BugsnagExample.dylib is required for BuildCookRun to succeed
 # If this target isn't built beforehand, the Editor will show the "Missing
 # BugsnagExample Modules" prompt
-$(EXAMPLE_MAC_LIB): $(shell find Plugins/Bugsnag/Source Source -type f)
+$(EXAMPLE_MAC_LIB): $(shell find src/Source Source -type f)
 	$(MAKE) -f make/Cocoa.make package
 	"$(UE_BUILD)" BugsnagExample Mac Development -TargetType=Editor "$(UPROJECT)"
 
@@ -212,7 +212,7 @@ ifeq ($(VERSION),)
 endif
 	echo $(VERSION) > VERSION
 	ruby -rjson -e 'f="$(UPLUGIN)"; v="$(VERSION)"; k="VersionName"; j=JSON.parse(File.read(f)); if j[k] != v then j[k]=v; j["Version"]+=1; File.write(f, JSON.pretty_generate(j).gsub("  ", "	") + "\n") end'
-	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" Plugins/Bugsnag/Source/Bugsnag/Private/Version.h
+	sed -i '' "s/BUGSNAG_UNREAL_VERSION_STRING .*/BUGSNAG_UNREAL_VERSION_STRING \"$(VERSION)\"/" src/Source/Bugsnag/Private/Version.h
 	sed -i '' "s/## TBD/## $(VERSION) ($(shell date '+%Y-%m-%d'))/" CHANGELOG.md
 	$(MAKE) -f make/Android.make bump
 
@@ -222,7 +222,7 @@ ifeq ($(VERSION),)
 	$(error VERSION is not defined. Run with `make prerelease VERSION=number`)
 endif
 	git checkout -b release-v$(VERSION)
-	git add CHANGELOG.md Makefile Plugins/Bugsnag/Bugsnag.uplugin Plugins/Bugsnag/Source/Bugsnag/Bugsnag_UPL.xml Plugins/Bugsnag/Source/Bugsnag/Private/Version.h VERSION deps/bugsnag-plugin-android-unreal/build.gradle
+	git add CHANGELOG.md Makefile src/Bugsnag.uplugin src/Source/Bugsnag/Bugsnag_UPL.xml src/Source/Bugsnag/Private/Version.h VERSION deps/bugsnag-plugin-android-unreal/build.gradle
 	git diff --exit-code || (echo "you have unstaged changes - Makefile may need updating to `git add` some more files"; exit 1)
 	git commit -m "Release v$(VERSION)"
 	git push origin release-v$(VERSION)

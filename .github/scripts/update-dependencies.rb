@@ -19,7 +19,7 @@ end
 if target_submodule.eql?('bugsnag-android')
   version = /(\d+\.\d+\.\d+)/.match(target_version)[1]
   update_version(
-    'Plugins/Bugsnag/Source/Bugsnag/Bugsnag_UPL.xml',
+    'src/Source/Bugsnag/Bugsnag_UPL.xml',
     /com.bugsnag,bugsnag-android,\d{1,3}\.\d{1,3}\.\d{1,3}/,
     "com.bugsnag,bugsnag-android,#{version}"
   )

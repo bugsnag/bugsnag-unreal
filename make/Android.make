@@ -26,7 +26,7 @@ ifeq ($(VERSION),)
 	$(error VERSION is not defined. Run with `make bump VERSION=number`)
 endif
 	sed -i '' "s/version '.*'/version '$(VERSION)'/" deps/bugsnag-plugin-android-unreal/build.gradle
-	sed -i '' "s/com\.bugsnag,bugsnag-plugin-android-unreal,.*/com.bugsnag,bugsnag-plugin-android-unreal,$(VERSION)/" Plugins/Bugsnag/Source/Bugsnag/Bugsnag_UPL.xml
+	sed -i '' "s/com\.bugsnag,bugsnag-plugin-android-unreal,.*/com.bugsnag,bugsnag-plugin-android-unreal,$(VERSION)/" src/Source/Bugsnag/Bugsnag_UPL.xml
 
 .PHONY: bump_android
 bump_android: ## Update bugsnag-android dep version
@@ -34,7 +34,7 @@ ifeq ($(VERSION),)
 	$(error VERSION is not defined. Run with `make bump_android VERSION=number`)
 endif
 	sed -i '' 's/bugsnag-android-core:.*"/bugsnag-android-core:$(VERSION)"/' deps/bugsnag-plugin-android-unreal/build.gradle
-	sed -i '' "s/com\.bugsnag,bugsnag-android,.*/com.bugsnag,bugsnag-android,$(VERSION)/" Plugins/Bugsnag/Source/Bugsnag/Bugsnag_UPL.xml
+	sed -i '' "s/com\.bugsnag,bugsnag-android,.*/com.bugsnag,bugsnag-android,$(VERSION)/" src/Source/Bugsnag/Bugsnag_UPL.xml
 
 .PHONY: clean
 clean: ## remove build artifacts
