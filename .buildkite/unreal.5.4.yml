@@ -1,7 +1,7 @@
 agents:
-  queue: ms-arm-13-1
+  queue: macos-14
 env:
-  XCODE_VERSION: 14.1.0
+  XCODE_VERSION: 15.3.0
   JAVA_VERSION: 11
 
 steps:
