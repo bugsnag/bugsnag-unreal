@@ -17,7 +17,7 @@ steps:
   - label: 'Build Plugin - 5.0 Mac'
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      XCODE_VERSION: "13.2.1"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -32,7 +32,7 @@ steps:
   - label: 'Build Plugin - 5.1 Mac'
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
+      XCODE_VERSION: "13.4.1"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -53,7 +53,7 @@ steps:
     depends_on: plugin_5_0
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      XCODE_VERSION: "13.2.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
@@ -72,7 +72,7 @@ steps:
     depends_on: plugin_5_0
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      XCODE_VERSION: "13.2.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
@@ -91,7 +91,7 @@ steps:
     depends_on: plugin_5_0
     env:
       UE_VERSION: "5.0"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      XCODE_VERSION: "13.2.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.0-macOS.zip
@@ -110,7 +110,7 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
+      XCODE_VERSION: "13.4.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.1-macOS.zip
@@ -129,7 +129,7 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
+      XCODE_VERSION: "13.4.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.1-macOS.zip
@@ -148,7 +148,7 @@ steps:
     depends_on: plugin_5_1
     env:
       UE_VERSION: "5.1"
-      DEVELOPER_DIR: "/Applications/Xcode13.4.app"
+      XCODE_VERSION: "13.4.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.1-macOS.zip

@@ -26,7 +26,7 @@ steps:
   - label: 'Build Plugin - 5.2 macOS'
     env:
       UE_VERSION: "5.2"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      XCODE_VERSION: "14.1.0"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
@@ -107,7 +107,7 @@ steps:
     depends_on: plugin_4_27
     env:
       UE_VERSION: "4.27"
-      DEVELOPER_DIR: "/Applications/Xcode13.2.1.app"
+      XCODE_VERSION: "13.2.1"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_4.27-macOS.zip
@@ -125,7 +125,7 @@ steps:
 #    depends_on: plugin_5_2
 #    env:
 #      UE_VERSION: "5.2"
-#      DEVELOPER_DIR: "/Applications/Xcode14.app"
+#      XCODE_VERSION: "14.1.0"
 #      JAVA_VERSION: "17"
 #    plugins:
 #      artifacts#v1.5.0:
@@ -146,7 +146,7 @@ steps:
     depends_on: plugin_5_2
     env:
       UE_VERSION: "5.2"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      XCODE_VERSION: "14.1.0"
       JAVA_VERSION: "17"
     plugins:
       artifacts#v1.5.0:
@@ -166,7 +166,7 @@ steps:
     depends_on: plugin_5_2
     env:
       UE_VERSION: "5.2"
-      DEVELOPER_DIR: "/Applications/Xcode14.app"
+      XCODE_VERSION: "14.1.0"
       JAVA_VERSION: "17"
     plugins:
       artifacts#v1.5.0:
