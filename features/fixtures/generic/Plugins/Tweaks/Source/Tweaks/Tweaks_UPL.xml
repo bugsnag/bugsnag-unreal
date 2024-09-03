@@ -5,11 +5,11 @@
         <addAttribute tag="application" name="android:usesCleartextTraffic" value="true"/>
     </androidManifestUpdates>
 
-    <buildGradleAdditions>
+   <!--  <buildGradleAdditions>
         <insert>
             android.compileSdkVersion 34
         </insert>
-    </buildGradleAdditions>
+    </buildGradleAdditions> -->
     
     <gameActivityImportAdditions>
         <insert>
@@ -52,3 +52,5 @@
         </insert>
     </gameActivityClassAdditions>
 </root>
+
+
