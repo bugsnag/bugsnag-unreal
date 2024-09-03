@@ -121,25 +121,25 @@ steps:
     key: mac_fixture_4_27
 
  # Unreal Engine 5.2 - Android
- - name: ':android: Build E2E - 5.2 Android'
-   depends_on: plugin_5_2
-   env:
-     UE_VERSION: "5.2"
-     XCODE_VERSION: "14.1.0"
-     JAVA_VERSION: "17"
-   plugins:
-     artifacts#v1.5.0:
-       download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
-       upload:
-         - build/TestFixture-Android-Shipping-5.2-arm64.apk
-         - build/TestFixture-Android-Shipping-5.2-armv7.apk
-         - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-   commands:
-     - env
-     - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-     - features/scripts/build-fixture.sh Android
-   timeout_in_minutes: 60
-   key: android_fixture_5_2
+  - name: ':android: Build E2E - 5.2 Android'
+    depends_on: plugin_5_2
+    env:
+      UE_VERSION: "5.2"
+      XCODE_VERSION: "14.1.0"
+      JAVA_VERSION: "17"
+    plugins:
+      artifacts#v1.5.0:
+        download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
+        upload:
+          - build/TestFixture-Android-Shipping-5.2-arm64.apk
+          - build/TestFixture-Android-Shipping-5.2-armv7.apk
+          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        commands:
+          - env
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh Android
+        timeout_in_minutes: 60
+        key: android_fixture_5_2
 
   # Unreal Engine 5.2 - iOS
   - name: ':ios: Build E2E - 5.2 iOS'
