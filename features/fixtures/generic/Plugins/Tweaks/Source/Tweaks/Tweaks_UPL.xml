@@ -5,11 +5,20 @@
         <addAttribute tag="application" name="android:usesCleartextTraffic" value="true"/>
     </androidManifestUpdates>
 
-   <!--  <buildGradleAdditions>
+    <buildGradleAdditions>
         <insert>
-            android.compileSdkVersion 34
+            def ueVersion = System.getenv("UE_VERSION")
+            if (ueVersion != null) {
+                if(ueVersion == "4.27" ){
+                    android.compileSdkVersion 31
+                }else{
+                    android.compileSdkVersion 34
+                }
+            } else {
+                android.compileSdkVersion 34
+            }
         </insert>
-    </buildGradleAdditions> -->
+    </buildGradleAdditions>
     
     <gameActivityImportAdditions>
         <insert>
