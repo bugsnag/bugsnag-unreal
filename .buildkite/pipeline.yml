@@ -134,12 +134,12 @@ steps:
           - build/TestFixture-Android-Shipping-5.2-arm64.apk
           - build/TestFixture-Android-Shipping-5.2-armv7.apk
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        commands:
-          - env
-          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-          - features/scripts/build-fixture.sh Android
-        timeout_in_minutes: 60
-        key: android_fixture_5_2
+    commands:
+      - env
+      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+      - features/scripts/build-fixture.sh Android
+    timeout_in_minutes: 60
+    key: android_fixture_5_2
 
   # Unreal Engine 5.2 - iOS
   - name: ':ios: Build E2E - 5.2 iOS'
