@@ -7,7 +7,7 @@
 
     <buildGradleAdditions>
         <insert>
-            android.compileSdkVersion 31
+            android.compileSdkVersion 34
         </insert>
     </buildGradleAdditions>
     
