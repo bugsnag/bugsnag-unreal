@@ -43,7 +43,7 @@ steps:
     env:
       UE_VERSION: "5.3"
       XCODE_VERSION: "14.1.0"
-      plugins:
+    plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.3-macOS.zip
         upload:
@@ -130,19 +130,21 @@ steps:
         - exit_status: -1  # Agent was lost
           limit: 2
 
-  # Unreal Engine 5.3 - macOS
-  - label: 'E2E Tests - 5.3 macOS'
-    depends_on: mac_fixture_5_3
-    timeout_in_minutes: 10
-    plugins:
-      artifacts#v1.5.0:
-        download:
-          -  TestFixture-macOS-5.3.zip
-        upload: ["maze_output/failed/**/*"]
-    commands:
-      - echo '--- Extracting test fixture'
-      - unzip TestFixture-macOS-5.3.zip
-      - echo '--- Installing dependencies'
-      - bundle install
-      - echo '--- Running tests'
-      - bundle exec maze-runner --os=macos
+  # # TODO: skipped pending PLAT-12297
+  # # Unreal Engine 5.3 - macOS
+  # - label: 'E2E Tests - 5.3 macOS'
+  #   skip: Skipped pending PLAT-PLAT-12297
+  #   depends_on: mac_fixture_5_3
+  #   timeout_in_minutes: 10
+  #   plugins:
+  #     artifacts#v1.5.0:
+  #       download:
+  #         -  TestFixture-macOS-5.3.zip
+  #       upload: ["maze_output/failed/**/*"]
+  #   commands:
+  #     - echo '--- Extracting test fixture'
+  #     - unzip TestFixture-macOS-5.3.zip
+  #     - echo '--- Installing dependencies'
+  #     - bundle install
+  #     - echo '--- Running tests'
+  #     - bundle exec maze-runner --os=macos
