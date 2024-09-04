@@ -8,15 +8,26 @@
     <buildGradleAdditions>
         <insert>
             def ueVersion = System.getenv("UE_VERSION")
-            if (ueVersion != null) {
-                if(ueVersion == "4.27" ){
+            
+            if (ueVersion != null) 
+            {
+                if(
+                    ueVersion == "4.27" ||
+                    ueVersion == "5.0"  ||
+                    ueVersion == "5.1" )
+                {
                     android.compileSdkVersion 31
-                }else{
+                }
+                else
+                {
                     android.compileSdkVersion 34
                 }
-            } else {
+            } 
+            else 
+            {
                 android.compileSdkVersion 34
             }
+            
         </insert>
     </buildGradleAdditions>
     
