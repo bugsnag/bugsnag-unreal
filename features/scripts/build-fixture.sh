@@ -26,6 +26,15 @@ case "${UE_VERSION}" in
   ;;
 esac
 
+case "${UE_VERSION}" in
+  5.4)
+    if [[ "$PLATFORM" == "IOS" ]]; then
+      echo "--- Enabling Modern Xcode Build"
+      sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
+    fi
+  ;;
+esac
+
 echo "--- Building Editor dependencies"
 
 "${UE_BUILD}" TestFixture Mac Development -TargetType=Editor -ForceUnity "${UPROJECT}"
