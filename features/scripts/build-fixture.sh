@@ -7,11 +7,23 @@ PLATFORM=$1
 
 UPROJECT="${PWD}/features/fixtures/generic/TestFixture.uproject"
 
+XCODE_EXPORT_OPTIONS="${PWD}/features/scripts/exportOptions.plist"
+
 UE_VERSION="${UE_VERSION:-4.27}"
 UE_HOME="/Users/Shared/Epic Games/UE_${UE_VERSION}"
 UE_BUILD="${UE_HOME}/Engine/Build/BatchFiles/Mac/Build.sh"
 UE_RUNUAT="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.sh"
+MODERN_IOS=false
 
+if [[ "${UE_VERSION}" == "5.4" && "${PLATFORM}" == "IOS" ]]; then
+  echo "--- Using iOS modern xcode setup"
+  MODERN_IOS=true
+fi
+
+if [[ "$MODERN_IOS" == true ]]; then
+  echo "--- Deleting Xcode Archives directory"
+  rm -rf ~/Library/Developer/Xcode/Archives
+fi
 
 echo "--- Installing plugin"
 
@@ -26,14 +38,10 @@ case "${UE_VERSION}" in
   ;;
 esac
 
-case "${UE_VERSION}" in
-  5.4)
-    if [[ "$PLATFORM" == "IOS" ]]; then
-      echo "--- Enabling Modern Xcode Build"
-      sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
-    fi
-  ;;
-esac
+if [[ "$MODERN_IOS" == true ]]; then
+  echo "--- Enabling Modern Xcode Build"
+  sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
+fi
 
 echo "--- Building Editor dependencies"
 
@@ -53,6 +61,10 @@ case "${PLATFORM}" in
   Mac)      RUNUAT_ARGS+=(-archive) ;;
 esac
 
+if [[ "$MODERN_IOS" == true ]]; then
+  RUNUAT_ARGS+=(-distribution)
+fi
+
 "${UE_RUNUAT}" "${RUNUAT_ARGS[@]}" -unattended -utf8output
 
 
@@ -67,9 +79,28 @@ case "${PLATFORM}" in
     ;;
 
   IOS)
+    if [[ "$MODERN_IOS" == true ]]; then
+      echo "--- Building ipa and dsym files after modern xcode build"
+      echo "--- Finding the xcarchive file"
+      ARCHIVE_PATH=$(find ~/Library/Developer/Xcode/Archives -type d -name "*.xcarchive" -print -quit)
+    
+    if [[ -n "$ARCHIVE_PATH" ]]; then
+      echo "--- Found xcarchive at $ARCHIVE_PATH"
+      echo "--- Building IPA from xcarchive"
+      xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH" \
+        -exportPath build/TestFixture-IOS-Shipping-"${UE_VERSION}" \
+        -exportOptionsPlist "$XCODE_EXPORT_OPTIONS"
+      
+      echo "--- IPA built successfully"
+    else
+      echo "Error: No xcarchive found."
+      exit 1
+    fi
+  else
     mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
     mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa build/TestFixture-IOS-Shipping-"${UE_VERSION}".ipa
-    ;;
+  fi
+  ;;
 
   Mac)
     case "${UE_VERSION}" in
