@@ -47,8 +47,8 @@ steps:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
         upload:
-          - build/TestFixture-IOS-Shipping-5.4.dSYM
-          - build/TestFixture-IOS-Shipping-5.4.ipa
+          - Build/TestFixture-IOS-Shipping-5.4.dSYM
+          - Build/TestFixture-IOS-Shipping-5.4.ipa
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
