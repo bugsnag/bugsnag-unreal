@@ -10,5 +10,9 @@
 	<false/>
 	<key>thinning</key>
 	<string>&lt;none&gt;</string>
+	<key>uploadSymbols</key>
+	<true/>
+	<key>generateAppStoreInformation</key>
+	<true/>
 </dict>
 </plist>
