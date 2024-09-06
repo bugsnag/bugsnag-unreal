@@ -271,7 +271,6 @@ steps:
       artifacts#v1.3.0:
         download:
           - build/TestFixture-IOS-Shipping-5.1.ipa
-          - build/TestFixture-IOS-Shipping-5.1.dSYM
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner

@@ -99,7 +99,7 @@ steps:
           limit: 2
 
   # Unreal Engine 5.4 - iOS
-  - label: 'E2E Tests - 5.4 iOS 12'
+  - label: 'E2E Tests - 5.4 iOS 16'
     depends_on: ios_fixture_5_4
     timeout_in_minutes: 30
     agents:
