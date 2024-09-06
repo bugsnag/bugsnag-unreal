@@ -1,8 +1,7 @@
 agents:
   queue: macos-13-arm
 env:
-  XCODE_VERSION: 14.1.0
-  JAVA_VERSION: 11
+  XCODE_VERSION: 15.2.0
 
 steps:
   - label: 'Build Plugin - 5.4 Mac'
