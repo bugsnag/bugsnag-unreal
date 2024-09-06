@@ -1,8 +1,7 @@
 agents:
   queue: macos-13-arm
 env:
-  XCODE_VERSION: 14.1.0
-  JAVA_VERSION: 11
+  XCODE_VERSION: 15.2.0
 
 steps:
   - label: 'Build Plugin - 5.4 Mac'
@@ -48,6 +47,7 @@ steps:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
         upload:
           - build/TestFixture-IOS-Shipping-5.4.ipa
+          - build/TestFixture-IOS-Shipping-5.4.dSYM
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -108,6 +108,7 @@ steps:
       artifacts#v1.3.0:
         download:
           - build/TestFixture-IOS-Shipping-5.4.ipa
+          - build/TestFixture-IOS-Shipping-5.4.dSYM
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
