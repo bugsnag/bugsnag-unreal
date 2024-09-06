@@ -90,22 +90,23 @@ case "${PLATFORM}" in
       echo "--- Building IPA from xcarchive"
       xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH" \
         -exportPath build/TestFixture-IOS-Shipping-"${UE_VERSION}" \
-        -exportOptionsPlist "$XCODE_EXPORT_OPTIONS"
+        -exportOptionsPlist "$XCODE_EXPORT_OPTIONS" &
 
-      sleep 300
+      pid=$!
+
+      wait $pid
+
+      echo "xcode finished building"
 
       echo "--- IPA built successfully"
 
       mv build/TestFixture-IOS-Shipping-"${UE_VERSION}"/TestFixture-IOS-Shipping.ipa build/TestFixture-IOS-Shipping-"${UE_VERSION}".ipa
 
-      sleep 120
        # Check and move the dSYM file
       DSYM_PATH="${ARCHIVE_PATH}/dSYMs/TestFixture-IOS-Shipping.app.dSYM"
       if [[ -d "$DSYM_PATH" ]]; then
         echo "--- Found dSYM at $DSYM_PATH"
         mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
-
-      sleep 120
       else
         echo "Error: dSYM file not found."
         exit 1
