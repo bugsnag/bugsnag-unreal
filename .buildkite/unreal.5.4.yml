@@ -115,6 +115,7 @@ steps:
           - "--app=/app/build/TestFixture-IOS-Shipping-5.4.ipa"
           - "--device=IOS_16"
           - "--farm=bs"
+          - "--appium-version=1.22.0"
           - "--order=random"
     concurrency: 5
     concurrency_group: browserstack-app
