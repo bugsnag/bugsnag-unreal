@@ -43,6 +43,7 @@ steps:
       queue: macos-14
     env:
       UE_VERSION: "5.4"
+      XCODE_VERSION: "15.4.0"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
