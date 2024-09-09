@@ -1,15 +1,14 @@
 agents:
   queue: macos-14
 env:
-  XCODE_VERSION: 15.3.0
   UE_VERSION: 5.4
 
 steps:
   - label: 'Build Plugin - 5.4 Mac'
     env:
       UE_VERSION: "5.4"
-      JAVA_VERSION: 11
     commands:
+      - java --version
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
     plugins:
