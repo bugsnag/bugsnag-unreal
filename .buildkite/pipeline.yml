@@ -5,6 +5,10 @@ steps:
   #
   # Build Plugins
   #
+  - name: 'Append Unreal 5.4 Pipeline'
+    commands:
+      - buildkite-agent pipeline upload .buildkite/unreal.5.4.yml
+
 
 #  # Unreal Engine 4.27 - macOS
   - label: 'Build Plugin - 4.27 macOS'
