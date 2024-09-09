@@ -3,7 +3,7 @@ agents:
 env:
   XCODE_VERSION: "15.3.0"
   UE_VERSION: "5.4"
-
+  JAVA_VERSION: 11
 steps:
   - label: 'Build Plugin - 5.4 Mac'
     env:
