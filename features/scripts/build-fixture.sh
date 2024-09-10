@@ -105,7 +105,7 @@ case "${PLATFORM}" in
         mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
         echo "--- Zipping dSYM file"
         cd build/
-        zip -r ../TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM.zip TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
+        zip -r TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM.zip TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
         cd ../
       else
         echo "Error: dSYM file not found."
