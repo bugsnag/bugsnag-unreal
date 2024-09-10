@@ -90,11 +90,7 @@ case "${PLATFORM}" in
       echo "--- Building IPA from xcarchive"
       xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH" \
         -exportPath build/TestFixture-IOS-Shipping-"${UE_VERSION}" \
-        -exportOptionsPlist "$XCODE_EXPORT_OPTIONS" &
-
-      pid=$!
-
-      wait $pid
+        -exportOptionsPlist "$XCODE_EXPORT_OPTIONS"
 
       echo "xcode finished building"
 
@@ -107,6 +103,7 @@ case "${PLATFORM}" in
       if [[ -d "$DSYM_PATH" ]]; then
         echo "--- Found dSYM at $DSYM_PATH"
         mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
+        zip -r build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM.zip build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
       else
         echo "Error: dSYM file not found."
         exit 1
