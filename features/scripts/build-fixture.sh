@@ -103,10 +103,7 @@ case "${PLATFORM}" in
       if [[ -d "$DSYM_PATH" ]]; then
         echo "--- Found dSYM at $DSYM_PATH"
         mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
-        echo "--- Zipping dSYM file"
-        cd build/
-        zip -r TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM.zip TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
-        cd ../
+        cp build/TestFixture-IOS-Shipping-5.4.dSYM/Contents/Resources/DWARF/TestFixture-IOS-Shipping build/TestFixture-IOS-Shipping-"${UE_VERSION}"-file.dSYM
       else
         echo "Error: dSYM file not found."
         exit 1
