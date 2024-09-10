@@ -49,7 +49,7 @@ steps:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
         upload:
           - build/TestFixture-IOS-Shipping-5.4.ipa
-          - build/TestFixture-IOS-Shipping-5.4.dSYM
+          - build/TestFixture-IOS-Shipping-5.4.dSYM.zip
           - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -110,7 +110,7 @@ steps:
       artifacts#v1.3.0:
         download:
           - build/TestFixture-IOS-Shipping-5.4.ipa
-          - build/TestFixture-IOS-Shipping-5.4.dSYM
+          - build/TestFixture-IOS-Shipping-5.4.dSYM.zip
         upload: ["maze_output/failed/**/*"]
       docker-compose#v3.3.0:
         run: maze-runner
