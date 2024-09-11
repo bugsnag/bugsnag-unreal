@@ -10,6 +10,8 @@ steps:
   - label: 'Build Plugin - 5.4 Mac'
     agents:
       queue: macos-13-arm
+    env:
+      XCODE_VERSION: "15.2.0"
     commands:
       - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
       - make package
