@@ -21,7 +21,7 @@ steps:
         key: plugin_4_27
         timeout_in_minutes: 60
         commands:
-          <<: *common_clean_commands
+          - <<: *common_clean_commands
           - make package
         plugins:
           artifacts#v1.5.0:
