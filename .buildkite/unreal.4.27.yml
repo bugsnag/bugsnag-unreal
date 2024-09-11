@@ -44,7 +44,7 @@ steps:
         depends_on: plugin_4_27
         timeout_in_minutes: 60
         commands:
-          <<: *common_clean_commands
+          - <<: *common_clean_commands
           - features/scripts/build-fixture.sh Android
         plugins:
           <<: *common_plugins
@@ -59,8 +59,8 @@ steps:
         depends_on: plugin_4_27
         timeout_in_minutes: 60
         commands:
-          <<: *common_clean_commands
-            - features/scripts/build-fixture.sh IOS
+          - <<: *common_clean_commands
+          - features/scripts/build-fixture.sh IOS
         plugins:
           <<: *common_plugins
           artifacts#v1.5.0:
@@ -74,8 +74,8 @@ steps:
         depends_on: plugin_4_27
         timeout_in_minutes: 90
         commands:
-          <<: *common_clean_commands
-            - features/scripts/build-fixture.sh Mac
+          - <<: *common_clean_commands
+          - features/scripts/build-fixture.sh Mac
         plugins:
           <<: *common_plugins
           artifacts#v1.5.0:
