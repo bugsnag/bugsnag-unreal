@@ -25,7 +25,7 @@ steps:
         timeout_in_minutes: 60
         commands:
           <<: *common_clean_commands
-            - make package
+          - make package
         plugins:
           <<: *common_plugins
         artifact_paths:
@@ -40,7 +40,7 @@ steps:
         timeout_in_minutes: 60
         commands:
           <<: *common_clean_commands
-            - features/scripts/build-fixture.sh Android
+          - features/scripts/build-fixture.sh Android
         plugins:
           <<: *common_plugins
           artifacts#v1.5.0:

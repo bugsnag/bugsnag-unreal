@@ -22,7 +22,7 @@ steps:
         timeout_in_minutes: 60
         commands:
           <<: *common_clean_commands
-            - make package
+          - make package
         plugins:
           artifacts#v1.5.0:
             upload:
@@ -45,7 +45,7 @@ steps:
         timeout_in_minutes: 60
         commands:
           <<: *common_clean_commands
-            - features/scripts/build-fixture.sh Android
+          - features/scripts/build-fixture.sh Android
         plugins:
           <<: *common_plugins
           artifacts#v1.5.0:
@@ -69,7 +69,7 @@ steps:
               - build/TestFixture-IOS-Shipping-4.27.dSYM
               - build/TestFixture-IOS-Shipping-4.27.ipa
 
-      - label: ":mac: Build E2E - 4.27 macOS"
+      - label: ":mac: Build E2E - 4.27"
         key: mac_fixture_4_27
         depends_on: plugin_4_27
         timeout_in_minutes: 90
