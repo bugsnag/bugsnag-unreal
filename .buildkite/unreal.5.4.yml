@@ -60,6 +60,8 @@ steps:
   # # Unreal Engine 5.4 - macOS
   - name: ':mac: Build E2E - 5.4 macOS'
     depends_on: plugin_5_4
+    agents:
+      queue: macos-14
     env:
       UE_VERSION: "5.4"
     plugins:
@@ -129,9 +131,11 @@ steps:
           limit: 2
 
   # Unreal Engine 5.4 - macOS
-  - label: 'E2E Tests - 5.4 macOS 12'
+  - label: 'E2E Tests - 5.4 macOS 14'
     depends_on: mac_fixture_5_4
     timeout_in_minutes: 10
+    agents:
+      queue: macos-14
     plugins:
       artifacts#v1.5.0:
         download:
