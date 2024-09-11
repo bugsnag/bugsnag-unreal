@@ -8,7 +8,7 @@ steps:
         env:
           UE_VERSION: "5.2"
           XCODE_VERSION: "14.1.0"
-          JAVA_VERSION: "17"
+          JAVA_VERSION: "11"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - make package
@@ -35,7 +35,7 @@ steps:
         env:
           UE_VERSION: "5.2"
           XCODE_VERSION: "14.1.0"
-          JAVA_VERSION: "17"
+          JAVA_VERSION: "11"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh IOS
@@ -54,7 +54,7 @@ steps:
         env:
           UE_VERSION: "5.2"
           XCODE_VERSION: "14.1.0"
-          JAVA_VERSION: "17"
+          JAVA_VERSION: "11"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Mac
@@ -72,7 +72,7 @@ steps:
         env:
           UE_VERSION: "5.2"
           XCODE_VERSION: "14.1.0"
-          JAVA_VERSION: "17"
+          JAVA_VERSION: "11"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Android
@@ -120,7 +120,7 @@ steps:
         env:
           UE_VERSION: "5.2"
           XCODE_VERSION: "14.1.0"
-          JAVA_VERSION: "17"
+          JAVA_VERSION: "11"
         timeout_in_minutes: 10
         commands:
           - echo '--- Extracting test fixture'
