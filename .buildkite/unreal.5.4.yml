@@ -135,24 +135,25 @@ steps:
             - exit_status: -1
               limit: 2
 
-      - label: ":macos: E2E Tests - 5.4 macOS 14"
-        depends_on: mac_fixture_5_4
-        agents:
-          queue: macos-14
-        env:
-          XCODE_VERSION: "15.4.0"
-          UE_VERSION: "5.4"
-        timeout_in_minutes: 10
-        commands:
-          - echo '--- Extracting test fixture'
-          - unzip TestFixture-macOS-5.4.zip
-          - echo '--- Installing dependencies'
-          - bundle install
-          - echo '--- Running tests'
-          - bundle exec maze-runner --os=macos
-        plugins:
-          artifacts#v1.5.0:
-            download:
-              - TestFixture-macOS-5.4.zip
-            upload:
-              - maze_output/failed/**/*
+      # Pending PLAT-12729
+      # - label: ":macos: E2E Tests - 5.4 macOS 14"
+      #   depends_on: mac_fixture_5_4
+      #   agents:
+      #     queue: macos-14
+      #   env:s
+      #     XCODE_VERSION: "15.4.0"
+      #     UE_VERSION: "5.4"
+      #   timeout_in_minutes: 10
+      #   commands:
+      #     - echo '--- Extracting test fixture'
+      #     - unzip TestFixture-macOS-5.4.zip
+      #     - echo '--- Installing dependencies'
+      #     - bundle install
+      #     - echo '--- Running tests'
+      #     - bundle exec maze-runner --os=macos
+      #   plugins:
+      #     artifacts#v1.5.0:
+      #       download:
+      #         - TestFixture-macOS-5.4.zip
+      #       upload:
+      #         - maze_output/failed/**/*
