@@ -122,6 +122,7 @@ case "${PLATFORM}" in
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping
         ;;
       5.4)
+        mkdir -p features/fixtures/generic/ArchivedBuilds/MacNoEditor
         mv features/fixtures/generic/ArchivedBuilds/TestFixture-Mac-Shipping.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         ;;
       5.*)
