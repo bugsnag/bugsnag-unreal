@@ -15,10 +15,16 @@ UE_HOME="/Users/Shared/Epic Games/UE_${UE_VERSION}"
 UE_BUILD="${UE_HOME}/Engine/Build/BatchFiles/Mac/Build.sh"
 UE_RUNUAT="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.sh"
 MODERN_IOS=false
+MODERN_MAC_OS=false
 
 if [[ "${UE_VERSION}" == "5.4" && "${PLATFORM}" == "IOS" ]]; then
   echo "--- Using iOS modern xcode setup"
   MODERN_IOS=true
+fi
+
+if [[ "${UE_VERSION}" == "5.3" || "${UE_VERSION}" == "5.4" ]] && [[ "$PLATFORM" == "Mac" ]]; then
+  echo "--- Using MacOS modern Xcode setup"
+  MODERN_MAC_OS=true
 fi
 
 if [[ "$MODERN_IOS" == true ]]; then
@@ -26,23 +32,14 @@ if [[ "$MODERN_IOS" == true ]]; then
   rm -rf ~/Library/Developer/Xcode/Archives
 fi
 
-echo "--- Installing plugin"
-
-unzip -o "Build/Plugin/Bugsnag-$(cat VERSION)-$(git rev-parse --short=7 HEAD)-UE_${UE_VERSION}-macOS.zip" -d features/fixtures/generic/Plugins
-
-case "${UE_VERSION}" in
-  5.3)
-    if [[ "$PLATFORM" == "Mac" ]]; then
-      echo "--- Enabling Modern Xcode Build"
-      sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
-    fi
-  ;;
-esac
-
-if [[ "$MODERN_IOS" == true ]]; then
+if [[ "$MODERN_IOS" == true || "$MODERN_MAC_OS" == true ]]; then
   echo "--- Enabling Modern Xcode Build"
   sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
 fi
+
+echo "--- Installing plugin"
+
+unzip -o "Build/Plugin/Bugsnag-$(cat VERSION)-$(git rev-parse --short=7 HEAD)-UE_${UE_VERSION}-macOS.zip" -d features/fixtures/generic/Plugins
 
 echo "--- Building Editor dependencies"
 
