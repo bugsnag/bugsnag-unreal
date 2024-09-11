@@ -141,6 +141,9 @@ steps:
         depends_on: mac_fixture_5_4
         agents:
           queue: macos-14
+        env:
+          XCODE_VERSION: "15.4.0"
+          UE_VERSION: "5.4"
         timeout_in_minutes: 10
         commands:
           - echo '--- Extracting test fixture'
