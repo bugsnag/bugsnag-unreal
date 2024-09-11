@@ -1,7 +1,13 @@
+agents:
+  queue: macos-14
+
+env:
+  UE_VERSION: "5.4"
+  XCODE_VERSION: "15.4.0"
+  JAVA_VERSION: "17"
+
 steps:
   - label: 'Build Plugin - 5.4 Mac'
-    env:
-      UE_VERSION: "5.4"
     agents:
       queue: macos-13-arm
     commands:
@@ -18,11 +24,6 @@ steps:
   # Unreal Engine 5.4 - Android
   - name: ':android: Build E2E - 5.4 Android'
     depends_on: plugin_5_4
-    agents:
-      queue: macos-14
-    env:
-      UE_VERSION: "5.4"
-      JAVA_VERSION: 17
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
@@ -39,11 +40,6 @@ steps:
   # Unreal Engine 5.4 - iOS
   - name: ':ios: Build E2E - 5.4 iOS'
     depends_on: plugin_5_4
-    agents:
-      queue: macos-14
-    env:
-      UE_VERSION: "5.4"
-      XCODE_VERSION: "15.4.0"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
@@ -60,10 +56,6 @@ steps:
   # # Unreal Engine 5.4 - macOS
   - name: ':mac: Build E2E - 5.4 macOS'
     depends_on: plugin_5_4
-    agents:
-      queue: macos-14
-    env:
-      UE_VERSION: "5.4"
     plugins:
       artifacts#v1.5.0:
         download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
