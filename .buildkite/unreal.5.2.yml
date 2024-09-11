@@ -1,160 +1,163 @@
 agents:
   queue: macos-12-arm
 
-env:
-  UE_VERSION: "5.2"
-  XCODE_VERSION: "14.1.0"
-  JAVA_VERSION: "17"
-
 steps:
-  - label: 'Build Plugin - 5.2 macOS'
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [ Build/Plugin/*.zip ]
-    timeout_in_minutes: 60
-    key: plugin_5_2
+  - group: ":hammer: Builds UE 5.2"
+    steps:
+      - label: 'Build Plugin - 5.2 macOS'
+        env:
+          UE_VERSION: "5.2"
+          XCODE_VERSION: "14.1.0"
+          JAVA_VERSION: "17"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - make package
+        plugins:
+          artifacts#v1.5.0:
+            upload:
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        artifact_paths:
+          - Build/Plugin/*.zip
+        timeout_in_minutes: 60
+        key: plugin_5_2
 
-  # Unreal Engine 5.2 - Windows
-  - label: 'Build Plugin - 5.2 Windows'
-    agents:
-      queue: windows-general-wsl
-    command: features/scripts/build-plugin-wsl.sh
-    artifact_paths: [ Bugsnag-*.zip ]
-    timeout_in_minutes: 60
-    key: plugin_win_5_2
+      - label: 'Build Plugin - 5.2 Windows'
+        agents:
+          queue: windows-general-wsl
+        command: features/scripts/build-plugin-wsl.sh
+        artifact_paths:
+          - Bugsnag-*.zip
+        timeout_in_minutes: 60
+        key: plugin_win_5_2
 
-  - name: ':ios: Build E2E - 5.2 iOS'
-    depends_on: plugin_5_2
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
-        upload:
-          - build/TestFixture-IOS-Shipping-5.2.dSYM
-          - build/TestFixture-IOS-Shipping-5.2.ipa
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh IOS
-    timeout_in_minutes: 60
-    key: ios_fixture_5_2
+      - label: 'Build E2E - 5.2 iOS'
+        depends_on: plugin_5_2
+        env:
+          UE_VERSION: "5.2"
+          XCODE_VERSION: "14.1.0"
+          JAVA_VERSION: "17"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh IOS
+        plugins:
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
+            upload:
+              - build/TestFixture-IOS-Shipping-5.2.dSYM
+              - build/TestFixture-IOS-Shipping-5.2.ipa
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        timeout_in_minutes: 60
+        key: ios_fixture_5_2
 
-  # Unreal Engine 5.2 - macOS
-  - name: ':mac: Build E2E - 5.2 macOS'
-    depends_on: plugin_5_2
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
-        upload:
-          - TestFixture-macOS-5.2.zip
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh Mac
-    timeout_in_minutes: 90
-    key: mac_fixture_5_2
+      - label: 'Build E2E - 5.2 macOS'
+        depends_on: plugin_5_2
+        env:
+          UE_VERSION: "5.2"
+          XCODE_VERSION: "14.1.0"
+          JAVA_VERSION: "17"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh Mac
+        plugins:
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
+            upload:
+              - TestFixture-macOS-5.2.zip
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        timeout_in_minutes: 90
+        key: mac_fixture_5_2
 
-      # Pending PLAT-12680
-      # # Unreal Engine 5.2 - Android
-      #  - name: ':android: Build E2E - 5.2 Android'
-      #    depends_on: plugin_5_2
-      #    env:
-      #      UE_VERSION: "5.2"
-      #      XCODE_VERSION: "14.1.0"
-      #      JAVA_VERSION: "17"
-      #    plugins:
-      #      artifacts#v1.5.0:
-      #        download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
-      #        upload:
-      #          - build/TestFixture-Android-Shipping-5.2-arm64.apk
-      #          - build/TestFixture-Android-Shipping-5.2-armv7.apk
-      #          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      #    commands:
-      #      - env
-      #      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      #      - features/scripts/build-fixture.sh Android
-      #    timeout_in_minutes: 60
-      #    key: android_fixture_5_2
+      - label: 'Build E2E - 5.2 Android'
+        depends_on: plugin_5_2
+        env:
+          UE_VERSION: "5.2"
+          XCODE_VERSION: "14.1.0"
+          JAVA_VERSION: "17"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh Android
+        plugins:
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.2-macOS.zip
+            upload:
+              - build/TestFixture-Android-Shipping-5.2-arm64.apk
+              - build/TestFixture-Android-Shipping-5.2-armv7.apk
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        timeout_in_minutes: 60
+        key: android_fixture_5_2
 
-      # Unreal Engine 5.2 - iOS
+  - group: ":test_tube: E2E Tests UE 5.2"
+    steps:
+      - label: 'E2E Tests - 5.2 iOS'
+        depends_on: ios_fixture_5_2
+        agents:
+          queue: opensource
+        timeout_in_minutes: 30
+        plugins:
+          artifacts#v1.3.0:
+            download:
+              - build/TestFixture-IOS-Shipping-5.2.ipa
+              - build/TestFixture-IOS-Shipping-5.2.dSYM
+            upload:
+              - maze_output/failed/**/*
+          docker-compose#v3.3.0:
+            run: maze-runner
+            command:
+              - "--app=/app/build/TestFixture-IOS-Shipping-5.2.ipa"
+              - "--device=IOS_16"
+              - "--farm=bs"
+              - "--order=random"
+        concurrency: 5
+        concurrency_group: browserstack-app
+        concurrency_method: eager
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
 
+      - label: 'E2E Tests - 5.2 macOS 12'
+        depends_on: mac_fixture_5_2
+        env:
+          UE_VERSION: "5.2"
+          XCODE_VERSION: "14.1.0"
+          JAVA_VERSION: "17"
+        timeout_in_minutes: 10
+        commands:
+          - echo '--- Extracting test fixture'
+          - unzip TestFixture-macOS-5.2.zip
+          - echo '--- Installing dependencies'
+          - bundle install
+          - echo '--- Running tests'
+          - bundle exec maze-runner --os=macos
+        plugins:
+          artifacts#v1.5.0:
+            download:
+              - TestFixture-macOS-5.2.zip
+            upload:
+              - maze_output/failed/**/*
 
-      #
-      # E2E Tests
-      #
-
-
-    # Pending PLAT-12680
-  # # Unreal Engine 5.2 - Android
-  #  - label: 'E2E Tests - 5.2 Android 11'
-  #    depends_on: android_fixture_5_2
-  #    timeout_in_minutes: 30
-  #    agents:
-  #      queue: opensource
-  #    plugins:
-  #      artifacts#v1.3.0:
-  #        download:
-  #          - build/TestFixture-Android-Shipping-5.2-arm64.apk
-  #        upload: ["maze_output/failed/**/*"]
-  #      docker-compose#v3.3.0:
-  #        run: maze-runner
-  #        command:
-  #          - "--app=/app/build/TestFixture-Android-Shipping-5.2-arm64.apk"
-  #          - "--device=ANDROID_13"
-  #          - "--farm=bs"
-  #          - "--order=random"
-  #    concurrency: 5
-  #    concurrency_group: browserstack-app
-  #    concurrency_method: eager
-  #    retry:
-  #      automatic:
-  #        - exit_status: -1  # Agent was lost
-  #          limit: 2
-
-  # Unreal Engine 5.2 - iOS
-  - label: 'E2E Tests - 5.2 iOS 12'
-    depends_on: ios_fixture_5_2
-    timeout_in_minutes: 30
-    agents:
-      queue: opensource
-    plugins:
-      artifacts#v1.3.0:
-        download:
-          - build/TestFixture-IOS-Shipping-5.2.ipa
-          - build/TestFixture-IOS-Shipping-5.2.dSYM
-        upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
-        run: maze-runner
-        command:
-          - "--app=/app/build/TestFixture-IOS-Shipping-5.2.ipa"
-          - "--device=IOS_16"
-          - "--farm=bs"
-          - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
-    concurrency_method: eager
-    retry:
-      automatic:
-        - exit_status: -1  # Agent was lost
-          limit: 2
-
-  # Unreal Engine 5.2 - macOS
-  - label: 'E2E Tests - 5.2 macOS 12'
-    depends_on: mac_fixture_5_2
-    timeout_in_minutes: 10
-    plugins:
-      artifacts#v1.5.0:
-        download:
-          - TestFixture-macOS-5.2.zip
-        upload: ["maze_output/failed/**/*"]
-    commands:
-      - echo '--- Extracting test fixture'
-      - unzip TestFixture-macOS-5.2.zip
-      - echo '--- Installing dependencies'
-      - bundle install
-      - echo '--- Running tests'
-      - bundle exec maze-runner --os=macos
+      - label: 'E2E Tests - 5.2 Android 11'
+        depends_on: android_fixture_5_2
+        agents:
+          queue: opensource
+        timeout_in_minutes: 30
+        plugins:
+          artifacts#v1.3.0:
+            download:
+              - build/TestFixture-Android-Shipping-5.2-arm64.apk
+            upload:
+              - maze_output/failed/**/*
+          docker-compose#v3.3.0:
+            run: maze-runner
+            command:
+              - "--app=/app/build/TestFixture-Android-Shipping-5.2-arm64.apk"
+              - "--device=ANDROID_13"
+              - "--farm=bs"
+              - "--order=random"
+        concurrency: 5
+        concurrency_group: browserstack-app
+        concurrency_method: eager
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2

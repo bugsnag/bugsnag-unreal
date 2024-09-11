@@ -86,7 +86,6 @@ steps:
         agents:
           queue: opensource
         timeout_in_minutes: 30
-        commands: []
         plugins:
           artifacts#v1.3.0:
             download:
@@ -113,7 +112,6 @@ steps:
         agents:
           queue: opensource
         timeout_in_minutes: 30
-        commands: []
         plugins:
           artifacts#v1.3.0:
             download:
