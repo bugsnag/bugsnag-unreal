@@ -1,153 +1,161 @@
 agents:
   queue: macos-14
 
+env:
+  UE_VERSION: "5.4"
+  LOGS_PATH: "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+
+common_clean_commands: &common_clean_commands
+  - rm -rf "$LOGS_PATH"
+
+common_plugins: &common_plugins
+  artifacts#v1.5.0:
+    upload:
+      - "$LOGS_PATH"
+
 steps:
-  - label: 'Build Plugin - 5.4 Mac'
-    agents:
-      queue: macos-13-arm
-    env:
-      UE_VERSION: "5.4"
-      XCODE_VERSION: "15.2.0"
-      JAVA_VERSION: "11"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - make package
-    plugins:
-      artifacts#v1.5.0:
-        upload:
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    artifact_paths: [ Build/Plugin/*.zip ]
-    timeout_in_minutes: 60
-    key: plugin_5_4
+  - group: ":hammer: Builds"
+    steps:
+      - label: ":macos: Build Plugin - 5.4 Mac"
+        agents:
+          queue: macos-13-arm
+        env:
+          XCODE_VERSION: "15.2.0"
+          JAVA_VERSION: "11"
+        timeout_in_minutes: 60
+        commands:
+          <<: *common_clean_commands
+            - make package
+        plugins:
+          <<: *common_plugins
+        artifact_paths:
+          - Build/Plugin/*.zip
+        key: plugin_5_4
 
-  # Unreal Engine 5.4 - Android
-  - name: ':android: Build E2E - 5.4 Android'
-    depends_on: plugin_5_4
-    env:
-      UE_VERSION: "5.4"
-      XCODE_VERSION: "15.4.0"
-      JAVA_VERSION: "17"
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
-        upload:
-          - build/TestFixture-Android-Shipping-5.4-arm64.apk
-          - build/TestFixture-Android-Shipping-5.4-armv7.apk
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh Android
-    timeout_in_minutes: 60
-    key: android_fixture_5_4
+      - label: ":android: Build E2E - 5.4 Android"
+        depends_on: plugin_5_4
+        env:
+          XCODE_VERSION: "15.4.0"
+          JAVA_VERSION: "17"
+        timeout_in_minutes: 60
+        commands:
+          <<: *common_clean_commands
+            - features/scripts/build-fixture.sh Android
+        plugins:
+          <<: *common_plugins
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
+            upload:
+              - build/TestFixture-Android-Shipping-5.4-arm64.apk
+              - build/TestFixture-Android-Shipping-5.4-armv7.apk
+        key: android_fixture_5_4
 
-  # Unreal Engine 5.4 - iOS
-  - name: ':ios: Build E2E - 5.4 iOS'
-    depends_on: plugin_5_4
-    env:
-      UE_VERSION: "5.4"
-      XCODE_VERSION: "15.4.0"
-      JAVA_VERSION: "17"
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
-        upload:
-          - build/TestFixture-IOS-Shipping-5.4.ipa
-          - build/TestFixture-IOS-Shipping-5.4-file.dSYM
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh IOS
-    timeout_in_minutes: 60
-    key: ios_fixture_5_4
+      - label: ":ios: Build E2E - 5.4 iOS"
+        depends_on: plugin_5_4
+        env:
+          XCODE_VERSION: "15.4.0"
+          JAVA_VERSION: "17"
+        timeout_in_minutes: 60
+        commands:
+          <<: *common_clean_commands
+            - features/scripts/build-fixture.sh IOS
+        plugins:
+          <<: *common_plugins
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
+            upload:
+              - build/TestFixture-IOS-Shipping-5.4.ipa
+              - build/TestFixture-IOS-Shipping-5.4-file.dSYM
+        key: ios_fixture_5_4
 
-  # # Unreal Engine 5.4 - macOS
-  - name: ':mac: Build E2E - 5.4 macOS'
-    depends_on: plugin_5_4
-    env:
-      UE_VERSION: "5.4"
-      XCODE_VERSION: "15.4.0"
-      JAVA_VERSION: "17"
-    plugins:
-      artifacts#v1.5.0:
-        download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
-        upload:
-          - TestFixture-macOS-5.4.zip
-          - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-    commands:
-      - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-      - features/scripts/build-fixture.sh Mac
-    timeout_in_minutes: 90
-    key: mac_fixture_5_4
+      - label: ":mac: Build E2E - 5.4 macOS"
+        depends_on: plugin_5_4
+        env:
+          XCODE_VERSION: "15.4.0"
+          JAVA_VERSION: "17"
+        timeout_in_minutes: 90
+        commands:
+          <<: *common_clean_commands
+            - features/scripts/build-fixture.sh Mac
+        plugins:
+          <<: *common_plugins
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
+            upload:
+              - TestFixture-macOS-5.4.zip
+        key: mac_fixture_5_4
 
-  # Unreal Engine 5.4 - Android
-  - label: 'E2E Tests - 5.4 Android 11'
-    depends_on: android_fixture_5_4
-    timeout_in_minutes: 30
-    agents:
-      queue: opensource
-    plugins:
-      artifacts#v1.3.0:
-        download:
-          - build/TestFixture-Android-Shipping-5.4-arm64.apk
-        upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
-        run: maze-runner
-        command:
-          - "--app=/app/build/TestFixture-Android-Shipping-5.4-arm64.apk"
-          - "--device=ANDROID_11"
-          - "--farm=bs"
-          - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
-    concurrency_method: eager
-    retry:
-      automatic:
-        - exit_status: -1  # Agent was lost
-          limit: 2
+  - group: ":test_tube: E2E Tests"
+    steps:
+      - label: "E2E Tests - 5.4 Android 11"
+        depends_on: android_fixture_5_4
+        agents:
+          queue: opensource
+        timeout_in_minutes: 30
+        concurrency: 5
+        concurrency_group: browserstack-app
+        concurrency_method: eager
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+        plugins:
+          artifacts#v1.3.0:
+            download:
+              - build/TestFixture-Android-Shipping-5.4-arm64.apk
+            upload:
+              - maze_output/failed/**/*
+          docker-compose#v3.3.0:
+            run: maze-runner
+            command:
+              - "--app=/app/build/TestFixture-Android-Shipping-5.4-arm64.apk"
+              - "--device=ANDROID_11"
+              - "--farm=bs"
+              - "--order=random"
 
-  # Unreal Engine 5.4 - iOS
-  - label: 'E2E Tests - 5.4 iOS 12'
-    depends_on: ios_fixture_5_4
-    timeout_in_minutes: 30
-    agents:
-      queue: opensource
-    plugins:
-      artifacts#v1.3.0:
-        download:
-          - build/TestFixture-IOS-Shipping-5.4.ipa
-          - build/TestFixture-IOS-Shipping-5.4-file.dSYM
-        upload: ["maze_output/failed/**/*"]
-      docker-compose#v3.3.0:
-        run: maze-runner
-        command:
-          - "--app=/app/build/TestFixture-IOS-Shipping-5.4.ipa"
-          - "--device=IOS_16"
-          - "--farm=bs"
-          - "--appium-version=1.22.0"
-          - "--order=random"
-    concurrency: 5
-    concurrency_group: browserstack-app
-    concurrency_method: eager
-    retry:
-      automatic:
-        - exit_status: -1  # Agent was lost
-          limit: 2
+      - label: "E2E Tests - 5.4 iOS 12"
+        depends_on: ios_fixture_5_4
+        agents:
+          queue: opensource
+        timeout_in_minutes: 30
+        concurrency: 5
+        concurrency_group: browserstack-app
+        concurrency_method: eager
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+        plugins:
+          artifacts#v1.3.0:
+            download:
+              - build/TestFixture-IOS-Shipping-5.4.ipa
+              - build/TestFixture-IOS-Shipping-5.4-file.dSYM
+            upload:
+              - maze_output/failed/**/*
+          docker-compose#v3.3.0:
+            run: maze-runner
+            command:
+              - "--app=/app/build/TestFixture-IOS-Shipping-5.4.ipa"
+              - "--device=IOS_16"
+              - "--farm=bs"
+              - "--appium-version=1.22.0"
+              - "--order=random"
 
-  # Unreal Engine 5.4 - macOS
-  - label: 'E2E Tests - 5.4 macOS 14'
-    depends_on: mac_fixture_5_4
-    timeout_in_minutes: 10
-    agents:
-      queue: macos-14
-    plugins:
-      artifacts#v1.5.0:
-        download:
-          - TestFixture-macOS-5.4.zip
-        upload: ["maze_output/failed/**/*"]
-    commands:
-      - echo '--- Extracting test fixture'
-      - unzip TestFixture-macOS-5.4.zip
-      - echo '--- Installing dependencies'
-      - bundle install
-      - echo '--- Running tests'
-      - bundle exec maze-runner --os=macos
+      - label: "E2E Tests - 5.4 macOS 14"
+        depends_on: mac_fixture_5_4
+        agents:
+          queue: macos-14
+        timeout_in_minutes: 10
+        plugins:
+          artifacts#v1.5.0:
+            download:
+              - TestFixture-macOS-5.4.zip
+            upload:
+              - maze_output/failed/**/*
+        commands:
+          - echo '--- Extracting test fixture'
+          - unzip TestFixture-macOS-5.4.zip
+          - echo '--- Installing dependencies'
+          - bundle install
+          - echo '--- Running tests'
+          - bundle exec maze-runner --os=macos
