@@ -2,9 +2,9 @@ agents:
   queue: macos-14
 
 steps:
-  - group: ":hammer: Builds"
+  - group: ":hammer: Builds UE 5.4"
     steps:
-      - label: ":macos: Build Plugin - 5.4 Mac"
+      - label: ":macos: Build Plugin - 5.4"
         agents:
           queue: macos-13-arm
         env:
@@ -23,7 +23,7 @@ steps:
         timeout_in_minutes: 60
         key: plugin_5_4
 
-      - label: ":android: Build E2E - 5.4 Android"
+      - label: ":android: Build E2E - 5.4"
         depends_on: plugin_5_4
         env:
           UE_VERSION: "5.4"
@@ -42,7 +42,7 @@ steps:
         timeout_in_minutes: 60
         key: android_fixture_5_4
 
-      - label: ":ios: Build E2E - 5.4 iOS"
+      - label: ":ios: Build E2E - 5.4"
         depends_on: plugin_5_4
         env:
           UE_VERSION: "5.4"
@@ -61,7 +61,7 @@ steps:
         timeout_in_minutes: 60
         key: ios_fixture_5_4
 
-      - label: ":mac: Build E2E - 5.4 macOS"
+      - label: ":mac: Build E2E - 5.4"
         depends_on: plugin_5_4
         env:
           UE_VERSION: "5.4"
@@ -79,7 +79,7 @@ steps:
         timeout_in_minutes: 90
         key: mac_fixture_5_4
 
-  - group: ":test_tube: E2E Tests"
+  - group: ":test_tube: E2E Tests UE 5.4"
     steps:
       - label: ":android: E2E Tests - 5.4 Android 11"
         depends_on: android_fixture_5_4
@@ -108,7 +108,7 @@ steps:
             - exit_status: -1
               limit: 2
 
-      - label: ":ios: E2E Tests - 5.4 iOS 12"
+      - label: ":ios: E2E Tests - 5.4 iOS 16"
         depends_on: ios_fixture_5_4
         agents:
           queue: opensource
