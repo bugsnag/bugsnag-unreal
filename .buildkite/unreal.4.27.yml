@@ -21,17 +21,6 @@ steps:
         artifact_paths:
           - Build/Plugin/*.zip
 
-#      - label: ":windows: Build Plugin - 4.27"
-#        key: plugin_win_4_27
-#        agents:
-#          queue: windows-general-wsl
-#        env:
-#          UE_VERSION: "4.27"
-#        timeout_in_minutes: 60
-#        command: features/scripts/build-plugin-wsl.sh
-#        artifact_paths:
-#          - Bugsnag-*.zip
-
       - label: ":android: Build E2E - 4.27"
         key: android_fixture_4_27
         depends_on: plugin_4_27
