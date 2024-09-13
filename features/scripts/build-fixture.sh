@@ -2,29 +2,44 @@
 
 set -o errexit
 set -o nounset
+set -x
 
 PLATFORM=$1
 
 UPROJECT="${PWD}/features/fixtures/generic/TestFixture.uproject"
 
+XCODE_EXPORT_OPTIONS="${PWD}/features/scripts/exportOptions.plist"
+
 UE_VERSION="${UE_VERSION:-4.27}"
 UE_HOME="/Users/Shared/Epic Games/UE_${UE_VERSION}"
 UE_BUILD="${UE_HOME}/Engine/Build/BatchFiles/Mac/Build.sh"
 UE_RUNUAT="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.sh"
+MODERN_IOS=false
+MODERN_MAC_OS=false
 
+if [[ "${UE_VERSION}" == "5.4" && "${PLATFORM}" == "IOS" ]]; then
+  echo "--- Using iOS modern xcode setup"
+  MODERN_IOS=true
+fi
+
+if [[ "${UE_VERSION}" == "5.3" || "${UE_VERSION}" == "5.4" ]] && [[ "$PLATFORM" == "Mac" ]]; then
+  echo "--- Using MacOS modern Xcode setup"
+  MODERN_MAC_OS=true
+fi
+
+if [[ "$MODERN_IOS" == true ]]; then
+  echo "--- Deleting Xcode Archives directory"
+  rm -rf ~/Library/Developer/Xcode/Archives
+fi
+
+if [[ "$MODERN_IOS" == true || "$MODERN_MAC_OS" == true ]]; then
+  echo "--- Enabling Modern Xcode Build"
+  sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
+fi
 
 echo "--- Installing plugin"
 
 unzip -o "Build/Plugin/Bugsnag-$(cat VERSION)-$(git rev-parse --short=7 HEAD)-UE_${UE_VERSION}-macOS.zip" -d features/fixtures/generic/Plugins
-
-case "${UE_VERSION}" in
-  5.3)
-    if [[ "$PLATFORM" == "Mac" ]]; then
-      echo "--- Enabling Modern Xcode Build"
-      sed -i '' 's/bUseModernXcode=False/bUseModernXcode=True/' features/fixtures/generic/Config/DefaultEngine.ini
-    fi
-  ;;
-esac
 
 echo "--- Building Editor dependencies"
 
@@ -44,6 +59,10 @@ case "${PLATFORM}" in
   Mac)      RUNUAT_ARGS+=(-archive) ;;
 esac
 
+if [[ "$MODERN_IOS" == true ]]; then
+  RUNUAT_ARGS+=(-distribution)
+fi
+
 "${UE_RUNUAT}" "${RUNUAT_ARGS[@]}" -unattended -utf8output
 
 
@@ -58,15 +77,53 @@ case "${PLATFORM}" in
     ;;
 
   IOS)
+    if [[ "$MODERN_IOS" == true ]]; then
+      echo "--- Building ipa and dsym files after modern xcode build"
+      echo "--- Finding the xcarchive file"
+      ARCHIVE_PATH=$(find ~/Library/Developer/Xcode/Archives -type d -name "*.xcarchive" -print -quit)
+
+    if [[ -n "$ARCHIVE_PATH" ]]; then
+      echo "--- Found xcarchive at $ARCHIVE_PATH"
+      echo "--- Building IPA from xcarchive"
+      xcodebuild -exportArchive -archivePath "$ARCHIVE_PATH" \
+        -exportPath build/TestFixture-IOS-Shipping-"${UE_VERSION}" \
+        -exportOptionsPlist "$XCODE_EXPORT_OPTIONS"
+
+      echo "xcode finished building"
+
+      echo "--- IPA built successfully"
+
+      mv build/TestFixture-IOS-Shipping-"${UE_VERSION}"/TestFixture-IOS-Shipping.ipa build/TestFixture-IOS-Shipping-"${UE_VERSION}".ipa
+
+       # Check and move the dSYM file
+      DSYM_PATH="${ARCHIVE_PATH}/dSYMs/TestFixture-IOS-Shipping.app.dSYM"
+      if [[ -d "$DSYM_PATH" ]]; then
+        echo "--- Found dSYM at $DSYM_PATH"
+        mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
+        cp build/TestFixture-IOS-Shipping-5.4.dSYM/Contents/Resources/DWARF/TestFixture-IOS-Shipping build/TestFixture-IOS-Shipping-"${UE_VERSION}"-file.dSYM
+      else
+        echo "Error: dSYM file not found."
+        exit 1
+      fi
+    else
+      echo "Error: No xcarchive found."
+      exit 1
+    fi
+  else
     mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.dSYM build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
     mv features/fixtures/generic/Binaries/IOS/TestFixture-IOS-Shipping.ipa build/TestFixture-IOS-Shipping-"${UE_VERSION}".ipa
-    ;;
+  fi
+  ;;
 
   Mac)
     case "${UE_VERSION}" in
       4.23)
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping
+        ;;
+      5.4)
+        mkdir -p features/fixtures/generic/ArchivedBuilds/MacNoEditor
+        mv features/fixtures/generic/ArchivedBuilds/TestFixture-Mac-Shipping.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         ;;
       5.*)
         mv features/fixtures/generic/ArchivedBuilds/Mac/ features/fixtures/generic/ArchivedBuilds/MacNoEditor/

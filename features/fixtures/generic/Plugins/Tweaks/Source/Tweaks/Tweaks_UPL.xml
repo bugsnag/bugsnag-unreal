@@ -7,7 +7,27 @@
 
     <buildGradleAdditions>
         <insert>
-            android.compileSdkVersion 31
+            def ueVersion = System.getenv("UE_VERSION")
+            
+            if (ueVersion != null) 
+            {
+                if(
+                    ueVersion == "4.27" ||
+                    ueVersion == "5.0"  ||
+                    ueVersion == "5.1" )
+                {
+                    android.compileSdkVersion 31
+                }
+                else
+                {
+                    android.compileSdkVersion 34
+                }
+            } 
+            else 
+            {
+                android.compileSdkVersion 34
+            }
+            
         </insert>
     </buildGradleAdditions>
     
@@ -52,3 +72,5 @@
         </insert>
     </gameActivityClassAdditions>
 </root>
+
+
