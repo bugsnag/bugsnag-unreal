@@ -3,8 +3,13 @@ Changelog
 
 ## TBD () 
 
+
+* Removed the bugsnag android gradle plugin due to incompatibility with UE 5.1+. Symbols can now be uploaded via the [BugSnag CLI](https://docs.bugsnag.com/platforms/unreal-engine/showing-full-stacktraces/#android-proguard-and-ndk-mappings)[#220](https://github.com/bugsnag/bugsnag-unreal/pull/220)
+* Added a method to check whether the Start() method has been called. [#229](https://github.com/bugsnag/bugsnag-unreal/pull/229)
+
 * Included apple privacy manifest in released package [2#34](https://github.com/bugsnag/bugsnag-unreal/pull/234)
 * Updates the bugsnag-cocoa dependency from v6.28.0 to [v6.29.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6290-2024-06-19)
+
 
 ## 2.0.0 (2024-01-12) 
 

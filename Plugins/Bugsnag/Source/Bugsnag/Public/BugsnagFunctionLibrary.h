@@ -39,6 +39,13 @@ public:
 	 */
 	static void Start(const TSharedRef<FBugsnagConfiguration>& Configuration);
 
+	/**
+	 * Return true is Start method has been called, False otherwise.
+	 *
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Bugsnag")
+	static bool IsStarted();
+
 	// Notify
 
 	/**
