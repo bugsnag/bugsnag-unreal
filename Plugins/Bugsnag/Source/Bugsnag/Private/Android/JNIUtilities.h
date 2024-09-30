@@ -55,7 +55,8 @@ typedef struct
 	jclass MapClass;
 	jclass NumberClass;
 	jclass StringClass;
-
+	jclass PatternClass;
+	
 	jmethodID ArrayListConstructor;
 	jmethodID ArrayListCollectionConstructor;
 	jmethodID AppGetBinaryArch;
@@ -226,6 +227,7 @@ typedef struct
 	jmethodID NotifierSetUrl;
 	jmethodID NotifierSetVersion;
 	jmethodID NotifierSetDependencies;
+	jmethodID PatternCompileMethod;
 	jmethodID SessionGetApp;
 	jmethodID SessionGetDevice;
 	jmethodID SessionGetId;
@@ -362,6 +364,16 @@ public:
 	 * @return A Java object reference or null on failure
 	 */
 	static jobject ParseStringSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values);
+	/**	
+	 * Convert an array of strings into a Java Set
+	 *
+	 * @param Env    A JNI environment for the current thread
+	 * @param Cache  A reference to a cache object to populate. Must not be null.
+	 * @param Values The array to convert
+	 *
+	 * @return A Java object reference or null on failure
+	 */
+	static jobject ParsePatternSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values);
 
 	/**
 	 * Convert enabled breadcrumb types into Set<BreadcrumbType>

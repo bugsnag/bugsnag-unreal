@@ -375,6 +375,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaField(env, cache->ThreadSendPolicyNever, cache->ThreadSendPolicyClass, "NEVER", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadTypeAndroid, cache->ThreadTypeClass, "ANDROID", "Lcom/bugsnag/android/ThreadType;");
 	CacheStaticJavaField(env, cache->ThreadTypeC, cache->ThreadTypeClass, "C", "Lcom/bugsnag/android/ThreadType;");
+	CacheSystemJavaClass(env, cache->PatternClass, "java/util/regex/Pattern");
+	CacheStaticJavaMethod(env, cache->PatternCompileMethod, cache->PatternClass, "compile", "(Ljava/lang/String;)Ljava/util/regex/Pattern;");
 
 	return true;
 }
@@ -463,6 +465,32 @@ jobject FAndroidPlatformJNI::ParseStringSet(JNIEnv* Env, const JNIReferenceCache
 				return nullptr;
 			}
 		}
+	}
+	return jSet;
+}
+
+jobject FAndroidPlatformJNI::ParsePatternSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values)
+{
+	jobject jSet = Env->NewObject(Cache->HashSetClass, Cache->HashSetConstructor);
+	if (CheckAndClearException(Env) || !jSet)
+	{
+		return nullptr;
+	}
+	for (const FString& Value : Values)
+	{
+		jstring jPatternString = ParseFString(Env, Value);
+		if (!jPatternString)
+		{
+			continue;
+		}
+		jobject jPattern = Env->CallStaticObjectMethod(Cache->PatternClass, Cache->PatternCompileMethod, jPatternString);
+		CheckAndClearException(Env);
+		if (!jPattern)
+		{
+			continue;
+		}
+		Env->CallBooleanMethod(jSet, Cache->HashSetAdd, jPattern);
+		CheckAndClearException(Env);
 	}
 	return jSet;
 }
