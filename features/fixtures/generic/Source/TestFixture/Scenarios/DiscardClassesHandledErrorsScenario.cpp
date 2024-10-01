@@ -11,7 +11,7 @@ public:
 	void Run() override
 	{
 		UBugsnagFunctionLibrary::Notify(TEXT("AnnoyingError"), TEXT("This error is annoying and should be discarded"));
-		
+
 		UBugsnagFunctionLibrary::Notify(TEXT("ImportantError"), TEXT("This error is too important be discarded"));
 	}
 };
