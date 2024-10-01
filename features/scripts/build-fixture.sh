@@ -48,7 +48,7 @@ echo "--- Building Editor dependencies"
 
 echo "--- Building test fixture"
 
-RUNUAT_ARGS=(BuildCookRun -project="${UPROJECT}" -targetplatform="${PLATFORM}" -clientconfig=Shipping)
+RUNUAT_ARGS=(BuildCookRun -project="${UPROJECT}" -targetplatform="${PLATFORM}" -clientconfig=Development)
 RUNUAT_ARGS+=(-build -nocompileeditor -ubtargs=-ForceUnity)
 RUNUAT_ARGS+=(-cook -compressed -pak)
 RUNUAT_ARGS+=(-stage -prereqs)

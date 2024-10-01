@@ -101,7 +101,9 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 
 	if (Config->GetRedactedKeys().Num())
 	{
-		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
+		jobject jPatternSet = FAndroidPlatformJNI::ParsePatternSet(Env, Cache, Config->GetRedactedKeys());
+		ReturnNullOnFail(jPatternSet);
+		jniCallWithObjects(Env, jConfig, Cache->ConfigSetRedactedKeys, jPatternSet);
 	}
 
 	if (Config->GetProjectPackages().Num())
