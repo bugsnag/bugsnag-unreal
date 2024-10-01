@@ -10,7 +10,6 @@
 #include "GameFramework/GameStateBase.h"
 #include "HAL/PlatformProperties.h"
 #include "Misc/CoreDelegates.h"
-#include "Logging/LogMacros.h"
 
 #if PLATFORM_ANDROID
 #import <mutex>
@@ -142,12 +141,7 @@ void UBugsnagFunctionLibrary::Notify(const FString& ErrorClass, const FString& M
 	const FBugsnagOnErrorCallback& Callback)
 {
 #if PLATFORM_IMPLEMENTS_BUGSNAG
-	UE_LOG(LogBugsnag, Log, TEXT("RICHLOG Notify called with ErrorClass: %s, Message: %s"), *ErrorClass, *Message);
-
 	GPlatformBugsnag.Notify(ErrorClass, Message, StackTrace, Callback);
-
-	UE_LOG(LogBugsnag, Log, TEXT("RICHLOG GPlatformBugsnag.Notify() call completed"));
-
 #else
 	LOG_NOT_IMPLEMENTED_ON_THIS_PLATFORM();
 #endif

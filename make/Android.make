@@ -5,7 +5,7 @@ MAKEFLAGS += --no-builtin-rules # skip trying automatic rules (small speedup)
 PACKAGE_VERSION=$(shell cat VERSION)
 PACKAGE_SOURCES=$(wildcard deps/bugsnag-plugin-android-unreal/src/main/java/com/bugsnag/android/unreal/*.java)
 PACKAGE_OUTPUT=Plugins/Bugsnag/Source/ThirdParty/Android/lib/com/bugsnag/bugsnag-plugin-android-unreal/$(PACKAGE_VERSION)/bugsnag-plugin-android-unreal-$(PACKAGE_VERSION).aar
-PACKAGE_INPUT=deps/bugsnag-plugin-android-unreal/build/outputs/aar/bugsnag-plugin-android-unreal-debug.aar
+PACKAGE_INPUT=deps/bugsnag-plugin-android-unreal/build/outputs/aar/bugsnag-plugin-android-unreal-release.aar
 POM_OUTPUT=$(PACKAGE_OUTPUT:.aar=.pom)
 POM_INPUT=$(PACKAGE_INPUT:.aar=.pom)
 GRADLE=./gradlew --quiet
@@ -51,7 +51,7 @@ $(POM_OUTPUT): $(POM_INPUT)
 
 $(PACKAGE_INPUT): $(PACKAGE_SOURCES)
 	cd deps/bugsnag-plugin-android-unreal && \
-		$(GRADLE) assembleDebug
+		$(GRADLE) assembleRelease
 
 $(POM_INPUT):
 	cd deps/bugsnag-plugin-android-unreal && \

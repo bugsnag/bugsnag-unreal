@@ -43,6 +43,6 @@ task generatePom {
         version '2.0.0'
         packaging 'aar'
       }
-    }.writeTo("$buildDir/outputs/aar/bugsnag-plugin-android-unreal-debug.pom")
+    }.writeTo("$buildDir/outputs/aar/bugsnag-plugin-android-unreal-release.pom")
   }
 }
