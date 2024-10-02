@@ -88,7 +88,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheExternalJavaClass(env, cache->ThreadSendPolicyClass, "com.bugsnag.android.ThreadSendPolicy");
 	CacheExternalJavaClass(env, cache->MetadataParserClass, "com.bugsnag.android.unreal.MetadataParser");
 	CacheExternalJavaClass(env, cache->MetadataSerializerClass, "com.bugsnag.android.unreal.MetadataSerializer");
-	
+
 	CacheSystemJavaClass(env, cache->ContextClass, "android/content/Context");
 	CacheSystemJavaClass(env, cache->DateClass, "java/util/Date");
 	CacheSystemJavaClass(env, cache->EnumClass, "java/lang/Enum");
