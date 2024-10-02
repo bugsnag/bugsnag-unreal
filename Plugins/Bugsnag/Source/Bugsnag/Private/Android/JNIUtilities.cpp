@@ -105,6 +105,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheSystemJavaClass(env, cache->NumberClass, "java/lang/Number");
 	CacheSystemJavaClass(env, cache->StringClass, "java/lang/String");
 	CacheSystemJavaClass(env, cache->TraceClass, "java/lang/StackTraceElement");
+	CacheSystemJavaClass(env, cache->PatternClass, "java/util/regex/Pattern");
 
 	CacheInstanceJavaMethod(env, cache->AppGetBinaryArch, cache->AppClass, "getBinaryArch", "()Ljava/lang/String;");
 	CacheInstanceJavaMethod(env, cache->AppGetBuildUuid, cache->AppClass, "getBuildUuid", "()Ljava/lang/String;");
@@ -157,7 +158,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaMethod(env, cache->BugsnagResumeSession, cache->BugsnagClass, "resumeSession", "()Z");
 	CacheStaticJavaMethod(env, cache->BugsnagSetUser, cache->BugsnagClass, "setUser", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 	CacheStaticJavaMethod(env, cache->BugsnagPauseSession, cache->BugsnagClass, "pauseSession", "()V");
-
+	CacheStaticJavaMethod(env, cache->PatternCompileMethod, cache->PatternClass, "compile", "(Ljava/lang/String;)Ljava/util/regex/Pattern;");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetEventMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Lcom/bugsnag/android/Event;Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetEventMetadataValue, cache->BugsnagUnrealPluginClass, "getMetadata", "(Lcom/bugsnag/android/Event;Ljava/lang/String;Ljava/lang/String;)[B");
 	CacheStaticJavaMethod(env, cache->BugsnagUnrealPluginGetMetadataSection, cache->BugsnagUnrealPluginClass, "getMetadata", "(Ljava/lang/String;)[B");
@@ -172,6 +173,8 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheInstanceJavaMethod(env, cache->ClientAddRuntimeVersionInfo, cache->ClientClass, "addRuntimeVersionInfo", "(Ljava/lang/String;Ljava/lang/String;)V");
 
 	CacheInstanceJavaMethod(env, cache->ConfigConstructor, cache->ConfigClass, "<init>", "(Ljava/lang/String;)V");
+
+	
 
 	CacheInstanceJavaMethod(env, cache->ConfigAddFeatureFlag, cache->ConfigClass, "addFeatureFlag", "(Ljava/lang/String;Ljava/lang/String;)V");
 	CacheInstanceJavaMethod(env, cache->ConfigAddMetadata, cache->ConfigClass, "addMetadata", "(Ljava/lang/String;Ljava/util/Map;)V");
@@ -355,6 +358,7 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 
 	CacheInstanceJavaMethod(env, cache->TraceConstructor, cache->TraceClass, "<init>", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V");
 
+
 	CacheStaticJavaField(env, cache->SeverityFieldInfo, cache->SeverityClass, "INFO", "Lcom/bugsnag/android/Severity;");
 	CacheStaticJavaField(env, cache->SeverityFieldWarning, cache->SeverityClass, "WARNING", "Lcom/bugsnag/android/Severity;");
 	CacheStaticJavaField(env, cache->SeverityFieldError, cache->SeverityClass, "ERROR", "Lcom/bugsnag/android/Severity;");
@@ -375,8 +379,6 @@ bool FAndroidPlatformJNI::LoadReferenceCache(JNIEnv* env, JNIReferenceCache* cac
 	CacheStaticJavaField(env, cache->ThreadSendPolicyNever, cache->ThreadSendPolicyClass, "NEVER", "Lcom/bugsnag/android/ThreadSendPolicy;");
 	CacheStaticJavaField(env, cache->ThreadTypeAndroid, cache->ThreadTypeClass, "ANDROID", "Lcom/bugsnag/android/ThreadType;");
 	CacheStaticJavaField(env, cache->ThreadTypeC, cache->ThreadTypeClass, "C", "Lcom/bugsnag/android/ThreadType;");
-	CacheSystemJavaClass(env, cache->PatternClass, "java/util/regex/Pattern");
-	CacheStaticJavaMethod(env, cache->PatternCompileMethod, cache->PatternClass, "compile", "(Ljava/lang/String;)Ljava/util/regex/Pattern;");
 
 	return true;
 }
