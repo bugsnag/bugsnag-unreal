@@ -35,7 +35,6 @@ typedef struct
 	jclass TelemetryClass;
 	jclass ThreadClass;
 	jclass ThreadSendPolicyClass;
-	jclass ThreadTypeClass;
 	jclass SessionClass;
 	jclass SeverityClass;
 	jclass StackframeClass;
@@ -249,7 +248,6 @@ typedef struct
 	jmethodID ThreadGetErrorReportingThread;
 	jmethodID ThreadGetId;
 	jmethodID ThreadGetName;
-	jmethodID ThreadGetType;
 	jmethodID ThreadGetStacktrace;
 	jmethodID ThreadSetId;
 	jmethodID ThreadSetName;
@@ -294,8 +292,7 @@ typedef struct
 	jfieldID ThreadSendPolicyAlways;
 	jfieldID ThreadSendPolicyUnhandledOnly;
 	jfieldID ThreadSendPolicyNever;
-	jfieldID ThreadTypeAndroid;
-	jfieldID ThreadTypeC;
+
 } JNIReferenceCache;
 
 class FAndroidPlatformJNI
