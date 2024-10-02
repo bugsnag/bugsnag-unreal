@@ -17,6 +17,9 @@
                     ueVersion == "5.1" )
                 {
                     android.compileSdkVersion 31
+                    android.defaultConfig {
+                        minSdkVersion 26
+                    }
                 }
                 else
                 {
@@ -27,11 +30,6 @@
             {
                 android.compileSdkVersion 34
             }
-
-             android.defaultConfig {
-                minSdkVersion 26
-            }
-            
         </insert>
     </buildGradleAdditions>
     
