@@ -66,7 +66,7 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 8"));
 
 		JNICache.initialized = !FAndroidPlatformJNI::CheckAndClearException(Env) && jClient != NULL;
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded" 9));
+			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 9"));
 
 		if (JNICache.initialized)
 		{
