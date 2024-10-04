@@ -32,7 +32,7 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 
 	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG about to load JNICache for the first time"));
-	bool JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache);
+	JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache);
 	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache WTF"));
 
 	if(JNICache.loaded)
