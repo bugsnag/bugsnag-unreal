@@ -89,8 +89,32 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 	}
 	UE_LOG(LogBugsnag, Log, TEXT("Bugsnag Configuration parsed successfully."));
 
+if (JNICache.BugsnagClass)
+{
+    UE_LOG(LogBugsnag, Log, TEXT("BugsnagClass is valid."));
+}
+else
+{
+    UE_LOG(LogBugsnag, Error, TEXT("BugsnagClass is NULL."));
+}
+
+if (JNICache.BugsnagStartMethod)
+{
+    UE_LOG(LogBugsnag, Log, TEXT("BugsnagStartMethod is valid."));
+}
+else
+{
+    UE_LOG(LogBugsnag, Error, TEXT("BugsnagStartMethod is NULL."));
+}
+
 	// Start Bugsnag
 	jobject jClient = Env->CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jApp, jConfig);
+	if (Env->ExceptionCheck())
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Java exception occurred while starting Bugsnag client."));
+		Env->ExceptionDescribe(); // Logs the exception stack trace to the console
+		Env->ExceptionClear();
+	}
 	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jClient)
 	{
 		UE_LOG(LogBugsnag, Error, TEXT("Failed to start Bugsnag client."));
