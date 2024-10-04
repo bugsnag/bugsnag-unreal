@@ -24,6 +24,8 @@ static JNIReferenceCache JNICache;
 
 void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Config)
 {
+	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG CALLING START"));
+
 	if (JNICache.loaded) // only attempt initialization once
 	{
 		return;
@@ -47,6 +49,8 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 			(*Env).CallVoidMethod(jClient, JNICache.ClientAddRuntimeVersionInfo, jKey, jValue);
 			FAndroidPlatformJNI::CheckAndClearException(Env);
 		}
+	}else{
+		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache NOT loaded"));
 	}
 }
 
