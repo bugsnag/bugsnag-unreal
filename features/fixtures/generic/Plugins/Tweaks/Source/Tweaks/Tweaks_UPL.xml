@@ -51,9 +51,7 @@
         <insert>
             public void clearBugsnagCache() {
                 File cache = getCacheDir();
-                deleteRecursive(cache, "bugsnag-native");
-                deleteRecursive(cache, "bugsnag-errors");
-                deleteRecursive(cache, "bugsnag-sessions");
+                deleteRecursive(cache, "bugsnag");
             }
 
             public void deleteRecursive(File file) {
