@@ -92,6 +92,7 @@ steps:
               - "--device=ANDROID_11"
               - "--farm=bs"
               - "--order=random"
+              - " features/breadcrumbs.feature:3"
 
       - label: ":ios: E2E Tests - 4.27 iOS 12"
         depends_on: ios_fixture_4_27

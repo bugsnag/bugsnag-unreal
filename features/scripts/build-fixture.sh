@@ -48,7 +48,7 @@ echo "--- Building Editor dependencies"
 
 echo "--- Building test fixture"
 
-RUNUAT_ARGS=(BuildCookRun -project="${UPROJECT}" -targetplatform="${PLATFORM}" -clientconfig=Shipping)
+RUNUAT_ARGS=(BuildCookRun -project="${UPROJECT}" -targetplatform="${PLATFORM}" -clientconfig=Development)
 RUNUAT_ARGS+=(-build -nocompileeditor -ubtargs=-ForceUnity)
 RUNUAT_ARGS+=(-cook -compressed -pak)
 RUNUAT_ARGS+=(-stage -prereqs)
@@ -70,7 +70,7 @@ echo "--- Preparing artifact(s) for upload"
 
 case "${PLATFORM}" in
   Android)
-    mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-arm64.apk build/TestFixture-Android-Shipping-"${UE_VERSION}"-arm64.apk
+    mv features/fixtures/generic/Binaries/Android/TestFixture-arm64.apk build/TestFixture-Android-Shipping-"${UE_VERSION}"-arm64.apk
     if [[ -f features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk ]]; then
       mv features/fixtures/generic/Binaries/Android/TestFixture-Android-Shipping-armv7.apk build/TestFixture-Android-Shipping-"${UE_VERSION}"-armv7.apk
     fi

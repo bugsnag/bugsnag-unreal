@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import android.util.Log;
 
 public class UnrealPlugin implements Plugin {
   static final String DEFAULT_HANDLED_REASON = "handledError";
@@ -116,40 +117,68 @@ public class UnrealPlugin implements Plugin {
     loaded = false;
   }
 
+
   static void notify(String name, String message, StackTraceElement[] stacktrace, ByteBuffer userdata) {
-    if (client == null || name == null) {
-      return;
-    }
-    if (discardClasses != null) {
-      for (Pattern pattern : discardClasses) {
-        if (pattern.matcher(name).matches()) {
-          return;
-        }
+    try {
+      Log.e("NotifyMethod", "notify called with name: " + name + ", message: " + message);
+
+      if (client == null || name == null) {
+        Log.e("NotifyMethod", "client is null or name is null. Returning early.");
+        return;
       }
-    }
 
-    Throwable exc = new RuntimeException();
-    exc.setStackTrace(stacktrace);
-
-    client.notify(exc, new OnErrorCallback() {
-      @Override
-      public boolean onError(Event event) {
-        setSeverityReason(event, DEFAULT_HANDLED_REASON);
-        List<Error> errors = event.getErrors();
-
-        if (!errors.isEmpty()) {
-          Error error = event.getErrors().get(0);
-          error.setErrorClass(name);
-          error.setErrorMessage(message);
-
-          for (Error err : errors) {
-            err.setType(ErrorType.C);
+      if (discardClasses != null) {
+        for (Pattern pattern : discardClasses) {
+          if (pattern.matcher(name).matches()) {
+            Log.e("NotifyMethod", "Name matches discard pattern: " + pattern.toString() + ". Returning.");
+            return;
           }
         }
-        return runNotifyCallback(event, userdata);
       }
-    });
+
+      Throwable exc = new RuntimeException();
+      exc.setStackTrace(stacktrace);
+      Log.e("NotifyMethod", "Exception created and stack trace set.");
+
+      try {
+        client.notify(exc, new OnErrorCallback() {
+          @Override
+          public boolean onError(Event event) {
+            try {
+              Log.e("NotifyMethod", "onError called with event.");
+              setSeverityReason(event, DEFAULT_HANDLED_REASON);
+              Log.e("NotifyMethod", "Severity reason set to " + DEFAULT_HANDLED_REASON);
+
+              List<Error> errors = event.getErrors();
+              if (!errors.isEmpty()) {
+                Error error = errors.get(0);
+                error.setErrorClass(name);
+                error.setErrorMessage(message);
+                Log.e("NotifyMethod", "Error class set to " + name + " and message set to " + message);
+
+                for (Error err : errors) {
+                  err.setType(ErrorType.C);
+                  Log.e("NotifyMethod", "Error type set to C for error.");
+                }
+              }
+              return runNotifyCallback(event, userdata);
+            } catch (Exception e) {
+              Log.e("NotifyMethod", "Exception in onError: " + e.getMessage(), e);
+              return false;
+            }
+          }
+        });
+      } catch (Exception e) {
+        Log.e("NotifyMethod", "Exception in client.notify: " + e.getMessage(), e);
+      }
+
+      Log.e("NotifyMethod", "Notification sent to Bugsnag.");
+    } catch (Exception e) {
+      Log.e("NotifyMethod", "Exception in notify method: " + e.getMessage(), e);
+    }
   }
+
+
 
   static byte[] getMetadata(Event event, String section, String key) throws IOException {
     return section == null || key == null ? null : wrapAndSerialize(event.getMetadata(section, key));
