@@ -24,7 +24,7 @@ static JNIReferenceCache JNICache;
 
 void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Config)
 {
-	UE_LOG(LogBugsnag, Log, TEXT("FAndroidPlatformBugsnag::Start called with Config: %s"), *Config->ToString());
+	UE_LOG(LogBugsnag, Log, TEXT("FAndroidPlatformBugsnag::Start called "));
 
 	if (JNICache.loaded) // only attempt initialization once
 	{
@@ -113,7 +113,7 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 		}
 		else
 		{
-			UE_LOG(LogBugsnag, Log, TEXT("Runtime version info added to Bugsnag client: %s - %s"), *BugsnagConstants::UnrealEngine, *BugsnagUtils::GetUnrealEngineVersion());
+			UE_LOG(LogBugsnag, Log, TEXT("Runtime version info added to Bugsnag client."));
 		}
 	}
 	else
