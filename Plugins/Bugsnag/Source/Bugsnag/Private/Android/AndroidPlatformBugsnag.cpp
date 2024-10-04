@@ -25,13 +25,17 @@ static JNIReferenceCache JNICache;
 void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Config)
 {
 	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG CALLING START"));
-
 	if (JNICache.loaded) // only attempt initialization once
 	{
+		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache already loaded: %d"), loaded);
 		return;
 	}
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
-	if ((JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache)))
+
+	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG about to load JNICache for the first time"));
+	bool JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache);
+	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG was JNICache loaded?: %d"), JNICache.loaded);
+	if (JNICache.loaded)
 	{
 		OnBreadcrumbCallbacks += Config->GetOnBreadcrumbCallbacks();
 		OnSessionCallbacks += Config->GetOnSessionCallbacks();
