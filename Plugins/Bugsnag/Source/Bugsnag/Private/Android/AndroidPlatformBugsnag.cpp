@@ -24,65 +24,106 @@ static JNIReferenceCache JNICache;
 
 void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Config)
 {
-	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG CALLING START"));
+	UE_LOG(LogBugsnag, Log, TEXT("FAndroidPlatformBugsnag::Start called with Config: %s"), *Config->ToString());
+
 	if (JNICache.loaded) // only attempt initialization once
 	{
+		UE_LOG(LogBugsnag, Warning, TEXT("JNICache is already loaded. Initialization skipped."));
 		return;
 	}
+
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
-
-	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG about to load JNICache for the first time"));
-	JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache);
-	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache WTF"));
-
-	if(JNICache.loaded)
+	if (!Env)
 	{
-		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded"));
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to get Java Environment."));
+		return;
 	}
+	UE_LOG(LogBugsnag, Log, TEXT("Java Environment obtained successfully."));
+
+	UE_LOG(LogBugsnag, Log, TEXT("Attempting to load JNICache for the first time."));
+	JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(Env, &JNICache);
 	if (JNICache.loaded)
 	{
-		OnBreadcrumbCallbacks += Config->GetOnBreadcrumbCallbacks();
-					UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 1"));
-
-		OnSessionCallbacks += Config->GetOnSessionCallbacks();
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 2"));
-
-		OnSendErrorCallbacks += Config->GetOnSendErrorCallbacks();
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 3"));
-
-		jobject jActivity = AndroidJavaEnv::GetGameActivityThis();
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 4"));
-
-		jobject jApp = (*Env).CallObjectMethod(jActivity, JNICache.ContextGetApplication);
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 5"));
-
-		ReturnVoidOnException(Env);
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 6"));
-
-		jobject jConfig = FAndroidPlatformConfiguration::Parse(Env, &JNICache, Config);
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 7"));
-
-		jobject jClient = (*Env).CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jApp, jConfig);
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 8"));
-
-		JNICache.initialized = !FAndroidPlatformJNI::CheckAndClearException(Env) && jClient != NULL;
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded 9"));
-
-		if (JNICache.initialized)
-		{
-			jstring jKey = FAndroidPlatformJNI::ParseFString(Env, BugsnagConstants::UnrealEngine);
-			jstring jValue = FAndroidPlatformJNI::ParseFString(Env, BugsnagUtils::GetUnrealEngineVersion());
-			(*Env).CallVoidMethod(jClient, JNICache.ClientAddRuntimeVersionInfo, jKey, jValue);
-			FAndroidPlatformJNI::CheckAndClearException(Env);
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache initialized"));
-
-		}
-	}else{
-		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache NOT loaded"));
+		UE_LOG(LogBugsnag, Log, TEXT("JNICache loaded successfully."));
 	}
-			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG Start finished"));
+	else
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to load JNICache."));
+		return;
+	}
 
+	// Register callbacks
+	OnBreadcrumbCallbacks += Config->GetOnBreadcrumbCallbacks();
+	UE_LOG(LogBugsnag, Log, TEXT("OnBreadcrumbCallbacks registered."));
+
+	OnSessionCallbacks += Config->GetOnSessionCallbacks();
+	UE_LOG(LogBugsnag, Log, TEXT("OnSessionCallbacks registered."));
+
+	OnSendErrorCallbacks += Config->GetOnSendErrorCallbacks();
+	UE_LOG(LogBugsnag, Log, TEXT("OnSendErrorCallbacks registered."));
+
+	// Get Activity
+	jobject jActivity = AndroidJavaEnv::GetGameActivityThis();
+	if (!jActivity)
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to get Game Activity."));
+		return;
+	}
+	UE_LOG(LogBugsnag, Log, TEXT("Game Activity obtained successfully."));
+
+	// Get Application Context
+	jobject jApp = Env->CallObjectMethod(jActivity, JNICache.ContextGetApplication);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jApp)
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to get Application Context."));
+		return;
+	}
+	UE_LOG(LogBugsnag, Log, TEXT("Application Context obtained successfully."));
+
+	// Parse Configuration
+	jobject jConfig = FAndroidPlatformConfiguration::Parse(Env, &JNICache, Config);
+	if (!jConfig)
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to parse Bugsnag Configuration."));
+		return;
+	}
+	UE_LOG(LogBugsnag, Log, TEXT("Bugsnag Configuration parsed successfully."));
+
+	// Start Bugsnag
+	jobject jClient = Env->CallStaticObjectMethod(JNICache.BugsnagClass, JNICache.BugsnagStartMethod, jApp, jConfig);
+	if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jClient)
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Failed to start Bugsnag client."));
+		JNICache.initialized = false;
+	}
+	else
+	{
+		JNICache.initialized = true;
+		UE_LOG(LogBugsnag, Log, TEXT("Bugsnag client started successfully."));
+	}
+
+	if (JNICache.initialized)
+	{
+		jstring jKey = FAndroidPlatformJNI::ParseFString(Env, BugsnagConstants::UnrealEngine);
+		jstring jValue = FAndroidPlatformJNI::ParseFString(Env, BugsnagUtils::GetUnrealEngineVersion());
+		Env->CallVoidMethod(jClient, JNICache.ClientAddRuntimeVersionInfo, jKey, jValue);
+		if (FAndroidPlatformJNI::CheckAndClearException(Env))
+		{
+			UE_LOG(LogBugsnag, Error, TEXT("Failed to add runtime version info to Bugsnag client."));
+		}
+		else
+		{
+			UE_LOG(LogBugsnag, Log, TEXT("Runtime version info added to Bugsnag client: %s - %s"), *BugsnagConstants::UnrealEngine, *BugsnagUtils::GetUnrealEngineVersion());
+		}
+	}
+	else
+	{
+		UE_LOG(LogBugsnag, Error, TEXT("Bugsnag client initialization failed."));
+	}
+
+	UE_LOG(LogBugsnag, Log, TEXT("FAndroidPlatformBugsnag::Start completed."));
 }
+
 
 void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
