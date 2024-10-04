@@ -48,6 +48,8 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 			jstring jValue = FAndroidPlatformJNI::ParseFString(Env, BugsnagUtils::GetUnrealEngineVersion());
 			(*Env).CallVoidMethod(jClient, JNICache.ClientAddRuntimeVersionInfo, jKey, jValue);
 			FAndroidPlatformJNI::CheckAndClearException(Env);
+			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache loaded"));
+
 		}
 	}else{
 		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG JNICache NOT loaded"));
@@ -57,19 +59,25 @@ void FAndroidPlatformBugsnag::Start(const TSharedRef<FBugsnagConfiguration>& Con
 void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& Message, const TArray<uint64>& StackTrace,
 	const FBugsnagOnErrorCallback& Callback)
 {
+	UE_LOG(LogBugsnag, Error, TEXT("RICHLOG NOTIFY: 1"));
+
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
 	ReturnVoidIf(!Env || !JNICache.initialized);
+		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG NOTIFY: 2"));
 
 	jstring jErrorClass = FAndroidPlatformJNI::ParseFString(Env, ErrorClass);
 	jstring jMessage = FAndroidPlatformJNI::ParseFString(Env, Message);
 	ReturnVoidIf(!jErrorClass || !jMessage);
+		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG NOTIFY: 3"));
 
 	jobjectArray jFrames = (*Env).NewObjectArray(StackTrace.Num(), JNICache.TraceClass, NULL);
 	ReturnVoidIf(!jFrames);
+		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG NOTIFY: 4"));
 
 	// Java class name for each stack frame, intentionally empty
 	jobject jClassName = (*Env).NewStringUTF("");
 	ReturnVoidIf(!jClassName);
+		UE_LOG(LogBugsnag, Error, TEXT("RICHLOG NOTIFY: 5"));
 
 	Dl_info Info;
 	jstring jFilename, jMethod;
@@ -122,6 +130,8 @@ void FAndroidPlatformBugsnag::Notify(const FString& ErrorClass, const FString& M
 	(*Env).CallStaticVoidMethod(JNICache.BugsnagUnrealPluginClass,
 		JNICache.BugsnagUnrealPluginNotify, jErrorClass, jMessage, jFrames, jCallbackBuffer);
 	FAndroidPlatformJNI::CheckAndClearException(Env);
+			UE_LOG(LogBugsnag, Error, TEXT("RICHLOG NOTIFY: 6"));
+
 }
 
 const TOptional<FString> FAndroidPlatformBugsnag::GetContext()

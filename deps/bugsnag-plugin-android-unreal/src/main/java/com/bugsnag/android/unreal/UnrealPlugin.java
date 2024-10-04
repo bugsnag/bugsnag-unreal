@@ -120,17 +120,17 @@ public class UnrealPlugin implements Plugin {
 
   static void notify(String name, String message, StackTraceElement[] stacktrace, ByteBuffer userdata) {
     try {
-      Log.e("NotifyMethod", "notify called with name: " + name + ", message: " + message);
+      Log.e("RICHLOG NotifyMethod", "notify called with name: " + name + ", message: " + message);
 
       if (client == null || name == null) {
-        Log.e("NotifyMethod", "client is null or name is null. Returning early.");
+        Log.e("RICHLOG NotifyMethod", "client is null or name is null. Returning early.");
         return;
       }
 
       if (discardClasses != null) {
         for (Pattern pattern : discardClasses) {
           if (pattern.matcher(name).matches()) {
-            Log.e("NotifyMethod", "Name matches discard pattern: " + pattern.toString() + ". Returning.");
+            Log.e("RICHLOG NotifyMethod", "Name matches discard pattern: " + pattern.toString() + ". Returning.");
             return;
           }
         }
@@ -138,43 +138,43 @@ public class UnrealPlugin implements Plugin {
 
       Throwable exc = new RuntimeException();
       exc.setStackTrace(stacktrace);
-      Log.e("NotifyMethod", "Exception created and stack trace set.");
+      Log.e("RICHLOG NotifyMethod", "Exception created and stack trace set.");
 
       try {
         client.notify(exc, new OnErrorCallback() {
           @Override
           public boolean onError(Event event) {
             try {
-              Log.e("NotifyMethod", "onError called with event.");
+              Log.e("RICHLOG NotifyMethod", "onError called with event.");
               setSeverityReason(event, DEFAULT_HANDLED_REASON);
-              Log.e("NotifyMethod", "Severity reason set to " + DEFAULT_HANDLED_REASON);
+              Log.e("RICHLOG NotifyMethod", "Severity reason set to " + DEFAULT_HANDLED_REASON);
 
               List<Error> errors = event.getErrors();
               if (!errors.isEmpty()) {
                 Error error = errors.get(0);
                 error.setErrorClass(name);
                 error.setErrorMessage(message);
-                Log.e("NotifyMethod", "Error class set to " + name + " and message set to " + message);
+                Log.e("RICHLOG NotifyMethod", "Error class set to " + name + " and message set to " + message);
 
                 for (Error err : errors) {
                   err.setType(ErrorType.C);
-                  Log.e("NotifyMethod", "Error type set to C for error.");
+                  Log.e("RICHLOG NotifyMethod", "Error type set to C for error.");
                 }
               }
               return runNotifyCallback(event, userdata);
             } catch (Exception e) {
-              Log.e("NotifyMethod", "Exception in onError: " + e.getMessage(), e);
+              Log.e("RICHLOG NotifyMethod", "Exception in onError: " + e.getMessage(), e);
               return false;
             }
           }
         });
       } catch (Exception e) {
-        Log.e("NotifyMethod", "Exception in client.notify: " + e.getMessage(), e);
+        Log.e("RICHLOG NotifyMethod", "Exception in client.notify: " + e.getMessage(), e);
       }
 
-      Log.e("NotifyMethod", "Notification sent to Bugsnag.");
+      Log.e("RICHLOG NotifyMethod", "Notification sent to Bugsnag.");
     } catch (Exception e) {
-      Log.e("NotifyMethod", "Exception in notify method: " + e.getMessage(), e);
+      Log.e("RICHLOG NotifyMethod", "Exception in notify method: " + e.getMessage(), e);
     }
   }
 
