@@ -20,6 +20,10 @@
                     android.defaultConfig {
                         minSdkVersion 26
                     }
+                    android.compileOptions {
+                     sourceCompatibility JavaVersion.VERSION_1_8
+                     targetCompatibility JavaVersion.VERSION_1_8
+                    }
                 }
                 else
                 {
@@ -30,6 +34,8 @@
             {
                 android.compileSdkVersion 34
             }
+
+
         </insert>
     </buildGradleAdditions>
     
