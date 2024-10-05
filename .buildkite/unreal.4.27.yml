@@ -4,6 +4,7 @@ agents:
 env:
   UE_VERSION: "4.27"
   XCODE_VERSION: "13.2.1"
+  JAVA_VERSION: "11"
 
 steps:
   - group: ":hammer: Builds UE 4.27"

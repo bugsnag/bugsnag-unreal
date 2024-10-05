@@ -25,6 +25,7 @@ steps:
         env:
           UE_VERSION: "5.0"
           XCODE_VERSION: "13.2.1"
+          JAVA_VERSION: "11"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Android
