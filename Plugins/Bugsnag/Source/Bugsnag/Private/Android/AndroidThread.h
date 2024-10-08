@@ -29,8 +29,11 @@ public:
 			return TEXT("");
 		}
 
-		// Convert the Java string to an FString
 		const char* nativeString = (*Env).GetStringUTFChars(jId, nullptr);
+		if (!nativeString)
+		{
+			return TEXT("");
+		}
 		FString Id = FString(UTF8_TO_TCHAR(nativeString));
 		(*Env).ReleaseStringUTFChars(jId, nativeString);
 
