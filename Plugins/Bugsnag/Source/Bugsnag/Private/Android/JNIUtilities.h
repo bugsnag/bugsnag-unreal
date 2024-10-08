@@ -351,6 +351,7 @@ public:
 	 * @return A Java object reference or null on failure
 	 */
 	static jobject ParseBreadcrumbType(JNIEnv* Env, const JNIReferenceCache* Cache, EBugsnagBreadcrumbType Type);
+
 	/**
 	 * Convert an array of strings into a Java Set
 	 *
@@ -361,6 +362,7 @@ public:
 	 * @return A Java object reference or null on failure
 	 */
 	static jobject ParseStringSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values);
+
 	/**
 	 * Convert an array of strings into a Java Set
 	 *
