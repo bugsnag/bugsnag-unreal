@@ -91,7 +91,7 @@ steps:
             download:
               - build/TestFixture-Android-Shipping-5.4-arm64.apk
             upload:
-              - maze_output/failed/**/*
+              - "maze_output/**/*"
           docker-compose#v3.3.0:
             run: maze-runner
             command:

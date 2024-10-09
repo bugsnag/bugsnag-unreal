@@ -3,6 +3,8 @@ Changelog
 
 ## TBD () 
 
+
+* Updates the bugsnag-android dependency from v5.31.3 to [v6.8.0](https://github.com/bugsnag/bugsnag-android/blob/v6.8.0/CHANGELOG.md)
 * Included apple privacy manifest in released package [2#34](https://github.com/bugsnag/bugsnag-unreal/pull/234)
 * Updates the bugsnag-cocoa dependency from v6.28.0 to [v6.29.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6290-2024-06-19)
 

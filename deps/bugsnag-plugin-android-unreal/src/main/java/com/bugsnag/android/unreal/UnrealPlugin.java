@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class UnrealPlugin implements Plugin {
   static final String DEFAULT_HANDLED_REASON = "handledError";
@@ -90,7 +91,8 @@ public class UnrealPlugin implements Plugin {
    */
   static native void setSeverityReason(Event event, String reasonType);
 
-  static private Set<String> discardClasses;
+  private static Set<Pattern> discardClasses;
+
 
   public UnrealPlugin(Configuration config) {
     config.addOnBreadcrumb(onBreadcrumbRunner);
@@ -118,8 +120,12 @@ public class UnrealPlugin implements Plugin {
     if (client == null || name == null) {
       return;
     }
-    if (discardClasses != null && discardClasses.contains(name)) {
-      return;
+    if (discardClasses != null) {
+      for (Pattern pattern : discardClasses) {
+        if (pattern.matcher(name).matches()) {
+          return;
+        }
+      }
     }
 
     Throwable exc = new RuntimeException();

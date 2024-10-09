@@ -17,6 +17,13 @@
                     ueVersion == "5.1" )
                 {
                     android.compileSdkVersion 31
+                    android.defaultConfig {
+                        minSdkVersion 26
+                    }
+                    android.compileOptions {
+                     sourceCompatibility JavaVersion.VERSION_1_8
+                     targetCompatibility JavaVersion.VERSION_1_8
+                    }
                 }
                 else
                 {
@@ -27,7 +34,6 @@
             {
                 android.compileSdkVersion 34
             }
-            
         </insert>
     </buildGradleAdditions>
     
@@ -49,9 +55,7 @@
         <insert>
             public void clearBugsnagCache() {
                 File cache = getCacheDir();
-                deleteRecursive(cache, "bugsnag-native");
-                deleteRecursive(cache, "bugsnag-errors");
-                deleteRecursive(cache, "bugsnag-sessions");
+                deleteRecursive(cache, "bugsnag");
             }
 
             public void deleteRecursive(File file) {
