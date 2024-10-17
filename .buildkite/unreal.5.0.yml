@@ -93,6 +93,10 @@ steps:
               - "--device=ANDROID_11"
               - "--farm=bs"
               - "--order=random"
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
         concurrency: 5
         concurrency_group: browserstack-app
         concurrency_method: eager
@@ -120,6 +124,10 @@ steps:
               - "--device=IOS_14"
               - "--farm=bs"
               - "--order=random"
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
         concurrency: 5
         concurrency_group: browserstack-app
         concurrency_method: eager
@@ -147,3 +155,7 @@ steps:
               - TestFixture-macOS-5.0.zip
             upload:
               - maze_output/failed/**/*
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
