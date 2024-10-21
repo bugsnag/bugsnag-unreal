@@ -20,6 +20,7 @@ services:
       BUILDKITE_ANALYTICS_TOKEN:
       BROWSER_STACK_USERNAME:
       BROWSER_STACK_ACCESS_KEY:
+      MAZE_NO_FAIL_FAST:
     volumes:
       - ./build:/app/build
       - ./features/:/app/features/
