@@ -92,6 +92,10 @@ steps:
               - "--device=ANDROID_11"
               - "--farm=bs"
               - "--order=random"
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
 
       - label: ":ios: E2E Tests - 4.27 iOS 12"
         depends_on: ios_fixture_4_27
@@ -119,6 +123,10 @@ steps:
               - "--device=IOS_12"
               - "--farm=bs"
               - "--order=random"
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
 
       - label: ":macos: E2E Tests - 4.27 macOS 12"
         depends_on: mac_fixture_4_27
@@ -129,6 +137,10 @@ steps:
               - TestFixture-macOS-4.27.zip
             upload:
               - maze_output/failed/**/*
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
         commands:
           - echo '--- Extracting test fixture'
           - unzip TestFixture-macOS-4.27.zip
