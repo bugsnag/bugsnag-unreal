@@ -5,11 +5,9 @@ steps:
   - group: ":hammer: Builds UE 5.4"
     steps:
       - label: ":macos: Build Plugin - 5.4"
-        agents:
-          queue: macos-13-arm
         env:
           UE_VERSION: "5.4"
-          XCODE_VERSION: "15.2.0"
+          XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "11"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
