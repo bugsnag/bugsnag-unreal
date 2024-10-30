@@ -1,5 +1,5 @@
 agents:
-  queue: macos-13-arm
+  queue: macos-14-6
 
 steps:
   - group: ":hammer: Builds UE 5.3"
@@ -7,7 +7,7 @@ steps:
       - label: ":macos: Build Plugin - 5.3"
         env:
           UE_VERSION: "5.3"
-          XCODE_VERSION: "14.1.0"
+          XCODE_VERSION: "15.4.0
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - make package
@@ -24,7 +24,7 @@ steps:
         depends_on: plugin_5_3
         env:
           UE_VERSION: "5.3"
-          XCODE_VERSION: "14.1.0"
+          XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -43,7 +43,7 @@ steps:
         depends_on: plugin_5_3
         env:
           UE_VERSION: "5.3"
-          XCODE_VERSION: "14.1.0"
+          XCODE_VERSION: "15.4.0"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh IOS
@@ -63,7 +63,7 @@ steps:
       #   depends_on: plugin_5_3
       #   env:
       #     UE_VERSION: "5.3"
-      #     XCODE_VERSION: "14.1.0"
+      #     XCODE_VERSION: "15.4.0"
       #   commands:
       #     - bundle install
       #     - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -147,7 +147,7 @@ steps:
       #   agents:
       #     queue: macos-14
       #   env:
-      #     XCODE_VERSION: "14.1.0"
+      #     XCODE_VERSION: "15.4.0"
       #     UE_VERSION: "5.3"
       #   timeout_in_minutes: 10
       #   commands:
