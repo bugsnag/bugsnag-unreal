@@ -2,9 +2,9 @@ agents:
   queue: opensource
 
 steps:
-  - name: 'Append Unreal 4.27 Pipeline'
-    commands:
-      - buildkite-agent pipeline upload .buildkite/unreal.4.27.yml
+#  - name: 'Append Unreal 4.27 Pipeline'
+#    commands:
+#      - buildkite-agent pipeline upload .buildkite/unreal.4.27.yml
 
   - name: 'Append Unreal 5.4 Pipeline'
     commands:
