@@ -1,5 +1,5 @@
 agents:
-  queue: macos-13-arm
+  queue: ms-arm-13-1
 
 steps:
   - group: ":hammer: Builds UE 5.3"
