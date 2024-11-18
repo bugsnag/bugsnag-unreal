@@ -1,5 +1,5 @@
 agents:
-  queue: macos-14-1
+  queue: macos-14
 
 steps:
   - group: ":hammer: Builds UE 5.4"
