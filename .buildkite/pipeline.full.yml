@@ -1,19 +1,23 @@
 agents:
-  queue: opensource
+  queue: macos
 
 steps:
-  - name: 'Append Unreal 5.0 Pipeline'
+  - label: 'Append Unreal 5.0 Pipeline'
+    timeout_in_minutes: 2
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.5.0.yml
 
-  - name: 'Append Unreal 5.1 Pipeline'
+  - label: 'Append Unreal 5.1 Pipeline'
+    timeout_in_minutes: 2
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.5.1.yml
 
-  - name: 'Append Unreal 5.2 Pipeline'
+  - label: 'Append Unreal 5.2 Pipeline'
+    timeout_in_minutes: 2
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.5.2.yml
 
-  - name: 'Append Unreal 5.3 Pipeline'
+  - label: 'Append Unreal 5.3 Pipeline'
+    timeout_in_minutes: 2
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.5.3.yml
