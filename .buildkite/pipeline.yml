@@ -1,14 +1,17 @@
 agents:
-  queue: opensource
+  queue: macos
 
 steps:
-  - name: 'Append Unreal 4.27 Pipeline'
+  - label: 'Append Unreal 4.27 Pipeline'
+    timeout_in_minutes: 2
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.4.27.yml
 
-  - name: 'Append Unreal 5.4 Pipeline'
+  - label: 'Append Unreal 5.4 Pipeline'
+    timeout_in_minutes: 2
     commands:
       - buildkite-agent pipeline upload .buildkite/unreal.5.4.yml
 
   - label: 'Conditionally trigger full set of tests'
+    timeout_in_minutes: 2
     command: sh -c .buildkite/pipeline_trigger.sh

@@ -17,7 +17,7 @@ steps:
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         artifact_paths:
           - Build/Plugin/*.zip
-        timeout_in_minutes: 60
+        timeout_in_minutes: 15
         key: plugin_5_3
 
       - label: ":android: Build E2E - 5.3"
@@ -36,7 +36,7 @@ steps:
               - build/TestFixture-Android-Shipping-5.3-arm64.apk
               - build/TestFixture-Android-Shipping-5.3-armv7.apk
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 60
+        timeout_in_minutes: 15
         key: android_fixture_5_3
 
       - label: ":ios: Build E2E - 5.3"
@@ -54,7 +54,7 @@ steps:
               - build/TestFixture-IOS-Shipping-5.3.ipa
               - build/TestFixture-IOS-Shipping-5.3.dSYM
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 60
+        timeout_in_minutes: 15
         key: ios_fixture_5_3
 
       #  Pending PLAT-12735

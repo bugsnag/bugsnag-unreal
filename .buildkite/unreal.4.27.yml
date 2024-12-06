@@ -10,7 +10,7 @@ steps:
     steps:
       - label: ":macos: Build Plugin - 4.27"
         key: plugin_4_27
-        timeout_in_minutes: 60
+        timeout_in_minutes: 20
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - make package
@@ -24,7 +24,7 @@ steps:
       - label: ":android: Build E2E - 4.27"
         key: android_fixture_4_27
         depends_on: plugin_4_27
-        timeout_in_minutes: 60
+        timeout_in_minutes: 15
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Android
@@ -39,7 +39,7 @@ steps:
       - label: ":ios: Build E2E - 4.27"
         key: ios_fixture_4_27
         depends_on: plugin_4_27
-        timeout_in_minutes: 60
+        timeout_in_minutes: 15
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh IOS
@@ -54,7 +54,7 @@ steps:
       - label: ":mac: Build E2E - 4.27"
         key: mac_fixture_4_27
         depends_on: plugin_4_27
-        timeout_in_minutes: 90
+        timeout_in_minutes: 15
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Mac
@@ -130,7 +130,7 @@ steps:
 
       - label: ":macos: E2E Tests - 4.27 macOS 12"
         depends_on: mac_fixture_4_27
-        timeout_in_minutes: 10
+        timeout_in_minutes: 20
         plugins:
           artifacts#v1.5.0:
             download:
