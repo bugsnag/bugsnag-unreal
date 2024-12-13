@@ -3,7 +3,6 @@ agents:
 
 env:
   UE_VERSION: "4.27"
-  XCODE_VERSION: "13.2.1"
 
 steps:
   - group: ":hammer: Builds UE 4.27"
@@ -11,6 +10,8 @@ steps:
       - label: ":macos: Build Plugin - 4.27"
         key: plugin_4_27
         timeout_in_minutes: 20
+        env:
+          XCODE_VERSION: "13.2.1"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - make package
@@ -25,6 +26,8 @@ steps:
         key: android_fixture_4_27
         depends_on: plugin_4_27
         timeout_in_minutes: 15
+        env:
+          XCODE_VERSION: "13.2.1"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Android
@@ -40,6 +43,8 @@ steps:
         key: ios_fixture_4_27
         depends_on: plugin_4_27
         timeout_in_minutes: 15
+        env:
+          XCODE_VERSION: "13.2.1"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh IOS
@@ -55,6 +60,8 @@ steps:
         key: mac_fixture_4_27
         depends_on: plugin_4_27
         timeout_in_minutes: 15
+        env:
+          XCODE_VERSION: "13.2.1"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Mac
