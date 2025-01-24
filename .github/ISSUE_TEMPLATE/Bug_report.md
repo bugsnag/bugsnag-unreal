@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-<!-- Before raising, please check if somebody else has already reported your issue. -->
+<!-- Before raising, please check whether somebody else has already reported your issue. -->
 
 ### Describe the bug
 A clear and concise description of what the bug is.
@@ -19,9 +19,10 @@ A clear and concise description of what the bug is.
 4. See error
 
 ### Environment
-* Bugsnag version:
+* BugSnag version:
 * Unreal Engine version:
-* Target platform & version:
+* iOS/Android version:
+* simulator/emulator or physical device:
 
 <!--
   Below are a few approaches you might take to communicate the issue, in
