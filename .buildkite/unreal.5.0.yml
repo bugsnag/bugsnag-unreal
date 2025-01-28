@@ -75,6 +75,8 @@ steps:
 
   - group: ":test_tube: E2E Tests UE 5.0"
     steps:
+    agents:
+      queue: macos-14
       - label: ':android: E2E Tests - 5.0 Android 11'
         depends_on: android_fixture_5_0
         agents:
