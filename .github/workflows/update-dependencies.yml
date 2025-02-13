@@ -1,5 +1,10 @@
 name: update-dependencies
 
+permissions:
+  contents: write
+  pull-requests: write
+  repository-projects: read
+
 on:
   repository_dispatch:
     types: [update-dependency]
