@@ -8,8 +8,8 @@ def update_version(file, from, to)
   File.open(file, 'w') { |file| file.puts output_content }
 end
 
-target_submodule = ENV['TARGET_SUBMODULE']
-target_version = ENV['TARGET_VERSION']
+target_submodule = ENV['SUBMODULE'].dup
+target_version = ENV['VERSION'].dup
 
 if target_submodule.nil? || target_version.nil?
   raise 'Submodule or version targets not provided, exiting'
