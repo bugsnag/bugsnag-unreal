@@ -47,10 +47,6 @@ def artifact_path
   end
 end
 
-def app_state
-  Maze.driver.app_state('com.bugsnag.example.unrealtestfixture')
-end
-
 Maze.hooks.before do
   $started_at = Time.now
 end
