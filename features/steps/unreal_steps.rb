@@ -22,19 +22,9 @@ When('I run {string} and restart the crashed app for {string}') do |scenario_1, 
   run_fixture(:start_bugsnag, scenario_2)
 end
 
-When('I background the app for {int} seconds') do |duration|
-  if is_platform? :macos
-    `osascript -e 'tell application "System Events" to tell process "TestFixture-Mac-Shipping" to set visible to false'`
-    sleep duration
-    `osascript -e 'tell application "TestFixture-Mac-Shipping" to activate'`
-  else
-    Maze.driver.background_app(duration)
-  end
-end
-
 Then('the mobile app is not running') do
   wait_for_true do
-    state = app_state()
+    state = Maze::Api::Appium::AppManager.new.state
     # workaround for faulty app state detection in appium v1.23 and lower on
     # Android where an app that is not running is detected to be running in
     # the background
@@ -97,7 +87,7 @@ def run_fixture(action, scenario_name, wait_for_crash: false)
     wait_for_get_command
     if wait_for_crash
       step 'the mobile app is not running'
-      Maze.driver.launch_app
+      Maze::Api::Appium::AppManager.new.launch
       sleep 3
     end
   when 'macos'

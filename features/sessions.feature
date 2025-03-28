@@ -46,5 +46,4 @@ Feature: Session tracking
   @slow
   Scenario: Automatic session tracking disabled
     When I run "AutoTrackSessionsDisabledScenario"
-    And I background the app for 3 seconds
     Then I should receive no sessions
