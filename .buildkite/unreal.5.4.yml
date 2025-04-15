@@ -97,6 +97,7 @@ steps:
               - "--device=ANDROID_11"
               - "--farm=bs"
               - "--order=random"
+              - "--appium-version=1.22.0"
           test-collector#v1.10.2:
             files: "reports/TEST-*.xml"
             format: "junit"

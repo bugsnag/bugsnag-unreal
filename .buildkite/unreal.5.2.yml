@@ -155,6 +155,7 @@ steps:
       #         - "--device=ANDROID_13"
       #         - "--farm=bs"
       #         - "--order=random"
+      #         - "--appium-version=1.22.0"
       #   concurrency: 5
       #   concurrency_group: browserstack-app
       #   concurrency_method: eager
