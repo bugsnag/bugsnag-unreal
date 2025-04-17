@@ -1,5 +1,5 @@
 agents:
-  queue: macos-14-isolated
+  queue: macos-14
 
 steps:
   - group: ":hammer: Builds UE 5.4"
@@ -146,7 +146,7 @@ steps:
       # - label: ":macos: E2E Tests - 5.4 macOS 14"
       #   depends_on: mac_fixture_5_4
       #   agents:
-      #     queue: macos-14-isolated
+      #     queue: macos-14
       #   env:s
       #     XCODE_VERSION: "15.4.0"
       #     UE_VERSION: "5.4"
