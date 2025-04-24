@@ -5,6 +5,8 @@ steps:
   - group: ":hammer: Builds UE 5.4"
     steps:
       - label: ":macos: Build Plugin - 5.4"
+        agents:
+          queue: macos-14-isolated
         env:
           UE_VERSION: "5.4"
           XCODE_VERSION: "15.3.0"
@@ -22,6 +24,8 @@ steps:
         key: plugin_5_4
 
       - label: ":android: Build E2E - 5.4"
+        agents:
+          queue: macos-14-isolated
         depends_on: plugin_5_4
         env:
           UE_VERSION: "5.4"
@@ -41,6 +45,8 @@ steps:
         key: android_fixture_5_4
 
       - label: ":ios: Build E2E - 5.4"
+        agents:
+          queue: macos-14-isolated
         depends_on: plugin_5_4
         env:
           UE_VERSION: "5.4"
@@ -60,6 +66,8 @@ steps:
         key: ios_fixture_5_4
 
       - label: ":mac: Build E2E - 5.4"
+        agents:
+          queue: macos-14-isolated
         depends_on: plugin_5_4
         env:
           UE_VERSION: "5.4"
