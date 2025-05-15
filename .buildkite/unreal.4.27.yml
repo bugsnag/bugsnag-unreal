@@ -25,7 +25,7 @@ steps:
       - label: ":android: Build E2E - 4.27"
         key: android_fixture_4_27
         depends_on: plugin_4_27
-        timeout_in_minutes: 15
+        timeout_in_minutes: 20
         env:
           XCODE_VERSION: "13.2.1"
         commands:
@@ -42,7 +42,7 @@ steps:
       - label: ":ios: Build E2E - 4.27"
         key: ios_fixture_4_27
         depends_on: plugin_4_27
-        timeout_in_minutes: 15
+        timeout_in_minutes: 20
         env:
           XCODE_VERSION: "13.2.1"
         commands:
@@ -59,7 +59,7 @@ steps:
       - label: ":mac: Build E2E - 4.27"
         key: mac_fixture_4_27
         depends_on: plugin_4_27
-        timeout_in_minutes: 15
+        timeout_in_minutes: 20
         env:
           XCODE_VERSION: "13.2.1"
         commands:
