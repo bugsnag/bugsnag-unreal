@@ -150,7 +150,7 @@ steps:
       #   env:
       #     XCODE_VERSION: "14.1.0"
       #     UE_VERSION: "5.3"
-      #   timeout_in_minutes: 10
+      #   timeout_in_minutes: 15
       #   commands:
       #     - echo '--- Extracting test fixture'
       #     - unzip TestFixture-macOS-5.3.zip

@@ -18,7 +18,7 @@ steps:
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         artifact_paths:
           - Build/Plugin/*.zip
-        timeout_in_minutes: 10
+        timeout_in_minutes: 15
         key: plugin_5_2
 
       - label: 'Build E2E - 5.2 iOS'
@@ -37,7 +37,7 @@ steps:
               - build/TestFixture-IOS-Shipping-5.2.dSYM
               - build/TestFixture-IOS-Shipping-5.2.ipa
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 10
+        timeout_in_minutes: 15
         key: ios_fixture_5_2
 
       - label: 'Build E2E - 5.2 macOS'
@@ -55,7 +55,7 @@ steps:
             upload:
               - TestFixture-macOS-5.2.zip
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 10
+        timeout_in_minutes: 15
         key: mac_fixture_5_2
 
       # Pending PLAT-12734
