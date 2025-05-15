@@ -35,7 +35,7 @@ steps:
               - build/TestFixture-Android-Shipping-5.0-arm64.apk
               - build/TestFixture-Android-Shipping-5.0-armv7.apk
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 15
+        timeout_in_minutes: 20
         key: android_fixture_5_0
 
       - label: 'Build E2E - 5.0 iOS'
