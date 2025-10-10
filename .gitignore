@@ -1,7 +1,9 @@
 Gemfile.lock
 
-# Visual Studio 2015 user specific files
+# IDE user specific files
 .vs/
+.idea/
+bugsnag-unreal.iml
 
 # Compiled Object files
 *.slo
