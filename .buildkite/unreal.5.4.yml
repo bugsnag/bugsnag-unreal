@@ -20,7 +20,7 @@ steps:
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         artifact_paths:
           - Build/Plugin/*.zip
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: plugin_5_4
 
       - label: ":android: Build E2E - 5.4"
@@ -41,7 +41,7 @@ steps:
               - build/TestFixture-Android-Shipping-5.4-arm64.apk
               - build/TestFixture-Android-Shipping-5.4-armv7.apk
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: android_fixture_5_4
 
       - label: ":ios: Build E2E - 5.4"
@@ -62,7 +62,7 @@ steps:
               - build/TestFixture-IOS-Shipping-5.4.ipa
               - build/TestFixture-IOS-Shipping-5.4-file.dSYM
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: ios_fixture_5_4
 
       - label: ":mac: Build E2E - 5.4"
@@ -82,7 +82,7 @@ steps:
             upload:
               - TestFixture-macOS-5.4.zip
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: mac_fixture_5_4
 
   - group: ":test_tube: E2E Tests UE 5.4"

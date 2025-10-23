@@ -20,7 +20,7 @@ steps:
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         artifact_paths:
           - Build/Plugin/*.zip
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: plugin_5_5
 
       - label: ":android: Build E2E - 5.5"
@@ -29,7 +29,7 @@ steps:
         depends_on: plugin_5_5
         env:
           UE_VERSION: "5.5"
-          XCODE_VERSION: "15.5.0"
+          XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -41,7 +41,7 @@ steps:
               - build/TestFixture-Android-Shipping-5.5-arm64.apk
               - build/TestFixture-Android-Shipping-5.5-armv7.apk
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: android_fixture_5_5
 
       - label: ":ios: Build E2E - 5.5"
@@ -50,7 +50,7 @@ steps:
         depends_on: plugin_5_5
         env:
           UE_VERSION: "5.5"
-          XCODE_VERSION: "15.5.0"
+          XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -62,7 +62,7 @@ steps:
               - build/TestFixture-IOS-Shipping-5.5.ipa
               - build/TestFixture-IOS-Shipping-5.5-file.dSYM
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: ios_fixture_5_5
 
       - label: ":mac: Build E2E - 5.5"
@@ -71,7 +71,7 @@ steps:
         depends_on: plugin_5_5
         env:
           UE_VERSION: "5.5"
-          XCODE_VERSION: "15.5.0"
+          XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
@@ -82,7 +82,7 @@ steps:
             upload:
               - TestFixture-macOS-5.5.zip
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
-        timeout_in_minutes: 20
+        timeout_in_minutes: 30
         key: mac_fixture_5_5
 
   - group: ":test_tube: E2E Tests UE 5.5"
@@ -156,7 +156,7 @@ steps:
         agents:
           queue: macos-14
         env:
-          XCODE_VERSION: "15.5.0"
+          XCODE_VERSION: "15.4.0"
           UE_VERSION: "5.5"
         timeout_in_minutes: 10
         commands:

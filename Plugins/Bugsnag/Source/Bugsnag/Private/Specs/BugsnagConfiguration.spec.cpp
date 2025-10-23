@@ -2,6 +2,8 @@
 
 #include "Misc/AutomationTest.h"
 
+#include "Runtime/Launch/Resources/Version.h"
+
 #include "BugsnagConfiguration.h"
 
 #define TEST_TRUE(expression) \

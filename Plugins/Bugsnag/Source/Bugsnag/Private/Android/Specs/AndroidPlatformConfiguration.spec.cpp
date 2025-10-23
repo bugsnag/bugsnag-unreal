@@ -3,6 +3,8 @@
 #include "Android/AndroidJavaEnv.h"
 #include "AutomationTest.h"
 
+#include "Runtime/Launch/Resources/Version.h"
+
 #include "../AndroidPlatformConfiguration.h"
 
 //

@@ -5,6 +5,8 @@
 #include "../ApplePlatformConfiguration.h"
 #include "BugsnagConfiguration.h"
 
+#include "Runtime/Launch/Resources/Version.h"
+
 #import <BugsnagPrivate/BugsnagInternals.h>
 
 //

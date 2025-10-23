@@ -2,6 +2,8 @@
 
 #include "AutomationTest.h"
 
+#include "Runtime/Launch/Resources/Version.h"
+
 #include "../AppleStackframe.h"
 
 #import <BugsnagPrivate/BugsnagInternals.h>
