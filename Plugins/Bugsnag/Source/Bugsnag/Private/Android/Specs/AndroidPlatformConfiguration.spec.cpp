@@ -11,8 +11,15 @@
 // * Open Unreal Editor's "Session Frontend" and find the running game in "My Sessions"
 // * Click the "Automation" tab, select the tests to run, and click "Start Tests"!
 //
+#if (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 5)
+// For UE5.0–5.4: ApplicationContextMask still exists
 BEGIN_DEFINE_SPEC(FAndroidPlatformConfigurationSpec, "Bugsnag.FAndroidPlatformConfigurationSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
+#else
+// For UE5.5+ (ApplicationContextMask removed)
+BEGIN_DEFINE_SPEC(FAndroidPlatformConfigurationSpec, "Bugsnag.FAndroidPlatformConfigurationSpec",
+    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+#endif
 END_DEFINE_SPEC(FAndroidPlatformConfigurationSpec)
 void FAndroidPlatformConfigurationSpec::Define()
 {
