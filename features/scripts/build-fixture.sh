@@ -106,7 +106,7 @@ case "${PLATFORM}" in
       if [[ -d "$DSYM_PATH" ]]; then
         echo "--- Found dSYM at $DSYM_PATH"
         mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
-        cp build/TestFixture-IOS-Shipping-5.4.dSYM/Contents/Resources/DWARF/TestFixture-IOS-Shipping build/TestFixture-IOS-Shipping-"${UE_VERSION}"-file.dSYM
+        cp build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM/Contents/Resources/DWARF/TestFixture-IOS-Shipping build/TestFixture-IOS-Shipping-"${UE_VERSION}"-file.dSYM
       else
         echo "Error: dSYM file not found."
         exit 1
@@ -127,7 +127,7 @@ case "${PLATFORM}" in
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping
         ;;
-      5.4)
+      5.4|5.5|5.6)
         mkdir -p features/fixtures/generic/ArchivedBuilds/MacNoEditor
         mv features/fixtures/generic/ArchivedBuilds/TestFixture-Mac-Shipping.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         ;;
