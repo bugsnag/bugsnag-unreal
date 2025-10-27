@@ -13,9 +13,22 @@
 #include "Scenarios/Scenario.h"
 
 #if PLATFORM_ANDROID || PLATFORM_IOS
-#define MAZE_RUNNER_URL_BASE "http://bs-local.com:9339"
+static FString GetMazeRunnerUrlBase() {
+    return TEXT("http://bs-local.com:9339");
+}
 #else
-#define MAZE_RUNNER_URL_BASE "http://localhost:9339"
+static FString GetMazeRunnerUrlBase() {
+    FString PortStr;
+    FPlatformMisc::GetEnvironmentVariable(TEXT("MAZE_RUNNER_PORT"));
+    int32 Port = 9339;
+    if (!PortStr.IsEmpty()) {
+        Port = FCString::Atoi(*PortStr);
+        if (Port <= 0) {
+            Port = 9339;
+        }
+    }
+    return FString::Printf(TEXT("http://localhost:%d"), Port);
+}
 #endif
 
 void UMainWidgetBase::NativeOnInitialized()
@@ -45,7 +58,7 @@ void UMainWidgetBase::ExecuteMazeRunnerCommand()
 {
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
-	HttpRequest->SetURL(TEXT(MAZE_RUNNER_URL_BASE "/command"));
+	HttpRequest->SetURL(GetMazeRunnerUrlBase() + TEXT("/command"));
 	HttpRequest->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bConnectedSuccessfully)
 		{
 			if (!bConnectedSuccessfully || !HttpResponse.IsValid())

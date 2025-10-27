@@ -50,8 +50,8 @@ steps:
         depends_on: plugin_5_6
         env:
           UE_VERSION: "5.6"
-          XCODE_VERSION: "15.4.0"
-          JAVA_VERSION: "17"
+          XCODE_VERSION: "16.1.0"
+          JAVA_VERSION: "21"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh IOS
@@ -71,8 +71,8 @@ steps:
         depends_on: plugin_5_6
         env:
           UE_VERSION: "5.6"
-          XCODE_VERSION: "15.4.0"
-          JAVA_VERSION: "17"
+          XCODE_VERSION: "16.1.0"
+          JAVA_VERSION: "21"
         commands:
           - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
           - features/scripts/build-fixture.sh Mac

@@ -59,12 +59,35 @@ public:
 	const FString ApiKey = TEXT("12312312312312312312312312312312");
 
 #if PLATFORM_ANDROID || PLATFORM_IOS
-	const FString NotifyEndpoint = TEXT("http://bs-local.com:9339/notify");
-	const FString SessionsEndpoint = TEXT("http://bs-local.com:9339/sessions");
+static FString GetNotifyEndpoint() {
+    return TEXT("http://bs-local.com:9339/notify");
+}
+static FString GetSessionsEndpoint() {
+    return TEXT("http://bs-local.com:9339/sessions");
+}
 #else
-	const FString NotifyEndpoint = TEXT("http://localhost:9339/notify");
-	const FString SessionsEndpoint = TEXT("http://localhost:9339/sessions");
+static FString GetMazeRunnerPort() {
+    FString PortStr;
+    FPlatformMisc::GetEnvironmentVariable(TEXT("MAZE_RUNNER_PORT"));
+    int32 Port = 9339;
+    if (!PortStr.IsEmpty()) {
+        Port = FCString::Atoi(*PortStr);
+        if (Port <= 0) {
+            Port = 9339;
+        }
+    }
+    return FString::FromInt(Port);
+}
+static FString GetNotifyEndpoint() {
+    return FString::Printf(TEXT("http://localhost:%s/notify"), *GetMazeRunnerPort());
+}
+static FString GetSessionsEndpoint() {
+    return FString::Printf(TEXT("http://localhost:%s/sessions"), *GetMazeRunnerPort());
+}
 #endif
+
+const FString NotifyEndpoint = GetNotifyEndpoint();
+const FString SessionsEndpoint = GetSessionsEndpoint();
 
 	Scenario()
 	{
