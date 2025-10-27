@@ -17,12 +17,18 @@ UE_RUNUAT="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.sh"
 MODERN_IOS=false
 MODERN_MAC_OS=false
 
-if [[ "${UE_VERSION}" == "5.4" && "${PLATFORM}" == "IOS" ]]; then
+# Function to compare semantic versions
+version_gte() {
+  # returns true (0) if $1 >= $2
+  [[ "$(printf '%s\n' "$2" "$1" | sort -V | head -n1)" == "$2" ]]
+}
+
+if version_gte "${UE_VERSION}" "5.4" && [[ "${PLATFORM}" == "IOS" ]]; then
   echo "--- Using iOS modern xcode setup"
   MODERN_IOS=true
 fi
 
-if [[ "${UE_VERSION}" == "5.3" || "${UE_VERSION}" == "5.4" ]] && [[ "$PLATFORM" == "Mac" ]]; then
+if version_gte "${UE_VERSION}" "5.3" && [[ "${PLATFORM}" == "Mac" ]]; then
   echo "--- Using MacOS modern Xcode setup"
   MODERN_MAC_OS=true
 fi
