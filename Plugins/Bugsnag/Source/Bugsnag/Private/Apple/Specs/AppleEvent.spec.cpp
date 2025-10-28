@@ -15,7 +15,7 @@ BEGIN_DEFINE_SPEC(FAppleEventSpec, "Bugsnag.FAppleEventSpec",
 #else
 // For UE5.5+ (ApplicationContextMask removed)
 BEGIN_DEFINE_SPEC(FAppleEventSpec, "Bugsnag.FAppleEventSpec",
-    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
 #endif
 END_DEFINE_SPEC(FAppleEventSpec)
 void FAppleEventSpec::Define()

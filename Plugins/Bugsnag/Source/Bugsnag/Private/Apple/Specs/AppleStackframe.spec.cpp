@@ -15,7 +15,7 @@ BEGIN_DEFINE_SPEC(FAppleStackframeSpec, "Bugsnag.FAppleStackframeSpec",
 #else
 // For UE5.5+ (ApplicationContextMask removed)
 BEGIN_DEFINE_SPEC(FAppleStackframeSpec, "Bugsnag.FAppleStackframeSpec",
-    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
 #endif
 END_DEFINE_SPEC(FAppleStackframeSpec)
 void FAppleStackframeSpec::Define()

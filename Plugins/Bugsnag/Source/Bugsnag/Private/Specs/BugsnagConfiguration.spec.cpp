@@ -27,7 +27,7 @@ BEGIN_DEFINE_SPEC(FBugsnagConfigurationSpec, "Bugsnag.FBugsnagConfigurationSpec"
 #else
 // For UE5.5+ (ApplicationContextMask removed)
 BEGIN_DEFINE_SPEC(FBugsnagConfigurationSpec, "Bugsnag.FBugsnagConfigurationSpec",
-    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
 #endif
 END_DEFINE_SPEC(FBugsnagConfigurationSpec)
 void FBugsnagConfigurationSpec::Define()

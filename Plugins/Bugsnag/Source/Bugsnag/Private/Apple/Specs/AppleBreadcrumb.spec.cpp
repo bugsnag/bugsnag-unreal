@@ -13,7 +13,7 @@ BEGIN_DEFINE_SPEC(FAppleBreadcrumbSpec, "Bugsnag.FAppleBreadcrumbSpec",
 #else
 // For UE5.5+ (ApplicationContextMask removed)
 BEGIN_DEFINE_SPEC(FAppleBreadcrumbSpec, "Bugsnag.FAppleBreadcrumbSpec",
-    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
 #endif
 END_DEFINE_SPEC(FAppleBreadcrumbSpec)
 void FAppleBreadcrumbSpec::Define()

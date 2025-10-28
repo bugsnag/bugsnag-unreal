@@ -13,7 +13,7 @@ BEGIN_DEFINE_SPEC(FAppleBugsnagUtilsSpec, "Bugsnag.FAppleBugsnagUtilsSpec",
 #else
 // For UE5.5+ (ApplicationContextMask removed)
 BEGIN_DEFINE_SPEC(FAppleBugsnagUtilsSpec, "Bugsnag.FAppleBugsnagUtilsSpec",
-    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
 #endif
 END_DEFINE_SPEC(FAppleBugsnagUtilsSpec)
 void FAppleBugsnagUtilsSpec::Define()

@@ -15,7 +15,7 @@ BEGIN_DEFINE_SPEC(FAppleErrorSpec, "Bugsnag.FAppleErrorSpec",
 #else
 // For UE5.5+ (ApplicationContextMask removed)
 BEGIN_DEFINE_SPEC(FAppleErrorSpec, "Bugsnag.FAppleErrorSpec",
-    EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
 #endif
 END_DEFINE_SPEC(FAppleErrorSpec)
 void FAppleErrorSpec::Define()
