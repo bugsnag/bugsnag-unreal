@@ -2,13 +2,13 @@ agents:
   queue: macos-14
 
 steps:
-  - group: ":hammer: Builds UE 5.4"
+  - group: ":hammer: Builds UE 5.5"
     steps:
-      - label: ":macos: Build Plugin - 5.4"
+      - label: ":macos: Build Plugin - 5.5"
         agents:
           queue: macos-14-isolated
         env:
-          UE_VERSION: "5.4"
+          UE_VERSION: "5.5"
           XCODE_VERSION: "15.3.0"
           JAVA_VERSION: "11"
         commands:
@@ -21,14 +21,14 @@ steps:
         artifact_paths:
           - Build/Plugin/*.zip
         timeout_in_minutes: 30
-        key: plugin_5_4
+        key: plugin_5_5
 
-      - label: ":android: Build E2E - 5.4"
+      - label: ":android: Build E2E - 5.5"
         agents:
           queue: macos-14-isolated
-        depends_on: plugin_5_4
+        depends_on: plugin_5_5
         env:
-          UE_VERSION: "5.4"
+          UE_VERSION: "5.5"
           XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
@@ -36,20 +36,20 @@ steps:
           - features/scripts/build-fixture.sh Android
         plugins:
           artifacts#v1.5.0:
-            download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
+            download: Build/Plugin/Bugsnag-*-UE_5.5-macOS.zip
             upload:
-              - build/TestFixture-Android-Shipping-5.4-arm64.apk
-              - build/TestFixture-Android-Shipping-5.4-armv7.apk
+              - build/TestFixture-Android-Shipping-5.5-arm64.apk
+              - build/TestFixture-Android-Shipping-5.5-armv7.apk
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         timeout_in_minutes: 30
-        key: android_fixture_5_4
+        key: android_fixture_5_5
 
-      - label: ":ios: Build E2E - 5.4"
+      - label: ":ios: Build E2E - 5.5"
         agents:
           queue: macos-14-isolated
-        depends_on: plugin_5_4
+        depends_on: plugin_5_5
         env:
-          UE_VERSION: "5.4"
+          UE_VERSION: "5.5"
           XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
@@ -57,20 +57,20 @@ steps:
           - features/scripts/build-fixture.sh IOS
         plugins:
           artifacts#v1.5.0:
-            download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
+            download: Build/Plugin/Bugsnag-*-UE_5.5-macOS.zip
             upload:
-              - build/TestFixture-IOS-Shipping-5.4.ipa
-              - build/TestFixture-IOS-Shipping-5.4-file.dSYM
+              - build/TestFixture-IOS-Shipping-5.5.ipa
+              - build/TestFixture-IOS-Shipping-5.5-file.dSYM
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         timeout_in_minutes: 30
-        key: ios_fixture_5_4
+        key: ios_fixture_5_5
 
-      - label: ":mac: Build E2E - 5.4"
+      - label: ":mac: Build E2E - 5.5"
         agents:
           queue: macos-14-isolated
-        depends_on: plugin_5_4
+        depends_on: plugin_5_5
         env:
-          UE_VERSION: "5.4"
+          UE_VERSION: "5.5"
           XCODE_VERSION: "15.4.0"
           JAVA_VERSION: "17"
         commands:
@@ -78,30 +78,30 @@ steps:
           - features/scripts/build-fixture.sh Mac
         plugins:
           artifacts#v1.5.0:
-            download: Build/Plugin/Bugsnag-*-UE_5.4-macOS.zip
+            download: Build/Plugin/Bugsnag-*-UE_5.5-macOS.zip
             upload:
-              - TestFixture-macOS-5.4.zip
+              - TestFixture-macOS-5.5.zip
               - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
         timeout_in_minutes: 30
-        key: mac_fixture_5_4
+        key: mac_fixture_5_5
 
-  - group: ":test_tube: E2E Tests UE 5.4"
+  - group: ":test_tube: E2E Tests UE 5.5"
     steps:
-      - label: ":android: E2E Tests - 5.4 Android 11"
-        depends_on: android_fixture_5_4
+      - label: ":android: E2E Tests - 5.5 Android 11"
+        depends_on: android_fixture_5_5
         agents:
           queue: opensource
         timeout_in_minutes: 30
         plugins:
           artifacts#v1.3.0:
             download:
-              - build/TestFixture-Android-Shipping-5.4-arm64.apk
+              - build/TestFixture-Android-Shipping-5.5-arm64.apk
             upload:
               - "maze_output/**/*"
           docker-compose#v3.3.0:
             run: maze-runner
             command:
-              - "--app=/app/build/TestFixture-Android-Shipping-5.4-arm64.apk"
+              - "--app=/app/build/TestFixture-Android-Shipping-5.5-arm64.apk"
               - "--device=ANDROID_11"
               - "--farm=bs"
               - "--order=random"
@@ -118,22 +118,22 @@ steps:
             - exit_status: -1
               limit: 2
 
-      - label: ":ios: E2E Tests - 5.4 iOS 16"
-        depends_on: ios_fixture_5_4
+      - label: ":ios: E2E Tests - 5.5 iOS 16"
+        depends_on: ios_fixture_5_5
         agents:
           queue: opensource
         timeout_in_minutes: 30
         plugins:
           artifacts#v1.3.0:
             download:
-              - build/TestFixture-IOS-Shipping-5.4.ipa
-              - build/TestFixture-IOS-Shipping-5.4-file.dSYM
+              - build/TestFixture-IOS-Shipping-5.5.ipa
+              - build/TestFixture-IOS-Shipping-5.5-file.dSYM
             upload:
               - maze_output/failed/**/*
           docker-compose#v3.3.0:
             run: maze-runner
             command:
-              - "--app=/app/build/TestFixture-IOS-Shipping-5.4.ipa"
+              - "--app=/app/build/TestFixture-IOS-Shipping-5.5.ipa"
               - "--device=IOS_16"
               - "--farm=bs"
               - "--appium-version=1.22.0"
@@ -151,17 +151,17 @@ steps:
               limit: 2
 
 #      Pending PLAT-12729
-#      - label: ":macos: E2E Tests - 5.4 macOS 14"
-#        depends_on: mac_fixture_5_4
+#      - label: ":macos: E2E Tests - 5.5 macOS 14"
+#        depends_on: mac_fixture_5_5
 #        agents:
 #          queue: macos-14
 #        env:
 #          XCODE_VERSION: "15.4.0"
-#          UE_VERSION: "5.4"
-#        timeout_in_minutes: 10
+#          UE_VERSION: "5.5"
+#        timeout_in_minutes: 20
 #        commands:
 #          - echo '--- Extracting test fixture'
-#          - unzip TestFixture-macOS-5.4.zip
+#          - unzip TestFixture-macOS-5.5.zip
 #          - echo '--- Installing dependencies'
 #          - bundle install
 #          - echo '--- Running tests'
@@ -169,6 +169,6 @@ steps:
 #        plugins:
 #          artifacts#v1.5.0:
 #            download:
-#              - TestFixture-macOS-5.4.zip
+#              - TestFixture-macOS-5.5.zip
 #            upload:
 #              - maze_output/failed/**/*

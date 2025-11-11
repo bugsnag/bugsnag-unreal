@@ -17,12 +17,18 @@ UE_RUNUAT="${UE_HOME}/Engine/Build/BatchFiles/RunUAT.sh"
 MODERN_IOS=false
 MODERN_MAC_OS=false
 
-if [[ "${UE_VERSION}" == "5.4" && "${PLATFORM}" == "IOS" ]]; then
+# Function to compare semantic versions
+version_gte() {
+  # returns true (0) if $1 >= $2
+  [[ "$(printf '%s\n' "$2" "$1" | sort -V | head -n1)" == "$2" ]]
+}
+
+if version_gte "${UE_VERSION}" "5.4" && [[ "${PLATFORM}" == "IOS" ]]; then
   echo "--- Using iOS modern xcode setup"
   MODERN_IOS=true
 fi
 
-if [[ "${UE_VERSION}" == "5.3" || "${UE_VERSION}" == "5.4" ]] && [[ "$PLATFORM" == "Mac" ]]; then
+if version_gte "${UE_VERSION}" "5.3" && [[ "${PLATFORM}" == "Mac" ]]; then
   echo "--- Using MacOS modern Xcode setup"
   MODERN_MAC_OS=true
 fi
@@ -100,7 +106,7 @@ case "${PLATFORM}" in
       if [[ -d "$DSYM_PATH" ]]; then
         echo "--- Found dSYM at $DSYM_PATH"
         mv "$DSYM_PATH" build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM
-        cp build/TestFixture-IOS-Shipping-5.4.dSYM/Contents/Resources/DWARF/TestFixture-IOS-Shipping build/TestFixture-IOS-Shipping-"${UE_VERSION}"-file.dSYM
+        cp build/TestFixture-IOS-Shipping-"${UE_VERSION}".dSYM/Contents/Resources/DWARF/TestFixture-IOS-Shipping build/TestFixture-IOS-Shipping-"${UE_VERSION}"-file.dSYM
       else
         echo "Error: dSYM file not found."
         exit 1
@@ -121,7 +127,7 @@ case "${PLATFORM}" in
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping
         ;;
-      5.4)
+      5.4|5.5|5.6)
         mkdir -p features/fixtures/generic/ArchivedBuilds/MacNoEditor
         mv features/fixtures/generic/ArchivedBuilds/TestFixture-Mac-Shipping.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
         ;;

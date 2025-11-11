@@ -8,8 +8,8 @@
     <buildGradleAdditions>
         <insert>
             def ueVersion = System.getenv("UE_VERSION")
-            
-            if (ueVersion != null) 
+
+            if (ueVersion != null)
             {
                 if(
                     ueVersion == "4.27" ||
@@ -25,18 +25,25 @@
                      targetCompatibility JavaVersion.VERSION_1_8
                     }
                 }
-                else
+                else if(
+                    ueVersion == "5.2"  ||
+                    ueVersion == "5.3"  ||
+                    ueVersion == "5.4" )
                 {
                     android.compileSdkVersion 34
                 }
-            } 
-            else 
+                else
+                {
+                    android.compileSdkVersion 35
+                }
+            }
+            else
             {
-                android.compileSdkVersion 34
+                android.compileSdkVersion 35
             }
         </insert>
     </buildGradleAdditions>
-    
+
     <gameActivityImportAdditions>
         <insert>
             import android.content.Intent;
