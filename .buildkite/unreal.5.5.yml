@@ -131,24 +131,29 @@ steps:
             upload:
               - maze_output/failed/**/*
           docker-compose#v3.3.0:
-            run: maze-runner
+            run: maze-runner-bitbar
             command:
               - "--app=/app/build/TestFixture-IOS-Shipping-5.5.ipa"
+              - "--farm=bb"
               - "--device=IOS_16"
-              - "--farm=bs"
-              - "--appium-version=1.22.0"
+              - "--no-tunnel"
+              - "--aws-public-ip"
+              - "--repeater-api-key="
+              - "--hub-repeater-api-key="
               - "--order=random"
-          test-collector#v1.10.2:
+          test-collector#v1.11.0:
             files: "reports/TEST-*.xml"
             format: "junit"
-            branch: "^main|next$$"
-        concurrency: 5
-        concurrency_group: browserstack-app
-        concurrency_method: eager
-        retry:
-          automatic:
-            - exit_status: -1
-              limit: 2
+            branch: "^master|next$$"
+          concurrency: 25
+          concurrency_group: "bitbar"
+          concurrency_method: "eager"
+          retry:
+            automatic:
+              - exit_status: -1  # Agent was lost
+                limit: 2
+              - exit_status: 103  # Appium session failed
+                limit: 2
 
 #      Pending PLAT-12729
 #      - label: ":macos: E2E Tests - 5.5 macOS 14"
