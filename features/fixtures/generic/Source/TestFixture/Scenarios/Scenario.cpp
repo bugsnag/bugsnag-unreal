@@ -11,7 +11,7 @@
 
 Scenario* Scenario::CurrentScenario = nullptr;
 
-static void PingGoogle();
+static void PingGoogle()
 {
     FHttpModule* Http = &FHttpModule::Get();
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
