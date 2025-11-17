@@ -38,7 +38,6 @@ services:
       BITBAR_ACCESS_KEY:
     ports:
       - "9000-9499:9339"
-      - "9000-9499:9340"
     volumes:
       - ./build:/app/build
       - ./features/:/app/features/
