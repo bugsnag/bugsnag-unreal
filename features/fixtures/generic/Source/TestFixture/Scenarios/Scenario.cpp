@@ -1,4 +1,5 @@
 #include "Scenario.h"
+#include "../PingGoogle.h"
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
@@ -9,6 +10,8 @@ Scenario* Scenario::CurrentScenario = nullptr;
 
 void Scenario::ClearPersistentData()
 {
+	PingGoogle();
+
 	UE_LOG(LogTestFixture, Display, TEXT("Clearing persistent data"));
 #if PLATFORM_ANDROID
 	JNIEnv* Env = AndroidJavaEnv::GetJavaEnv(true);
