@@ -1,5 +1,4 @@
 #include "Scenario.h"
-#include "PingGoogle.h"
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
@@ -7,6 +6,28 @@
 #endif
 
 Scenario* Scenario::CurrentScenario = nullptr;
+
+void Scenario::PingGoogle()
+{
+    FHttpModule* Http = &FHttpModule::Get();
+    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
+
+    Request->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr Req, FHttpResponsePtr Resp, bool bSucceeded)
+    {
+        if (bSucceeded && Resp.IsValid())
+        {
+            UE_LOG(LogTemp, Log, TEXT("Ping success! Code: %d"), Resp->GetResponseCode());
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("Ping failed."));
+        }
+    });
+
+    Request->SetURL("https://www.google.com");
+    Request->SetVerb("GET");
+    Request->ProcessRequest();
+}
 
 void Scenario::ClearPersistentData()
 {
