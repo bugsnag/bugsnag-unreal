@@ -118,29 +118,29 @@ steps:
             - exit_status: -1
               limit: 2
 
-      - label: ":ios: E2E Tests - 5.5 iOS 16"
-        depends_on: ios_fixture_5_5
+      - label: ":bitbar::ios: E2E Tests - 5.5 iOS 16"
+        depends_on: "ios_fixture_5_5"
         agents:
-          queue: opensource
+          queue: "opensource"
         timeout_in_minutes: 30
         plugins:
           artifacts#v1.3.0:
             download:
-              - build/TestFixture-IOS-Shipping-5.5.ipa
-              - build/TestFixture-IOS-Shipping-5.5-file.dSYM
+              - "build/TestFixture-IOS-Shipping-5.5.ipa"
+              - "build/TestFixture-IOS-Shipping-5.5-file.dSYM"
             upload:
-              - maze_output/failed/**/*
+              - "maze_output/failed/**/*"
           docker-compose#v3.3.0:
-            run: maze-runner-bitbar
+            pull: "maze-runner-bitbar"
+            run: "maze-runner-bitbar"
             command:
               - "--app=/app/build/TestFixture-IOS-Shipping-5.5.ipa"
               - "--farm=bb"
               - "--device=IOS_16"
               - "--no-tunnel"
               - "--aws-public-ip"
-              - "--repeater-api-key="
-              - "--hub-repeater-api-key="
               - "--order=random"
+              - "--appium-version=1.22"
           test-collector#v1.11.0:
             files: "reports/TEST-*.xml"
             format: "junit"
