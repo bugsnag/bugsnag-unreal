@@ -2,10 +2,10 @@ agents:
   queue: macos
 
 steps:
-  - label: 'Append Unreal 5.5 Pipeline'
-    timeout_in_minutes: 2
-    commands:
-      - buildkite-agent pipeline upload .buildkite/unreal.5.5.yml
+#  - label: 'Append Unreal 5.5 Pipeline'
+#    timeout_in_minutes: 2
+#    commands:
+#      - buildkite-agent pipeline upload .buildkite/unreal.5.5.yml
 
   - label: 'Append Unreal 5.6 Pipeline'
     timeout_in_minutes: 2
