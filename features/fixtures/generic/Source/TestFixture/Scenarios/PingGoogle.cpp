@@ -2,7 +2,7 @@
 #include "Interfaces/IHttpRequest.h"
 #include "Interfaces/IHttpResponse.h"
 
-void UYourClass::PingGoogle()
+void UMainWidgetBase::PingGoogle()
 {
     FHttpModule* Http = &FHttpModule::Get();
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();

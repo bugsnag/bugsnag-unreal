@@ -1,5 +1,5 @@
 #include "Scenario.h"
-#include "../PingGoogle.h"
+#include "PingGoogle.h"
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
