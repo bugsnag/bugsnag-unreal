@@ -20,11 +20,11 @@ static void PingGoogle()
     {
         if (bSucceeded && Resp.IsValid())
         {
-            UE_LOG(LogTemp, Log, TEXT("Ping success! Code: %d"), Resp->GetResponseCode());
+            UE_LOG(LogTestFixture, Log, TEXT("Ping success! Code: %d"), Resp->GetResponseCode());
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("Ping failed."));
+            UE_LOG(LogTestFixture, Error, TEXT("Ping failed."));
         }
     });
 
