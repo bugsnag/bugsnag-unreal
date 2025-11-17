@@ -129,7 +129,9 @@ steps:
               - "build/TestFixture-IOS-Shipping-5.6.ipa"
               - "build/TestFixture-IOS-Shipping-5.6-file.dSYM"
             upload:
-              - "maze_output/failed/**/*"
+              - "maze_output/failed/*"
+              - "maze_output/maze_output.zip"
+              - "maze_output/metrics.csv"
           docker-compose#v3.3.0:
             pull: 'maze-runner'
             run: 'maze-runner'
