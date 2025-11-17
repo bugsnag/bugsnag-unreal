@@ -145,15 +145,15 @@ steps:
             files: "reports/TEST-*.xml"
             format: "junit"
             branch: "^master|next$$"
-          concurrency: 25
-          concurrency_group: "bitbar"
-          concurrency_method: "eager"
-          retry:
-            automatic:
-              - exit_status: -1  # Agent was lost
-                limit: 2
-              - exit_status: 103  # Appium session failed
-                limit: 2
+        concurrency: 25
+        concurrency_group: "bitbar"
+        concurrency_method: "eager"
+        retry:
+          automatic:
+            - exit_status: -1  # Agent was lost
+              limit: 2
+            - exit_status: 103  # Appium session failed
+              limit: 2
 
 #      Pending PLAT-12729
 #      - label: ":macos: E2E Tests - 5.6 macOS 14"
