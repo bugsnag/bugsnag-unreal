@@ -118,75 +118,37 @@ steps:
 #            - exit_status: -1
 #              limit: 2
 
-#      - label: ":ios: E2E Tests - 5.6 iOS 16"
-#        depends_on: ios_fixture_5_6
-#        agents:
-#          queue: opensource
-#        timeout_in_minutes: 30
-#        plugins:
-#          artifacts#v1.3.0:
-#            download:
-#              - build/TestFixture-IOS-Shipping-5.6.ipa
-#              - build/TestFixture-IOS-Shipping-5.6-file.dSYM
-#            upload:
-#              - maze_output/failed/**/*
-#          docker-compose#v3.3.0:
-#            run: maze-runner
-#            command:
-#              - "--app=/app/build/TestFixture-IOS-Shipping-5.6.ipa"
-#              - "--device=IOS_16"
-#              - "--farm=bs"
-#              - "--appium-version=1.22.0"
-#              - "--order=random"
-#          test-collector#v1.10.2:
-#            files: "reports/TEST-*.xml"
-#            format: "junit"
-#            branch: "^main|next$$"
-#        concurrency: 5
-#        concurrency_group: browserstack-app
-#        concurrency_method: eager
-#        retry:
-#          automatic:
-#            - exit_status: -1
-#              limit: 2
-
-      - label: ":bitbar: :ios: E2E Tests - 5.6 iOS 16"
-        timeout_in_minutes: 30
+      - label: ":browserstack: :ios: E2E Tests - 5.6 iOS 16"
         depends_on: "ios_fixture_5_6"
         agents:
           queue: "opensource"
+        timeout_in_minutes: 30
         plugins:
-          artifacts#v1.9.0:
+          artifacts#v1.3.0:
             download:
               - "build/TestFixture-IOS-Shipping-5.6.ipa"
               - "build/TestFixture-IOS-Shipping-5.6-file.dSYM"
             upload:
-              - "maze_output/failed/*"
-              - "maze_output/maze_output.zip"
-              - "maze_output/metrics.csv"
-          docker-compose#v4.7.0:
-            pull: "maze-runner-bitbar"
-            run: "maze-runner-bitbar"
-            service-ports: true
+              - "maze_output/failed/**/*"
+          docker-compose#v3.3.0:
+            pull: 'maze-runner'
+            run: 'maze-runner'
             command:
               - "--app=/app/build/TestFixture-IOS-Shipping-5.6.ipa"
-              - "--farm=bb"
-              - "--appium-version=1.22"
               - "--device=IOS_16"
-              - "--no-tunnel"
-              - "--aws-public-ip"
-              - "--fail-fast"
+              - "--farm=bs"
+              - "--appium-version=1.22.0"
               - "--order=random"
           test-collector#v1.10.2:
             files: "reports/TEST-*.xml"
             format: "junit"
-            branch: "^master|next$$"
-        concurrency: 25
-        concurrency_group: "bitbar"
+            branch: "^main|next$$"
+        concurrency: 5
+        concurrency_group: "browserstack-app"
         concurrency_method: "eager"
         retry:
           automatic:
-            - exit_status: 103  # Appium session failed
+            - exit_status: -1
               limit: 2
 
 #      Pending PLAT-12729
