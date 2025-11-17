@@ -1,5 +1,9 @@
 #include "Scenario.h"
 
+#include "HttpModule.h"
+#include "Interfaces/IHttpRequest.h"
+#include "Interfaces/IHttpResponse.h"
+
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
 #include "Misc/EngineVersion.h"
@@ -7,7 +11,7 @@
 
 Scenario* Scenario::CurrentScenario = nullptr;
 
-void Scenario::PingGoogle()
+static void PingGoogle();
 {
     FHttpModule* Http = &FHttpModule::Get();
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = Http->CreateRequest();
