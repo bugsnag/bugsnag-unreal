@@ -133,6 +133,7 @@ steps:
           docker-compose#v3.3.0:
             pull: "maze-runner-bitbar"
             run: "maze-runner-bitbar"
+            service-ports: true
             command:
               - "--app=/app/build/TestFixture-IOS-Shipping-5.4.ipa"
               - "--farm=bb"
