@@ -43,7 +43,7 @@ void UMainWidgetBase::NativeOnInitialized()
 
 void UMainWidgetBase::ExecuteMazeRunnerCommand()
 {
-	UE_LOG(LogTestFixture,Info,TEXT("Executing Maze Runner command"));
+	UE_LOG(LogTestFixture,Log,TEXT("Executing Maze Runner command"));
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest = FHttpModule::Get().CreateRequest();
 	HttpRequest->SetVerb("GET");
 	HttpRequest->SetURL(TEXT(MAZE_RUNNER_URL_BASE "/command"));
