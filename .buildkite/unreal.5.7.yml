@@ -19,6 +19,7 @@ steps:
       - label: ":macos: Build Plugin - 5.7"
         key: "plugin_5_7"
         env:
+          UE_VERSION: "5.7"
           JAVA_VERSION: "11"
           XCODE_VERSION: "16.3.0"
         commands:
