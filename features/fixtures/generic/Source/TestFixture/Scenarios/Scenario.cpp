@@ -1,4 +1,6 @@
 #include "Scenario.h"
+#include "Engine/World.h"        // Provides access to FWorldContext and World() member
+#include "Engine/Engine.h"       // Already needed for GEngine
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
