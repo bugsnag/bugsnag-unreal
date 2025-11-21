@@ -50,7 +50,10 @@ end
 
 def parse_method frame_index
   if is_platform? 'iOS'
-    puts Maze::Server.errors.current[:body]
+    puts Maze::Helper.read_key_path(
+      Maze::Server.errors.current[:body],
+      "events.0.exceptions.0.stacktrace"
+    )
     # Assumes this is resolving a symbol from the app binary (instead of
     # system frameworks, other bundled executables, etc)
     stackframe = Maze::Helper.read_key_path(
