@@ -110,7 +110,7 @@ steps:
             - exit_status: -1
               limit: 2
 
-      - label: ":ios: E2E Tests - 5.7 iOS 16"
+      - label: ":ios: E2E Tests - 5.7 iOS 26"
         depends_on: ios_fixture_5_7
         agents:
           queue: opensource
@@ -126,7 +126,7 @@ steps:
             run: maze-runner
             command:
               - "--app=/app/build/TestFixture-IOS-Shipping-5.7.ipa"
-              - "--device=IOS_16"
+              - "--device=IOS_26"
               - "--farm=bs"
               - "--appium-version=1.22.0"
               - "--order=random"
