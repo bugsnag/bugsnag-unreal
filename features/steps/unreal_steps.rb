@@ -50,10 +50,17 @@ end
 
 def parse_method frame_index
   if is_platform? 'iOS'
-    puts Maze::Helper.read_key_path(
-      Maze::Server.errors.current[:body],
-      "events.0.exceptions.0.stacktrace"
-    )
+    for i in 0..13
+      puts "Frame #{i}:"
+      stackframe = Maze::Helper.read_key_path(
+        Maze::Server.errors.current[:body],
+        "events.0.exceptions.0.stacktrace.#{i}")
+      dsym_path = File.join(artifact_path, 'TestFixture-IOS-Shipping*.dSYM')
+      stop_addr = Integer(stackframe["frameAddress"]) - Integer(stackframe["machoLoadAddress"]) + Integer(stackframe["machoVMAddress"])
+      start_addr = stop_addr - 4096
+      cmd = HOST_OS.start_with?('darwin') ? 'xcrun objdump' : 'llvm-objdump-11'
+      puts `#{cmd} --arch arm64 --syms --stop-address 0x#{stop_addr.to_s(16)} --start-address 0x#{start_addr.to_s(16)} #{dsym_path} | tail -n 1 | awk '{print $5;}' | c++filt --strip-underscore`.chomp
+    end
     # Assumes this is resolving a symbol from the app binary (instead of
     # system frameworks, other bundled executables, etc)
     stackframe = Maze::Helper.read_key_path(
