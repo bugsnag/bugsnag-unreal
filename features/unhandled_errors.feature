@@ -68,7 +68,7 @@ Feature: Unhandled errors
     And on iOS, the event "app.bundleVersion" equals "2.61.0.1"
     And on Android, the event "app.versionCode" equals 22
     And the event "context" equals "Main Menu opened"
-    And the method of stack frame 1 is equivalent to "MaxConfigCrashScenario::Run()"
+    And the method of stack frame 0 is equivalent to "MaxConfigCrashScenario::Run()"
 
   Scenario: Crash after marking launch as completed
     Given I run "CrashAfterLaunchedScenario" and restart the crashed app
