@@ -1,4 +1,7 @@
 #include "Scenario.h"
+#include "Engine/World.h"
+#include "Engine/Engine.h"
+#include "TimerManager.h"
 
 #include "Dom/JsonValue.h"
 
