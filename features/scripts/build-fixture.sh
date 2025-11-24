@@ -122,19 +122,8 @@ case "${PLATFORM}" in
   ;;
 
   Mac)
-    case "${UE_VERSION}" in
-      4.23)
-        mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
-        mv features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app/Contents/MacOS/TestFixture-Mac-Shipping
-        ;;
-      5.4|5.5|5.6)
-        mkdir -p features/fixtures/generic/ArchivedBuilds/MacNoEditor
-        mv features/fixtures/generic/ArchivedBuilds/TestFixture-Mac-Shipping.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
-        ;;
-      5.*)
-        mv features/fixtures/generic/ArchivedBuilds/Mac/ features/fixtures/generic/ArchivedBuilds/MacNoEditor/
-        ;;
-    esac
+    mkdir -p features/fixtures/generic/ArchivedBuilds/MacNoEditor
+    mv features/fixtures/generic/ArchivedBuilds/TestFixture-Mac-Shipping.app features/fixtures/generic/ArchivedBuilds/MacNoEditor/TestFixture-Mac-Shipping.app
     zip -r TestFixture-macOS-"${UE_VERSION}".zip features/fixtures/generic/ArchivedBuilds
     ;;
 esac
