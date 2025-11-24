@@ -18,6 +18,9 @@ public:
 		Configuration->SetUser(FString("1255"), FString("j@example.com"), FString("jimmy"));
 	}
 
+	#if PLATFORM_APPLE
+    __attribute__((noinline, not_tail_called))
+    #endif
 	void Run() override
 	{
 		UBugsnagFunctionLibrary::SetContext(UBugsnagFunctionLibrary::GetContext() + TEXT(" opened"));
