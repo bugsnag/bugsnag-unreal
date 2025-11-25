@@ -54,7 +54,6 @@ Feature: Unhandled errors
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
   @skip_android #PLAT-9770
-  @skip_ios_18 # Skipping due to PLAT-15245
   Scenario: Crash after setting optional configuration options
     Given I run "MaxConfigCrashScenario" and restart the crashed app
     And I wait to receive an error
