@@ -1,25 +1,13 @@
 using UnrealBuildTool;
-using System.Collections.Generic;
 
 public class TestFixture : ModuleRules
 {
-    public TestFixture(ReadOnlyTargetRules Target) : base(Target)
-    {
-        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+	public TestFixture(ReadOnlyTargetRules Target) : base(Target)
+	{
+		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[]
-        {
-            "Core",
-            "CoreUObject",
-            "Engine",
-            "Http",
-            "SlateCore",
-            "Json"
-        });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "Http", "SlateCore", "Json" });
 
-        PrivateDependencyModuleNames.AddRange(new string[]
-        {
-            "Bugsnag"
-        });
-    }
+		PrivateDependencyModuleNames.AddRange(new string[] { "Bugsnag" });
+	}
 }
