@@ -22,6 +22,10 @@ Before('@skip_ios') do |_scenario|
   skip_this_scenario("Not compatible with iOS") if is_platform? 'iOS'
 end
 
+Before('@skip_ios_18') do |_scenario|
+  skip_between('ios', 18, 18.99)
+end
+
 def is_platform? name
   # case-insensitive string compare, also accepts symbols. examples:
   #
