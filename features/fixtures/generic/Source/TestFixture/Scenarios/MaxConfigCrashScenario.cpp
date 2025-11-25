@@ -26,6 +26,8 @@ public:
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
 
 		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb / metadata I/O
+		volatile int dummy = 0;
+        dummy++;
 
 		volatile int* Pointer = nullptr;
 		*Pointer = 42;
