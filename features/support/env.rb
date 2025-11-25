@@ -22,6 +22,10 @@ Before('@skip_ios') do |_scenario|
   skip_this_scenario("Not compatible with iOS") if is_platform? 'iOS'
 end
 
+def skip_between(os, version_lo, version_hi)
+  skip_this_scenario("Skipping scenario") if Maze::Helper.get_current_platform == os and Maze.config.os_version >= version_lo and Maze.config.os_version <= version_hi
+end
+
 Before('@skip_ios_18') do |_scenario|
   skip_between('ios', 18, 18.99)
 end
