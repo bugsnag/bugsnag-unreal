@@ -1,5 +1,7 @@
 #include "Scenario.h"
 
+#include "HAL/PlatformProcess.h"
+
 class MaxConfigCrashScenario : public Scenario
 {
 public:
@@ -22,6 +24,9 @@ public:
 	{
 		UBugsnagFunctionLibrary::SetContext(UBugsnagFunctionLibrary::GetContext() + TEXT(" opened"));
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("About to read from a bad memory address"));
+
+		FPlatformProcess::Sleep(0.5f); // Leave time for async breadcrumb / metadata I/O
+
 		volatile int* Pointer = nullptr;
 		*Pointer = 42;
 		UBugsnagFunctionLibrary::LeaveBreadcrumb(TEXT("This will never happen"));
