@@ -1,6 +1,7 @@
 // Copyright 2022 Bugsnag. All Rights Reserved.
 
-#include "Android/AndroidJavaEnv.h"
+#include "Android/AndroidApplication.h"
+
 #include "AutomationTest.h"
 
 #include "Runtime/Launch/Resources/Version.h"
@@ -30,14 +31,14 @@ void FAndroidPlatformConfigurationSpec::Define()
 	static JNIReferenceCache JNICache;
 	if (!JNICache.loaded)
 	{
-		JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(AndroidJavaEnv::GetJavaEnv(), &JNICache);
+		JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(FAndroidApplication::GetJavaEnv(), &JNICache);
 	}
 
 	Describe("Telemetry", [this]()
 		{
 			It("Should contain all types by default", [this]()
 				{
-					JNIEnv* Env = AndroidJavaEnv::GetJavaEnv();
+					JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 					jmethodID SizeMethod = Env->GetMethodID(Env->FindClass("java/util/Set"), "size", "()I");
 					jmethodID GetTelemetryMethod = Env->GetMethodID(JNICache.ConfigClass, "getTelemetry", "()Ljava/util/Set;");
 					TEST_FALSE(Env->ExceptionCheck());
@@ -55,7 +56,7 @@ void FAndroidPlatformConfigurationSpec::Define()
 
 			It("Should be empty after setting EBugsnagTelemetryTypes::None", [this]()
 				{
-					JNIEnv* Env = AndroidJavaEnv::GetJavaEnv();
+					JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 					jmethodID SizeMethod = Env->GetMethodID(Env->FindClass("java/util/Set"), "size", "()I");
 					jmethodID GetTelemetryMethod = Env->GetMethodID(JNICache.ConfigClass, "getTelemetry", "()Ljava/util/Set;");
 

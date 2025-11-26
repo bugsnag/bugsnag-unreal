@@ -1,4 +1,7 @@
+#include "Engine/Engine.h"
+#include "Engine/World.h"
 #include "Scenario.h"
+#include "TimerManager.h"
 
 #include "Kismet/GameplayStatics.h"
 

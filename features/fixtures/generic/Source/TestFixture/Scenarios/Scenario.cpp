@@ -1,4 +1,6 @@
 #include "Scenario.h"
+#include "Engine/Engine.h"
+#include "Engine/World.h"
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
