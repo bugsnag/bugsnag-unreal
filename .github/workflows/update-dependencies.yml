@@ -1,5 +1,4 @@
 name: update-dependencies
-
 permissions: read-all
 
 on:
@@ -41,7 +40,7 @@ jobs:
       - run: git submodule update --init --recursive
 
       - name: Install ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1.245.0
         with:
           ruby-version: 2.7
 
