@@ -39,8 +39,6 @@ jobs:
       - run: git fetch --prune --unshallow
       - run: git submodule update --init --recursive
 
-      - run: cat Gemfile
-
       - name: Install ruby
         uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1.245.0
         with:
