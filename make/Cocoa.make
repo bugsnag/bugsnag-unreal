@@ -21,7 +21,8 @@ clean:
 
 $(HEADERS): $(shell find $(SRCDIR) -type f -name '*.h')
 	rsync --delete --recursive --times $(SRCDIR)/include/ $@/
-	rsync --delete --recursive --times --include='*/' --include='*.h' --exclude='*' --prune-empty-dirs $(SRCDIR)/ $@/BugsnagPrivate/ --exclude=include/
+	find $(SRCDIR) -type f -name '*.h' | grep -v $(SRCDIR)/include/ | rsync --files-from - --no-relative --times . $@/BugsnagPrivate/
+	rsync --recursive --times --include='*/' --include='*.h' --exclude='*' --prune-empty-dirs $(SRCDIR)/ $@/BugsnagPrivate/ --exclude=include/
 	touch $@
 
 $(IOS_LIB): $(shell find $(SRCDIR) -type f)
