@@ -5,6 +5,7 @@
 ### Dependencies
 
 Update bugsnag-android to [v6.19.0](https//github.com/bugsnag/bugsnag-android/releases/tag/v6.19.0) [#262](https://github.com/bugsnag/bugsnag-unreal/pull/262)
+Update bugsnag-cocoa to [v6.34.1](https//github.com/bugsnag/bugsnag-cocoa/releases/tag/v6.34.1) [#263](https://github.com/bugsnag/bugsnag-unreal/pull/263)
 
 Changelog
 =========
