@@ -17,12 +17,12 @@ repositories {
 apply plugin: "com.android.library"
 apply plugin: "maven"
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     ndkVersion "21.4.7075529"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 }
