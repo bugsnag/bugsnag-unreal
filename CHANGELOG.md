@@ -2,10 +2,11 @@ Changelog
 =========
 ### 2.1.0 (2025-12-01)
 
+* Add support for Unreal Engine 5.7 [#260](https://github.com/bugsnag/bugsnag-unreal/pull/260)
 * Update bugsnag-android to [v6.19.0](https//github.com/bugsnag/bugsnag-android/releases/tag/v6.19.0) [#262](https://github.com/bugsnag/bugsnag-unreal/pull/262)
 * Update bugsnag-cocoa to [v6.34.1](https//github.com/bugsnag/bugsnag-cocoa/releases/tag/v6.34.1) [#263](https://github.com/bugsnag/bugsnag-unreal/pull/263)
 * Updates the bugsnag-android dependency from v5.31.3 to [v6.8.0](https://github.com/bugsnag/bugsnag-android/blob/v6.8.0/CHANGELOG.md)
-* Included apple privacy manifest in released package [234](https://github.com/bugsnag/bugsnag-unreal/pull/234)
+* Included apple privacy manifest in released package [#234](https://github.com/bugsnag/bugsnag-unreal/pull/234)
 * Updates the bugsnag-cocoa dependency from v6.28.0 to [v6.29.0](https://github.com/bugsnag/bugsnag-cocoa/blob/master/CHANGELOG.md#6290-2024-06-19)
 
 ### 2.0.0 (2024-01-12)
