@@ -65,7 +65,7 @@ public:
 		UBugsnagFunctionLibrary::AddMetadata(TEXT("custom"), TEXT("someValue"), TEXT("foobar"));
 		TSharedPtr<FJsonObject> CustomMetadata = UBugsnagFunctionLibrary::GetMetadata("custom");
 		TSharedPtr<FJsonValue> ExistingValue = UBugsnagFunctionLibrary::GetMetadata("custom", "someValue");
-		if (CustomMetadata.IsValid() && ExistingValue.IsValid() && CustomMetadata->HasField("someValue"))
+		if (CustomMetadata.IsValid() && ExistingValue.IsValid() && CustomMetadata->HasField(TEXT("someValue")))
 		{
 			UBugsnagFunctionLibrary::ClearMetadata("custom", "someValue");
 			UBugsnagFunctionLibrary::AddMetadata("custom", "someOtherValue", ExistingValue);

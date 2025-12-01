@@ -1,0 +1,166 @@
+agents:
+  queue: macos-15-isolated
+
+steps:
+  - group: ":hammer: Builds UE 5.7"
+    steps:
+      - label: ":macos: Build Plugin - 5.7"
+        env:
+          UE_VERSION: "5.7"
+          XCODE_VERSION: "16.3.0"
+          JAVA_VERSION: "11"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - make package
+        plugins:
+          artifacts#v1.5.0:
+            upload:
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        artifact_paths:
+          - Build/Plugin/*.zip
+        timeout_in_minutes: 30
+        key: plugin_5_7
+
+      - label: ":android: Build E2E - 5.7"
+        depends_on: plugin_5_7
+        env:
+          UE_VERSION: "5.7"
+          XCODE_VERSION: "16.3.0"
+          JAVA_VERSION: "21"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh Android
+        plugins:
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.7-macOS.zip
+            upload:
+              - build/TestFixture-Android-Shipping-5.7-arm64.apk
+              - build/TestFixture-Android-Shipping-5.7-armv7.apk
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        timeout_in_minutes: 30
+        key: android_fixture_5_7
+
+      - label: ":ios: Build E2E - 5.7"
+        depends_on: plugin_5_7
+        env:
+          UE_VERSION: "5.7"
+          XCODE_VERSION: "16.3.0"
+          JAVA_VERSION: "21"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh IOS
+        plugins:
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.7-macOS.zip
+            upload:
+              - build/TestFixture-IOS-Shipping-5.7.ipa
+              - build/TestFixture-IOS-Shipping-5.7-file.dSYM
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        timeout_in_minutes: 30
+        key: ios_fixture_5_7
+
+      - label: ":mac: Build E2E - 5.7"
+        depends_on: plugin_5_7
+        env:
+          UE_VERSION: "5.7"
+          XCODE_VERSION: "16.3.0"
+          JAVA_VERSION: "21"
+        commands:
+          - rm -rf "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+          - features/scripts/build-fixture.sh Mac
+        plugins:
+          artifacts#v1.5.0:
+            download: Build/Plugin/Bugsnag-*-UE_5.7-macOS.zip
+            upload:
+              - TestFixture-macOS-5.7.zip
+              - "/Users/administrator/Library/Logs/Unreal Engine/LocalBuildLogs/*"
+        timeout_in_minutes: 30
+        key: mac_fixture_5_7
+
+  - group: ":test_tube: E2E Tests UE 5.7"
+    steps:
+      - label: ":android: E2E Tests - 5.7 Android 11"
+        depends_on: android_fixture_5_7
+        agents:
+          queue: opensource
+        timeout_in_minutes: 30
+        plugins:
+          artifacts#v1.3.0:
+            download:
+              - build/TestFixture-Android-Shipping-5.7-arm64.apk
+            upload:
+              - "maze_output/**/*"
+          docker-compose#v3.3.0:
+            run: maze-runner
+            command:
+              - "--app=/app/build/TestFixture-Android-Shipping-5.7-arm64.apk"
+              - "--device=ANDROID_11"
+              - "--farm=bs"
+              - "--order=random"
+              - "--appium-version=1.22.0"
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
+        concurrency: 5
+        concurrency_group: browserstack-app
+        concurrency_method: eager
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+
+      - label: ":ios: E2E Tests - 5.7 iOS 18"
+        depends_on: ios_fixture_5_7
+        agents:
+          queue: opensource
+        timeout_in_minutes: 30
+        plugins:
+          artifacts#v1.3.0:
+            download:
+              - build/TestFixture-IOS-Shipping-5.7.ipa
+              - build/TestFixture-IOS-Shipping-5.7-file.dSYM
+            upload:
+              - maze_output/failed/**/*
+          docker-compose#v3.3.0:
+            run: maze-runner
+            command:
+              - "--app=/app/build/TestFixture-IOS-Shipping-5.7.ipa"
+              - "--device=IOS_18"
+              - "--farm=bs"
+              - "--appium-version=1.22.0"
+              - "--order=random"
+          test-collector#v1.10.2:
+            files: "reports/TEST-*.xml"
+            format: "junit"
+            branch: "^main|next$$"
+        concurrency: 5
+        concurrency_group: browserstack-app
+        concurrency_method: eager
+        retry:
+          automatic:
+            - exit_status: -1
+              limit: 2
+
+#      Pending PLAT-12729
+#      - label: ":macos: E2E Tests - 5.7 macOS 14"
+#        depends_on: mac_fixture_5_7
+#        agents:
+#          queue: macos-14
+#        env:
+#          XCODE_VERSION: "15.4.0"
+#          UE_VERSION: "5.7"
+#        timeout_in_minutes: 20
+#        commands:
+#          - echo '--- Extracting test fixture'
+#          - unzip TestFixture-macOS-5.7.zip
+#          - echo '--- Installing dependencies'
+#          - bundle install
+#          - echo '--- Running tests'
+#          - bundle exec maze-runner --os=macos
+#        plugins:
+#          artifacts#v1.5.0:
+#            download:
+#              - TestFixture-macOS-5.7.zip
+#            upload:
+#              - maze_output/failed/**/*

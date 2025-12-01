@@ -7,10 +7,43 @@
 
     <buildGradleAdditions>
         <insert>
-            android.compileSdkVersion 31
+            def ueVersion = System.getenv("UE_VERSION")
+
+            if (ueVersion != null)
+            {
+                if(
+                    ueVersion == "4.27" ||
+                    ueVersion == "5.0"  ||
+                    ueVersion == "5.1" )
+                {
+                    android.compileSdkVersion 31
+                    android.defaultConfig {
+                        minSdkVersion 26
+                    }
+                    android.compileOptions {
+                     sourceCompatibility JavaVersion.VERSION_1_8
+                     targetCompatibility JavaVersion.VERSION_1_8
+                    }
+                }
+                else if(
+                    ueVersion == "5.2"  ||
+                    ueVersion == "5.3"  ||
+                    ueVersion == "5.4" )
+                {
+                    android.compileSdkVersion 34
+                }
+                else
+                {
+                    android.compileSdkVersion 35
+                }
+            }
+            else
+            {
+                android.compileSdkVersion 35
+            }
         </insert>
     </buildGradleAdditions>
-    
+
     <gameActivityImportAdditions>
         <insert>
             import android.content.Intent;
@@ -29,9 +62,7 @@
         <insert>
             public void clearBugsnagCache() {
                 File cache = getCacheDir();
-                deleteRecursive(cache, "bugsnag-native");
-                deleteRecursive(cache, "bugsnag-errors");
-                deleteRecursive(cache, "bugsnag-sessions");
+                deleteRecursive(cache, "bugsnag");
             }
 
             public void deleteRecursive(File file) {
@@ -52,3 +83,5 @@
         </insert>
     </gameActivityClassAdditions>
 </root>
+
+

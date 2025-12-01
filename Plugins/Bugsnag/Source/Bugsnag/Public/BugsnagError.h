@@ -35,7 +35,7 @@ public:
 	virtual EBugsnagErrorType GetErrorType() const = 0;
 
 	/**
-	 * The stack trace at the time the error ocurred.
+	 * The stack trace at the time the error occurred.
 	 */
 	virtual TArray<TSharedRef<IBugsnagStackframe>> GetStacktrace() const = 0;
 

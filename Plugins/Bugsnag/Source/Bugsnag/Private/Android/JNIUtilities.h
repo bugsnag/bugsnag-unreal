@@ -35,7 +35,6 @@ typedef struct
 	jclass TelemetryClass;
 	jclass ThreadClass;
 	jclass ThreadSendPolicyClass;
-	jclass ThreadTypeClass;
 	jclass SessionClass;
 	jclass SeverityClass;
 	jclass StackframeClass;
@@ -55,6 +54,7 @@ typedef struct
 	jclass MapClass;
 	jclass NumberClass;
 	jclass StringClass;
+	jclass PatternClass;
 
 	jmethodID ArrayListConstructor;
 	jmethodID ArrayListCollectionConstructor;
@@ -226,6 +226,7 @@ typedef struct
 	jmethodID NotifierSetUrl;
 	jmethodID NotifierSetVersion;
 	jmethodID NotifierSetDependencies;
+	jmethodID PatternCompileMethod;
 	jmethodID SessionGetApp;
 	jmethodID SessionGetDevice;
 	jmethodID SessionGetId;
@@ -247,7 +248,6 @@ typedef struct
 	jmethodID ThreadGetErrorReportingThread;
 	jmethodID ThreadGetId;
 	jmethodID ThreadGetName;
-	jmethodID ThreadGetType;
 	jmethodID ThreadGetStacktrace;
 	jmethodID ThreadSetId;
 	jmethodID ThreadSetName;
@@ -292,8 +292,7 @@ typedef struct
 	jfieldID ThreadSendPolicyAlways;
 	jfieldID ThreadSendPolicyUnhandledOnly;
 	jfieldID ThreadSendPolicyNever;
-	jfieldID ThreadTypeAndroid;
-	jfieldID ThreadTypeC;
+
 } JNIReferenceCache;
 
 class FAndroidPlatformJNI
@@ -352,6 +351,7 @@ public:
 	 * @return A Java object reference or null on failure
 	 */
 	static jobject ParseBreadcrumbType(JNIEnv* Env, const JNIReferenceCache* Cache, EBugsnagBreadcrumbType Type);
+
 	/**
 	 * Convert an array of strings into a Java Set
 	 *
@@ -362,6 +362,17 @@ public:
 	 * @return A Java object reference or null on failure
 	 */
 	static jobject ParseStringSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values);
+
+	/**
+	 * Convert an array of strings into a Java Set
+	 *
+	 * @param Env    A JNI environment for the current thread
+	 * @param Cache  A reference to a cache object to populate. Must not be null.
+	 * @param Values The array to convert
+	 *
+	 * @return A Java object reference or null on failure
+	 */
+	static jobject ParsePatternSet(JNIEnv* Env, const JNIReferenceCache* Cache, const TArray<FString>& Values);
 
 	/**
 	 * Convert enabled breadcrumb types into Set<BreadcrumbType>

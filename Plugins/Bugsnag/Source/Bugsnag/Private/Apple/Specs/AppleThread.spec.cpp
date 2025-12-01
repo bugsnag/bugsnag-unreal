@@ -2,12 +2,21 @@
 
 #include "AutomationTest.h"
 
+#include "Runtime/Launch/Resources/Version.h"
+
 #include "../AppleThread.h"
 
 #import <BugsnagPrivate/BugsnagInternals.h>
 
+#if (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 5)
+// For UE5.0–5.4: ApplicationContextMask still exists
 BEGIN_DEFINE_SPEC(FAppleThreadSpec, "Bugsnag.FAppleThreadSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
+#else
+// For UE5.5+ (ApplicationContextMask removed)
+BEGIN_DEFINE_SPEC(FAppleThreadSpec, "Bugsnag.FAppleThreadSpec",
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+#endif
 END_DEFINE_SPEC(FAppleThreadSpec)
 void FAppleThreadSpec::Define()
 {

@@ -53,7 +53,9 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 	}
 	if (Config->GetDiscardClasses().Num())
 	{
-		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetDiscardClasses, Config->GetDiscardClasses());
+		jobject jPatternSet = FAndroidPlatformJNI::ParsePatternSet(Env, Cache, Config->GetDiscardClasses());
+		ReturnNullOnFail(jPatternSet);
+		jniCallWithObjects(Env, jConfig, Cache->ConfigSetDiscardClasses, jPatternSet);
 	}
 	jobject jEnabledTypes = FAndroidPlatformJNI::ParseBreadcrumbTypeSet(Env, Cache, Config->GetEnabledBreadcrumbTypes());
 	ReturnNullOnFail(jEnabledTypes);
@@ -99,7 +101,9 @@ jobject FAndroidPlatformConfiguration::Parse(JNIEnv* Env,
 
 	if (Config->GetRedactedKeys().Num())
 	{
-		jniCallWithSet(Env, Cache, jConfig, Cache->ConfigSetRedactedKeys, Config->GetRedactedKeys());
+		jobject jPatternSet = FAndroidPlatformJNI::ParsePatternSet(Env, Cache, Config->GetRedactedKeys());
+		ReturnNullOnFail(jPatternSet);
+		jniCallWithObjects(Env, jConfig, Cache->ConfigSetRedactedKeys, jPatternSet);
 	}
 
 	if (Config->GetProjectPackages().Num())

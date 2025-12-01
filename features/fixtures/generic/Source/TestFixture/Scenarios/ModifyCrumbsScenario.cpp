@@ -9,7 +9,7 @@ public:
 			{
 				FString Message = Crumb->GetMessage();
 				TSharedPtr<FJsonObject> Metadata = Crumb->GetMetadata();
-				if (Crumb->GetType() == EBugsnagBreadcrumbType::User && Metadata->HasField("forty") && Metadata->HasField("macaron") && Message.Compare("Crash time", ESearchCase::CaseSensitive) == 0)
+				if (Crumb->GetType() == EBugsnagBreadcrumbType::User && Metadata->HasField(TEXT("forty")) && Metadata->HasField(TEXT("macaron")) && Message.Compare("Crash time", ESearchCase::CaseSensitive) == 0)
 				// HasField returns false when the value is false
 				{
 					Metadata->SetStringField("forty", "four zero");

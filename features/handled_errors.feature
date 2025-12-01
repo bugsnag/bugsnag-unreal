@@ -13,7 +13,7 @@ Feature: Reporting handled errors
     And the event "context" starts with "Lorem ipsum dolor sit amet"
     And the event "app.duration" equals 37
     And the event "app.durationInForeground" is not null
-    And the event "app.id" equals "com.bugsnag.examples.UnrealTestFixture"
+    And the event "app.id" equals "com.bugsnag.example.unrealtestfixture"
     And the event "app.inForeground" is true
     And the event "app.isLaunching" is true
     And the event "app.releaseStage" equals "production"
@@ -117,8 +117,7 @@ Feature: Reporting handled errors
     And the exception "message" equals "Its literally a function argument"
     And the error payload field "events.0.threads" is a non-empty array
     And the error payload field "events.0.threads.0.name" equals "Why would you change this either?"
-    And on iOS, the error payload field "events.0.threads.0.id" equals "9000"
-    And on Android, the error payload field "events.0.threads.0.id" equals 9000
+    And the error payload field "events.0.threads.0.id" equals "9000"
 
   @slow
   Scenario: Cancel notify from callback

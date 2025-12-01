@@ -1,3 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'bugsnag-maze-runner', '~>8.13'
+# Only install bumpsnag if we're using Github actions
+if ENV['GITHUB_ACTIONS'].nil?
+  gem 'bugsnag-maze-runner', '~>10.0'
+  gem 'cocoapods'
+else
+  gem 'bumpsnag', git: 'https://github.com/bugsnag/platforms-bumpsnag', branch: 'main'
+end

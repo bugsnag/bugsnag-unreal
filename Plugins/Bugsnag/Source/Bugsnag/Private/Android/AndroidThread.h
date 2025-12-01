@@ -22,17 +22,33 @@ public:
 
 	FString GetId() const override
 	{
-		auto Id = (*Env).CallLongMethod(JavaObject, Cache->ThreadGetId);
-		FAndroidPlatformJNI::CheckAndClearException(Env);
-		return Id ? FString::Printf(TEXT("{Id}"), Id) : TEXT("");
+		// Retrieve the thread ID as a Java string
+		jstring jId = static_cast<jstring>((*Env).CallObjectMethod(JavaObject, Cache->ThreadGetId));
+		if (FAndroidPlatformJNI::CheckAndClearException(Env) || !jId)
+		{
+			return TEXT("");
+		}
+
+		const char* nativeString = (*Env).GetStringUTFChars(jId, nullptr);
+		if (!nativeString)
+		{
+			return TEXT("");
+		}
+		FString Id = FString(UTF8_TO_TCHAR(nativeString));
+		(*Env).ReleaseStringUTFChars(jId, nativeString);
+
+		return Id;
 	}
 
 	void SetId(const FString& Value) override
 	{
-		int64 Id = FCString::Atoi64(*Value);
-		if (Id)
+		// Convert the FString to a Java string
+		jstring jId = FAndroidPlatformJNI::ParseFString(Env, Value);
+		if (jId)
 		{
-			(*Env).CallVoidMethod(JavaObject, Cache->ThreadSetId, Id);
+			(*Env).CallVoidMethod(JavaObject, Cache->ThreadSetId, jId);
+			FAndroidPlatformJNI::CheckAndClearException(Env);
+			(*Env).DeleteLocalRef(jId); // Clean up local reference
 		}
 	}
 
@@ -48,7 +64,7 @@ public:
 
 	EBugsnagErrorType GetErrorType() const override
 	{
-		jobject jErrorType = (*Env).CallObjectMethod(JavaObject, Cache->ThreadGetType);
+		jobject jErrorType = (*Env).CallObjectMethod(JavaObject, Cache->ErrorGetType);
 		ReturnValueOnException(Env, EBugsnagErrorType::C);
 		return FAndroidPlatformJNI::ParseErrorType(Env, Cache, jErrorType);
 	}

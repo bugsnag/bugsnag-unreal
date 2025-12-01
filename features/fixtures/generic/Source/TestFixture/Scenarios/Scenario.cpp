@@ -1,4 +1,6 @@
 #include "Scenario.h"
+#include "Engine/Engine.h"
+#include "Engine/World.h"
 
 #if PLATFORM_ANDROID
 #include "Android/AndroidJavaEnv.h"
@@ -28,7 +30,8 @@ void Scenario::ClearPersistentData()
 	{
 		if (![Error.domain isEqual:NSCocoaErrorDomain] && Error.code != NSFileNoSuchFileError)
 		{
-			UE_LOG(LogTestFixture, Error, TEXT("%@"), UTF8_TO_TCHAR(Error.description.UTF8String));
+			FString ErrorDescription = UTF8_TO_TCHAR([Error.description UTF8String]);
+			UE_LOG(LogTestFixture, Error, TEXT("%s"), *ErrorDescription);
 		}
 	}
 #endif

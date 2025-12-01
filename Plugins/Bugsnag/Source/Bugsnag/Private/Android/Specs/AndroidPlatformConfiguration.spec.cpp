@@ -1,7 +1,10 @@
 // Copyright 2022 Bugsnag. All Rights Reserved.
 
-#include "Android/AndroidJavaEnv.h"
+#include "Android/AndroidApplication.h"
+
 #include "AutomationTest.h"
+
+#include "Runtime/Launch/Resources/Version.h"
 
 #include "../AndroidPlatformConfiguration.h"
 
@@ -11,8 +14,15 @@
 // * Open Unreal Editor's "Session Frontend" and find the running game in "My Sessions"
 // * Click the "Automation" tab, select the tests to run, and click "Start Tests"!
 //
+#if (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION < 5)
+// For UE5.0–5.4: ApplicationContextMask still exists
 BEGIN_DEFINE_SPEC(FAndroidPlatformConfigurationSpec, "Bugsnag.FAndroidPlatformConfigurationSpec",
 	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::ApplicationContextMask)
+#else
+// For UE5.5+ (ApplicationContextMask removed)
+BEGIN_DEFINE_SPEC(FAndroidPlatformConfigurationSpec, "Bugsnag.FAndroidPlatformConfigurationSpec",
+	EAutomationTestFlags::ProductFilter | EAutomationTestFlags::EditorContext)
+#endif
 END_DEFINE_SPEC(FAndroidPlatformConfigurationSpec)
 void FAndroidPlatformConfigurationSpec::Define()
 {
@@ -21,14 +31,14 @@ void FAndroidPlatformConfigurationSpec::Define()
 	static JNIReferenceCache JNICache;
 	if (!JNICache.loaded)
 	{
-		JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(AndroidJavaEnv::GetJavaEnv(), &JNICache);
+		JNICache.loaded = FAndroidPlatformJNI::LoadReferenceCache(FAndroidApplication::GetJavaEnv(), &JNICache);
 	}
 
 	Describe("Telemetry", [this]()
 		{
 			It("Should contain all types by default", [this]()
 				{
-					JNIEnv* Env = AndroidJavaEnv::GetJavaEnv();
+					JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 					jmethodID SizeMethod = Env->GetMethodID(Env->FindClass("java/util/Set"), "size", "()I");
 					jmethodID GetTelemetryMethod = Env->GetMethodID(JNICache.ConfigClass, "getTelemetry", "()Ljava/util/Set;");
 					TEST_FALSE(Env->ExceptionCheck());
@@ -46,7 +56,7 @@ void FAndroidPlatformConfigurationSpec::Define()
 
 			It("Should be empty after setting EBugsnagTelemetryTypes::None", [this]()
 				{
-					JNIEnv* Env = AndroidJavaEnv::GetJavaEnv();
+					JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 					jmethodID SizeMethod = Env->GetMethodID(Env->FindClass("java/util/Set"), "size", "()I");
 					jmethodID GetTelemetryMethod = Env->GetMethodID(JNICache.ConfigClass, "getTelemetry", "()Ljava/util/Set;");
 

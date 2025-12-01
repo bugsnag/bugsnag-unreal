@@ -1,3 +1,4 @@
+#include "Engine/World.h"
 #include "Scenario.h"
 
 #include "Kismet/GameplayStatics.h"
@@ -13,7 +14,8 @@ public:
 	void Run() override
 	{
 		// Will be processed safely on the next tick in UGameEngine::Tick()
-		UGameplayStatics::OpenLevel(GetCurrentPlayWorld(), TEXT("/Game/NonExistant"));
+		UWorld* World = GetCurrentPlayWorld();
+		UGameplayStatics::OpenLevel(World, TEXT("/Game/NonExistant"));
 
 		FCoreUObjectDelegates::PostLoadMapWithWorld.AddLambda([](UWorld* World)
 			{
