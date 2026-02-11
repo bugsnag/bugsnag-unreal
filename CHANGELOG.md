@@ -5,6 +5,7 @@
 ### Dependencies
 
 Update bugsnag-android to [v6.20.0](https//github.com/bugsnag/bugsnag-android/releases/tag/v6.20.0) [#265](https://github.com/bugsnag/bugsnag-unreal/pull/265)
+Update bugsnag-android to [v6.24.0](https//github.com/bugsnag/bugsnag-android/releases/tag/v6.24.0) [#272](https://github.com/bugsnag/bugsnag-unreal/pull/272)
 
 ## 2.1.0 (2025-12-01)
 
