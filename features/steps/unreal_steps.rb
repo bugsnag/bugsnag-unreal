@@ -83,7 +83,7 @@ def run_fixture(action, scenario_name, wait_for_crash: false)
   Maze::Server.commands.add({ action: action, scenario_name: scenario_name })
   case Maze::Helper.get_current_platform
   when 'android', 'ios'
-    Appium::TouchAction.new.tap({ x: 200, y: 200 }).perform
+    Maze::Api::Appium::UiManager.new.touch_at(200, 200)
     wait_for_get_command
     if wait_for_crash
       step 'the mobile app is not running'
