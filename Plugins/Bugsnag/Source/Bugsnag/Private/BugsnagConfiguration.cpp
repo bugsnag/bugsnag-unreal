@@ -287,7 +287,7 @@ void FBugsnagConfiguration::AddDefaults()
 	// If app version isn't explicitly configured in Bugsnag settings, fall back to the
 	// Unreal project's version (Project Settings → Description → Project Version).
 	// macOS only (per project requirements).
-	#if PLATFORM_MAC
+#if PLATFORM_MAC
 	if (!AppVersion.IsSet() && GConfig)
 	{
 		FString ProjectVersion;
@@ -299,7 +299,7 @@ void FBugsnagConfiguration::AddDefaults()
 			}
 		}
 	}
-	#endif
+#endif
 
 	TSharedRef<FJsonObject> DeviceMetadata = MakeShared<FJsonObject>();
 
