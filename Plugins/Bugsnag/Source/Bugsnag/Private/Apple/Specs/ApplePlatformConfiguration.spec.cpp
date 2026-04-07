@@ -231,6 +231,7 @@ void FApplePlatformConfigurationSpec::Define()
 #if PLATFORM_MAC
 			It("AppVersionFallsBackToProjectVersion", [this]()
 				{
+					TEST_TRUE(GConfig != nullptr);
 					if (!GConfig)
 					{
 						return;
@@ -257,6 +258,7 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("ExplicitAppVersionWinsOverProjectVersion", [this]()
 				{
+					TEST_TRUE(GConfig != nullptr);
 					if (!GConfig)
 					{
 						return;
