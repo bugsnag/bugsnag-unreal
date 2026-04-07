@@ -20,6 +20,7 @@ static TArray<FString> ScenarioNames = {
 	TEXT("OpenBadLevelScenario"),
 	TEXT("OpenLevelBreadcrumbsScenario"),
 	TEXT("PauseSessionScenario"),
+	TEXT("ProjectVersionFallbackScenario"),
 	TEXT("RedactedKeysScenario"),
 	TEXT("ReleaseStageDisabledScenario"),
 	TEXT("ReleaseStageEnabledScenario"),

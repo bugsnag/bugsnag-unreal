@@ -21,7 +21,10 @@ Feature: Reporting handled errors
       | android | android |
       | ios     | iOS     |
       | macos   | macOS   |
-    And the event "app.version" equals "1.0"
+    And the event "app.version" equals the platform-dependent string:
+      | android | 1.0     |
+      | ios     | 1.0     |
+      | macos   | 1.0.0.0 |
     And unless iOS, the event "device.freeDisk" is not null
     And the event "device.freeMemory" is not null
     And the event "device.id" equals "51229"
@@ -138,3 +141,12 @@ Feature: Reporting handled errors
     Given I run "NotifyMultithreadedScenario"
     And I wait to receive a session
     Then the session is valid for the session reporting API version "1.0" for the "Unreal Bugsnag Notifier" notifier
+
+  @skip_android
+  @skip_ios
+  Scenario: AppVersion falls back to ProjectVersion on macOS
+    When I run "ProjectVersionFallbackScenario"
+    And I wait to receive an error
+    Then the error is valid for the error reporting API version "4.0" for the "Unreal Bugsnag Notifier" notifier
+    And the event "app.version" equals "4.5.6"
+    And the event "unhandled" is false

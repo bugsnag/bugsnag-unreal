@@ -244,11 +244,8 @@ void FApplePlatformConfigurationSpec::Define()
 				{
 					GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), TEXT("9.9.9"), GGameIni);
 					ON_SCOPE_EXIT { GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni); };
-
-					UBugsnagSettings* Settings = NewObject<UBugsnagSettings>();
-					Settings->ApiKey = ApiKey;
-					Settings->AppVersion = TEXT("1.2.3");
-					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(*Settings);
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
+					Configuration->SetAppVersion(FString(TEXT("1.2.3")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appVersion.UTF8String), TEXT("1.2.3"));
 				});
