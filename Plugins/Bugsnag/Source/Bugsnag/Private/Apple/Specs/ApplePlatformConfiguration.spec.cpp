@@ -4,7 +4,6 @@
 
 #include "../ApplePlatformConfiguration.h"
 #include "BugsnagConfiguration.h"
-#include "BugsnagSettings.h"
 
 #include "Misc/ConfigCacheIni.h"
 #include "Misc/ScopeExit.h"
