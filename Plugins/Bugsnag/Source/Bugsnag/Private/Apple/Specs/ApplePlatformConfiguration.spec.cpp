@@ -231,8 +231,24 @@ void FApplePlatformConfigurationSpec::Define()
 #if PLATFORM_MAC
 			It("AppVersionFallsBackToProjectVersion", [this]()
 				{
+					if (!GConfig)
+					{
+						return;
+					}
+					FString PriorProjectVersion;
+					const bool bHadPriorValue = GConfig->GetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), PriorProjectVersion, GGameIni);
 					GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), TEXT("4.5.6"), GGameIni);
-					ON_SCOPE_EXIT { GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni); };
+					ON_SCOPE_EXIT
+					{
+						if (bHadPriorValue)
+						{
+							GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), *PriorProjectVersion, GGameIni);
+						}
+						else
+						{
+							GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni);
+						}
+					};
 
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
@@ -241,8 +257,25 @@ void FApplePlatformConfigurationSpec::Define()
 
 			It("ExplicitAppVersionWinsOverProjectVersion", [this]()
 				{
+					if (!GConfig)
+					{
+						return;
+					}
+					FString PriorProjectVersion;
+					const bool bHadPriorValue = GConfig->GetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), PriorProjectVersion, GGameIni);
 					GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), TEXT("9.9.9"), GGameIni);
-					ON_SCOPE_EXIT { GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni); };
+					ON_SCOPE_EXIT
+					{
+						if (bHadPriorValue)
+						{
+							GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), *PriorProjectVersion, GGameIni);
+						}
+						else
+						{
+							GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni);
+						}
+					};
+
 					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
 					Configuration->SetAppVersion(FString(TEXT("1.2.3")));
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
