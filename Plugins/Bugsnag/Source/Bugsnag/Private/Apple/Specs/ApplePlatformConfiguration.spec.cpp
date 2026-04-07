@@ -4,7 +4,10 @@
 
 #include "../ApplePlatformConfiguration.h"
 #include "BugsnagConfiguration.h"
+#include "BugsnagSettings.h"
 
+#include "Misc/ConfigCacheIni.h"
+#include "Misc/ScopeExit.h"
 #include "Runtime/Launch/Resources/Version.h"
 
 #import <BugsnagPrivate/BugsnagInternals.h>
@@ -27,6 +30,9 @@ END_DEFINE_SPEC(FApplePlatformConfigurationSpec)
 void FApplePlatformConfigurationSpec::Define()
 {
 	static const FString ApiKey = TEXT("0192837465afbecd0192837465afbecd");
+#if PLATFORM_MAC
+	static const FString GeneralProjectSettingsSection = TEXT("/Script/EngineSettings.GeneralProjectSettings");
+#endif
 
 	Describe("Properties", [this]()
 		{
@@ -222,6 +228,31 @@ void FApplePlatformConfigurationSpec::Define()
 					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
 					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appVersion.UTF8String), TEXT("1.2.3"));
 				});
+
+#if PLATFORM_MAC
+			It("AppVersionFallsBackToProjectVersion", [this]()
+				{
+					GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), TEXT("4.5.6"), GGameIni);
+					ON_SCOPE_EXIT { GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni); };
+
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(ApiKey);
+					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appVersion.UTF8String), TEXT("4.5.6"));
+				});
+
+			It("ExplicitAppVersionWinsOverProjectVersion", [this]()
+				{
+					GConfig->SetString(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), TEXT("9.9.9"), GGameIni);
+					ON_SCOPE_EXIT { GConfig->RemoveKey(*GeneralProjectSettingsSection, TEXT("ProjectVersion"), GGameIni); };
+
+					UBugsnagSettings* Settings = NewObject<UBugsnagSettings>();
+					Settings->ApiKey = ApiKey;
+					Settings->AppVersion = TEXT("1.2.3");
+					TSharedRef<FBugsnagConfiguration> Configuration = MakeShared<FBugsnagConfiguration>(*Settings);
+					BugsnagConfiguration* CocoaConfig = FApplePlatformConfiguration::Configuration(Configuration);
+					TEST_EQUAL(UTF8_TO_TCHAR(CocoaConfig.appVersion.UTF8String), TEXT("1.2.3"));
+				});
+#endif
 
 			It("BundleVersion", [this]()
 				{
