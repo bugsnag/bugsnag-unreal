@@ -5,11 +5,11 @@
 class ProjectVersionFallbackScenario : public Scenario
 {
 public:
-	#if PLATFORM_MAC
+#if PLATFORM_MAC
 	FString PriorProjectVersion;
 	bool bHadPriorProjectVersion = false;
 	bool bOverrodeProjectVersion = false;
-	#endif
+#endif
 
 	void Configure() override
 	{
