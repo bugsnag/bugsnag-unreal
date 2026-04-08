@@ -10,7 +10,7 @@
         <insertNewline/>
         <insert>
             com.bugsnag,bugsnag-plugin-android-unreal,2.1.0
-            com.bugsnag,bugsnag-android,6.20.0
+            com.bugsnag,bugsnag-android,6.26.0
         </insert>
         <insertNewline/>
     </AARImports>
