@@ -19,6 +19,7 @@ $scenario_names = [
   'OpenBadLevelScenario',
   'OpenLevelBreadcrumbsScenario',
   'PauseSessionScenario',
+  'ProjectVersionFallbackScenario',
   'RedactedKeysScenario',
   'ReleaseStageDisabledScenario',
   'ReleaseStageEnabledScenario',

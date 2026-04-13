@@ -2,6 +2,10 @@
 
 ## TBD
 
+### Changed
+
+* Fix for incorrect version string on macOS [#276](https://github.com/bugsnag/bugsnag-unreal/pull/276)
+
 ### Dependencies
 
 Update bugsnag-android to [v6.20.0](https//github.com/bugsnag/bugsnag-android/releases/tag/v6.20.0) [#265](https://github.com/bugsnag/bugsnag-unreal/pull/265)
