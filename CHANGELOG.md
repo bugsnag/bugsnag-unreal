@@ -2,8 +2,6 @@
 
 ## TBD
 
-## 2.1.1
-
 ### Changed
 
 * Fix for incorrect version string on macOS [#276](https://github.com/bugsnag/bugsnag-unreal/pull/276)
