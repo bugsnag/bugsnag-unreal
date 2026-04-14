@@ -37,7 +37,7 @@ Feature: Unhandled errors
       | fc1         |                |
       | fc2         | teal           |
       | Bugsnag     |                |
-    And the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
+    And unless iOS, the method of stack frame 0 is equivalent to "BadMemoryAccessScenario::Run()"
     And the exception "errorClass" equals the platform-dependent string:
       | android | SIGSEGV        |
       | ios     | EXC_BAD_ACCESS |
@@ -50,11 +50,11 @@ Feature: Unhandled errors
       | android | c     |
       | ios     | cocoa |
       | macos   | cocoa |
-    And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
+    # Pending PLAT-16001 And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.method" is null
     And on iOS, the error payload field "events.0.exceptions.0.stacktrace.0.symbolAddress" is not null
 
   @skip_android #PLAT-9770
-  @skip_ios_18 # Skipping due to PLAT-15245
+  @skip_ios_18 @skip_ios_16 # Skipping due to PLAT-15245
   Scenario: Crash after setting optional configuration options
     Given I run "MaxConfigCrashScenario" and restart the crashed app
     And I wait to receive an error

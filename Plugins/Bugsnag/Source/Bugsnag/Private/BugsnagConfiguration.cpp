@@ -8,6 +8,7 @@
 
 #include "Engine/Engine.h"
 #include "GameFramework/GameState.h"
+#include "Misc/ConfigCacheIni.h"
 #include "RHI.h"
 #include "UserActivityTracking.h"
 
@@ -282,6 +283,23 @@ void FBugsnagConfiguration::AddDefaults()
 		ReleaseStage = TEXT("development");
 #endif
 	}
+
+	// If app version isn't explicitly configured in Bugsnag settings, fall back to the
+	// Unreal project's version (Project Settings → Description → Project Version).
+	// macOS only (per project requirements).
+#if PLATFORM_MAC
+	if (!AppVersion.IsSet() && GConfig)
+	{
+		FString ProjectVersion;
+		if (GConfig->GetString(TEXT("/Script/EngineSettings.GeneralProjectSettings"), TEXT("ProjectVersion"), ProjectVersion, GGameIni))
+		{
+			if (!ProjectVersion.IsEmpty())
+			{
+				AppVersion = ProjectVersion;
+			}
+		}
+	}
+#endif
 
 	TSharedRef<FJsonObject> DeviceMetadata = MakeShared<FJsonObject>();
 
