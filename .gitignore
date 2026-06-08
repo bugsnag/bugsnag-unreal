@@ -1,4 +1,7 @@
-Gemfile.lock
+*.lock
+.gitleaks.toml
+.pre-commit-config.yaml
+.gitleaks-baseline.json
 
 # IDE user specific files
 .vs/
@@ -33,6 +36,7 @@ bugsnag-unreal.iml
 *.exe
 *.out
 *.app
+*.apk
 *.ipa
 *.aar
 
@@ -54,6 +58,9 @@ SourceArt/**/*.tga
 # Binary Files
 Binaries/*
 Plugins/*/Binaries/*
+
+#Secret Key
+*.jks
 
 # Builds
 ArchivedBuilds/
@@ -86,4 +93,6 @@ Plugins/Bugsnag/Source/ThirdParty/BugsnagCocoa/include
 deps/bugsnag-plugin-android-unreal/build
 maze_output/*
 *.log
+*.logs
 *.zip
+*.env
