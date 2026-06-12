@@ -28,7 +28,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       REVIEWER: richardelms
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: next
 
@@ -40,7 +40,7 @@ jobs:
       - run: git submodule update --init --recursive
 
       - name: Install ruby
-        uses: ruby/setup-ruby@a4effe49ee8ee5b8b5091268c473a4628afb5651 # v1.245.0
+        uses: ruby/setup-ruby@12fd324f1d0b43274fdc8130f6980590a667c455 # v1.312.0
         with:
           ruby-version: 2.7
 

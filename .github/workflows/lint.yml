@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - name: clang-format
         run: find Source Plugins/Bugsnag/Source/Bugsnag features/fixtures/generic/Source -name '*.h' -o -name '*.cpp' | xargs /usr/bin/clang-format-14 --dry-run --Werror
       - name: cspell
