@@ -193,7 +193,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, const TSharedPtr<FJsonValue>& Value);
@@ -202,7 +202,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, const FString& Value)
@@ -214,7 +214,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, const TCHAR* Value)
@@ -226,7 +226,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, const char* Value)
@@ -238,7 +238,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, double Value)
@@ -250,7 +250,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, float Value)
@@ -262,7 +262,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, int8 Value)
@@ -274,7 +274,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, int16 Value)
@@ -286,7 +286,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, int32 Value)
@@ -298,7 +298,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, int64 Value)
@@ -310,7 +310,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, uint8 Value)
@@ -322,7 +322,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, uint16 Value)
@@ -334,7 +334,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, uint32 Value)
@@ -346,7 +346,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, uint64 Value)
@@ -358,7 +358,7 @@ public:
 	 * Caches additional diagnostics to be sent with any subsequent events
 	 *
 	 * @param Section The category of information
-	 * @param Key     The key in which to assign the value
+	 * @param Key     The key to which to assign the value
 	 * @param Value   New or updated information to append to section
 	 */
 	static void AddMetadata(const FString& Section, const FString& Key, bool Value)

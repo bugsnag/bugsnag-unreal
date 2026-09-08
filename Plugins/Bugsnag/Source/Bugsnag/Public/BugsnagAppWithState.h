@@ -5,7 +5,7 @@
 #include "BugsnagApp.h"
 
 /**
- * Stateful information information about the app where the error occurred.
+ * Stateful information about the app where the error occurred.
  *
  * Can be amended from an OnError callback if necessary.
  */

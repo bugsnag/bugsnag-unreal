@@ -420,7 +420,7 @@ public:
 	const TArray<FString>& GetProjectPackages() const { return ProjectPackages; }
 
 	/**
-	 * Sets which packages Bugsnag should consider to be part of the the running application (Android only.)
+	 * Sets which packages Bugsnag should consider to be part of the running application (Android only.)
 	 */
 	void SetProjectPackages(const TArray<FString>& Value) { ProjectPackages = Value; }
 
