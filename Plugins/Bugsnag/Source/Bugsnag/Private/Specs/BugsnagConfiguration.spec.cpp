@@ -100,7 +100,7 @@ void FBugsnagConfigurationSpec::Define()
 					TEST_EQUAL(Configuration.GetEndpoints().GetSessions(), TEXT("https://sessions.bugsnag.com"));
 				});
 
-			It("Should log a warning if only the Notify endpoints is overriden", [this]()
+			It("Should log a warning if only the Notify endpoints is overridden", [this]()
 				{
 					AddExpectedError(TEXT("Invalid configuration. Endpoints.Notify cannot be set without also setting Endpoints.Sessions. "
 										  "Sessions will not be sent to Bugsnag."),
@@ -114,7 +114,7 @@ void FBugsnagConfigurationSpec::Define()
 					TEST_EQUAL(Configuration.GetEndpoints().GetSessions(), TEXT(""));
 				});
 
-			It("Should log a warning if only the Session endpoints is overriden", [this]()
+			It("Should log a warning if only the Session endpoints is overridden", [this]()
 				{
 					AddExpectedError(TEXT("Invalid configuration. Endpoints.Sessions cannot be set without also setting Endpoints.Notify. "
 										  "Events will not be sent to Bugsnag."),

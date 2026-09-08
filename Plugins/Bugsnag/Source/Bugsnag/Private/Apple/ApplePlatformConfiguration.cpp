@@ -196,7 +196,7 @@ BugsnagConfiguration* FApplePlatformConfiguration::Configuration(const TSharedRe
 	CocoaConfig.notifier =
 		[[BugsnagNotifier alloc] initWithName:@BUGSNAG_UNREAL_NAME
 									  version:@BUGSNAG_UNREAL_VERSION_STRING
-										  url:@BUGSNAG_UNREAL_VERSION_STRING
+										  url:@BUGSNAG_UNREAL_URL
 								 dependencies:@[[[BugsnagNotifier alloc] init]]];
 
 	return CocoaConfig;

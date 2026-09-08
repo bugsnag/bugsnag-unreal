@@ -14,7 +14,7 @@ void FBugsnagExampleModule::StartupModule()
 }
 
 //
-// If an API key has not been specified in DefaultEngine.ini then this is the simplest way to start Bugsnag programatically.
+// If an API key has not been specified in DefaultEngine.ini then this is the simplest way to start Bugsnag programmatically.
 //
 void StartWithApiKey()
 {
@@ -47,7 +47,7 @@ void StartWithConfiguration()
 
 	//
 	// The appVersion will let you see what release an error is present in.
-	// This will be picked up automatically from your app at run-time, but can be manually overriden here if necessary.
+	// This will be picked up automatically from your app at run-time, but can be manually overridden here if necessary.
 	//
 	Configuration->SetAppVersion(FString(TEXT("1.5.0")));
 
