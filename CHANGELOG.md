@@ -1,5 +1,11 @@
 # Changelog
 
+## TBD
+
+### Dependencies
+
+Update bugsnag-android to [v6.28.0](https//github.com/bugsnag/bugsnag-android/releases/tag/v6.28.0) [#290](https://github.com/bugsnag/bugsnag-unreal/pull/290)
+
 ## 2.1.1 (2026-04-13)
 
 ### Changed
