@@ -1,5 +1,11 @@
 # Changelog
 
+## TBD
+
+### Dependencies
+
+Update bugsnag-cocoa to [v7.0.0](https//github.com/bugsnag/bugsnag-cocoa/releases/tag/v7.0.0) [#292](https://github.com/bugsnag/bugsnag-unreal/pull/292)
+
 ## 2.1.1 (2026-04-13)
 
 ### Changed
